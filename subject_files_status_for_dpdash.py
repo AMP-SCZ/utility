@@ -19,6 +19,8 @@ from os.path import isfile
 from datetime import datetime
 
 def _latest_mtime(p):
+    
+    print('Finding modification time of',p)	
 
     latest= -1
     for file in p.rglob('*'):

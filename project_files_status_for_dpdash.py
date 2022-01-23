@@ -16,6 +16,8 @@ df= pd.read_csv(files[0])
 # replace day column, append subject_id column
 dfnew= df.copy()
 
+print('\n\nCombining subject level files:\n')
+
 cases=[]
 for i,f in enumerate(files):
 
@@ -44,14 +46,13 @@ dfnew.to_csv(outfile, index=False)
 
 
 dfmeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
-# dfmeta['Subject ID']= cases
-dfmeta['Subject ID']= dfnew['subject_id']
-dfmeta['Active']= [1]*L
-dfmeta['Consent']= ['-']*L
-dfmeta['Study']= [COMBINED_STUDY]*L
+# dfmeta['Subject ID']= dfnew['subject_id']
+# dfmeta['Active']= [1]*L
+# dfmeta['Consent']= ['-']*L
+# dfmeta['Study']= [COMBINED_STUDY]*L
 
 # append combined row
-dfmeta.loc[L]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
+dfmeta.loc[0]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
 
 dfmeta.to_csv(f'{COMBINED_STUDY}_metadata.csv', index=False)
 
