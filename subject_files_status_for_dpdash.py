@@ -17,6 +17,7 @@ outdir = flow_test_root/ 'ctime_experiment'
 from os import stat
 from os.path import isfile
 from datetime import datetime
+from typing import List
 
 def _latest_mtime(p):
     
@@ -32,10 +33,12 @@ def _latest_mtime(p):
     return datetime.fromtimestamp(latest).strftime('%Y-%m-%d')
 
 
-def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
+def get_summary_from_phoenix(phoenix_dirs: List) -> pd.DataFrame:
     '''Get summary from the PHOENIX structure'''
     
-    subject_paths = list(phoenix_dir.glob('*/*/*/*'))
+    subject_paths = []
+    for phoenix_dir in phoenix_dirs:
+        subject_paths += list(phoenix_dir.glob('*/*/*/*'))
     
     df = pd.DataFrame({'p': subject_paths})
     df['subject'] = df.p.apply(lambda x: x.name)
@@ -59,7 +62,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     return df
     
 
-df = get_summary_from_phoenix(pronet_phoenix_dir)
+df = get_summary_from_phoenix([pronet_phoenix_dir, pronet_phoenix_dir])
 
 df_pivot = pd.pivot_table(df, index=['subject', 'site', 'mtime'], columns=['level0', 'level1'], fill_value=False).astype(int)
 
