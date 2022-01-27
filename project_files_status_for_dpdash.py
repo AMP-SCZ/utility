@@ -6,9 +6,10 @@ from os.path import abspath
 import numpy as np
 
 COMBINED_STUDY='files'
-COMBINED_SUBJECT='combined'
+# COMBINED_SUBJECT='combined'
+COMBINED_SUBJECT=sys.argv[1]
 
-files= sorted(sys.argv[1:])
+files= sorted(sys.argv[2:])
 
 # read Kevin's dataframe
 df= pd.read_csv(files[0])
