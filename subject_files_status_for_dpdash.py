@@ -11,7 +11,9 @@ from datetime import time, timedelta, datetime, date
 flow_test_root = Path('/data/predict/kcho/flow_test')
 pronet_phoenix_dir = flow_test_root / 'Pronet/PHOENIX'
 prescient_phoenix_dir = flow_test_root / 'Prescient/PHOENIX'
-outdir = flow_test_root/ 'ctime_experiment'
+
+pronet_status_dir = flow_test_root/ 'Pronet_status'
+prescient_status_dir = flow_test_root/ 'Prescient_status'
 
 
 from os import stat
@@ -59,31 +61,44 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     return df
     
 
-df = get_summary_from_phoenix(pronet_phoenix_dir)
+def phoenix_files_status(phoenix_dir, out_dir):
 
-df_pivot = pd.pivot_table(df, index=['subject', 'site', 'mtime'], columns=['level0', 'level1'], fill_value=False).astype(int)
+    print(f'\nFinding files status of {phoenix_dir}\n')
 
-for (subject, site, mtime), row in df_pivot.iterrows():
-    df_tmp = row.reset_index()
-    df_tmp.columns = ['datatype', 'level0', 'level1', 'count']
-    df_tmp_pivot = pd.pivot_table(df_tmp, columns=['datatype', 'level0', 'level1']).reset_index()
-    df_tmp_pivot['col'] = df_tmp_pivot['datatype'] + '_' + df_tmp_pivot['level1'] + '_' + df_tmp_pivot['level0']
-    subject_series_tmp = df_tmp_pivot.set_index('col')[0]
-    
-    subject_series_tmp['mtime']= mtime
-     
-    # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
-    # suggestion from Tashrif to link outputs to DPdash
-    subject_df_tmp = pd.DataFrame({
-        'day': [1],
-        'reftime': '',
-        'timeofday': '',
-        'weekday': ''
-    })
-    
-    subject_df_tmp = pd.concat([subject_df_tmp, pd.DataFrame(subject_series_tmp).T], axis=1)
-    
-    out_file_name = f"{site[-2:]}-{subject}-flowcheck-day1to1.csv"
+    df = get_summary_from_phoenix(phoenix_dir)
 
-    subject_df_tmp.to_csv(outdir/out_file_name, index=False)
-    
+    df_pivot = pd.pivot_table(df, index=['subject', 'site', 'mtime'], 
+        columns=['level0', 'level1'], fill_value=False).astype(int)
+
+    for (subject, site, mtime), row in df_pivot.iterrows():
+        df_tmp = row.reset_index()
+        df_tmp.columns = ['datatype', 'level0', 'level1', 'count']
+        df_tmp_pivot = pd.pivot_table(df_tmp, columns=['datatype', 'level0', 'level1']).reset_index()
+        df_tmp_pivot['col'] = df_tmp_pivot['datatype'] + '_' + \
+                              df_tmp_pivot['level1'] + '_' + \
+                              df_tmp_pivot['level0']
+        subject_series_tmp = df_tmp_pivot.set_index('col')[0]
+        
+        subject_series_tmp['mtime']= mtime
+        
+        # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
+        # suggestion from Tashrif to link outputs to DPdash
+        subject_df_tmp = pd.DataFrame({
+            'day': [1],
+            'reftime': '',
+            'timeofday': '',
+            'weekday': ''
+        })
+        
+        subject_df_tmp = pd.concat([subject_df_tmp, pd.DataFrame(subject_series_tmp).T], axis=1)
+        
+        out_file = f"{site[-2:]}-{subject}-flowcheck-day1to1.csv"
+
+        subject_df_tmp.to_csv(out_dir/out_file, index=False)
+
+
+
+if __name__=='__main__':
+    phoenix_files_status(pronet_phoenix_dir, pronet_status_dir)
+    phoenix_files_status(prescient_phoenix_dir, prescient_status_dir)
+
