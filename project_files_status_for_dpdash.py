@@ -2,7 +2,7 @@
 
 import pandas as pd
 import sys
-from os.path import abspath
+from os.path import abspath, isfile
 import numpy as np
 
 COMBINED_STUDY='files'
@@ -49,6 +49,15 @@ dfnetw.to_csv(outfile, index=False)
 
 print('\n\nGenerating site level summary\n')
 
+
+metadata= abspath(f'../{COMBINED_STUDY}_metadata.csv')
+if isfile(metadata):
+    dfmeta= pd.read_csv(metadata)
+else:
+    dfmeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
+
+
+i= dfmeta.shape[0]
 for site,dfsite in dfnew.groupby('site'):
     
     dfsite.reset_index(inplace=True, drop=True)
@@ -60,15 +69,14 @@ for site,dfsite in dfnew.groupby('site'):
     outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to9999.csv'
     dfsite.to_csv(outfile, index=False)
 
+    # generate metadata
+    dfmeta.loc[i]=[site,1,'-',COMBINED_STUDY]
+    i+=1
 
-dfmeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
-# dfmeta['Subject ID']= dfnew['subject_id']
-# dfmeta['Active']= [1]*L
-# dfmeta['Consent']= ['-']*L
-# dfmeta['Study']= [COMBINED_STUDY]*L
+
 
 # append combined row
-dfmeta.loc[0]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
+dfmeta.loc[i]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
 
-dfmeta.to_csv(f'{COMBINED_STUDY}_metadata.csv', index=False)
+dfmeta.to_csv(metadata, index=False)
 
