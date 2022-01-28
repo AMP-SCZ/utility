@@ -17,7 +17,7 @@ df= pd.read_csv(files[0])
 # replace day column, append subject_id column
 dfnew= df.copy()
 
-print('\n\nCombining subject level files:\n')
+print('\n\nGenerating network level summary\n')
 
 cases=[]
 for i,f in enumerate(files):
@@ -40,10 +40,25 @@ dfnew['subject_id']= cases
 dfnew.sort_values(by='mtime', ascending=False, inplace=True)
 
 # populate day column
-dfnew['day']= [i+1 for i in range(L)]
+dfnetw= dfnew.copy()
+dfnetw['day']= [i+1 for i in range(L)]
 
 outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to9999.csv'
-dfnew.to_csv(outfile, index=False)
+dfnetw.to_csv(outfile, index=False)
+
+
+print('\n\nGenerating site level summary\n')
+
+for site,dfsite in dfnew.groupby('site'):
+    
+    dfsite.reset_index(inplace=True, drop=True)
+    
+    # reset day column
+    for d in range(dfsite.shape[0]):
+        dfsite.at[d,'day']= d+1
+    
+    outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to9999.csv'
+    dfsite.to_csv(outfile, index=False)
 
 
 dfmeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
