@@ -80,6 +80,7 @@ def phoenix_files_status(phoenix_dir, out_dir):
         subject_series_tmp = df_tmp_pivot.set_index('col')[0]
         
         subject_series_tmp['mtime']= mtime
+        subject_series_tmp['site']= site[-2:]
         
         # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
         # suggestion from Tashrif to link outputs to DPdash
