@@ -9,7 +9,7 @@ rm /data/predict/kcho/flow_test/files_metadata.csv
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate pnlpipe3 && \
 subject_files_status_for_dpdash.py && \
 cd /data/predict/kcho/flow_test/Pronet_status && \
-project_files_status_for_dpdash.py ProNET *-flowcheck-day1to1.csv && \
+project_files_status_for_dpdash.py ProNET ../files_metadata.csv *-flowcheck-day1to1.csv && \
 cd /data/predict/kcho/flow_test/Prescient_status && \
-project_files_status_for_dpdash.py PRESCIENT *-flowcheck-day1to1.csv
+project_files_status_for_dpdash.py PRESCIENT ../files_metadata.csv *-flowcheck-day1to1.csv
 
