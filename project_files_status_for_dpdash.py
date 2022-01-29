@@ -6,10 +6,10 @@ from os.path import abspath, isfile
 import numpy as np
 
 COMBINED_STUDY='files'
-# COMBINED_SUBJECT='combined'
-COMBINED_SUBJECT=sys.argv[1]
 
-files= sorted(sys.argv[2:])
+COMBINED_SUBJECT=sys.argv[1]
+metadata= sys.argv[2]
+files= sorted(sys.argv[3:])
 
 # read Kevin's dataframe
 df= pd.read_csv(files[0])
@@ -49,8 +49,6 @@ dfnetw.to_csv(outfile, index=False)
 
 print('\n\nGenerating site level summary\n')
 
-
-metadata= abspath(f'../{COMBINED_STUDY}_metadata.csv')
 if isfile(metadata):
     dfmeta= pd.read_csv(metadata)
 else:
