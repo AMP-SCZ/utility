@@ -59,10 +59,14 @@ i= dfmeta.shape[0]
 for site,dfsite in dfnew.groupby('site'):
     
     dfsite.reset_index(inplace=True, drop=True)
-    
+
+    dfsitemeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
     # reset day column
     for d in range(dfsite.shape[0]):
         dfsite.at[d,'day']= d+1
+        dfsitemeta.loc[d]= [dfsite.loc[d,'subject_id'],1,'-',site]
+
+    dfsitemeta.to_csv(f'{site}_metadata.csv', index=False)
     
     outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to9999.csv'
     dfsite.to_csv(outfile, index=False)
