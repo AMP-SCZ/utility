@@ -45,7 +45,8 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['level0'] = df.p.apply(lambda x: x.parent.parent.parent.name)
     df['level1'] = df.p.apply(lambda x: x.parent.name)
 
-    df['surveys'] = df.p.apply(lambda x: len(list((x / 'surveys').glob('*json'))) > 0)
+    df['pronet_surveys'] = df.p.apply(lambda x: len(list((x / 'surveys').glob('*Pronet.json'))) > 0)
+    df['upenn_surveys'] = df.p.apply(lambda x: len(list((x / 'surveys').glob('*UPENN.json'))) > 0)
     df['eeg'] = df.p.apply(lambda x: len(list((x / 'eeg').glob('*zip'))) > 0)
     df['eeg_ss'] = df.p.apply(lambda x: (x / 'eeg' / f'{x.name}.Pronet.Run_sheet_eeg.csv').is_file())
     df['actigraphy'] = df.p.apply(lambda x: len(list((x / 'actigraphy').glob('*zip'))) > 0)
