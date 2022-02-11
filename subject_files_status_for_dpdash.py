@@ -54,7 +54,9 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['mri_ss'] = df.p.apply(lambda x: (x / 'mri' / f'{x.name}.Pronet.Run_sheet_mri.csv').is_file())
     df['interviews'] = df.p.apply(lambda x: len([x for x in (x / 'interviews').glob('*') if x.is_dir()]) > 0)
     df['interviews_ss'] = df.p.apply(lambda x: (x / 'interviews' / f'{x.name}.Pronet.Run_sheet_interviews.csv').is_file())
-    
+    df['mind_phone'] = df.p.apply(lambda x: len( [x for x in (x / 'phone').glob('*_activity_*json')] ))
+    df['mind_audio'] = df.p.apply(lambda x: len( [x for x in (x / 'phone').glob('*_activity_*_sound_*.mp3')] ))
+    df['mind_sensor'] = df.p.apply(lambda x: len( [x for x in (x / 'phone').glob('*_sensor_*json')] ))
     
     df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     
