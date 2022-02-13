@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
-cd /data/predict/kcho/flow_test/
+if [ -z $state ] || [ -z $MONGO_PASS ]
+then
+    echo Define state and MONGO_PASS and try again
+    exit 1
+fi
 
+# delete old collections
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@`hostname`:27017/dpdata?authSource=admin < /data/predict/utility/remove_collections.js
+
+# import new collections
 source /opt/dpdash/miniconda3/bin/activate && \
+
+cd /data/predict/kcho/flow_test/ && \
 
 # metadata
 import.py -c /opt/dpdash/dpimport/examples/config.yml files_metadata.csv && \
