@@ -7,9 +7,6 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 from datetime import time, timedelta, datetime, date
-from os import stat
-from os.path import isfile
-from datetime import datetime
 
 flow_test_root = Path('/data/predict/kcho/flow_test')
 pronet_phoenix_dir = flow_test_root / 'Pronet/PHOENIX'
