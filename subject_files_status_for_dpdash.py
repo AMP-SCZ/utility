@@ -132,17 +132,17 @@ def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
     return len([x for x in list((root / subdir).glob(str)) if x.is_file()])
 
 
-def _is_file(root: Path, subdir: str, pattern: str) -> int:
+def _is_file(root: Path, subdir: str, pattern: str) -> bool:
     '''check if there is at least one file matching the given pattern'''
     return _get_file_count(root, subdir, pattern) > 0
 
 
-def _is_dir(root:Path, subdir: str, pattern: str) -> int:
+def _is_dir(root:Path, subdir: str, pattern: str) -> bool:
     '''check if there is at least one directory matching the pattern'''
     return _get_dir_count(root, subdir, pattern) > 0
 
 
-def _is_scansheet(root:Path, subdir: str) -> int:
+def _is_scansheet(root:Path, subdir: str) -> bool:
     '''check if there is a scan sheet for a datatype (subdir)'''
     return _get_count(
             root, subdir, f'{root.name}.*.Run_sheet_{subdir}.csv') > 0
