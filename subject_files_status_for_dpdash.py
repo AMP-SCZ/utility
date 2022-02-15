@@ -45,11 +45,10 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
 
     # surveys
     df['surveys'] = df.p.apply(
-            lambda x: _is_file(x, 'surveys', '*Pronet.json') or 
-                      _is_file(x, 'surveys', '*.csv')
-            )
+        lambda x: _is_file(x, 'surveys', '*Pronet.json') or 
+                  _is_file(x, 'surveys', '*.csv'))
     df['upenn_surveys'] = df.p.apply(
-            lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+        lambda x: _is_file(x, 'surveys', '*UPENN.json'))
 
     # eeg
     df['eeg'] = df.p.apply(lambda x: _is_file(x, 'eeg', '*zip'))
@@ -60,21 +59,20 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['actigraphy_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'actigraphy'))
 
     # mri
-    df['mri'] = df.p.apply(
-            lambda x: _is_dir(x, 'mri', '*') or
-                      _is_file(x, 'mri', '*.zip'))
+    df['mri'] = df.p.apply(lambda x: _is_dir(x, 'mri', '*') or
+                                     _is_file(x, 'mri', '*.zip'))
     df['mri_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'mri'))
 
     # A/V
     df['interviews'] = df.p.apply(
-            lambda x: _is_file(x, 'interviews', '*.csv'))
+        lambda x: _is_file(x, 'interviews', '*.csv'))
     df['interviews_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'interviews'))
 
     # mindlamp
     df['mind_phone'] = df.p.apply(
-            lambda x: _get_count(x, 'phone', '*_activity_*json'))
+        lambda x: _get_count(x, 'phone', '*_activity_*json'))
     df['mind_sensor'] = df.p.apply(
-            lambda x: _get_count(x, 'phone', '*_sensor_*json'))
+        lambda x: _get_count(x, 'phone', '*_sensor_*json'))
     
     df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     
