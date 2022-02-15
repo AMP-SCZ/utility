@@ -108,8 +108,7 @@ def phoenix_files_status(phoenix_dir, out_dir):
         })
         
         subject_df_tmp = pd.concat(
-                [subject_df_tmp, pd.DataFrame(subject_series_tmp).T],
-                axis=1)
+            [subject_df_tmp, pd.DataFrame(subject_series_tmp).T], axis=1)
         out_file = f"{site[-2:]}-{subject}-flowcheck-day1to1.csv"
         subject_df_tmp.to_csv(out_dir/out_file, index=False)
 
