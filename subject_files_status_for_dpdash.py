@@ -115,17 +115,17 @@ def phoenix_files_status(phoenix_dir, out_dir):
 
 def _get_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of files and directories that mattch glob pattern'''
-    return len(list((root / subdir).glob(str)))
+    return len(list((root / subdir).glob(spatterntr)))
 
 
 def _get_dir_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of directories that mattch glob pattern'''
-    return len([x for x in list((root / subdir).glob(str)) if x.is_dir()])
+    return len([x for x in (root / subdir).glob(pattern) if x.is_dir()])
 
 
 def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of files that mattch glob pattern'''
-    return len([x for x in list((root / subdir).glob(str)) if x.is_file()])
+    return len([x for x in (root / subdir).glob(pattern) if x.is_file()])
 
 
 def _is_file(root: Path, subdir: str, pattern: str) -> bool:
