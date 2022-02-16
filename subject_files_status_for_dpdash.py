@@ -44,8 +44,11 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['surveys'] = df.p.apply(
         lambda x: (_is_file(x, 'surveys', '*Pronet.json') or
                   _is_file(x, 'surveys', '*.csv')))
-    df['upenn_surveys'] = df.p.apply(
-        lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+    
+    # PennCNB
+    df['cnb'] = df.p.apply(lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+    df['cnb_ss'] = df.p.apply(lambda x: _is_file(x, 'surveys', '*.Run_sheet_PennCNB.csv'))
+    
 
     # eeg
     df['eeg'] = df.p.apply(lambda x: _is_file(x, 'eeg', '*zip'))
