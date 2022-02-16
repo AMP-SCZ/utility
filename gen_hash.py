@@ -4,14 +4,12 @@ from hashlib import sha256
 import sys
 from os.path import abspath
 
-assessment='flowcheck'
-
 with open(abspath(sys.argv[1])) as f:
     ids=f.read().split('\n')
 
-ids= [i for i in ids if i and (i != 'Subject ID,Active,Consent,Study')]
+assessment= sys.argv[2]
 
-print(ids)
+ids= [i for i in ids if i and (i != 'Subject ID,Active,Consent,Study')]
 
 for i in ids:
     e= i.split(',')
