@@ -42,8 +42,8 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
 
     # surveys
     df['surveys'] = df.p.apply(
-        lambda x: _is_file(x, 'surveys', '*Pronet.json') or 
-                  _is_file(x, 'surveys', '*.csv'))
+        lambda x: (_is_file(x, 'surveys', '*Pronet.json') or
+                  _is_file(x, 'surveys', '*.csv')))
     df['upenn_surveys'] = df.p.apply(
         lambda x: _is_file(x, 'surveys', '*UPENN.json'))
 
@@ -56,8 +56,8 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['actigraphy_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'actigraphy'))
 
     # mri
-    df['mri'] = df.p.apply(lambda x: _is_dir(x, 'mri', '*') or
-                                     _is_file(x, 'mri', '*.zip'))
+    df['mri'] = df.p.apply(lambda x: (_is_dir(x, 'mri', '*') or
+                                     _is_file(x, 'mri', '*.zip')))
     df['mri_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'mri'))
 
     # A/V
@@ -115,17 +115,17 @@ def phoenix_files_status(phoenix_dir, out_dir):
 
 def _get_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of files and directories that mattch glob pattern'''
-    return len(list((root / subdir).glob(str)))
+    return len(list((root / subdir).glob(pattern)))
 
 
 def _get_dir_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of directories that mattch glob pattern'''
-    return len([x for x in list((root / subdir).glob(str)) if x.is_dir()])
+    return len([x for x in (root / subdir).glob(pattern) if x.is_dir()])
 
 
 def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
     '''get number of files that mattch glob pattern'''
-    return len([x for x in list((root / subdir).glob(str)) if x.is_file()])
+    return len([x for x in (root / subdir).glob(pattern) if x.is_file()])
 
 
 def _is_file(root: Path, subdir: str, pattern: str) -> bool:
