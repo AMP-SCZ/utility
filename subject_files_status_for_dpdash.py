@@ -153,5 +153,5 @@ def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
 
 if __name__=='__main__':
     phoenix_files_status(pronet_phoenix_dir, pronet_status_dir)
-    # phoenix_files_status(prescient_phoenix_dir, prescient_status_dir)
+    phoenix_files_status(prescient_phoenix_dir, prescient_status_dir)
 
