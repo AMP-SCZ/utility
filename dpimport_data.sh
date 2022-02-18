@@ -7,7 +7,7 @@ then
 fi
 
 # delete old collections
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@`hostname`:27017/dpdata?authSource=admin < /data/predict/utility/remove_collections.js
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@`hostname`:27017/dpdata?authSource=admin < /data/predict/utility/remove_studies.js
 
 # import new collections
 source /opt/dpdash/miniconda3/bin/activate && \
