@@ -44,8 +44,12 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['surveys'] = df.p.apply(
         lambda x: (_is_file(x, 'surveys', '*Pronet.json') or
                   _is_file(x, 'surveys', '*.csv')))
-    df['upenn_surveys'] = df.p.apply(
-        lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+    
+    # PennCNB
+    df['cnb'] = df.p.apply(lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+    df['cnb_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'surveys', 
+        suffix='PennCNB'))
+    
 
     # eeg
     df['eeg'] = df.p.apply(lambda x: _is_file(x, 'eeg', '*zip'))
@@ -138,10 +142,13 @@ def _is_dir(root:Path, subdir: str, pattern: str) -> bool:
     return _get_dir_count(root, subdir, pattern) > 0
 
 
-def _is_scansheet(root:Path, subdir: str) -> bool:
+def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
     '''check if there is a scan sheet for a datatype (subdir)'''
+    if not suffix:
+        suffix= subdir
+
     return _get_count(
-            root, subdir, f'{root.name}.*.Run_sheet_{subdir}.csv') > 0
+            root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv') > 0
 
 
 if __name__=='__main__':
