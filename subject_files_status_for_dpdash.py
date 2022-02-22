@@ -134,12 +134,12 @@ def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
 
 def _is_file(root: Path, subdir: str, pattern: str) -> bool:
     '''check if there is at least one file matching the given pattern'''
-    return _get_file_count(root, subdir, pattern) > 0
+    return min(_get_file_count(root, subdir, pattern),1)
 
 
 def _is_dir(root:Path, subdir: str, pattern: str) -> bool:
     '''check if there is at least one directory matching the pattern'''
-    return _get_dir_count(root, subdir, pattern) > 0
+    return min(_get_dir_count(root, subdir, pattern),1)
 
 
 def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
@@ -147,8 +147,8 @@ def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
     if not suffix:
         suffix= subdir
 
-    return _get_count(
-            root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv') > 0
+    return min(_get_count(
+            root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv'),1)
 
 
 if __name__=='__main__':
