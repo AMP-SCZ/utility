@@ -36,7 +36,8 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     
     df = pd.DataFrame({'p': subject_paths})
     df['subject'] = df.p.apply(lambda x: x.name)
-    df['site'] = df.p.apply(lambda x: x.parent.parent.name)
+    df['site'] = df.p.apply(lambda x: x.parent.parent.name[-2:])
+    df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     df['level0'] = df.p.apply(lambda x: x.parent.parent.parent.name)
     df['level1'] = df.p.apply(lambda x: x.parent.name)
 
@@ -66,7 +67,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
 
     # A/V
     df['interviews'] = df.p.apply(
-        lambda x: _is_file(x, 'interviews', '*.csv'))
+        lambda x: _is_file(x, 'interviews', '*/*.csv'))
     df['interviews_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'interviews'))
 
     # mindlamp
@@ -75,7 +76,6 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['mind_sensor'] = df.p.apply(
         lambda x: _get_count(x, 'phone', '*_sensor_*json'))
     
-    df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     
     return df
     
