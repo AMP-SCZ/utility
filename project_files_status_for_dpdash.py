@@ -24,20 +24,12 @@ for i,f in enumerate(files):
 
     print(f)
 
-    # example file name LA-LA00012-flowcheck-day1to1.csv
-    cases.append(f.split('-')[1])
-
     df= pd.read_csv(f)
     # subjects for which a datatype is nonexistent
     # will get NaN values under datatype column
     # the NaN values convert the whole column to float
     dfnew.loc[i]=df.loc[0]
 
-cases=np.unique(cases)
-L= len(cases)
-
-# populate subject_id column
-dfnew['subject_id']= cases
 
 # deal with the NaN values in three steps
 
@@ -46,7 +38,7 @@ dfnew.fillna(0, inplace=True)
 
 # 2. restore the integers
 dtype= {}
-for d in dfnew.columns.values[4:-3]:
+for d in dfnew.columns.values[7:]:
     dtype[d]= 'short'
 dfnew= dfnew.astype(dtype)
 
@@ -58,7 +50,7 @@ dfnew.sort_values(by='mtime', ascending=False, inplace=True)
 
 # populate day column
 dfnetw= dfnew.copy()
-dfnetw['day']= [i+1 for i in range(L)]
+dfnetw['day']= [i+1 for i in range(dfnew.shape[0])]
 
 outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to9999.csv'
 dfnetw.to_csv(outfile, index=False)
