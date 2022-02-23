@@ -86,21 +86,25 @@ def phoenix_files_status(phoenix_dir, out_dir):
 
     df = get_summary_from_phoenix(phoenix_dir)
 
-    df_pivot = pd.pivot_table(df, index=['subject', 'site', 'mtime'], 
-        columns=['level0', 'level1'], fill_value=False).astype(int)
-
-    for (subject, site, mtime), row in df_pivot.iterrows():
-        df_tmp = row.reset_index()
-        df_tmp.columns = ['datatype', 'level0', 'level1', 'count']
-        df_tmp_pivot = pd.pivot_table(
-                df_tmp, columns=['datatype', 'level0', 'level1']).reset_index()
-        df_tmp_pivot['col'] = df_tmp_pivot['datatype'] + '_' + \
-                              df_tmp_pivot['level1'] + '_' + \
-                              df_tmp_pivot['level0']
-        subject_series_tmp = df_tmp_pivot.set_index('col')[0]
+    dtypes= df.columns[6:].values
+    groups= df.groupby('subject')
+    for subject,group in groups:
+        df_tmp= {}
         
-        subject_series_tmp['mtime']= mtime
-        subject_series_tmp['site']= site[-2:]
+        for d in dtypes:
+            for _,row in group.iterrows():
+                dname= '_'.join([d, row['level1'], row['level0']])
+            
+                df_tmp[dname]= row[d]
+        
+
+        # one subject belongs to only one site
+        # so it is safe to take the first site value as the site of that subject
+        site= group['site'].values[0]
+        df_tmp['site']= site
+        df_tmp['mtime']= group['mtime'].max()
+        
+        subject_series_tmp= pd.DataFrame(df_tmp, index=[0])
         
         # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
         # suggestion from Tashrif to link outputs to DPdash
@@ -111,9 +115,8 @@ def phoenix_files_status(phoenix_dir, out_dir):
             'weekday': ''
         })
         
-        subject_df_tmp = pd.concat(
-            [subject_df_tmp, pd.DataFrame(subject_series_tmp).T], axis=1)
-        out_file = f"{site[-2:]}-{subject}-flowcheck-day1to1.csv"
+        subject_df_tmp = pd.concat([subject_df_tmp, subject_series_tmp], axis=1)
+        out_file = f"{site}-{subject}-flowcheck-day1to1.csv"
         subject_df_tmp.to_csv(out_dir/out_file, index=False)
 
 
