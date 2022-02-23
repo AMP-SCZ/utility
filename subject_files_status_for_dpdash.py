@@ -35,7 +35,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     subject_paths = list(phoenix_dir.glob('*/*/*/*'))
     
     df = pd.DataFrame({'p': subject_paths})
-    df['subject'] = df.p.apply(lambda x: x.name)
+    df['subject_id'] = df.p.apply(lambda x: x.name)
     df['site'] = df.p.apply(lambda x: x.parent.parent.name[-2:])
     df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     df['level0'] = df.p.apply(lambda x: x.parent.parent.parent.name)
@@ -87,9 +87,14 @@ def phoenix_files_status(phoenix_dir, out_dir):
     df = get_summary_from_phoenix(phoenix_dir)
 
     dtypes= df.columns[6:].values
-    groups= df.groupby('subject')
+    groups= df.groupby('subject_id')
     for subject,group in groups:
         df_tmp= {}
+
+        df_tmp['subject_id']= subject
+        site= group['site'].values[0]
+        df_tmp['site']= site
+        df_tmp['mtime']= group['mtime'].max()
         
         for d in dtypes:
             for _,row in group.iterrows():
@@ -100,9 +105,7 @@ def phoenix_files_status(phoenix_dir, out_dir):
 
         # one subject belongs to only one site
         # so it is safe to take the first site value as the site of that subject
-        site= group['site'].values[0]
-        df_tmp['site']= site
-        df_tmp['mtime']= group['mtime'].max()
+
         
         subject_series_tmp= pd.DataFrame(df_tmp, index=[0])
         
