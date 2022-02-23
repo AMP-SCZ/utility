@@ -28,6 +28,9 @@ for i,f in enumerate(files):
     cases.append(f.split('-')[1])
 
     df= pd.read_csv(f)
+    # subjects for which a datatype is nonexistent
+    # will get NaN values under datatype column
+    # the NaN values convert the whole column to float
     dfnew.loc[i]=df.loc[0]
 
 cases=np.unique(cases)
@@ -35,6 +38,20 @@ L= len(cases)
 
 # populate subject_id column
 dfnew['subject_id']= cases
+
+# deal with the NaN values in three steps
+
+# 1. removed the NaN values
+dfnew.fillna(0, inplace=True)
+
+# 2. restore the integers
+dtype= {}
+for d in dfnew.columns.values[4:-3]:
+    dtype[d]= 'short'
+dfnew= dfnew.astype(dtype)
+
+# 3. reset the mandatory columns
+dfnew[['reftime', 'timeofday', 'weekday']]=''
 
 # sort dfnew by mtime
 dfnew.sort_values(by='mtime', ascending=False, inplace=True)
