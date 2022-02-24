@@ -101,12 +101,9 @@ def phoenix_files_status(phoenix_dir, out_dir):
                 dname= '_'.join([d, row['level1'], row['level0']])
             
                 df_tmp[dname]= row[d]
-        
 
         # one subject belongs to only one site
         # so it is safe to take the first site value as the site of that subject
-
-        
         subject_series_tmp= pd.DataFrame(df_tmp, index=[0])
         
         # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
@@ -138,17 +135,17 @@ def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
     return len([x for x in (root / subdir).glob(pattern) if x.is_file()])
 
 
-def _is_file(root: Path, subdir: str, pattern: str) -> bool:
+def _is_file(root: Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one file matching the given pattern'''
     return min(_get_file_count(root, subdir, pattern),1)
 
 
-def _is_dir(root:Path, subdir: str, pattern: str) -> bool:
+def _is_dir(root:Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one directory matching the pattern'''
     return min(_get_dir_count(root, subdir, pattern),1)
 
 
-def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
+def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> int:
     '''check if there is a scan sheet for a datatype (subdir)'''
     if not suffix:
         suffix= subdir
