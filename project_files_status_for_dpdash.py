@@ -11,11 +11,15 @@ COMBINED_SUBJECT=sys.argv[1]
 metadata= sys.argv[2]
 files= sorted(sys.argv[3:])
 
-# read Kevin's dataframe
-df= pd.read_csv(files[0])
+# read subject-level summary
+# generate combined list of datatype
+columns=[]
+for f in files:
+    for c in pd.read_csv(f).columns:
+        if c not in columns:
+            columns.append(c)
 
-# replace day column, append subject_id column
-dfnew= df.copy()
+dfnew= pd.DataFrame(columns=columns)
 
 print('\n\nGenerating network level summary\n')
 
