@@ -37,7 +37,7 @@ for i,f in enumerate(files):
 
 # deal with the NaN values in three steps
 
-# 1. removed the NaN values
+# 1. remove the NaN values
 dfnew.fillna(0, inplace=True)
 
 # 2. restore the integers
