@@ -35,8 +35,9 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     subject_paths = list(phoenix_dir.glob('*/*/*/*'))
     
     df = pd.DataFrame({'p': subject_paths})
-    df['subject'] = df.p.apply(lambda x: x.name)
-    df['site'] = df.p.apply(lambda x: x.parent.parent.name)
+    df['subject_id'] = df.p.apply(lambda x: x.name)
+    df['site'] = df.p.apply(lambda x: x.parent.parent.name[-2:])
+    df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     df['level0'] = df.p.apply(lambda x: x.parent.parent.parent.name)
     df['level1'] = df.p.apply(lambda x: x.parent.name)
 
@@ -66,7 +67,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
 
     # A/V
     df['interviews'] = df.p.apply(
-        lambda x: _is_file(x, 'interviews', '*.csv'))
+        lambda x: _is_file(x, 'interviews', '*/*.csv'))
     df['interviews_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'interviews'))
 
     # mindlamp
@@ -75,7 +76,6 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['mind_sensor'] = df.p.apply(
         lambda x: _get_count(x, 'phone', '*_sensor_*json'))
     
-    df['mtime']= df.p.apply(lambda x: _latest_mtime(x))
     
     return df
     
@@ -86,21 +86,25 @@ def phoenix_files_status(phoenix_dir, out_dir):
 
     df = get_summary_from_phoenix(phoenix_dir)
 
-    df_pivot = pd.pivot_table(df, index=['subject', 'site', 'mtime'], 
-        columns=['level0', 'level1'], fill_value=False).astype(int)
+    dtypes= df.columns[6:].values
+    groups= df.groupby('subject_id')
+    for subject,group in groups:
+        df_tmp= {}
 
-    for (subject, site, mtime), row in df_pivot.iterrows():
-        df_tmp = row.reset_index()
-        df_tmp.columns = ['datatype', 'level0', 'level1', 'count']
-        df_tmp_pivot = pd.pivot_table(
-                df_tmp, columns=['datatype', 'level0', 'level1']).reset_index()
-        df_tmp_pivot['col'] = df_tmp_pivot['datatype'] + '_' + \
-                              df_tmp_pivot['level1'] + '_' + \
-                              df_tmp_pivot['level0']
-        subject_series_tmp = df_tmp_pivot.set_index('col')[0]
+        df_tmp['subject_id']= subject
+        site= group['site'].values[0]
+        df_tmp['site']= site
+        df_tmp['mtime']= group['mtime'].max()
         
-        subject_series_tmp['mtime']= mtime
-        subject_series_tmp['site']= site[-2:]
+        for d in dtypes:
+            for _,row in group.iterrows():
+                dname= '_'.join([d, row['level1'], row['level0']])
+            
+                df_tmp[dname]= row[d]
+
+        # one subject belongs to only one site
+        # so it is safe to take the first site value as the site of that subject
+        subject_series_tmp= pd.DataFrame(df_tmp, index=[0])
         
         # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
         # suggestion from Tashrif to link outputs to DPdash
@@ -111,9 +115,8 @@ def phoenix_files_status(phoenix_dir, out_dir):
             'weekday': ''
         })
         
-        subject_df_tmp = pd.concat(
-            [subject_df_tmp, pd.DataFrame(subject_series_tmp).T], axis=1)
-        out_file = f"{site[-2:]}-{subject}-flowcheck-day1to1.csv"
+        subject_df_tmp = pd.concat([subject_df_tmp, subject_series_tmp], axis=1)
+        out_file = f"{site}-{subject}-flowcheck-day1to1.csv"
         subject_df_tmp.to_csv(out_dir/out_file, index=False)
 
 
@@ -132,23 +135,23 @@ def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
     return len([x for x in (root / subdir).glob(pattern) if x.is_file()])
 
 
-def _is_file(root: Path, subdir: str, pattern: str) -> bool:
+def _is_file(root: Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one file matching the given pattern'''
-    return _get_file_count(root, subdir, pattern) > 0
+    return min(_get_file_count(root, subdir, pattern),1)
 
 
-def _is_dir(root:Path, subdir: str, pattern: str) -> bool:
+def _is_dir(root:Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one directory matching the pattern'''
-    return _get_dir_count(root, subdir, pattern) > 0
+    return min(_get_dir_count(root, subdir, pattern),1)
 
 
-def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> bool:
+def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> int:
     '''check if there is a scan sheet for a datatype (subdir)'''
     if not suffix:
         suffix= subdir
 
-    return _get_count(
-            root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv') > 0
+    return min(_get_count(
+            root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv'),1)
 
 
 if __name__=='__main__':

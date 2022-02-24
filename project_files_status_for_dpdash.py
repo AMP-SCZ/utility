@@ -11,11 +11,15 @@ COMBINED_SUBJECT=sys.argv[1]
 metadata= sys.argv[2]
 files= sorted(sys.argv[3:])
 
-# read Kevin's dataframe
-df= pd.read_csv(files[0])
+# read subject-level summary
+# generate combined list of datatype
+columns=[]
+for f in files:
+    for c in pd.read_csv(f).columns:
+        if c not in columns:
+            columns.append(c)
 
-# replace day column, append subject_id column
-dfnew= df.copy()
+dfnew= pd.DataFrame(columns=columns)
 
 print('\n\nGenerating network level summary\n')
 
@@ -24,24 +28,33 @@ for i,f in enumerate(files):
 
     print(f)
 
-    # example file name LA-LA00012-flowcheck-day1to1.csv
-    cases.append(f.split('-')[1])
-
     df= pd.read_csv(f)
+    # subjects for which a datatype is nonexistent
+    # will get NaN values under datatype column
+    # the NaN values convert the whole column to float
     dfnew.loc[i]=df.loc[0]
 
-cases=np.unique(cases)
-L= len(cases)
 
-# populate subject_id column
-dfnew['subject_id']= cases
+# deal with the NaN values in three steps
+
+# 1. remove the NaN values
+dfnew.fillna(0, inplace=True)
+
+# 2. restore the integers
+dtype= {}
+for d in dfnew.columns.values[7:]:
+    dtype[d]= 'short'
+dfnew= dfnew.astype(dtype)
+
+# 3. reset the mandatory columns
+dfnew[['reftime', 'timeofday', 'weekday']]=''
 
 # sort dfnew by mtime
 dfnew.sort_values(by='mtime', ascending=False, inplace=True)
 
 # populate day column
 dfnetw= dfnew.copy()
-dfnetw['day']= [i+1 for i in range(L)]
+dfnetw['day']= [i+1 for i in range(dfnew.shape[0])]
 
 outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to9999.csv'
 dfnetw.to_csv(outfile, index=False)
