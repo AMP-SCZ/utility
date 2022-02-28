@@ -75,6 +75,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
         lambda x: _get_count(x, 'phone', '*_activity_*json'))
     df['mind_sensor'] = df.p.apply(
         lambda x: _get_count(x, 'phone', '*_sensor_*json'))
+    df['mind_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'phone'))
     
     
     return df
