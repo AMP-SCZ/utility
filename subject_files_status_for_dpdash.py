@@ -66,9 +66,13 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['mri_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'mri'))
 
     # A/V
-    df['interviews'] = df.p.apply(
-        lambda x: _is_file(x, 'interviews', '*/*.csv'))
-    df['interviews_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'interviews'))
+    df['interview_audio'] = df.p.apply(
+        lambda x: _is_file(x, 'interviews', '*/*interviewMonoAudioQC*.csv'))
+    df['interview_video'] = df.p.apply(
+        lambda x: _is_file(x, 'interviews', '*/*interviewMonoVideoQC*.csv'))
+    df['interview_transcript'] = df.p.apply(
+        lambda x: _is_file(x, 'interviews', '*/*interviewRedactedTranscriptQC*.csv'))
+    df['interview_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'interviews'))
 
     # mindlamp
     df['mind_phone'] = df.p.apply(
