@@ -17,3 +17,8 @@ This repository is the storehouse of all DPdash utility scripts. Currently, it c
 * `remove_studies.js`
 
 > mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@\`hostname\`:27017/dpdata?authSource=admin /data/predict/utility/remove_studies.js
+
+
+---
+
+The mechanism for downloading configuration item at server backend is described in [this](https://github.com/AMP-SCZ/dpdash/wiki/Download-configuration) wiki.
