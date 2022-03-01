@@ -19,3 +19,5 @@ mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ss
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
 $scriptDir/_download_config.py $tmpJson $2
 
+rm $tmpJson
+
