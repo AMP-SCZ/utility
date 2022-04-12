@@ -15,3 +15,6 @@ cd /data/predict/kcho/flow_test/Prescient_status && \
 project_files_status_for_dpdash.py PRESCIENT ../files_metadata.csv *-flowcheck-day1to1.csv && \
 chmod g+w *
 
+# export the above csv files to remote MongoDB server
+/data/predict/utility/dpimport_remote_data.sh
+
