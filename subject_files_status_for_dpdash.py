@@ -6,6 +6,7 @@
 from pathlib import Path
 import pandas as pd
 import numpy as np
+import re
 from datetime import time, timedelta, datetime, date
 
 flow_test_root = Path('/data/predict/kcho/flow_test')
@@ -15,9 +16,12 @@ prescient_phoenix_dir = flow_test_root / 'Prescient/PHOENIX'
 pronet_status_dir = flow_test_root/ 'Pronet_status'
 prescient_status_dir = flow_test_root/ 'Prescient_status'
 
+mri_root = flow_test_root / 'MRI_ROOT'
+mri_qqc_root = mri_root / 'derivatives/quick_qc'
+
 
 def _latest_mtime(p: Path) -> str:
-    print('Finding modification time of', p)	
+    print('Finding modification time of', p)
 
     latest = -1
     for file in p.rglob('*'):
@@ -48,7 +52,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     
     # PennCNB
     df['cnb'] = df.p.apply(lambda x: _is_file(x, 'surveys', '*UPENN.json'))
-    df['cnb_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'surveys', 
+    df['cnb_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'surveys',
         suffix='PennCNB'))
     
 
@@ -61,8 +65,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     df['actigraphy_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'actigraphy'))
 
     # mri
-    df['mri'] = df.p.apply(lambda x: (_is_dir(x, 'mri', '*') or
-                                     _is_file(x, 'mri', '*.zip')))
+    df['mri'] = df.p.apply(lambda x: check_mri_and_qqc_result(x))
     df['mri_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'mri'))
 
     # A/V
@@ -84,6 +87,59 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     
     return df
     
+
+def check_mri_and_qqc_result(root: Path) -> int:
+    '''Check if there is MRI data, and if it exist, represent QC results
+
+    Key arguments:
+        root: PHOENIX path of raw subject directory, Path.
+
+    Returns:
+        0: when there is no data, int.
+        1: when there is MRI data, which failed MRI quick QC, int.
+        2: when there is MRI data, which passed MRI quick QC, int.
+        3: there is MRI data, QC not ran yet, int.
+        4: when there is MRI data, which requires manual processing, int.
+
+    '''
+
+    if _is_dir(root, 'mri', '*'):
+        sub_name = [x.name for x in
+                    (root / 'mri').glob('*') if x.is_dir()][0]
+    elif _is_file(root, 'mri', '*.zip'):
+        sub_name = [x.name for x in (root / 'mri').glob('*.zip')][0]
+    else:
+        return 0  # no mri data
+
+    name_sections = sub_name.split('_')
+
+    if len(name_sections) != 6:
+        return 4  # check name of the MRI file or directory
+
+    # load QC result
+    session_name = 'ses-' + ''.join(name_sections[2:]).split('.')[0]
+    qqc_dir = mri_qqc_root / ('sub-'+root.name) /session_name
+    qc_summary = qqc_dir / '00_qc_summary.csv'
+
+    labels_to_check = ['Series count',
+                       'Volume slice number comparison',
+                       'Image orientation in anat',
+                       'Image orientation in others',
+                       'Shim settings',
+                       'Bval comparison']
+
+    if qc_summary.is_file():
+        qc_df = pd.read_csv(qc_summary)
+        qc_df = qc_df[qc_df[qc_df.columns[0]].isin(labels_to_check)]
+        all_pass = (qc_df[qc_df.columns[1]] == 'Pass').all()
+
+        if all_pass:
+            return 2  # green
+        else:
+            return 1  # red
+    else:
+        return 3  # QC not ran yet
+
 
 def phoenix_files_status(phoenix_dir, out_dir):
 
@@ -142,21 +198,29 @@ def _get_file_count(root: Path, subdir: str, pattern: str) -> int:
 
 def _is_file(root: Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one file matching the given pattern'''
-    return min(_get_file_count(root, subdir, pattern),1)
+    return min(_get_file_count(root, subdir, pattern), 1)
 
 
 def _is_dir(root:Path, subdir: str, pattern: str) -> int:
     '''check if there is at least one directory matching the pattern'''
-    return min(_get_dir_count(root, subdir, pattern),1)
+    return min(_get_dir_count(root, subdir, pattern), 1)
 
 
-def _is_scansheet(root:Path, subdir: str, suffix: str= None) -> int:
+def _is_scansheet(root:Path, subdir: str, suffix: str = None) -> int:
     '''check if there is a scan sheet for a datatype (subdir)'''
     if not suffix:
-        suffix= subdir
+        suffix = subdir
 
     return min(_get_count(
             root, subdir, f'{root.name}.*.Run_sheet_{suffix}.csv'),1)
+
+
+# def _read_scansheet_see_if_empty(scan_sheet_loc: Path) -> int:
+    # ss_df = pd.read_csv(scan_sheet_loc)
+    # all_empty = (
+            # (ss_df['field value'].isnull()) | 
+            # (ss_df['field value'] == 0)).all()
+
 
 
 if __name__=='__main__':
