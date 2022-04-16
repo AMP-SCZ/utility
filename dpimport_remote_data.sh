@@ -19,7 +19,7 @@ fi
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin /data/predict/utility/remove_studies.js
 
 # import new collections
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport \
+source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
 
 cd /data/predict/kcho/flow_test/ && \
 
