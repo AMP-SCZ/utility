@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+
 if [[ $# -lt 2 ]]
 then
     echo "Usage: ./download_config.sh config_name /tmp/config_name.json"
@@ -7,15 +9,22 @@ then
     exit 1
 fi
 
-export state=""
-export MONGO_PASS=""
+
+if [ -z $HOST ] || [ -z $PORT ] || [ -z $state ] || [ -z $MONGO_PASS ]
+then
+    echo Define HOST, PORT, state, MONGO_PASS and try again
+    exit 1
+fi
+
+
 export GODEBUG=x509ignoreCN=0
+
 
 tmpJson=/tmp/config_`pgrep -f $0`.json
 scriptDir=`dirname $0`
 
 # export from mongodb
-mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@`hostname`:27017/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson && \
+mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson && \
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
 $scriptDir/_download_config.py $tmpJson $2
 
