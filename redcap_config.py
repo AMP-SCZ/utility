@@ -1,4 +1,0 @@
-config = dict(
-    api_token       = '123456',
-    api_url         = 'https://redcap.partners.org/redcap/api/'
-)
