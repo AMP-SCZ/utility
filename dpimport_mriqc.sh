@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
 
-# do not change the base name
+# do not change the base name:
 # mriqc-combined-mriqc-day1to9999.csv
-# base hash
+# base hash:
 # 8d051eccc2a98eb4303bc62316124890ed47810c61ccde18b9d772e3ac379543
-
-# dpstage.dipr
-HOST=
-PORT=
-state=
-MONGO_PASS=
-CONFIG=
 
 export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
