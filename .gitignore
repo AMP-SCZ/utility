@@ -1,3 +1,6 @@
 *.pyc
 __pycache__/
 redcap_config.py
+.vault/
+bsub/
+bak/
