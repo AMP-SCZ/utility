@@ -16,5 +16,7 @@ project_files_status_for_dpdash.py PRESCIENT ../files_metadata.csv *-flowcheck-d
 chmod g+w *
 
 # export the above csv files to remote MongoDB server
-/data/predict/utility/dpimport_remote_data.sh
+cd /data/predict/utility
+source .vault/.env.dpstage && ./dpimport_remote_data.sh
+source .vault/.env.rc-predict && ./dpimport_remote_data.sh
 
