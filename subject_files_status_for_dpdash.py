@@ -212,7 +212,7 @@ def _is_scansheet(root:Path, subdir: str, suffix: str = None) -> int:
         suffix = subdir
 
     return min(_get_count(
-            root, subdir, f'{root.name}.*.Run_sheet_{suffix}*.csv'),1)
+            root, subdir, f'{root.name}.*.Run_sheet_{suffix}_*.csv'),1)
 
 
 # def _read_scansheet_see_if_empty(scan_sheet_loc: Path) -> int:
