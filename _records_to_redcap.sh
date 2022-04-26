@@ -14,5 +14,6 @@ cd $redcap_phoenix
 find . -name *Pronet.json > $redcap_records
 N=`cat $redcap_records | wc -l`
 
+source /etc/profile
 bsub -J "redcap-import[1-$N]%12" < /data/predict/utility/records_to_redcap.lsf
 
