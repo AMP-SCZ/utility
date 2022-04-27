@@ -18,14 +18,14 @@ mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/
 # import new collections
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
 
-cd /data/predict/kcho/flow_test/ && \
+cd /data/predict/kcho/flow_test/
 
 # metadata
-import.py -c /data/predict/dpimport/examples/$CONFIG files_metadata.csv && \
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*_metadata.csv" && \
+import.py -c /data/predict/dpimport/examples/$CONFIG files_metadata.csv
+import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*_metadata.csv"
 
 # project level files status
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/files-*-flowcheck-day1to9999.csv" && \
+import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/files-*-flowcheck-day1to9999.csv"
 
 # subject level files status
 import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*-flowcheck-day1to1.csv"
