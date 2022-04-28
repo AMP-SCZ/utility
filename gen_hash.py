@@ -4,6 +4,16 @@ from hashlib import sha256
 import sys
 from os.path import abspath
 
+
+if len(sys.argv)<3:
+    print(f"""Usage:
+{__file__} STUDY_metadata.csv assessment
+STUDY_metadata.csv must contain columns:
+    Subject ID,Active,Consent,Study
+
+Example assessment names: flowcheck, interviewsMonoAudioQC, mriqc""")
+    exit()
+
 with open(abspath(sys.argv[1])) as f:
     ids=f.read().split('\n')
 
