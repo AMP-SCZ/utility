@@ -215,14 +215,6 @@ def _is_scansheet(root:Path, subdir: str, suffix: str = None) -> int:
             root, subdir, f'{root.name}.*.Run_sheet_{suffix}_*.csv'),1)
 
 
-# def _read_scansheet_see_if_empty(scan_sheet_loc: Path) -> int:
-    # ss_df = pd.read_csv(scan_sheet_loc)
-    # all_empty = (
-            # (ss_df['field value'].isnull()) | 
-            # (ss_df['field value'] == 0)).all()
-
-
-
 if __name__=='__main__':
     phoenix_files_status(pronet_phoenix_dir, pronet_status_dir)
     phoenix_files_status(prescient_phoenix_dir, prescient_status_dir)
