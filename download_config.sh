@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+export PATH=/data/predict/mongodb-database-tools-rhel70-x86_64-100.5.2/bin:$PATH
 
 if [[ $# -lt 2 ]]
 then
@@ -26,6 +26,7 @@ scriptDir=`dirname $0`
 # export from mongodb
 mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson && \
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
+source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport && \
 $scriptDir/_download_config.py $tmpJson $2
 
 rm $tmpJson
