@@ -24,7 +24,7 @@ tmpJson=/tmp/config_`pgrep -f $0`.json
 scriptDir=`dirname $0`
 
 # export from mongodb
-mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson && \
+mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport && \
 $scriptDir/_download_config.py $tmpJson $2
