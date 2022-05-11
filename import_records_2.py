@@ -6,25 +6,22 @@ import requests
 import sys
 import json
 from tempfile import NamedTemporaryFile
-from os import remove, stat
+from os import remove, stat, getcwd, chdir
 from os.path import isfile, abspath, basename, dirname, join as pjoin
 from numpy import save, load
 from hashlib import md5
-
+from glob import glob
 
 if len(sys.argv)!=2 or sys.argv[1] in ['-h','--help']:
     print('''Usage: /path/to/import_records.py CA00007.json''')
     exit(0)
 
 
-import os
-dirbak= os.getcwd()
-# os.chdir('/data/predict/utility/yale_nh')
-dfdict= pd.read_csv('AMPSCZFormRepository_DataDictionary_2022-05-10.csv')
-dfevent= pd.read_csv('AMPSCZFormRepository_InstrumentDesignations_2022-05-10.csv')
-#dfdict= pd.read_csv('yale_nh_data_dict.csv')
-#dfevent= pd.read_csv('yale_nh_inst_event.csv')
-os.chdir(dirbak)
+dirbak= getcwd()
+os.chdir(abspath(sys.argv[2])
+dfdict= pd.read_csv(glob('*_DataDictionary_*')[0])
+dfevent= pd.read_csv(glob('*_InstrumentDesignations_*')[0])
+chdir(dirbak)
 
 
 forms_group= dfdict.groupby('Form Name')
@@ -47,6 +44,8 @@ for visit in data:
     }
     
     
+    print(redcap_event_name)
+
     for form in events_group.get_group(redcap_event_name)['form']:
         
         empty=True
@@ -61,22 +60,24 @@ for visit in data:
             except:
                 pass
         
+        
+        completion= f'{form}_complete'
         # bypass empty forms
         # essential for showing blank circles in REDCap record status dashboard
-        if empty:
+        print(visit[completion])
+        if empty and visit[completion]=='':
             continue
 
-        print(form)
-        print('')
+        print('\t',form)
 
-        completion= f'{form}_complete'
         data1.update(data_form)
         data1[completion]= visit[completion]
         
-    
-    
+        
     data2.append(data1)
 
+    print('')
+    
 
 # for debugging, shift the entire following block by one tab
 
