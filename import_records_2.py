@@ -17,10 +17,17 @@ if len(sys.argv)!=2 or sys.argv[1] in ['-h','--help']:
     exit(0)
 
 
+import os
+dirbak= os.getcwd()
+# os.chdir('/data/predict/utility/yale_nh')
 dfdict= pd.read_csv('AMPSCZFormRepository_DataDictionary_2022-05-10.csv')
-forms_group= dfdict.groupby('Form Name')
-
 dfevent= pd.read_csv('AMPSCZFormRepository_InstrumentDesignations_2022-05-10.csv')
+#dfdict= pd.read_csv('yale_nh_data_dict.csv')
+#dfevent= pd.read_csv('yale_nh_inst_event.csv')
+os.chdir(dirbak)
+
+
+forms_group= dfdict.groupby('Form Name')
 events_group= dfevent.groupby('unique_event_name')
 
 
@@ -40,24 +47,38 @@ for visit in data:
     }
     
     
-    vars=[]
+    # vars=[]
     for form in events_group.get_group(redcap_event_name)['form']:
+        empty=True
+        data_form={}
         for v in forms_group.get_group(form)['Variable / Field Name']:
-            vars.append(v)
+            # try/except block for bypassing nonexistent vars in JSON
+            # also for bypassing empty forms
+            try:
+                if visit[v]:
+                    empty=False
+                    data_form[v]= visit[v]
+            except:
+                pass
+            # vars.append(v)
+        if empty:
+            continue
+
         print(form)
         print('')
 
         completion= f'{form}_complete'
+        data1.update(data_form)
         data1[completion]= visit[completion]
         
     
     # join the following for to above
-    for key in vars:
-        try:
-            data1[key]= visit[key]
-        except:
-            pass
-            # print(f'form: {form}, var: {key}')
+    # for key in vars:
+    #     try:
+    #         data1[key]= visit[key]
+    #     except:
+    #         pass
+    #         # print(f'form: {form}, var: {key}')
     
     
     data2.append(data1)
