@@ -12,13 +12,13 @@ from numpy import save, load
 from hashlib import md5
 from glob import glob
 
-if len(sys.argv)!=2 or sys.argv[1] in ['-h','--help']:
-    print('''Usage: /path/to/import_records.py CA00007.json''')
+if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+    print('''Usage: /path/to/import_records.py CA00007.json forms-dir API_TOKEN''')
     exit(0)
 
 
 dirbak= getcwd()
-os.chdir(abspath(sys.argv[2])
+chdir(abspath(sys.argv[2]))
 dfdict= pd.read_csv(glob('*_DataDictionary_*')[0])
 dfevent= pd.read_csv(glob('*_InstrumentDesignations_*')[0])
 chdir(dirbak)
@@ -64,7 +64,6 @@ for visit in data:
         completion= f'{form}_complete'
         # bypass empty forms
         # essential for showing blank circles in REDCap record status dashboard
-        print(visit[completion])
         if empty and visit[completion]=='':
             continue
 
@@ -93,7 +92,7 @@ remove(fw.name)
 
 
 fields = {
-    'token': config['api_token'],
+    'token': sys.argv[3],
     'content': 'record',
     'action': 'import',
     'format': 'json',
