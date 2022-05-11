@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 
 import pandas as pd
+from redcap_config import config
+import requests
+import sys
 import json
 from tempfile import NamedTemporaryFile
-from os import remove
-import requests
-from redcap_config import config
+from os import remove, stat
+from os.path import isfile, abspath, basename, dirname, join as pjoin
+from numpy import save, load
+from hashlib import md5
+
+
+if len(sys.argv)!=2 or sys.argv[1] in ['-h','--help']:
+    print('''Usage: /path/to/import_records.py CA00007.json''')
+    exit(0)
+
 
 dfdict= pd.read_csv('AMPSCZFormRepository_DataDictionary_2022-05-10.csv')
 forms_group= dfdict.groupby('Form Name')
@@ -14,7 +24,7 @@ dfevent= pd.read_csv('AMPSCZFormRepository_InstrumentDesignations_2022-05-10.csv
 events_group= dfevent.groupby('unique_event_name')
 
 
-with open('/data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED/PronetYA/raw/YA00037/surveys/YA00037.Pronet.json') as f:
+with open(sys.argv[1]) as f:
     data= json.load(f)
 
 
