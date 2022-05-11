@@ -47,8 +47,8 @@ for visit in data:
     }
     
     
-    # vars=[]
     for form in events_group.get_group(redcap_event_name)['form']:
+        
         empty=True
         data_form={}
         for v in forms_group.get_group(form)['Variable / Field Name']:
@@ -60,7 +60,9 @@ for visit in data:
                     data_form[v]= visit[v]
             except:
                 pass
-            # vars.append(v)
+        
+        # bypass empty forms
+        # essential for showing blank circles in REDCap record status dashboard
         if empty:
             continue
 
@@ -71,14 +73,6 @@ for visit in data:
         data1.update(data_form)
         data1[completion]= visit[completion]
         
-    
-    # join the following for to above
-    # for key in vars:
-    #     try:
-    #         data1[key]= visit[key]
-    #     except:
-    #         pass
-    #         # print(f'form: {form}, var: {key}')
     
     
     data2.append(data1)
