@@ -64,8 +64,13 @@ for visit in data:
         completion= f'{form}_complete'
         # bypass empty forms
         # essential for showing blank circles in REDCap record status dashboard
-        if empty and visit[completion]=='':
+        if empty and visit[completion]=='0':
             continue
+        # calculated fields may still pose a form as non-empty
+        # see how REDCap circles are colored
+        # https://user-images.githubusercontent.com/35086881/168111407-d99c0a49-d33c-4cd9-9530-79f0debd9690.png
+        
+
 
         print('\t',form)
 
