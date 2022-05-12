@@ -15,5 +15,7 @@ find . -name *Pronet.json > $redcap_records
 N=`cat $redcap_records | wc -l`
 
 source /etc/profile
+# prevent getting thousand emails
+# export LSB_JOB_REPORT_MAIL=N
 bsub -J "redcap-import[1-$N]%12" < /data/predict/utility/records_to_redcap.lsf
 
