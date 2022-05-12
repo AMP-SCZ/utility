@@ -1,24 +1,22 @@
 #!/usr/bin/env python
 
-from redcap_config import config
-import requests
+import requests, sys
 from glob import glob
 from os import getenv
-from os.path import basename, join as pjoin
+from os.path import abspath, basename, join as pjoin
+
+if len(sys.argv)==1 or sys.argv[1] in ['-h','--help']:
+    print('''Usage: /path/to/delete_records.py /path/to/PHOENIX/PROTECTED API_TOKEN''')
+    exit(0)
+
+dirs= glob(pjoin(abspath(sys.argv[1]),'*/*/*'))
 
 data = {
-    'token': config['api_token'],
+    'token': sys.argv[2],
     'action': 'delete',
     'content': 'record',
     'returnFormat': 'json'
 }
-
-redcap_phoenix= getenv('redcap_phoenix')
-if redcap_phoenix:
-    dirs= glob(pjoin(redcap_phoenix,'*/*/*'))
-else:
-    print("\"export redcap_phoenix=/path/to/PHOENIX/PROTECTED\", and try again")
-    exit()
 
 cases= [basename(d) for d in dirs]
 
