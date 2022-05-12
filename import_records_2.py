@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import pandas as pd
-from redcap_config import config
 import requests
 import sys
 import json
@@ -141,7 +140,7 @@ fields = {
     'returnFormat': 'json'
 }
 
-r = requests.post(config['api_url'], data= fields)
+r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
 print('HTTP Status: ' + str(r.status_code))
 print(r.json())
 
