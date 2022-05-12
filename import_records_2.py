@@ -13,7 +13,8 @@ from hashlib import md5
 from glob import glob
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print('''Usage: /path/to/import_records.py CA00007.json forms-dir API_TOKEN''')
+    print('Usage: /path/to/import_records.py CA00007.json forms-dir API_TOKEN\n'
+        'forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files')
     exit(0)
 
 
