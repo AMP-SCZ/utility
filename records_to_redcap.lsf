@@ -11,5 +11,8 @@ cd ${redcap_phoenix}
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
 ls -la $i
-/data/predict/utility/import_records.py $i
+# /data/predict/utility/import_records_all.py $i /data/predict/utility/yale-nh $API_TOKEN
+# /data/predict/utility/import_records_all.py $i /data/predict/utility/amp-scz-form $API_TOKEN
+# /data/predict/utility/import_records_all.py $i /data/predict/utility/yale-ii $API_TOKEN
+
 
