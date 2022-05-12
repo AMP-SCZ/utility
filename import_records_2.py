@@ -51,7 +51,7 @@ else:
 
 
 dirbak= getcwd()
-chdir(abspath(sys.argv[2]))
+chdir(sys.argv[2])
 dfdict= pd.read_csv(glob('*_DataDictionary_*')[0])
 dfevent= pd.read_csv(glob('*_InstrumentDesignations_*')[0])
 chdir(dirbak)
