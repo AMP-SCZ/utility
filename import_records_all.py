@@ -135,7 +135,7 @@ fields = {
     'format': 'json',
     'type': 'flat',
     'data': data2,
-    'overwriteBehavior': 'overwrite',
+    'overwriteBehavior': 'normal',
     'returnContent': 'count',
     'returnFormat': 'json'
 }
