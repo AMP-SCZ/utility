@@ -3,9 +3,9 @@
 export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 
-if [ -z $HOST ] || [ -z $PORT ] || [ -z $state ] || [ -z $MONGO_PASS ] || [ -z $CONFIG ]
+if [ -z $HOST ] || [ -z $PORT ] || [ -z $state ] || [ -z $MONGO_PASS ] || [ -z $CONFIG ] || [ -z $NDA_ROOT ]
 then
-    echo Define HOST, PORT, state, MONGO_PASS, CONFIG and try again
+    echo Define HOST, PORT, state, MONGO_PASS, CONFIG, NDA_ROOT and try again
     exit 1
 fi
 
@@ -18,7 +18,7 @@ mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/
 # import new collections
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
 
-cd /data/predict/kcho/flow_test/
+cd $NDA_ROOT
 
 # metadata
 import.py -c /data/predict/dpimport/examples/$CONFIG files_metadata.csv
