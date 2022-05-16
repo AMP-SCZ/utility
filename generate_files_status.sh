@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
 export PATH=/data/predict/utility/:$PATH
-NDA_ROOT=$1
+if [ -z $1 ] || [ ! -d $1 ]
+then
+    echo "./generate_file_status.sh /path/to/nda_root/"
+    echo "Provide /path/to/nda_root/ and try again"
+    exit
+else
+    export NDA_ROOT=$1
+fi
+
 
 rm ${NDA_ROOT}/files_metadata.csv
 
@@ -19,5 +27,5 @@ chmod g+w *
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
 # source .vault/.env.dpstage && ./dpimport_remote_data.sh
-# source .vault/.env.rc-predict && ./dpimport_remote_data.sh
+source .vault/.env.rc-predict && ./dpimport_remote_data.sh
 
