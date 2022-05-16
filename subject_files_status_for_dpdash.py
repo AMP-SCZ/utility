@@ -9,7 +9,8 @@ import numpy as np
 import re
 from datetime import time, timedelta, datetime, date
 
-flow_test_root = Path('/data/predict/kcho/flow_test')
+# sys.arv[1] is the NDA_ROOT folder
+flow_test_root = Path(sys.argv[1])
 pronet_phoenix_dir = flow_test_root / 'Pronet/PHOENIX'
 prescient_phoenix_dir = flow_test_root / 'Prescient/PHOENIX'
 
