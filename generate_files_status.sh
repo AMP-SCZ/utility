@@ -3,8 +3,12 @@
 export PATH=/data/predict/utility/:$PATH
 if [ -z $1 ] || [ ! -d $1 ]
 then
-    echo "./generate_file_status.sh /path/to/nda_root/"
-    echo "Provide /path/to/nda_root/ and try again"
+    echo """./generate_file_status.sh /path/to/nda_root/ VM
+Provide /path/to/nda_root/ and VM
+VM name examples:
+    dpstage for dpstage.dipr.partners.org
+    rc-predict for rc-predict.bwh.harvard.edu
+    It is the first part of the server name."""
     exit
 else
     export NDA_ROOT=$1
@@ -27,5 +31,6 @@ chmod g+w *
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
 # source .vault/.env.dpstage && ./dpimport_remote_data.sh
-source .vault/.env.rc-predict && ./dpimport_remote_data.sh
+# source .vault/.env.rc-predict && ./dpimport_remote_data.sh
+source .vault/.env.${2} && ./dpimport_remote_data.sh
 
