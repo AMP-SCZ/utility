@@ -79,7 +79,7 @@ for visit in data:
     print(redcap_event_name)
 
     for form in events_group.get_group(redcap_event_name)['form']:
-        
+
         empty=True
         data_form={}
         for v in forms_group.get_group(form)['Variable / Field Name']:
@@ -87,7 +87,10 @@ for visit in data:
             # also for bypassing empty forms
             try:
                 if visit[v]:
-                    empty=False
+                    # leave checkbox variables out of consideration
+                    # to decide whether a form is empty
+                    if '___' not in v:
+                        empty=False
                     data_form[v]= visit[v]
             except:
                 pass
@@ -135,7 +138,7 @@ fields = {
     'format': 'json',
     'type': 'flat',
     'data': data2,
-    'overwriteBehavior': 'overwrite',
+    'overwriteBehavior': 'normal',
     'returnContent': 'count',
     'returnFormat': 'json'
 }
