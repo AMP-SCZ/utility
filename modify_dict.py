@@ -31,5 +31,5 @@ for _,row in checkbox_group.iterrows():
 
 
 outfile= infile.split('.csv')[0]+'_checkbox'+'.csv'
-df1.to_csv(outfile)
+df1.to_csv(outfile, index=False)
 
