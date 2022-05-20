@@ -35,7 +35,7 @@ echo ''
 
 # import new data
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
-# cd /data/predict/kcho/flow_test/Pronet/
+# cd /data/predict/kcho/flow_test/
 cd ${NDA_ROOT}
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/open/avlqc-*.csv"
 
