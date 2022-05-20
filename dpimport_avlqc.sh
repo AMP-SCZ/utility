@@ -43,7 +43,7 @@ import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/proces
 # generate and import metadata
 meta=avlqc_metadata.csv
 echo 'Subject ID','Active','Consent','Study' > $meta
-for i in `ls -d */*/*/`
+for i in `ls -d */PHOENIX/GENERAL/*/*/*/`
 do
     echo `basename $i`,1,-,avlqc >> $meta
 done
