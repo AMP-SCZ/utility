@@ -11,6 +11,7 @@ from os.path import isfile, abspath, basename, dirname, join as pjoin
 from numpy import save, load
 from hashlib import md5
 from glob import glob
+import re
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -38,7 +39,7 @@ def _visit_to_event(chr_hc, form, visit_num):
     pass
     
     prefix= rpmsTime_to_redcapTime[visit_num]
-    events= _dfevent.loc[chr_hc, form]
+    events= _dfevent.loc[(chr_hc, form)]['unique_event_name'].values
     for e in events:
         if prefix in e:
            redcap_event_name= e
@@ -90,7 +91,7 @@ dirbak= getcwd()
 chdir(sys.argv[2])
 dfdict= pd.read_csv(glob('*_DataDictionary_*')[0])
 dfevent= pd.read_csv(glob('*_InstrumentDesignations_*')[0])
-_dfevent= dfevent.set_index(['arm_num', 'form'])
+_dfevent= dfevent.set_index(['arm_num', 'form']).sort_index()
 chdir(dirbak)
 
 
@@ -105,14 +106,14 @@ if not isfile(incl_excl):
     raise FileNotFoundError(f'Cannot determine redcap_event_name w/o {incl_excl} file')
 
 df= pd.read_csv(incl_excl)
-chr_hc= df['chrcrit_part']
+chr_hc= int(df['chrcrit_part'])
 
 suffix= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
-data= df.read_csv(sys.argv[1])
+data= pd.read_csv(sys.argv[1])
 
 data2= []
-for visit in data.iterrows():
+for _,visit in data.iterrows():
     # data2= []
     
     redcap_event_name= _visit_to_event(chr_hc, suffix, visit['visit'])
@@ -167,7 +168,7 @@ json.dump(data2,fw)
 fw.close()
 
 with open(fw.name) as f:
-    data2= f.read()    
+    data2= f.read()
 
 remove(fw.name)
 
