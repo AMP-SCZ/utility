@@ -132,9 +132,10 @@ for _,visit in data.iterrows():
         # also for bypassing empty forms
         try:
             # consider non-empty only
-            if not (visit[v] is np.nan \
-                or visit[v]=='' or visit[v]=='nan' \
-                or visit[v]=='NaN' or visit[v]=='None'):
+            if not (visit[v] is np.nan or pd.isna(visit[v])
+                or visit[v]=='' or visit[v]=='nan'
+                or visit[v]=='NaN' or visit[v]=='None'
+                or visit[v]=='-'):
 
                 # leave checkbox variables out of consideration
                 # to decide whether a form is empty
