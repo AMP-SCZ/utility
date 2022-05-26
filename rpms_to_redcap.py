@@ -29,8 +29,8 @@ rpmsTime_to_redcapTime= {
     12: 'month_10',
     13: 'month_11',
     14: 'month_12',
-    15: 'month_13',
-    16: 'month_14',
+    15: 'month_18',
+    16: 'month_24',
     98: 'conversion',
     99: 'floating'
 }
