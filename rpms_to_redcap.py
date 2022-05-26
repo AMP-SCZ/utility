@@ -12,6 +12,7 @@ from numpy import save, load
 from hashlib import md5
 from glob import glob
 import re
+import numpy as np
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -101,22 +102,20 @@ events_group= dfevent.groupby('unique_event_name')
 
 subjectkey= sys.argv[1].split('_')[0]
 incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
-# incl_excl= subjectkey+ '_InclusionExclusionCriteriaReview.csv'
 if not isfile(incl_excl):
     raise FileNotFoundError(f'Cannot determine redcap_event_name w/o {incl_excl} file')
 
 df= pd.read_csv(incl_excl)
 chr_hc= int(df['chrcrit_part'])
 
-suffix= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
+form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
 data= pd.read_csv(sys.argv[1])
 
 data2= []
 for _,visit in data.iterrows():
-    # data2= []
     
-    redcap_event_name= _visit_to_event(chr_hc, suffix, visit['visit'])
+    redcap_event_name= _visit_to_event(chr_hc, form, visit['visit'])
     
     data1={
         'chric_record_id': visit['subjectkey'],
@@ -126,37 +125,57 @@ for _,visit in data.iterrows():
     
     print(redcap_event_name)
 
-    for form in events_group.get_group(redcap_event_name)['form']:
+    empty=True
+    data_form={}
+    for v in forms_group.get_group(form)['Variable / Field Name']:
+        # try/except block for bypassing nonexistent vars in JSON
+        # also for bypassing empty forms
+        try:
+            # consider non-empty only
+            if not (visit[v] is np.nan \
+                or visit[v]=='' or visit[v]=='nan' \
+                or visit[v]=='NaN' or visit[v]=='None'):
 
-        empty=True
-        data_form={}
-        for v in forms_group.get_group(form)['Variable / Field Name']:
-            # try/except block for bypassing nonexistent vars in JSON
-            # also for bypassing empty forms
-            try:
-                if visit[v]:
-                    # leave checkbox variables out of consideration
-                    # to decide whether a form is empty
-                    if '___' not in v:
-                        empty=False
-                    data_form[v]= visit[v]
-            except:
-                pass
-        
+                # leave checkbox variables out of consideration
+                # to decide whether a form is empty
+                if '___' not in v:
+                    empty=False
 
-        # bypass empty forms
-        # essential for showing blank circles in REDCap record status dashboard
-        if empty:
-            continue
+                # number
+                try:
+                    residue= int(visit[v])-visit[v]
+                    if residue:
+                        # float
+                        value= str(visit[v])
+                    else:
+                        # int
+                        value= str(int(visit[v]))
 
+                # date, string
+                except ValueError:
+                    if '_date' in v:
+                        # date, convert d/m/y to y/m/d
+                        value= f'{visit[v][6:10]}-{visit[v][3:5]}-{visit[v][0:2]}'
+                    else:
+                        # string
+                        value= visit[v]
 
-        print('\t',form)
+                data_form[v]= value
+        except KeyError:
+            pass
+    
 
-        data1.update(data_form)
+    print('\t',form)
+    # bypass empty forms
+    # essential for showing blank circles in REDCap record status dashboard
+    if empty:
+        continue
+
+    data1.update(data_form)
         
         
     data2.append(data1)
-
+    print(data2)
     print('')
     
 
