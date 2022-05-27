@@ -150,11 +150,16 @@ for _,visit in data.iterrows():
                         value= str(visit[v])
                     else:
                         # int
-                        value= str(int(visit[v]))
+                        value= int(visit[v])
+
+                        # _missing variables
+                        # REDCap coded as just 1, RPMS coded as 0 or 1
+                        if v.endswith('_missing') and value==0:
+                            value= ''
 
                 # date, string
                 except ValueError:
-                    if '_date' in v:
+                    if 'date' in v:
                         # date, convert d/m/y to y/m/d
                         value= f'{visit[v][6:10]}-{visit[v][3:5]}-{visit[v][0:2]}'
                     else:
