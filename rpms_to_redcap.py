@@ -13,6 +13,7 @@ from hashlib import md5
 from glob import glob
 import re
 import numpy as np
+from datetime import datetime
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -127,7 +128,8 @@ for _,visit in data.iterrows():
 
     empty=True
     data_form={}
-    for v in forms_group.get_group(form)['Variable / Field Name']:
+    for _,row in forms_group.get_group(form).iterrows():
+        v= row['Variable / Field Name']
         # try/except block for bypassing nonexistent vars in JSON
         # also for bypassing empty forms
         try:
@@ -159,9 +161,13 @@ for _,visit in data.iterrows():
 
                 # date, string
                 except ValueError:
-                    if 'date' in v:
-                        # date, convert d/m/y to y/m/d
-                        value= f'{visit[v][6:10]}-{visit[v][3:5]}-{visit[v][0:2]}'
+                    dtype= row['Text Validation Type OR Show Slider Number']
+                    if dtype=='date_ymd':
+                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+                    elif dtype=='datetime_ymd':
+                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d %H:%M')
+                    elif dtype=='time':
+                        value= visit[v][:5]
                     else:
                         # string
                         value= visit[v]
