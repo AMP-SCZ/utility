@@ -149,7 +149,7 @@ for _,visit in data.iterrows():
                     residue= int(visit[v])-visit[v]
                     if residue:
                         # float
-                        value= str(visit[v])
+                        value= visit[v]
                     else:
                         # int
                         value= int(visit[v])
@@ -158,6 +158,8 @@ for _,visit in data.iterrows():
                         # REDCap coded as just 1, RPMS coded as 0 or 1
                         if v.endswith('_missing') and value==0:
                             value= ''
+                            
+                    value= str(visit[v])
 
                 # date, string
                 except ValueError:
