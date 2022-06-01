@@ -159,7 +159,7 @@ for _,visit in data.iterrows():
                         if v.endswith('_missing') and value==0:
                             value= ''
                             
-                    value= str(visit[v])
+                    value= str(value)
 
                 # date, string
                 except ValueError:
