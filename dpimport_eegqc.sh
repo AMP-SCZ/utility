@@ -36,30 +36,35 @@ echo ''
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
 
 pushd .
+
 cd $NDA_ROOT
 FEATURE_DIR=${NDA_ROOT}/EEGqc_features
 rm -f ${FEATURE_DIR}/*-day1to9999.csv
 out_template=${FEATURE_DIR}/AMPSCZ-SITE-EEGqc-day1to9999.csv
 
-cd /data/predict/kcho/flow_test/spero/Pronet
+cd ${NDA_ROOT}/Pronet
 /data/predict/utility/feature_combiner.py $out_template
-cd /data/predict/kcho/flow_test/spero/Prescient
+cd ${NDA_ROOT}/Prescient
 /data/predict/utility/feature_combiner.py $out_template
 
-for net in Pronet PRESCIENT
+cd ${NDA_ROOT}
+for net in Pronet Prescient
 do
     echo Combining $net features
     for d in `ls -d $net/PHOENIX/PROTECTED/${net}*`
     do
         echo Combining $d features
+        pushd . > /dev/null
         cd $d
         /data/predict/utility/feature_combiner.py $out_template
+        popd > /dev/null
     done
 done
-popd
 
 exit
 cd $FEATURE_DIR
 import.py -c /data/predict/dpimport/examples/$CONFIG "*.csv"
+
+popd
 
 
