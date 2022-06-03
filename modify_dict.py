@@ -4,7 +4,7 @@ import pandas as pd
 from os.path import abspath
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print(f'''Usage: /path/to/{__file__} AMPSCZFormRepository_DataDictionary_*.csv''')
+    print(f'''Usage: {__file__} AMPSCZFormRepository_DataDictionary_*.csv''')
     exit(0)
 
 infile= abspath(sys.argv[1])
