@@ -5,7 +5,7 @@ import json
 import sys
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print(f'''Usage: {__file__} /path/to/AMPSCZ-SITE-assessment-day1to9999.csv
+    print(f'''Usage: {__file__} /path/to/sample-config.json col1 col2 col3 ...
 Define one item in https://predict.bwh.harvard.edu/dpdash/u/configure web interface, 
 download that config, update it with all items from -day1to1.csv files''')
     exit(0)
@@ -23,8 +23,8 @@ for col in cols:
     template2['label']=col
     dict1['config'].append(template2)
 
-dict1['name']=dict1['name']+'-2'
+dict1['name']=dict1['name']+'_copy'
 
-with open(in_json.split('.json')[0]+'-2.json','w') as f:
+with open(in_json.split('.json')[0]+'_copy.json','w') as f:
     json.dump(dict1,f,indent=3)
     
