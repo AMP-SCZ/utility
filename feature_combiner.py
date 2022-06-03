@@ -42,7 +42,7 @@ else:
     site=curr_dir[-2:]
 
 outfile=sys.argv[1].replace('SITE',site)
-print('Generating {abspath(outfile)}')
+print(f'Generating {abspath(outfile)}')
 
 df1.to_csv(outfile, index=False)
 
