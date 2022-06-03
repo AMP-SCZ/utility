@@ -137,7 +137,7 @@ for _,visit in data.iterrows():
             if not (visit[v] is np.nan or pd.isna(visit[v])
                 or visit[v]=='' or visit[v]=='nan'
                 or visit[v]=='NaN' or visit[v]=='None'
-                or visit[v]=='-'):
+                or visit[v]=='-' or visit[v]=='na'):
 
                 # leave checkbox variables out of consideration
                 # to decide whether a form is empty
@@ -154,10 +154,13 @@ for _,visit in data.iterrows():
                         # int
                         value= int(visit[v])
 
-                        # _missing variables
-                        # REDCap coded as just 1, RPMS coded as 0 or 1
-                        if v.endswith('_missing') and value==0:
-                            value= ''
+                        # RPMS yields 0 for unchecked-single-choice radio variables
+                        # but REDCap only accepts '' for such
+                        # e.g. _missing variables
+                        # REDCap coded as 1 or '', RPMS coded as 1 or 0
+                        if value==0 and row['Field Type']=='radio' and \
+                            len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
+                            value=''
                             
                     value= str(value)
 
@@ -165,7 +168,13 @@ for _,visit in data.iterrows():
                 except ValueError:
                     dtype= row['Text Validation Type OR Show Slider Number']
                     if dtype=='date_ymd':
-                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+                        try:
+                            # psychs form e.g. 03/03/1903
+                            value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
+                        except ValueError:
+                            # all other forms e.g. 1/05/2022 12:00:00 AM
+                            value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+
                     elif dtype=='datetime_ymd':
                         value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d %H:%M')
                     elif dtype=='time':
