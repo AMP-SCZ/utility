@@ -35,7 +35,7 @@ for f in files:
 
 curr_dir= getcwd()
 if curr_dir.endswith('Pronet'):
-    site='ProNet'
+    site='ProNET'
 elif curr_dir.endswith('Prescient'):
     site='PRESCIENT'
 else:
