@@ -21,8 +21,8 @@ cols= df.columns[5:-1]
 
 # TBD copy non-repeat variables, do it in a different for loop
 
-# new flat data frame with default columns
-df1= df[df.columns[:5]]
+# new single-row data frame with default columns
+df1= df.loc[:0][df.columns[:5]]
 
 dict1={}
 dict1['visit']= multi_records[form]['visit']
@@ -41,6 +41,7 @@ for v in multi_records[form]['vars']:
         dict1[v.replace('?',str(row['Row#']))]= row[c]
         
 
+# concatenate default columns and flat list
 df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
 
 df1.to_csv(sys.argv[1]+'.flat', index=False)
