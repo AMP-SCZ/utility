@@ -39,6 +39,13 @@ for v in multi_records[form]['vars']:
         dict1[v.replace('?',str(row['Row#']))]= row[c]
         
 
+# for n repeats, there are n-1 *_add vars, so delete the nth *_add var
+for v in multi_records[form]['vars']:
+    if '_add' in v:
+        del dict1[v.replace('?',str(df.shape[0]))]
+        break
+
+
 # concatenate default columns and flat list
 df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
 
