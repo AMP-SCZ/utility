@@ -4,6 +4,13 @@ import pandas as pd
 import sys
 import re
 
+
+if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+    print(f'''Usage: {__file__} /path/to/ME57953_multi_record_form.csv
+This program transforms a multi-row record into uniquely-named columns for REDCap import.
+Observe *.csv.flat output file.''')
+    exit(0)
+
 multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chrae_?', 'chrae_tp?', 'chrae_diag?', 'chrae_ae?', 'chrae_aes?date', 'chrae_aes?off', 'chr_ae?date', 'chrae_sig?', 'chrae_dr?', 'chrae_d?', 'chrae_e?', 'chrae_expected?', 'chrae_sae?', 'chrae_ssi?', 'chr_ae?date_dr', 'chrae_sig?_dr', 'chrae_ae?_trans_q', 'chrae_ae?_mo?', 'chrae_ae?_mo2', 'chrae_ae?_mo3', 'chrae_ae?_mo4', 'chrae_ae?_mo5', 'chrae_ae?_mo6', 'chrae_ae?_mo7', 'chrae_ae?_mo8', 'chrae_ae?_mo9', 'chrae_ae?_mo10', 'chrae_ae?_mo11', 'chrae_ae?_mo12', 'chrae_ae?_mo18', 'chrae_ae?_mo24', 'chrae_ae?_trans', 'chrae_ae?_offmes', 'chrae_ae?_comments','chrae_add?']},
 'psychosocial_treatment_form': {'visit': 99, 'vars': ['chrpsychsoc_concerns', 'chrpsychsoc_treat?', 'chrpsychsoc_treat?_tp', 'chrpsychsoc_treat?_type', 'chrpsychsoc_treat?_other', 'chrpsychsoc_treat?_res', 'chrpsychsoc_treat?_freq', 'chrpsychsoc_treat?_onset', 'chrpsychsoc_treat?_offset', 'chrpsychsoc_treat?_instruct', 'chrpsychsoc_treat?_instruct_other', 'chrpsychsoc_treat?_trans_q', 'chrpsychsoc_treat?_mo1', 'chrpsychsoc_treat?_mo2', 'chrpsychsoc_treat?_mo3', 'chrpsychsoc_treat?_mo4', 'chrpsychsoc_treat?_mo5', 'chrpsychsoc_treat?_mo6', 'chrpsychsoc_treat?_mo7', 'chrpsychsoc_treat?_mo8', 'chrpsychsoc_treat?_mo9', 'chrpsychsoc_treat?_mo10', 'chrpsychsoc_treat?_mo11', 'chrpsychsoc_treat?_mo12', 'chrpsychsoc_treat?_mo18', 'chrpsychsoc_treat?_mo24', 'chrpsychsoc_treat?_trans', 'chrpsychsoc_treat?_offmes', 'chrpsychsoc_treat?_comments','chrpsychsoc_treat?_add']},
 'health_conditions_medical_historypsychiatric_histo': {'visit': 99, 'vars': ['chrmed_any', 'chrmed_cond?', 'chrmed_cond?_tp', 'chrmed_cond?_name', 'chrmed_cond?_onset', 'chrcond?_offset', 'chrmed_cond?_instruct', 'chrmed_cond?_trans_q', 'chrmed_cond?_mo1', 'chrmed_cond?_mo2', 'chrmed_cond?_mo3', 'chrmed_cond?_mo4', 'chrmed_cond?_mo5', 'chrmed_cond?_mo6', 'chrmed_cond?_mo7', 'chrmed_cond?_mo8', 'chrmed_cond?_mo9', 'chrmed_cond?_mo10', 'chrmed_cond?_mo11', 'chrmed_cond?_mo12', 'chrmed_cond?_mo18', 'chrmed_cond?_mo24', 'chrmed_cond?_trans', 'chrmed_cond?_offmes', 'chrmed_cond?_comments','chrmed_cond?_add']},
@@ -49,6 +56,8 @@ for v in multi_records[form]['vars']:
 # concatenate default columns and flat list
 df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
 
-df1.to_csv(sys.argv[1]+'.flat', index=False)
+output= sys.argv[1]+'.flat'
+df1.to_csv(output, index=False)
+print('Generated', output)
 
 
