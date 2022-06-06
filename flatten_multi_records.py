@@ -18,7 +18,6 @@ form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 df= pd.read_csv(sys.argv[1])
 cols= df.columns[5:-1]
 
-# TBD copy non-repeat variables, do it in a different for loop
 
 # new single-row data frame with default columns
 df1= df.loc[:0][df.columns[:5]]
