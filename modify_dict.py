@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import sys
 import pandas as pd
-from os.path import abspath
+from os.path import abspath, basename
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print(f'''Usage: {__file__} AMPSCZFormRepository_DataDictionary_*.csv''')
+    print(f'''Usage: {basename(__file__)} AMPSCZFormRepository_DataDictionary_*.csv''')
     exit(0)
 
 infile= abspath(sys.argv[1])
