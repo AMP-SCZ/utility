@@ -11,6 +11,10 @@ COMBINED_SUBJECT=sys.argv[1]
 metadata= sys.argv[2]
 files= sorted(sys.argv[3:])
 
+if sys.argv[3]=='*-flowcheck-day1to1.csv':
+    print('No subject level files are present')
+    exit(0)
+
 # read subject-level summary
 # generate combined list of datatype
 columns=[]
