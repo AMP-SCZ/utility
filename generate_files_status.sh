@@ -16,6 +16,8 @@ fi
 
 
 rm ${NDA_ROOT}/files_metadata.csv
+rm ${NDA_ROOT}/Pronet_status/*csv
+rm ${NDA_ROOT}/Prescient_status/*csv
 
 # use pnlpipe3 environment to bypass the error below
 # https://gist.github.com/tashrifbillah/24efeec3219ba3c58c92adc419aac7be#gistcomment-4037001
