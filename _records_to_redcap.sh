@@ -18,6 +18,12 @@ FORCE=1
 export redcap_records redcap_phoenix redcap_dict API_TOKEN FORCE
 # export is to allow them to be used within records_to_redcap.lsf
 
+echo 'Deleting old records ...'
+source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && \
+conda activate dpimport && \
+/data/predict/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
+
+echo  'Uploading new records ...'
 cd $redcap_phoenix
 find . -name *Pronet.json > $redcap_records
 N=`cat $redcap_records | wc -l`
