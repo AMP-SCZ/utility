@@ -3,6 +3,13 @@
 # this wrapper script is essential because #BSUB -J redcap-import[1-$N]
 # is not allowed within records_to_redcap.lsf
 
+if [ $# -lt 3 ] || [ $1 == '-h' ] || [ $1 == '--help' ]
+then
+    echo """Usage:
+./_records_to_redcap.sh /path/to/PHOENIX/PROTECTED/ /redcap/dict/dir/ API_TOKEN"""
+    exit 1
+fi
+
 redcap_records=/data/predict/utility/bsub/redcap_records.txt
 redcap_phoenix=$1
 redcap_dict=$2
