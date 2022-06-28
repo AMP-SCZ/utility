@@ -1,20 +1,36 @@
 #!/usr/bin/env bash
 
 # do not change the base name:
-# mriqc-combined-mriqc-day1to9999.csv
+# combined-AMPSCZ-day1to1.csv
 # base hash:
-# 8d051eccc2a98eb4303bc62316124890ed47810c61ccde18b9d772e3ac379543
+# 813e15eb4006956b1d804e211ce95c656bc1704e625c718630d21343a85bc617
 
 export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
+if [ -z $1 ] || [ ! -d $1 ]
+then
+    echo """./dpimport_eegqc.sh /path/to/nda_root/ VM
+Provide /path/to/nda_root/ and VM
+VM name examples:
+    dpstage for dpstage.dipr.partners.org
+    rc-predict for rc-predict.bwh.harvard.edu
+    rc-predict-dev for rc-predict-dev.bwh.harvard.edu
+    It is the first part of the server name."""
+    exit
+else
+    export NDA_ROOT=$1
+fi
+
+source /data/predict/utility/.vault/.env.${2}
+
 # remove old data
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db[\"8d051eccc2a98eb4303bc62316124890ed47810c61ccde18b9d772e3ac379543\"].remove({})"
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db[\"813e15eb4006956b1d804e211ce95c656bc1704e625c718630d21343a85bc617\"].remove({})"
 echo ''
 
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db.toc.remove({"study":\"mriqc\"})"
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db.toc.remove({"assessment":\"mriqc\"})"
 echo ''
 
 # import new data
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
-cd /data/predict/kcho/flow_test
-import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/mriqc-combined-mriqc-day1to9999.csv
+source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
+cd ${NDA_ROOT}
+import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/combined-AMPSCZ-mriqc-day1to1.csv
