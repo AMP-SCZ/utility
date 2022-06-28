@@ -2,36 +2,34 @@
 
 export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
+if [ -z $1 ] || [ ! -d $1 ]
+then
+    echo """./dpimport_eegqc.sh /path/to/nda_root/ VM
+Provide /path/to/nda_root/ and VM
+VM name examples:
+    dpstage for dpstage.dipr.partners.org
+    rc-predict for rc-predict.bwh.harvard.edu
+    rc-predict-dev for rc-predict-dev.bwh.harvard.edu
+    It is the first part of the server name."""
+    exit
+else
+    export NDA_ROOT=$1
+fi
+
+source /data/predict/utility/.vault/.env.${2}
+
 # remove old data
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "studies=[\"formqc\"]" /data/predict/utility/avlqc_remove_study.js
+--eval "assess=[\"forms_qc\"]" /data/predict/utility/remove_assess.js
 echo ''
-
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
---tlsCertificateKeyFile $state/ssl/mongo_client.pem \
-mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "db.metadata.remove({\"study\":\"formqc\"})"
-echo ''
-
-
-# import new data
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
-cd /data/predict/kcho/flow_test/formqc/
-import.py -c /data/predict/dpimport/examples/$CONFIG "formqc-*.csv"
 
 exit
 
-# generate and import metadata
-meta=formqc_metadata.csv
-echo 'Subject ID','Active','Consent','Study' > $meta
-for i in `ls -d */*/*/`
-do
-    echo `basename $i`,1,-,formqc >> $meta
-done
-chgrp BWH-PREDICT-G $meta
-chmod g+w $meta
+# import new data
+source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
+cd ${NDA_ROOT}/formqc
+import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-*.csv"
 
-import.py -c /data/predict/dpimport/examples/$CONFIG $meta
 
