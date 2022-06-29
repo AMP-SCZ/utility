@@ -18,6 +18,6 @@
         }
 
         // delete parent collection
-        print(db[g].remove({"study":s}));
+        print(db[g].remove({"assessment":s}));
     })
 })
