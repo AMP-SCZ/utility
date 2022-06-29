@@ -21,12 +21,12 @@ source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimpor
 cd $NDA_ROOT
 
 # metadata
-import.py -c /data/predict/dpimport/examples/$CONFIG files_metadata.csv
+import.py -c /data/predict/dpimport/examples/$CONFIG combined_metadata.csv
 import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*_metadata.csv"
 
 # project level files status
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/files-*-flowcheck-day1to9999.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/combined-*-flowcheck-day1to1.csv"
 
 # subject level files status
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*-flowcheck-day1to1.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/??-*-flowcheck-day1to1.csv"
 
