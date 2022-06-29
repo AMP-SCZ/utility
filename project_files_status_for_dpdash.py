@@ -5,7 +5,7 @@ import sys
 from os.path import abspath, isfile
 import numpy as np
 
-COMBINED_STUDY='files'
+COMBINED_STUDY='combined'
 
 COMBINED_SUBJECT=sys.argv[1]
 metadata= sys.argv[2]
@@ -62,7 +62,7 @@ dfnew.sort_values(by='mtime', ascending=False, inplace=True)
 dfnetw= dfnew.copy()
 dfnetw['day']= [i+1 for i in range(dfnew.shape[0])]
 
-outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to9999.csv'
+outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to1.csv'
 dfnetw.to_csv(outfile, index=False)
 
 
@@ -87,7 +87,7 @@ for site,dfsite in dfnew.groupby('site'):
 
     dfsitemeta.to_csv(f'{site}_metadata.csv', index=False)
     
-    outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to9999.csv'
+    outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to1.csv'
     dfsite.to_csv(outfile, index=False)
 
     # generate metadata
