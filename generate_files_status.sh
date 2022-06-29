@@ -15,7 +15,8 @@ else
 fi
 
 
-rm ${NDA_ROOT}/files_metadata.csv
+name='combined'
+rm ${NDA_ROOT}/${name}_metadata.csv
 rm ${NDA_ROOT}/Pronet_status/*csv
 rm ${NDA_ROOT}/Prescient_status/*csv
 
@@ -24,10 +25,10 @@ rm ${NDA_ROOT}/Prescient_status/*csv
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate pnlpipe3 && \
 subject_files_status_for_dpdash.py $NDA_ROOT && \
 cd ${NDA_ROOT}/Pronet_status && \
-project_files_status_for_dpdash.py ProNET ../files_metadata.csv *-flowcheck-day1to1.csv && \
+project_files_status_for_dpdash.py PRONET ../${name}_metadata.csv *-flowcheck-day1to1.csv && \
 chmod g+w * && \
 cd ${NDA_ROOT}/Prescient_status && \
-project_files_status_for_dpdash.py PRESCIENT ../files_metadata.csv *-flowcheck-day1to1.csv && \
+project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-flowcheck-day1to1.csv && \
 chmod g+w *
 
 # export the above csv files to remote MongoDB server
