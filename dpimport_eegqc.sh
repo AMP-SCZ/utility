@@ -22,13 +22,7 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "studies=[\"EEGqc\"]" /data/predict/utility/avlqc_remove_study.js
-echo ''
-
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
---tlsCertificateKeyFile $state/ssl/mongo_client.pem \
-mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "db.metadata.remove({\"study\":\"EEGqc\"})"
+--eval "assess=[\"EEGqc\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
@@ -39,8 +33,8 @@ pushd .
 
 cd $NDA_ROOT
 FEATURE_DIR=${NDA_ROOT}/EEGqc_features
-rm -f ${FEATURE_DIR}/*-day1to9999.csv
-out_template=${FEATURE_DIR}/AMPSCZ-SITE-EEGqc-day1to9999.csv
+rm -f ${FEATURE_DIR}/*-day1to1.csv
+out_template=${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv
 
 cd ${NDA_ROOT}/Pronet
 /data/predict/utility/feature_combiner.py $out_template
@@ -61,7 +55,7 @@ do
     done
 done
 
-exit
+
 cd $FEATURE_DIR
 import.py -c /data/predict/dpimport/examples/$CONFIG "*.csv"
 
