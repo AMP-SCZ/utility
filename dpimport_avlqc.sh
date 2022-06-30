@@ -23,32 +23,13 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "studies=[\"avlqc\"]" /data/predict/utility/avlqc_remove_study.js
-echo ''
-
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
---tlsCertificateKeyFile $state/ssl/mongo_client.pem \
-mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "db.metadata.remove({\"study\":\"avlqc\"})"
+--eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewMonoVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
 # import new data
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
-# cd /data/predict/kcho/flow_test/
 cd ${NDA_ROOT}
-import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/open/avlqc-*.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 
-
-# generate and import metadata
-meta=avlqc_metadata.csv
-echo 'Subject ID','Active','Consent','Study' > $meta
-for i in `ls -d */PHOENIX/GENERAL/*/*/*/`
-do
-    echo `basename $i`,1,-,avlqc >> $meta
-done
-chgrp BWH-PREDICT-G $meta
-chmod g+w $meta
-
-import.py -c /data/predict/dpimport/examples/$CONFIG $meta
 
