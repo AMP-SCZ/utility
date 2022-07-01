@@ -16,7 +16,12 @@ multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chra
 'health_conditions_medical_historypsychiatric_histo': {'visit': 99, 'vars': ['chrmed_any', 'chrmed_cond?', 'chrmed_cond?_tp', 'chrmed_cond?_name', 'chrmed_cond?_onset', 'chrcond?_offset', 'chrmed_cond?_instruct', 'chrmed_cond?_trans_q', 'chrmed_cond?_mo1', 'chrmed_cond?_mo2', 'chrmed_cond?_mo3', 'chrmed_cond?_mo4', 'chrmed_cond?_mo5', 'chrmed_cond?_mo6', 'chrmed_cond?_mo7', 'chrmed_cond?_mo8', 'chrmed_cond?_mo9', 'chrmed_cond?_mo10', 'chrmed_cond?_mo11', 'chrmed_cond?_mo12', 'chrmed_cond?_mo18', 'chrmed_cond?_mo24', 'chrmed_cond?_trans', 'chrmed_cond?_offmes', 'chrmed_cond?_comments','chrmed_cond?_add']},
 'resource_use_log': {'visit': 99, 'vars': ['chrrul_any', 'chrrul_resource?', 'chrrul_resource?_tp', 'chrrul_resource?_code', 'chrrul_resource?_on', 'chrrul_resource?_off', 'chrrul_resource?_notes','chrrul_resource?_add']},
 'traumatic_brain_injury_screen_subject': {'visit': 1, 'vars': ['chrtbi_subject_age?', 'chrtbi_subject_circumstance?', 'chrtbi_subject_length?', 'chrtbi_subject_anterograde?', 'chrtbi_subject_retrograde?', 'chrtbi_subject_symptoms2_?', 'chrtbi_subject_symptom_length?', 'chrtbi_subject_med_find?']},
-'traumatic_brain_injury_screen_parent': {'visit': 1, 'vars': ['chrtbi_parent_age?', 'chrtbi_parent_circumstance?', 'chrtbi_parent_length?', 'chrtbi_parent_anterograde?', 'chrtbi_parent_retrograde?', 'chrtbi_parent_symptoms2_?', 'chrtbi_parent_symptom_length?', 'chrtbi_parent_medical_findings?']}
+'traumatic_brain_injury_screen_parent': {'visit': 1, 'vars': ['chrtbi_parent_age?', 'chrtbi_parent_circumstance?', 'chrtbi_parent_length?', 'chrtbi_parent_anterograde?', 'chrtbi_parent_retrograde?', 'chrtbi_parent_symptoms2_?', 'chrtbi_parent_symptom_length?', 'chrtbi_parent_medical_findings?']},
+'blood_sample_preanalytic_quality_assurance_bc': {'visit': 2, 'vars': ['chrblood_bc?id','chrblood_bc?vol','chrblood_bc?pos','chrblood_bc?box','chrblood_bcfrztime']},
+'blood_sample_preanalytic_quality_assurance_pl': {'visit': 2, 'vars': ['chrblood_pl?id','chrblood_pl?vol','chrblood_pl?pos','chrblood_pl?hem','chrblood_plfrztime']},
+'blood_sample_preanalytic_quality_assurance_wb': {'visit': 2, 'vars': ['chrblood_wb?id','chrblood_wb?vol','chrblood_wb?pos','chrblood_wbfrztime']},
+'blood_sample_preanalytic_quality_assurance_se': {'visit': 2, 'vars': ['chrblood_se?id','chrblood_se?vol','chrblood_se?pos','chrblood_sefrztime','chrblood_sehem','chrblood_selip']},
+
 }
 
 
