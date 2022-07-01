@@ -25,7 +25,6 @@ mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
 --eval "assess=[\"forms_qc\"]" /data/predict/utility/remove_assess.js
 echo ''
 
-exit
 
 # import new data
 source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
