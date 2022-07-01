@@ -27,7 +27,7 @@ echo ''
 
 
 # import new data
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
+source /data/predict/miniconda3/bin/activate base
 cd ${NDA_ROOT}/formqc
 import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-*.csv"
 
