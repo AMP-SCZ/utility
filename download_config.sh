@@ -26,7 +26,7 @@ scriptDir=`dirname $0`
 # export from mongodb
 mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\"}" --out=$tmpJson
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport && \
+source /data/predict/miniconda3/bin/activate base
 $scriptDir/_download_config.py $tmpJson $2
 
 rm $tmpJson
