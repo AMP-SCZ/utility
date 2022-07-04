@@ -35,5 +35,5 @@ chmod g+w *
 cd /data/predict/utility
 # source .vault/.env.dpstage && ./dpimport_remote_data.sh
 # source .vault/.env.rc-predict && ./dpimport_remote_data.sh
-source .vault/.env.${2} && ./dpimport_remote_data.sh
+source .vault/.env.${2} && ./dpimport_files_status.sh
 
