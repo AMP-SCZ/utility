@@ -28,7 +28,7 @@ echo ''
 
 
 # import new data
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
+source /data/predict/miniconda3/bin/activate base && conda activate dpimport
 cd ${NDA_ROOT}
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 
