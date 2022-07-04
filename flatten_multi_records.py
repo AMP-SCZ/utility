@@ -5,11 +5,7 @@ import sys
 import re
 
 
-if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print(f'''Usage: {__file__} /path/to/ME57953_multi_record_form.csv
-This program transforms a multi-row record into uniquely-named columns for REDCap import.
-Observe *.csv.flat output file.''')
-    exit(0)
+
 
 multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chrae_?', 'chrae_tp?', 'chrae_diag?', 'chrae_ae?', 'chrae_aes?date', 'chrae_aes?off', 'chr_ae?date', 'chrae_sig?', 'chrae_dr?', 'chrae_d?', 'chrae_e?', 'chrae_expected?', 'chrae_sae?', 'chrae_ssi?', 'chr_ae?date_dr', 'chrae_sig?_dr', 'chrae_ae?_trans_q', 'chrae_ae?_mo?', 'chrae_ae?_mo2', 'chrae_ae?_mo3', 'chrae_ae?_mo4', 'chrae_ae?_mo5', 'chrae_ae?_mo6', 'chrae_ae?_mo7', 'chrae_ae?_mo8', 'chrae_ae?_mo9', 'chrae_ae?_mo10', 'chrae_ae?_mo11', 'chrae_ae?_mo12', 'chrae_ae?_mo18', 'chrae_ae?_mo24', 'chrae_ae?_trans', 'chrae_ae?_offmes', 'chrae_ae?_comments','chrae_add?']},
 
@@ -32,46 +28,73 @@ multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chra
 
 }
 
+def flatten_one(filename):
 
-subjectkey= sys.argv[1].split('_')[0]
-form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
+    subjectkey= filename.split('_')[0]
+    form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
 
-df= pd.read_csv(sys.argv[1])
-cols= df.columns[5:-1]
+    df= pd.read_csv(filename)
+    cols= df.columns[5:-1]
 
 
-# new single-row data frame with default columns
-df1= df.loc[:0][df.columns[:5]]
+    # new single-row data frame with default columns
+    df1= df.loc[:0][df.columns[:5]]
 
-dict1={}
-dict1['visit']= df.loc[0,'visit'] if 'visit' in df else multi_records[form]['visit']
-for v in multi_records[form]['vars']:
+    dict1={}
+    dict1['visit']= df.loc[0,'visit'] if 'visit' in df else multi_records[form]['visit']
+    for v in multi_records[form]['vars']:
 
-    # has the variable been exported by RPMS?
-    if v.replace('?','') in cols:
-        c= v.replace('?','')
-    elif v.replace('_?','') in cols:
-        c= v.replace('_?','')
+        # has the variable been exported by RPMS?
+        if v.replace('?','') in cols:
+            c= v.replace('?','')
+        elif v.replace('_?','') in cols:
+            c= v.replace('_?','')
+        else:
+            continue
+            
+        # go through the rows of that variable and generate a flat list
+        for i,row in df.iterrows():
+            dict1[v.replace('?',str(row['Row#']))]= row[c]
+            
+
+    # for n repeats, there are n-1 *_add vars, so delete the nth *_add var
+    for v in multi_records[form]['vars']:
+        if '_add' in v:
+            del dict1[v.replace('?',str(df.shape[0]))]
+            break
+
+
+    # concatenate default columns and flat list
+    df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
+
+    return df1
+
+
+def flatten_many():
+
+    df1= pd.read_csv(sys.argv[1])
+    for filename in sys.argv[2:]:
+        df= flatten_one(filename)
+        df1= pd.concat([df1,df[df.columns[6:]]],axis=1)
+
+    return df1
+    
+
+if __name__=='__main__':
+
+    if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+        print(f'''Usage: {__file__} /path/to/ME57953_multi_record_form.csv
+This program transforms a multi-row record into uniquely-named columns for REDCap import.
+Observe *.csv.flat output file.''')
+        exit(0)
+
+    if len(sys.argv)==2:
+        df2=flatten_one(sys.argv[1])
     else:
-        continue
-        
-    # go through the rows of that variable and generate a flat list
-    for i,row in df.iterrows():
-        dict1[v.replace('?',str(row['Row#']))]= row[c]
-        
+        df2=flatten_many()
 
-# for n repeats, there are n-1 *_add vars, so delete the nth *_add var
-for v in multi_records[form]['vars']:
-    if '_add' in v:
-        del dict1[v.replace('?',str(df.shape[0]))]
-        break
-
-
-# concatenate default columns and flat list
-df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
-
-output= sys.argv[1]+'.flat'
-df1.to_csv(output, index=False)
-print('Generated', output)
+    output= sys.argv[1]+'.flat'
+    df2.to_csv(output, index=False)
+    print('Generated', output)
 
 
