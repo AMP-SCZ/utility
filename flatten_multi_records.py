@@ -41,7 +41,7 @@ cols= df.columns[5:-1]
 df1= df.loc[:0][df.columns[:5]]
 
 dict1={}
-dict1['visit']= df['visit'] if 'visit' in df else multi_records[form]['visit']
+dict1['visit']= df.loc[0,'visit'] if 'visit' in df else multi_records[form]['visit']
 for v in multi_records[form]['vars']:
 
     # has the variable been exported by RPMS?
