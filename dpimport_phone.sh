@@ -25,6 +25,12 @@ mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
 --eval "assess=\"-phone_\"" /data/predict/utility/remove_assess.js
 echo ''
 
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
+--tlsCertificateKeyFile $state/ssl/mongo_client.pem \
+mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
+--eval "assess=\"-actigraphy_\"" /data/predict/utility/remove_assess.js
+
+
 # import new data
 export PATH=/data/predict/miniconda3/bin:$PATH
 cd ${NDA_ROOT}
