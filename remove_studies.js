@@ -1,6 +1,6 @@
 // javascript code executed by mongo interpreter behind admin authentication
 
-// all sites and pseudo sites: PRoNET, PRESCIENT, files
+// all sites and pseudo sites: combined
 let sites= ['ME', 'AD', 'CG', 'JE', 'CP', 'BM', 'AM', 'LS', 'GW', 'SG', 'HK', 'LA', 'OR', 'BI', 'NL', 'NC', 'SD', 'CA', 'YA', 'SF', 'PA', 'SI', 'PI', 'NN', 'IR', 'TE', 'GA', 'WU', 'HA', 'MT', 'KC', 'PV', 'MA', 'CM', 'MU', 'SH', 'SL', 'ST'].concat(['combined']);
 
 ['toc','metadata'].forEach(g=> {
