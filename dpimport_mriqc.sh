@@ -31,6 +31,6 @@ mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/
 echo ''
 
 # import new data
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate base && conda activate dpimport
+export PATH=/data/predict/miniconda3/bin:$PATH
 cd ${NDA_ROOT}
 import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/combined-AMPSCZ-mriqc-day1to1.csv
