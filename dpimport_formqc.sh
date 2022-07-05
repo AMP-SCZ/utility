@@ -27,7 +27,7 @@ echo ''
 
 
 # import new data
-source /data/predict/miniconda3/bin/activate base
+export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}/formqc
 import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-*.csv"
 
