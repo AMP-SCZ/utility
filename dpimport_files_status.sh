@@ -13,11 +13,10 @@ echo Importing to mongodb://dpdash:MONGO_PASS@$HOST:$PORT
 echo ''
 
 # delete old collections
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin /data/predict/utility/remove_studies.js
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\"]" /data/predict/utility/remove_assess.js
 
 # import new collections
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate && conda activate dpimport
-
+export PATH=/data/predict/miniconda3/bin:$PATH
 cd $NDA_ROOT
 
 # metadata
