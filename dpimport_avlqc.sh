@@ -28,8 +28,11 @@ echo ''
 
 
 # import new data
-source /data/predict/miniconda3/bin/activate base && conda activate dpimport
+export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}
+# temporary renaming, will be removed after
+# https://github.com/dptools/process_offsite_audio/pull/1 is merged
+/data/predict/utility/avlqc_to_site.py $NDA_ROOT
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 
 
