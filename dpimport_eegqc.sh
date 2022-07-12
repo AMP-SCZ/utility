@@ -27,7 +27,7 @@ echo ''
 
 
 # import new data
-source /data/predict/miniconda3/bin/activate base && conda activate dpimport
+export PATH=/data/predict/miniconda3/bin:$PATH
 
 pushd .
 
@@ -56,9 +56,13 @@ do
 done
 
 
+# project level data
 cd $FEATURE_DIR
 import.py -c /data/predict/dpimport/examples/$CONFIG "*.csv"
 
 popd
 
+# subject level data
+cd $NDA_ROOT
+import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv"
 

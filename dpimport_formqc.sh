@@ -29,6 +29,11 @@ echo ''
 # import new data
 export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}/formqc
-import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-*.csv"
+
+# project level data
+import.py -c /data/predict/dpimport/examples/$CONFIG "combined-*-forms_qc-day1to*.csv"
+
+# subject level data
+import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-day1to*.csv"
 
 
