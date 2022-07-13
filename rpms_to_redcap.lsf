@@ -1,0 +1,35 @@
+#!/bin/bash
+
+export PATH=/data/predict/miniconda3/bin/:$PATH
+cd ${redcap_phoenix}
+
+#BSUB -q pri_pnl
+#BSUB -o /data/predict/utility/bsub/redcap-import-%J-%I.out
+#BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
+
+i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
+
+ls -ld $i
+
+pushd .
+cd $i
+subject=$(basename $(dirname $i))
+
+# flatten multi-records
+/data/predict/utility/_flatten_multi_records.sh $subject
+
+
+# upload all records
+for suffix in $(cat /data/predict/utility/rpms_file_suffix.txt)
+do
+    form=${subject}_${suffix}
+    if [ -f $form ]
+    then
+        ls -lah $form
+        /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $FORCE
+    fi
+
+done
+
+popd
+
