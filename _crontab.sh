@@ -11,7 +11,7 @@
 
 # import records to REDCap, every third hour
 # PRESCIENT mock
-0 */3 * * * /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda_dev/Prescient/PHOENIX/PROTECTED /data/predict/utility/amp-scz-form 123456
+0 */3 * * * /data/predict/utility/_rpms_to_redcap.sh /data/predict/data_from_nda_dev/Prescient/PHOENIX/PROTECTED /data/predict/utility/amp-scz-form 123456
 
 # ProNET mock
 20 */3 * * * /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda_dev/Pronet/PHOENIX/PROTECTED /data/predict/utility/redcap-ii-yale 123456
