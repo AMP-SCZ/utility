@@ -9,7 +9,7 @@ if len(sys.argv)==1 or sys.argv[1] in ['-h','--help']:
     print('''Usage: /path/to/delete_records.py /path/to/PHOENIX/PROTECTED API_TOKEN''')
     exit(0)
 
-dirs= glob(pjoin(abspath(sys.argv[1]),'*/*/*'))
+dirs= glob(pjoin(abspath(sys.argv[1]),'*/raw/*'))
 
 data = {
     'token': sys.argv[2],
