@@ -99,7 +99,7 @@ for visit in data:
         completion= f'{form}_complete'
         # bypass empty forms
         # essential for showing blank circles in REDCap record status dashboard
-        if empty and visit[completion]=='0':
+        if empty:
             continue
         # calculated fields may still pose a form as non-empty
         # see how REDCap circles are colored
