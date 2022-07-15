@@ -22,7 +22,7 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"form_\"]" /data/predict/utility/remove_assess.js
+--eval "assess=\"form_\"" /data/predict/utility/remove_assess.js
 echo ''
 
 
