@@ -22,7 +22,7 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"forms_qc\"]" /data/predict/utility/remove_assess.js
+--eval "assess=[\"form_\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
@@ -31,9 +31,9 @@ export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}/formqc
 
 # project level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "combined-*-forms_qc-day1to*.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "combined-*-form_*-day1to*.csv"
 
 # subject level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-forms_qc-day1to*.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-form_*-day1to*.csv"
 
 
