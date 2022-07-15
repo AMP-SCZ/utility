@@ -16,9 +16,10 @@ fi
 
 
 name='combined'
+rm ${NDA_ROOT}/${name}_metadata.csv
 rm ${NDA_ROOT}/Pronet_status/*csv
 rm ${NDA_ROOT}/Prescient_status/*csv
-echo AMPSCZ,1,'-',${name} > ${NDA_ROOT}/${name}_metadata.csv
+
 
 # use pnlpipe3 environment to bypass the error below
 # https://gist.github.com/tashrifbillah/24efeec3219ba3c58c92adc419aac7be#gistcomment-4037001
@@ -30,6 +31,8 @@ chmod g+w * && \
 cd ${NDA_ROOT}/Prescient_status && \
 project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-flowcheck-day1to1.csv && \
 chmod g+w *
+
+echo AMPSCZ,1,'-',${name} >> ${NDA_ROOT}/${name}_metadata.csv
 
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
