@@ -16,9 +16,9 @@ fi
 
 
 name='combined'
-rm ${NDA_ROOT}/${name}_metadata.csv
 rm ${NDA_ROOT}/Pronet_status/*csv
 rm ${NDA_ROOT}/Prescient_status/*csv
+echo AMPSCZ,1,'-',${name} > ${NDA_ROOT}/${name}_metadata.csv
 
 # use pnlpipe3 environment to bypass the error below
 # https://gist.github.com/tashrifbillah/24efeec3219ba3c58c92adc419aac7be#gistcomment-4037001
