@@ -39,4 +39,3 @@ import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_
 
 # subject level data
 import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/sub-*/ses-*/??-*-mriqc-day1to*.csv
-
