@@ -38,5 +38,5 @@ cd ${NDA_ROOT}
 import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/combined-*-mriqc-day1to*.csv
 
 # subject level data
-import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/??-*-mriqc-day1to*.csv
+import.py -c /data/predict/dpimport/examples/$CONFIG MRI_ROOT/derivatives/quick_qc/sub-*/ses-*/??-*-mriqc-day1to*.csv
 
