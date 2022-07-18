@@ -24,11 +24,7 @@ fi
 source /data/predict/utility/.vault/.env.${2}
 
 # remove old data
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db[\"813e15eb4006956b1d804e211ce95c656bc1704e625c718630d21343a85bc617\"].remove({})"
-echo ''
-
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "db.toc.remove({"assessment":\"mriqc\"})"
-echo ''
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"mriqc\"]" /data/predict/utility/remove_assess.js
 
 # import new data
 export PATH=/data/predict/miniconda3/bin:$PATH
