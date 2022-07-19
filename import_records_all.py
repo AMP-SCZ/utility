@@ -104,9 +104,16 @@ for visit in data:
         # calculated fields may still pose a form as non-empty
         # see how REDCap circles are colored
         # https://user-images.githubusercontent.com/35086881/168111407-d99c0a49-d33c-4cd9-9530-79f0debd9690.png
+
+        '''
+        REDCap policy
+        value  color  meaning
+        ''     Blank  Incomplete (no data saved)
+        0      Red    Incomplete
+        1      Yellow Unverified
+        2      Green  Complete
+        '''
         
-
-
         print('\t',form)
 
         data1.update(data_form)
