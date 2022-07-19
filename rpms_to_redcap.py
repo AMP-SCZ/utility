@@ -106,6 +106,38 @@ incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
 if not isfile(incl_excl):
     raise FileNotFoundError(f'Cannot determine redcap_event_name w/o {incl_excl} file')
 
+
+# load files for populating {form}_completion variable
+entry_status_df= pd.read_csv(subjectkey+ '_entry_status.csv')
+entry_status_df.set_index(['InstrumentName', 'visit'],inplace=True)
+redcap_rpms_labels_df= pd.read_csv(pjoin(abspath(dirname(__file__)),'rpms_form_labels.csv'))
+redcap_rpms_labels_df.set_index('redcap',inplace=True)
+
+def entry_status(redcap_label,rpms_visit):
+    try:
+        rpms_label= redcap_rpms_labels_df.loc[redcap_label,'rpms']
+    except KeyError:
+        return ''
+
+    status= entry_status_df.loc[(rpms_label,rpms_visit),'CompletionStatus']
+
+    '''
+    RPMS policy
+    status color  meaning
+    0      Red    No data entered
+    1      Orange Data partially entered
+    2      Green  All data entered
+    '''
+
+    status=int(status)
+    if status==0:
+        return ''
+    elif status==1:
+        return 0
+    elif status==2:
+        return 2
+
+
 df= pd.read_csv(incl_excl)
 chr_hc= int(df['chrcrit_part'])
 
@@ -188,15 +220,26 @@ for _,visit in data.iterrows():
             pass
     
 
-    print('\t',form)
+    completion= f'{form}_complete'
     # bypass empty forms
     # essential for showing blank circles in REDCap record status dashboard
     if empty:
         continue
 
+    '''
+    REDCap policy
+    value  color  meaning
+    ''     Blank  Incomplete (no data saved)
+    0      Red    Incomplete
+    1      Yellow Unverified
+    2      Green  Complete
+    '''
+
+    print('\t',form)
+
     data1.update(data_form)
-        
-        
+    data1[completion]= entry_status(form,visit['visit'])
+    
     data2.append(data1)
     print(data2)
     print('')
