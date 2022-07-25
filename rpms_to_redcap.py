@@ -116,10 +116,9 @@ redcap_rpms_labels_df.set_index('redcap',inplace=True)
 def entry_status(redcap_label,rpms_visit):
     try:
         rpms_label= redcap_rpms_labels_df.loc[redcap_label,'rpms']
+        status= entry_status_df.loc[(rpms_label,rpms_visit),'CompletionStatus']
     except KeyError:
         return ''
-
-    status= entry_status_df.loc[(rpms_label,rpms_visit),'CompletionStatus']
 
     '''
     RPMS policy
