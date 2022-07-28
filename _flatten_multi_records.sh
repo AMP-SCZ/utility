@@ -9,7 +9,7 @@ export PATH=/data/predict/miniconda3/bin/:/data/predict/utility/:$PATH
 flatten_multi_records.py ${1}_adverse_events.csv
 flatten_multi_records.py ${1}_health_conditions_medical_historypsychiatric_histo.csv
 flatten_multi_records.py ${1}_psychosocial_treatment_form.csv
-flatten_multi_records.py ${1}_resource_use_log.csv
+fltten_multi_records.py ${1}_past_pharmaceutical_treatment.csv
 
 
 flatten_multi_records.py ${1}_blood_sample_preanalytic_quality_assurance.csv ${1}_blood_sample_preanalytic_quality_assurance_bc.csv ${1}_blood_sample_preanalytic_quality_assurance_pl.csv ${1}_blood_sample_preanalytic_quality_assurance_se.csv ${1}_blood_sample_preanalytic_quality_assurance_wb.csv
