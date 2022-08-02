@@ -3,7 +3,7 @@
 import pandas as pd
 import sys
 import re
-
+from os.path import isfile
 
 
 
@@ -112,6 +112,9 @@ def flatten_many_new():
         dict1={}
         for filename in sys.argv[2:]:
 
+            if not isfile(filename):
+                continue
+
             dfmulti=pd.read_csv(filename)
             groups= dfmulti.groupby('visit')
             dfvisit= groups.get_group(timepoint).reset_index()
@@ -119,7 +122,7 @@ def flatten_many_new():
             form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
             cols= [c for c in dfmulti.columns if c not in default_cols]
             _dict1= flatten_group(dfvisit,form,cols)
-            # visit column is inherited from unique record, so omit its possible repitition
+            # visit column is inherited from unique record, so omit its possible repetition
             del _dict1['visit']
 
             # vertically concatenate flat lists across split files
