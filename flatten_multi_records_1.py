@@ -97,6 +97,7 @@ def flatten_one_new(filename):
 def flatten_many_new():
 
     filename=sys.argv[1]
+
     dfunique= pd.read_csv(filename)
     subjectkey= filename.split('_')[0]
 
@@ -153,6 +154,10 @@ if __name__=='__main__':
 This program transforms a multi-row record into uniquely-named columns for REDCap import.
 Observe *.csv.flat output file.''')
         exit(0)
+
+    if not isfile(sys.argv[1]):
+        print(f'unique-record file {sys.argv[1]} does not exist')
+        exit()
 
     if len(sys.argv)==2:
         df2=flatten_one_new(sys.argv[1])
