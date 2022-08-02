@@ -10,15 +10,15 @@ export PATH=/data/predict/miniconda3/bin/:/data/predict/utility/:$PATH
 
 # unique visit, single file
 # floating (99)
-flatten_multi_records.py ${1}_past_pharmaceutical_treatment.csv
-flatten_multi_records.py ${1}_psychosocial_treatment_form.csv
-flatten_multi_records.py ${1}_health_conditions_medical_historypsychiatric_histo.csv
+flatten_multi_records_1.py ${1}_past_pharmaceutical_treatment.csv
+flatten_multi_records_1.py ${1}_psychosocial_treatment_form.csv
+flatten_multi_records_1.py ${1}_health_conditions_medical_historypsychiatric_histo.csv
 
 # unique visit, multiple files
 # screening (1)
-flatten_multi_records.py ${1}_family_interview_for_genetic_studies_figs.csv ${1}_family_interview_for_genetic_studies_figs_child.csv ${1}_family_interview_for_genetic_studies_figs_sibling.csv
+flatten_multi_records_1.py ${1}_family_interview_for_genetic_studies_figs.csv ${1}_family_interview_for_genetic_studies_figs_child.csv ${1}_family_interview_for_genetic_studies_figs_sibling.csv
 
-flatten_multi_records.py ${1}_traumatic_brain_injury_screen.csv ${1}_traumatic_brain_injury_screen_parent.csv ${1}_traumatic_brain_injury_screen_subject.csv
+flatten_multi_records_1.py ${1}_traumatic_brain_injury_screen.csv ${1}_traumatic_brain_injury_screen_parent.csv ${1}_traumatic_brain_injury_screen_subject.csv
 
 
 
@@ -26,8 +26,8 @@ flatten_multi_records.py ${1}_traumatic_brain_injury_screen.csv ${1}_traumatic_b
 # all visits
 flatten_multi_records_1.py ${1}_current_pharmaceutical_treatment_floating_med_125.csv
 flatten_multi_records_1.py ${1}_current_pharmaceutical_treatment_floating_med_2650.csv
-flatten_multi_records.py ${1}_adverse_events.csv
-flatten_multi_records.py ${1}_resource_use_log.csv
+flatten_multi_records_1.py ${1}_adverse_events.csv
+flatten_multi_records_1.py ${1}_resource_use_log.csv
 
 
 # non-unique visit, multiple files
