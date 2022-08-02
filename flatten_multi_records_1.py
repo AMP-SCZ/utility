@@ -34,57 +34,6 @@ multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chra
 
 }
 
-def flatten_one(filename):
-
-    subjectkey= filename.split('_')[0]
-    form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
-
-    df= pd.read_csv(filename)
-    cols= df.columns[5:-1]
-
-
-    # new single-row data frame with default columns
-    df1= df.loc[:0][df.columns[:5]]
-
-    dict1={}
-    dict1['visit']= df.loc[0,'visit'] if 'visit' in df else multi_records[form]['visit']
-    for v in multi_records[form]['vars']:
-
-        # has the variable been exported by RPMS?
-        if v.replace('?','') in cols:
-            c= v.replace('?','')
-        elif v.replace('_?','') in cols:
-            c= v.replace('_?','')
-        else:
-            continue
-            
-        # go through the rows of that variable and generate a flat list
-        for i,row in df.iterrows():
-            dict1[v.replace('?',str(row['Row#']))]= row[c]
-            
-
-    # for n repeats, there are n-1 *_add vars, so delete the nth *_add var
-    for v in multi_records[form]['vars']:
-        if '_add' in v:
-            del dict1[v.replace('?',str(df.shape[0]))]
-            break
-
-
-    # concatenate default columns and flat list
-    df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
-
-    return df1
-
-
-def flatten_many():
-
-    df1= pd.read_csv(sys.argv[1])
-    for filename in sys.argv[2:]:
-        df= flatten_one(filename)
-        df1= pd.concat([df1,df[df.columns[6:]]],axis=1)
-
-    return df1
-    
 
 
 def flatten_group(df,form,cols):
@@ -178,8 +127,8 @@ def flatten_many_new():
 
 
         # remove duplicate columns
-        # chrblood_serumfrztime column does not have Row# in it
-        # so it can duplicated for Row# 2,3,4,...
+        # chrblood_serumfrztime column does not have ? in it
+        # so it can duplicated for Row# 2,3,4, ...
         for c in list(dict1.keys()):
             if c in df1.columns:
                 del dict1[c]
