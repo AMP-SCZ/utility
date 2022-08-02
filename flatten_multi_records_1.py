@@ -145,6 +145,55 @@ def flatten_one_new(filename):
     return dfall
 
 
+def flatten_many_new():
+
+    filename=sys.argv[1]
+    dfunique= pd.read_csv(filename)
+    subjectkey= filename.split('_')[0]
+
+    default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender','visit']
+
+    df1= pd.DataFrame(columns=dfunique.columns)
+    dfall= pd.DataFrame()
+    for i,row in dfunique.iterrows():
+        
+        timepoint=row['visit']
+
+        df1.loc[0]= row
+        dict1={}
+        for filename in sys.argv[2:]:
+
+            dfmulti=pd.read_csv(filename)
+            groups= dfmulti.groupby('visit')
+            dfvisit= groups.get_group(timepoint).reset_index()
+
+            form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
+            cols= [c for c in dfmulti.columns if c not in default_cols]
+            _dict1= flatten_group(dfvisit,form,cols)
+            # visit column is inherited from unique record, so omit its possible repitition
+            del _dict1['visit']
+
+            # vertically concatenate flat lists across split files
+            dict1.update(_dict1)
+
+
+        # remove duplicate columns
+        # chrblood_serumfrztime column does not have Row# in it
+        # so it can duplicated for Row# 2,3,4,...
+        for c in list(dict1.keys()):
+            if c in df1.columns:
+                del dict1[c]
+        
+        # vertically concatenate default columns and flat list
+        df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
+        
+        # horizontally concatenate flat lists
+        dfall= pd.concat([dfall,df1], axis=0, sort=False)
+
+    
+    return dfall
+
+
 if __name__=='__main__':
 
     if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
@@ -153,8 +202,10 @@ This program transforms a multi-row record into uniquely-named columns for REDCa
 Observe *.csv.flat output file.''')
         exit(0)
 
-
-    df2=flatten_one_new(sys.argv[1])
+    if len(sys.argv)==2:
+        df2=flatten_one_new(sys.argv[1])
+    else:
+        df2=flatten_many_new()
 
     output= sys.argv[1]+'.flat'
     df2.to_csv(output, index=False)
