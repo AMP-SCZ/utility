@@ -15,7 +15,11 @@ checkbox_group= type_groups.get_group('checkbox')
 
 df1= df.copy()
 for _,row in checkbox_group.iterrows():
-    options= row['Choices, Calculations, OR Slider Labels'].split(' | ')
+    sep=" | "
+    if sep not in row['Choices, Calculations, OR Slider Labels']:
+        sep="|"
+    options= row['Choices, Calculations, OR Slider Labels'].split(sep)
+
     for o in options:
         row1= row.copy()
         var= row1['Variable / Field Name']
