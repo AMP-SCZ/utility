@@ -19,6 +19,9 @@ for _,row in checkbox_group.iterrows():
     if sep not in row['Choices, Calculations, OR Slider Labels']:
         sep="|"
     options= row['Choices, Calculations, OR Slider Labels'].split(sep)
+    
+    for o in ['-9, Missing', '-3, Not applicable']:
+        options.append(o)
 
     for o in options:
         row1= row.copy()
@@ -32,7 +35,11 @@ for _,row in checkbox_group.iterrows():
             row1['Variable / Field Name']= f'{var}____{abs(num)}'
 
         df1= df1.append(row1, ignore_index=True)
-
+    
+    # date variables cannot be converted to integers, deal with them differently
+    for num in ['1909_09_09','1903_03_03','1901_01_01']:
+        row1['Variable / Field Name']= f'{var}___{num}'
+        df1= df1.append(row1, ignore_index=True)
 
 outfile= infile.split('.csv')[0]+'_checkbox'+'.csv'
 df1.to_csv(outfile, index=False)
