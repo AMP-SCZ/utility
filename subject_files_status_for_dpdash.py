@@ -141,14 +141,13 @@ def check_mri_and_qqc_result(root: Path) -> int:
 
     # load QC result
     session_name = 'ses-' + ''.join(name_sections[2:]).split('.')[0]
-    qqc_dir = mri_qqc_root / ('sub-'+root.name) /session_name
+    qqc_dir = mri_qqc_root / f'sub-{root.name}' / session_name
     qc_summary = qqc_dir / '00_qc_summary.csv'
 
     labels_to_check = ['Series count',
                        'Volume slice number comparison',
                        'Image orientation in anat',
                        'Image orientation in others',
-                       'Shim settings',
                        'Bval comparison']
 
     if qc_summary.is_file():
@@ -160,6 +159,7 @@ def check_mri_and_qqc_result(root: Path) -> int:
             return 2  # green
         else:
             return 1  # red
+
     else:
         return 3  # QC not ran yet
 
