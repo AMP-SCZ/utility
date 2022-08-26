@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 import re, sys
+import json
 from datetime import time, timedelta, datetime, date
 
 # sys.arv[1] is the NDA_ROOT folder
@@ -34,6 +35,27 @@ def _latest_mtime(p: Path) -> str:
     return datetime.fromtimestamp(latest).strftime('%Y-%m-%d')
 
 
+def check_upenn_cnb(subject_raw_path: Path) -> int:
+    '''Check if there are SPLLT-A and NOSPLLT in the Penn CNB json file'''
+    json_paths = list((subject_raw_path / 'surveys').glob('*UPENN.json'))
+
+    if len(json_paths) == 0:  # No file
+        return 0
+
+    with open(json_paths[0], 'r') as fp:
+        data = json.load(fp)
+
+    if len(data) != 2:
+        return 0
+
+    session_batteries = [x['session_battery'] for x in data]
+    spllta_check = 'SPLLT-A' in session_batteries
+    nospllt_check = ('ProNET_NOSPLLT' in session_batteries or
+                     'PRESCIENT_NOSPLLT_C1' in session_batteries)
+
+    return spllta_check * nospllt_check
+
+
 def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     '''Get summary from the PHOENIX structure'''
     
@@ -52,7 +74,7 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
                   _is_file(x, 'surveys', '*.csv')))
     
     # PennCNB
-    df['cnb'] = df.p.apply(lambda x: _is_file(x, 'surveys', '*UPENN.json'))
+    df['cnb'] = df.p.apply(lambda x: check_upenn_cnb(x))
     df['cnb_ss'] = df.p.apply(lambda x: _is_scansheet(x, 'surveys',
         suffix='PennCNB'))
     
