@@ -20,11 +20,19 @@ export redcap_records redcap_phoenix redcap_dict API_TOKEN FORCE
 
 echo 'Deleting old records ...'
 export PATH=/data/predict/miniconda3/bin/:$PATH
-/data/predict/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
+# /data/predict/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
 
 echo  'Uploading new records ...'
 cd $redcap_phoenix
-find . -name surveys > $redcap_records
+if [ -f rpms_records.txt ]
+then
+    # rpms_records.txt should consist of selective records
+    # instead of all records under $redcap_phoenix
+    redcap_records=${redcap_phoenix}/rpms_records.txt
+else
+    find . -name surveys > $redcap_records
+fi
+
 N=`cat $redcap_records | wc -l`
 
 source /etc/profile
