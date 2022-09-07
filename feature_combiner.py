@@ -17,7 +17,7 @@ $NDA_ROOT/Prescient/PHOENIX/PROTECTED/PrescientME''')
     exit(0)
 
 
-files= glob('./**/*day1to1.csv',recursive=True)
+files= glob('./**/*-EEGqc-day1to*.csv',recursive=True)
 df= pd.read_csv(files[0])
 
 df1= pd.DataFrame(columns= list(df.columns)+['subject'])
