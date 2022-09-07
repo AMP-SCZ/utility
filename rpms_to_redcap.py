@@ -45,9 +45,12 @@ def _visit_to_event(chr_hc, form, visit_num):
     for e in events:
         if prefix in e:
            redcap_event_name= e
-           break 
-    
-    return redcap_event_name
+           break
+           
+    try:
+        return redcap_event_name
+    except UnboundLocalError:
+        raise UnboundLocalError(f'{chr_hc}, {form}, {visit_num}')
 
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
@@ -138,7 +141,10 @@ def entry_status(redcap_label,rpms_visit):
 
 
 df= pd.read_csv(incl_excl)
-chr_hc= int(df['chrcrit_part'])
+try:
+    chr_hc= int(df['chrcrit_part'])
+except ValueError:
+    raise ValueError(f'Value of chrcrit_part in {incl_excl} must be 1(CHR) or 2(HC)')
 
 form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
