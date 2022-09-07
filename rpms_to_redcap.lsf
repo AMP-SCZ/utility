@@ -27,6 +27,8 @@ do
     then
         ls -lah $form
         /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $FORCE
+        echo ''
+        echo ''
     fi
 
 done
