@@ -15,6 +15,13 @@ pushd .
 cd $i
 subject=$(basename $(dirname $i))
 
+incl_excl=${subject}_inclusionexclusion_criteria_review.csv
+if [ ! -f ${incl_excl} ]
+then
+    echo ${incl_excl} does not exist
+    exit 1
+fi
+
 # flatten multi-records
 /data/predict/utility/_flatten_multi_records.sh $subject
 
