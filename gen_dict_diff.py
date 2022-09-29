@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 
+import sys
 from os.path import abspath, dirname, join as pjoin
 from os import getcwd, chdir
 SCIRPTDIR=dirname(abspath(__file__))
 
 # ground truth dictionary
 df1=pd.read_csv('')
+df1=sys.argv[1]
 # network's dictionary
 df2=pd.read_csv('')
-
+df2=sys.argv[2]
+# network name
 network='yale'
+network=sys.argv[3]
+
 datestamp=datetime.now().strftime('%Y%m%d')
 suffix=f'{network}_{datestamp}'
 
@@ -66,8 +71,8 @@ df_var=pd.DataFrame(data={var_header:nonexistent_vars})
 dir_bak=getcwd()
 chdir(pjoin(SCRIPTDIR,'dict_diff'))
 df_var.to_csv(f'ampscz_vars_absent_in_{suffix}.csv', index=False)
-df_branch.to_csv(f'branching_logic_diff_between_ampscz_{suffix}.csv')
-df_calc.to_csv(f'calculation_diff_between_ampscz_{suffix}.csv')
+df_branch.to_csv(f'branch_logic_diff_ampscz_{suffix}.csv')
+df_calc.to_csv(f'calc_diff_ampscz_{suffix}.csv')
 chdir(dir_bak)
 
 
