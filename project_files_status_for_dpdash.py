@@ -51,9 +51,9 @@ for d in dfnew.columns.values[7:]:
 dfnew= dfnew.astype(dtype)
 
 # 3. reset the mandatory columns
-# dfnew[['reftime', 'timeofday', 'weekday']]=''
+dfnew[['reftime', 'timeofday', 'weekday']]=''
 # Justin Baker and Habib Rahimi asked for removal of all 0s
-dfnew.replace(0,'',inplace=True)
+# dfnew.replace(0,'',inplace=True)
 
 # sort dfnew by mtime
 dfnew.sort_values(by='mtime', ascending=False, inplace=True)

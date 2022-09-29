@@ -188,7 +188,7 @@ def phoenix_files_status(phoenix_dir, out_dir):
         # one subject belongs to only one site
         # so it is safe to take the first site value as the site of that subject
         subject_series_tmp= pd.DataFrame(df_tmp, index=[0])
-        subject_series_tmp.replace(0,'',inplace=True)
+        # subject_series_tmp.replace(0,'',inplace=True)
         
         # https://gist.github.com/tashrifbillah/cea43521588adf127cae79353ae09968
         # suggestion from Tashrif to link outputs to DPdash
