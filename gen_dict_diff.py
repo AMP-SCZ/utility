@@ -67,8 +67,9 @@ for form in ground_groups.groups.keys():
             df_branch.loc[v]= [row[branch_header], dft.loc[v,branch_header]]
         
         # compare calculation
-        if not pd.isna(row[calc_header]) and row[calc_header]!=dft.loc[v,calc_header]:
-            df_calc.loc[v]= [row[calc_header], dft.loc[v,calc_header]]
+        if row['field_type']=='calc':
+            if not pd.isna(row[calc_header]) and row[calc_header]!=dft.loc[v,calc_header]:
+                df_calc.loc[v]= [row[calc_header], dft.loc[v,calc_header]]
     
 
 
