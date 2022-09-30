@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PATH=/data/predict/miniconda3/bin/:$PATH
 cd /data/predict/utility/dict_diff
 CURL=`which curl`
 datestamp=$(date +"%Y%m%d")
@@ -34,22 +35,22 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
       https://redcap.partners.org/redcap/api/ > $prescient
 
 
-
-cd ..
 for net in pronet prescient
 do
-    ./gen_dict_diff.py $ampscz ${net}/${net}_dictionary_${datestamp}.csv $net
+    /data/predict/utility/gen_dict_diff.py $ampscz ${net}/${net}_dict_${datestamp}.csv $net
     suffix=${net}_${datestamp}
 
     # email report
     for p in ${@: 4:$#}
     do
 
-       echo "" | mailx -s diff_ampscz_${suffix} \
-       -a ampscz_vars_absent_in_${suffix}.csv \
-       -a branch_logic_diff_ampscz_${suffix}.csv \
-       -a calc_diff_ampscz_${suffix}.csv \
-       -- ${p}.partners.org
+        echo "" | mailx -s diff_ampscz_${suffix} \
+        -a ampscz_vars_absent_in_${suffix}.csv \
+        -a branch_logic_diff_ampscz_${suffix}.csv \
+        -a calc_diff_ampscz_${suffix}.csv \
+        -- ${p}@partners.org
+
+    done
 done
 
 
