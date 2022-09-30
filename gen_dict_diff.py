@@ -6,22 +6,26 @@ from os import getcwd, chdir
 SCIRPTDIR=dirname(abspath(__file__))
 
 # ground truth dictionary
-df1=pd.read_csv('')
-df1=sys.argv[1]
+df1=pd.read_csv(sys.argv[1])
 # network's dictionary
-df2=pd.read_csv('')
-df2=sys.argv[2]
+df2=pd.read_csv(sys.argv[2])
 # network name
-network='yale'
 network=sys.argv[3]
 
 datestamp=datetime.now().strftime('%Y%m%d')
 suffix=f'{network}_{datestamp}'
 
+# when downloaded through GUI
 var_header='Variable / Field Name'
 form_header='Form Name'
 branch_header='Branching Logic (Show field only if...)'
 calc_header='Choices, Calculations, OR Slider Labels'
+
+# when downloaded through API
+var_header='field_name'
+form_header='form_name'
+branch_header='branching_logic'
+calc_header='select_choices_or_calculations'
 
 ground_groups=df1.groupby(form_header)
 target_groups=df2.groupby(form_header)
