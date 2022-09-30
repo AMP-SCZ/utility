@@ -3,12 +3,14 @@
 import sys
 from os.path import abspath, dirname, join as pjoin
 from os import getcwd, chdir
-SCIRPTDIR=dirname(abspath(__file__))
+import pandas as pd
+from datetime import datetime
+SCRIPTDIR=dirname(abspath(__file__))
 
 # ground truth dictionary
-df1=pd.read_csv(sys.argv[1])
+df1=pd.read_csv(sys.argv[1], encoding='ISO-8859-1')
 # network's dictionary
-df2=pd.read_csv(sys.argv[2])
+df2=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
 # network name
 network=sys.argv[3]
 
