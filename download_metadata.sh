@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 
 # download this script
-# cd && wget -O down_metadata.sh
+# cd && wget https://raw.githubusercontent.com/AMP-SCZ/utility/main/download_metadata.sh
 
 # cron job at every midnight
-# 0 0 * * * ~/down_metadata.sh
+# 0 0 * * * ~/download_metadata.sh
 
 # create directory for archiving purpose
 ARCHIVE=$HOME/yale_dict_archive
