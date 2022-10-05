@@ -23,5 +23,8 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
       https://redcap.research.yale.edu/redcap/api/ > $pronet
 
 # email Tashrif and Kevin
-echo "" | mailx -s $pronet -a $pronet -r EMAIL -- tbillah@partners.org kcho@bwh.harvard.edu
+# echo "" | mailx -s $pronet -a $pronet -r EMAIL -- tbillah@partners.org kcho@bwh.harvard.edu
+
+# use dropbox as a vehicle instead
+dbxcli put $pronet pronet_metadata/$pronet
 
