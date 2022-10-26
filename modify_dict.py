@@ -9,7 +9,7 @@ if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
 
 infile= abspath(sys.argv[1])
 
-df= pd.read_csv(infile)
+df= pd.read_csv(infile, encoding='ISO-8859-1')
 type_groups= df.groupby('Field Type')
 checkbox_group= type_groups.get_group('checkbox')
 
