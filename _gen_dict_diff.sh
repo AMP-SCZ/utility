@@ -17,12 +17,15 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
 
 # download pronet dictionary
 pronet=pronet/pronet_dict_${datestamp}.csv
+: << CMT
 DATA="token=${2}&content=metadata&format=csv&returnFormat=json"
 $CURL -H "Content-Type: application/x-www-form-urlencoded" \
       -H "Accept: application/json" \
       -X POST \
       -d $DATA \
       https://redcap.partners.org/redcap/api/ > $pronet
+CMT
+cp /data/predict/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
 
 
 # download prescient dictionary
