@@ -129,8 +129,8 @@ def check_mri_and_qqc_result(root: Path) -> int:
     if _is_dir(root, 'mri', '*'):
         sub_name = [x.name for x in
                     (root / 'mri').glob('*') if x.is_dir()][0]
-    elif _is_file(root, 'mri', '*.zip'):
-        sub_name = [x.name for x in (root / 'mri').glob('*.zip')][0]
+    elif _is_file(root, 'mri', '*.[zZ][iI][pP]'):
+        sub_name = [x.name for x in (root / 'mri').glob('*.[zZ][iI][pP]')][0]
     else:
         return 0  # no mri data
 
