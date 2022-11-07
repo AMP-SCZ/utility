@@ -6,7 +6,7 @@ cd ${redcap_phoenix}
 #BSUB -q pri_pnl
 #BSUB -o /data/predict/utility/bsub/redcap-import-%J-%I.out
 #BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
-#BSUB -n 2
+#BSUB -n 4
 
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
