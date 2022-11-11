@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# to comply with eristwo limit
+import os
+os.environ['OPENBLAS_NUM_THREADS']='16'
+
 import sys
 import pandas as pd
 from os.path import abspath, basename
@@ -29,7 +34,7 @@ for _,row in checkbox_group.iterrows():
         num= int(o.split(', ')[0])
         # positive values are joined by three _
         # negative values are joined by four _
-        if num>0:
+        if num>=0:
             row1['Variable / Field Name']= f'{var}___{num}'
         else:
             row1['Variable / Field Name']= f'{var}____{abs(num)}'
