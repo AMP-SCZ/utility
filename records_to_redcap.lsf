@@ -1,7 +1,6 @@
 #!/bin/bash
 
-source /data/pnl/soft/pnlpipe3/miniconda3/bin/activate
-conda activate dpimport
+export PATH=/data/pnl/soft/pnlpipe3/miniconda3/envs/dpimport/bin/:$PATH
 cd ${redcap_phoenix}
 
 #BSUB -q pri_pnl
