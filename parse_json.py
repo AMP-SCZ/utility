@@ -12,8 +12,8 @@ import yaml
 if len(sys.argv)<3 or sys.argv[1]=='-h' or sys.argv[1]=='--help':
     print(f"""A command line program for making REDCap-like reports.
 Usage:
-./{__file__} /path/to/event_var.yaml /path/to/Network/PHOENIX/PROTECTED
-./{__file__} /path/to/event_var.yaml /path/to/Network/PHOENIX/PROTECTED */raw/*/surveys/*.Pronet.json
+{__file__} /path/to/event_var.yaml /path/to/Network/PHOENIX/PROTECTED
+{__file__} /path/to/event_var.yaml /path/to/Network/PHOENIX/PROTECTED */raw/*/surveys/*.Pronet.json
 The last template is optional.
 Sample yaml file:
 
@@ -28,6 +28,7 @@ baseline_arm_2:
     - chrdemo_age_mos_hc
 
 """)
+    exit(0)
 
 
 with open(sys.argv[1]) as f:
