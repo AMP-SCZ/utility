@@ -43,6 +43,7 @@ if len(sys.argv)==4:
 files=glob(template)
 
 L=len(files)
+values-{}
 for event,vars in rows.items():
     values[event]=''
     for v in vars:
