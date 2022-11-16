@@ -74,11 +74,13 @@ print('\n\n')
 
 for event,vars in rows.items():
     for v in vars:
-        print(event,v)
+        print('Report of',event,v)
+        print('=====================')
         for i in range(L):
             print(values[event][v][i])
 
-        print('===================\n')
+        print('=====================\n')
 
 
 chdir(dir_bak)
+
