@@ -45,7 +45,7 @@ files=glob(template)
 L=len(files)
 values={}
 for event,vars in rows.items():
-    values[event]=''
+    values[event]={}
     for v in vars:
         values[event][v]=['']*L
 
