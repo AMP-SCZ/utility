@@ -168,7 +168,8 @@ Observe *.csv.flat output file.''')
         df2=flatten_many_new()
 
     output= sys.argv[1]+'.flat'
-    df2.to_csv(output, index=False)
-    print('Generated', output)
+    if len(df2):
+        df2.to_csv(output, index=False)
+        print('Generated', output)
 
 
