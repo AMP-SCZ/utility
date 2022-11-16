@@ -1,0 +1,9 @@
+screening_arm_1:
+    - chrguid_guid
+    - chrhealth_alle
+
+baseline_arm_1:
+    - chrdemo_age_mos_chr
+
+baseline_arm_2:
+    - chrdemo_age_mos_hc
