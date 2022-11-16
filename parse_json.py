@@ -53,20 +53,32 @@ for i,file in enumerate(files):
     with open(file) as f:
         dict1=json.load(f)
 
+    print(file)
 
     for event,vars in rows.items():
 
+        print('\t',event)
+
         for v in vars:
 
-            print(event,v)
+            print('\t\t',v)
 
             for d in dict1:
                 if d['redcap_event_name']==event:
                     values[event][v][i]=d['chric_record_id']+' '+d[v]
                     break
+    print('\n')
 
-            print(values[event][v])
-            print('===================\n')
+
+print('\n\n')
+
+for event,vars in rows.items():
+    for v in vars:
+        print(event,v)
+        for i in range(L):
+            print(values[event][v][i])
+
+        print('===================\n')
 
 
 chdir(dir_bak)
