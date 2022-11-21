@@ -6,7 +6,8 @@ from pathlib import Path
 test_dir = Path(__file__).parent
 code_dir = test_dir.parent
 sys.path.append(str(code_dir))
-from util import days_from_today_to_str_date, str_date_minus_str_date
+from util import days_from_today_to_str_date, str_date_minus_str_date, \
+        check_file_delay
 from datetime import datetime, timedelta
 
 
@@ -48,3 +49,10 @@ def test_days_from_today_to_str_date():
 
     diff_days = days_from_today_to_str_date(new_date)
     assert diff_days == -2
+
+
+def test_check_file_delay():
+    file = 'missing'
+    new_date = (datetime.today() - timedelta(days=7)).strftime('%Y-%m-%d')
+    print(check_file_delay(file, new_date))
+

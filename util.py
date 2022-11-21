@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 
 def str_date_minus_str_date(date_str1: str, date_str2: str) -> int:
@@ -19,3 +20,9 @@ def days_from_today_to_str_date(date_str: str) -> int:
     return diff_days
 
 
+def check_file_delay(file: str, date_str: str) -> int:
+    '''Get time delta from today to a date in string format'''
+    if Path(file).is_file():
+        return 1
+    else:
+        return days_from_today_to_str_date(date_str)
