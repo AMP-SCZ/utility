@@ -24,16 +24,6 @@ def test_today_minus_dateofscan():
     diff_days = time_delta.days
 
 
-def str_date_minus_str_date(date_str1: str, date_str2: str) -> int:
-    '''date_str1 - date_str2 using datetime module'''
-    date1 = datetime.strptime(date_str1, '%Y-%m-%d')
-    date2 = datetime.strptime(date_str2, '%Y-%m-%d')
-
-    time_delta = -(date1 - date2)
-    diff_days = time_delta.days
-
-    return diff_days
-
 
 def test_str_date_minus_str_date():
     assert str_date_minus_str_date('2022-01-01', '2022-01-02') == 1

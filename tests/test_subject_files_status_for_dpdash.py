@@ -9,7 +9,7 @@ import os
 import shutil
 
 
-def create_fake_upenn_json(fake_json: Path, item_nums: int = 2):
+def create_fake_upenn_json(fake_json: Path, item_nums: int = 4):
     '''Create fake json'''
 
     fake_json.parent.mkdir(exist_ok=True, parents=True)
@@ -24,6 +24,18 @@ def create_fake_upenn_json(fake_json: Path, item_nums: int = 2):
                 {"session_battery": "ProNET_NOSPLLT"}
                 ]
     elif item_nums == 3:
+        fake_dict_list = [
+                {"session_battery": "ProNET_NOSPLLT"}
+                ]
+    elif item_nums == 4:
+        fake_dict_list = [
+                {"session_battery": "SPLLT-A"},
+                {"session_battery": "ProNET_NOSPLLT"},
+                {"session_battery": "SPLLT-B"},
+                {"session_battery": "ProNET_NOSPLLT_b"}
+                ]
+
+    elif item_nums == 0:
         fake_dict_list = [
                 ]
     else:
