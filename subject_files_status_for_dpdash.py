@@ -60,6 +60,8 @@ def get_summary_from_phoenix(phoenix_dir: Path) -> pd.DataFrame:
     '''Get summary from the PHOENIX structure'''
     
     subject_paths = list(phoenix_dir.glob('*/*/*/*'))
+    # skip EEG pseudo-subject GRANavg
+    subject_paths = [p for p in subject_paths if p.name!='GRANavg']
     
     df = pd.DataFrame({'p': subject_paths})
     df['subject_id'] = df.p.apply(lambda x: x.name)
