@@ -32,11 +32,13 @@ cd ${NDA_ROOT}/Prescient_status && \
 project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-flowcheck-day1to1.csv && \
 chmod g+w *
 
-echo AMPSCZ,1,'-',${name} >> ${NDA_ROOT}/${name}_metadata.csv
+
+cd ${NDA_ROOT}
+echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
+cat Pronet_status/${name}-PRONET-flowcheck-day1to1.csv > ${name}-AMPSCZ-flowcheck-day1to1.csv
+tail -n +2 Prescient_status/${name}-PRESCIENT-flowcheck-day1to1.csv >> ${name}-AMPSCZ-flowcheck-day1to1.csv
 
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
-# source .vault/.env.dpstage && ./dpimport_remote_data.sh
-# source .vault/.env.rc-predict && ./dpimport_remote_data.sh
 source .vault/.env.${2} && ./dpimport_files_status.sh
 
