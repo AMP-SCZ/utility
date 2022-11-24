@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 
 import pandas as pd
+
+import socket
+from urllib3.connection import HTTPConnection
+
+HTTPConnection.default_socket_options = (
+    HTTPConnection.default_socket_options + [
+        (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1),
+        (socket.SOL_TCP, socket.TCP_KEEPIDLE, 60),
+        (socket.SOL_TCP, socket.TCP_KEEPINTVL, 10),
+        (socket.SOL_TCP, socket.TCP_KEEPCNT, 6)
+    ]
+)
+
 import requests
 import sys
 import json
@@ -153,6 +166,10 @@ data= pd.read_csv(sys.argv[1])
 data2= []
 for _,visit in data.iterrows():
     
+    # skip Parent/Guardian consent if any
+    if 'version' in visit and visit['version']=='Parent/Guardian':
+        continue
+    
     redcap_event_name= _visit_to_event(chr_hc, form, visit['visit'])
     
     data1={
@@ -183,7 +200,7 @@ for _,visit in data.iterrows():
 
                 # number
                 try:
-                    residue= int(visit[v])-visit[v]
+                    residue= int(visit[v])-float(visit[v])
                     if residue:
                         # float
                         value= visit[v]
@@ -246,8 +263,8 @@ for _,visit in data.iterrows():
     data1[completion]= entry_status(form,visit['visit'])
     
     data2.append(data1)
-    print(data2)
-    print('')
+    # print(data2)
+    # print('')
     
 
 # for debugging, shift the entire following block by one tab
@@ -276,8 +293,8 @@ fields = {
 }
 
 r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
-print('HTTP Status: ' + str(r.status_code))
-print(r.json())
+print('\t','HTTP Status: ' + str(r.status_code))
+print('\t',r.json())
 
 # break 
 
