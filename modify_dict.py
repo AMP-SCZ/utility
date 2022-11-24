@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 
-# to comply with eristwo limit
-import os
-os.environ['OPENBLAS_NUM_THREADS']='16'
-
 import sys
 import pandas as pd
 from os.path import abspath, basename
