@@ -1,6 +1,36 @@
 #!/usr/bin/env python
 
 import pandas as pd
+
+import socket
+from urllib3.connection import HTTPConnection
+
+HTTPConnection.default_socket_options = (
+    HTTPConnection.default_socket_options + [
+        (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1),
+        (socket.SOL_TCP, socket.TCP_KEEPIDLE, 60),
+        (socket.SOL_TCP, socket.TCP_KEEPINTVL, 10),
+        (socket.SOL_TCP, socket.TCP_KEEPCNT, 6)
+    ]
+)
+
+"""
+# from tcp man page
+TCP_KEEPCNT (since Linux 2.4)
+      The maximum number of keepalive probes TCP should send before dropping the connection.  This option should  not
+      be used in code intended to be portable.
+
+TCP_KEEPIDLE (since Linux 2.4)
+      The  time  (in  seconds) the connection needs to remain idle before TCP starts sending keepalive probes, if the
+      socket option SO_KEEPALIVE has been set on this socket.  This option should not be used in code intended to  be
+      portable.
+
+TCP_KEEPINTVL (since Linux 2.4)
+      The  time (in seconds) between individual keepalive probes.  This option should not be used in code intended to
+      be portable.
+
+"""
+
 import requests
 import sys
 import json
@@ -66,19 +96,19 @@ with open(sys.argv[1]) as f:
 
 data2= []
 for visit in data:
-    # data2= []
+    data2= []
     
     redcap_event_name= visit['redcap_event_name']
-    
-    data1={
-        'chric_record_id': data[0]['chric_record_id'],
-        'redcap_event_name': redcap_event_name
-    }
     
     
     print(redcap_event_name)
 
     for form in events_group.get_group(redcap_event_name)['form']:
+        data2= []
+        data1={
+            'chric_record_id': data[0]['chric_record_id'],
+            'redcap_event_name': redcap_event_name
+        }
 
         empty=True
         data_form={}
@@ -120,41 +150,48 @@ for visit in data:
         data1[completion]= visit[completion]
         
         
-    data2.append(data1)
+        data2.append(data1)
 
-    print('')
-    
+        # print('')
+        
 
-# for debugging, shift the entire following block by one tab
+        # for debugging, shift the entire following block by one tab
 
-# save it as text and load it back to avoid REDCap import error
-fw= NamedTemporaryFile('w', delete=False)
-json.dump(data2,fw)
-fw.close()
+        # save it as text and load it back to avoid REDCap import error
+        fw= NamedTemporaryFile('w', delete=False)
+        json.dump(data2,fw)
+        fw.close()
 
-with open(fw.name) as f:
-    data2= f.read()    
+        with open(fw.name) as f:
+            data2= f.read()
 
-remove(fw.name)
+        remove(fw.name)
 
 
-fields = {
-    'token': sys.argv[3],
-    'content': 'record',
-    'action': 'import',
-    'format': 'json',
-    'type': 'flat',
-    'data': data2,
-    'overwriteBehavior': 'normal',
-    'returnContent': 'count',
-    'returnFormat': 'json'
-}
+        fields = {
+            'token': sys.argv[3],
+            'content': 'record',
+            'action': 'import',
+            'format': 'json',
+            'type': 'flat',
+            'data': data2,
+            'overwriteBehavior': 'normal',
+            'returnContent': 'count',
+            'returnFormat': 'json'
+        }
+        
+        try:
+            r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+        except requests.exceptions.ConnectionError:
+            print('Failed due to ConnectionResetError')
 
-r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
-print('HTTP Status: ' + str(r.status_code))
-print(r.json())
+        print('\t HTTP Status: ' + str(r.status_code))
+        print('\t',r.json())
 
-# break 
+        # break
+        
+        print('')
+
 
 if sys.argv[-1]=='1':
     pass
