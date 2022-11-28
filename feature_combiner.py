@@ -18,6 +18,9 @@ $NDA_ROOT/Prescient/PHOENIX/PROTECTED/PrescientME''')
 
 
 files= glob('./**/*-EEGqc-day1to*.csv',recursive=True)
+if not files:
+    print('No DPdash compatible CSV files to combine, exiting')
+    exit()
 df= pd.read_csv(files[0])
 
 df1= pd.DataFrame(columns= list(df.columns)+['subject'])
