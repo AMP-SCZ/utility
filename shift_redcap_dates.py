@@ -5,6 +5,9 @@ import json
 import numpy as np
 from os import getcwd, chdir
 from datetime import date, timedelta
+import sys
+from glob import glob
+
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
 # Usage:
@@ -16,9 +19,11 @@ prob= [1/L]*L
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
-files=glob(sys.argv[2])
 
-df=pd.read_csv(sys.argv[3], encoding='ISO-8859-1')
+df=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
+
+files=glob(sys.argv[3])
+
 
 # when downloaded through GUI
 var_header='Variable / Field Name'
@@ -38,21 +43,28 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-for file in files[:1]:
+for file in files:
     # load json
     with open(file) as f:
         dict1=json.load(f)
         
     # randomize according to multinomial distribution
-    shift= values[np.where(np.random.multinomial(1,prob))[0][0]]    
+    shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
     
     # TBD find and load metadata
-    metadata.at[subject,days_shift]=shift
+    # metadata.at[subject,days_shift]=shift
         
+    print('Processing', file)
+
     for d in dict1:
         for name,value in d.items():
+            try:
+                df.loc[name]
+            except:
+                continue
+
             if df.loc[name,field_type]=='date_ymd':
-                if not (pd.isna(value) and np.isnan(value) and value=='')
+                if not (pd.isna(value) and np.isnan(value) and value==''):
                     # shift it
                     d[name]=value+timedelta(days=shift)
 
