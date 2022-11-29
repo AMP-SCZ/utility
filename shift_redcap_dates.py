@@ -3,7 +3,8 @@
 import pandas as pd
 import json
 import numpy as np
-from os import getcwd, chdir
+from os import getcwd, chdir, makedirs
+from os.path import dirname
 from datetime import date, timedelta
 import sys
 from glob import glob
@@ -69,10 +70,12 @@ for file in files:
                     d[name]=value+timedelta(days=shift)
 
 
-file=file.replace('PROTECTED/','GENERAL/')
-file=file.replace('/raw/','/processed/')                    
-with open(file,'w') as f:
-    json.dump(dict1)    
+    file=file.replace('PROTECTED/','GENERAL/')
+    file=file.replace('/raw/','/processed/')
+
+    makedirs(dirname(file), mode=0o660, exist_ok=True)
+    with open(file,'w') as f:
+        json.dump(dict1)
 
 
 # save metadata
