@@ -44,7 +44,7 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-for file in files:
+for file in files[:2]:
     # load json
     with open(file) as f:
         dict1=json.load(f)
@@ -73,9 +73,9 @@ for file in files:
     file=file.replace('PROTECTED/','GENERAL/')
     file=file.replace('/raw/','/processed/')
 
-    makedirs(dirname(file), mode=0o660, exist_ok=True)
+    makedirs(dirname(file), mode=0o775, exist_ok=True)
     with open(file,'w') as f:
-        json.dump(dict1)
+        json.dump(dict1,f)
 
 
 # save metadata
