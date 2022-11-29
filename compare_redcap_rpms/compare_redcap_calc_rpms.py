@@ -23,7 +23,7 @@ for sub in ['ME21922','ME22598','ME78581']:
 
     dfsub=groups.get_group(sub).set_index('variable')
 
-    dfsub1=pd.DataFrame(columns=['variable','rpms_value','redcap_value'])
+    dfsub1=pd.DataFrame(columns=['variable','type','rpms_value','redcap_value'])
 
 
     # load json
@@ -51,7 +51,7 @@ for sub in ['ME21922','ME22598','ME78581']:
                         
                     elif dfsub.loc[v,'value']!=d[v]:
                         
-                        dfsub1.loc[i]= [v,dfsub.loc[v,'value'],d[v]]
+                        dfsub1.loc[i]= [v,dfsub.loc[v,'type'],dfsub.loc[v,'value'],d[v]]
                         i+=1
                         
                 except KeyError:
