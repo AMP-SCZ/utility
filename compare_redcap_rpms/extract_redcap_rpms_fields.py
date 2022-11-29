@@ -32,6 +32,8 @@ if var_col not in df:
 
 groups=df.groupby(form_col)
 
+
+# input for experiment on 10/12/2022
 # forms=['family_interview_for_genetic_studies_figs','psychs_p1p8','psychs_p9ac32','scid5_psychosis_mood_substance_abuse']
 # types=['text', 'radio', 'checkbox', 'dropdown', 'yesno', 'calc']
 # 
@@ -43,24 +45,43 @@ groups=df.groupby(form_col)
 #             ['screening_arm_1','screening_arm_1','screening_arm_1','baseline_arm_1']}
 # 
 # rpms_dirs={'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME21922':[1,1,1,2],
-#     'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME78581':[1,1,1,2],
-#     'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME22598':[1,1,1,2]}
+#            'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME78581':[1,1,1,2],
+#            'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME22598':[1,1,1,2]}
 
 
 
-forms=['sofas_screening', 'scid5_schizotypal_personality_sciddpq']
-types=['text', 'radio', 'checkbox', 'dropdown', 'yesno']
+# input for experiment on 11/15/2022
+# forms=['sofas_screening', 'scid5_schizotypal_personality_sciddpq']
+# types=['text', 'radio', 'checkbox', 'dropdown', 'yesno']
+# 
+# json_event={'Pronet/PHOENIX/PROTECTED/PronetYA/raw/YA01508/surveys/YA01508.Pronet.json':
+#             ['screening_arm_1','screening_arm_1'],
+#             'Pronet/PHOENIX/PROTECTED/PronetPI/raw/PI01355/surveys/PI01355.Pronet.json':
+#             ['screening_arm_2','screening_arm_2'],
+#             'Pronet/PHOENIX/PROTECTED/PronetWU/raw/WU05257/surveys/WU05257.Pronet.json':
+#             ['screening_arm_1','screening_arm_1']}
+# 
+# rpms_dirs={'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME21922':[1,1],
+#            'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME78581':[1,1],
+#            'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME22598':[1,1]}
+
+
+
+# input for experiment on 11/29/2022
+forms=['family_interview_for_genetic_studies_figs','psychs_p1p8','psychs_p9ac32','sofas_screening', 'scid5_schizotypal_personality_sciddpq','scid5_psychosis_mood_substance_abuse']
+types=['text', 'radio', 'checkbox', 'dropdown', 'yesno', 'calc']
 
 json_event={'Pronet/PHOENIX/PROTECTED/PronetYA/raw/YA01508/surveys/YA01508.Pronet.json':
-            ['screening_arm_1','screening_arm_1'],
+            ['screening_arm_1','screening_arm_1','screening_arm_1','screening_arm_1','screening_arm_1','baseline_arm_1'],
             'Pronet/PHOENIX/PROTECTED/PronetPI/raw/PI01355/surveys/PI01355.Pronet.json':
-            ['screening_arm_2','screening_arm_2'],
+            ['screening_arm_2','screening_arm_2','screening_arm_2','screening_arm_2','screening_arm_2','baseline_arm_2'],
             'Pronet/PHOENIX/PROTECTED/PronetWU/raw/WU05257/surveys/WU05257.Pronet.json':
-            ['screening_arm_1','screening_arm_1']}
+            ['screening_arm_1','screening_arm_1','screening_arm_1','screening_arm_1','screening_arm_1','baseline_arm_1']}
 
-rpms_dirs={'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME21922':[1,1],
-    'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME78581':[1,1],
-    'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME22598':[1,1]}
+rpms_dirs={'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME21922':[1,1,1,1,1,2],
+           'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME78581':[1,1,1,1,1,2],
+           'Prescient/PHOENIX/PROTECTED/PrescientME/raw/ME22598':[1,1,1,1,1,2]}
+
 
 
 
