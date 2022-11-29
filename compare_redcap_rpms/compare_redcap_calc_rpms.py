@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import os
-os.environ['OPENBLAS_NUM_THREADS']='16'
 import pandas as pd
 import json
 import numpy as np
 from os import getcwd, chdir
+from os.path import dirname
+import sys
 
 
 # Compare REDCap computed calc fields against those extracted from RPMS
@@ -16,7 +16,7 @@ from os import getcwd, chdir
 dir_bak=getcwd()
 
 df=pd.read_csv(sys.argv[1])
-chdir(dirname(sys.argv[1])
+chdir(dirname(sys.argv[1]))
 groups=df.groupby('subject')
 
 for sub in ['ME21922','ME22598','ME78581']:
