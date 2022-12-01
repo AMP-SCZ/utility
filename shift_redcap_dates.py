@@ -68,9 +68,18 @@ for file in files[:2]:
 
             if df.loc[name,valid_header]=='date_ymd':
                 if value:
+                    _format='%Y-%m-%d'
                     # shift it
-                    value=datetime.strptime(value,'%Y-%m-%d')+timedelta(days=shift)
-                    d[name]=value.strftime('%Y-%m-%d')
+                    value=datetime.strptime(value,_format)+timedelta(days=shift)
+                    d[name]=value.strftime(_format)
+
+            elif df.loc[name,valid_header]=='datetime_ymd':
+                if value:
+                    print(value)
+                    _format='%Y-%m-%d %H:%M'
+                    # shift it
+                    value=datetime.strptime(value,_format)+timedelta(days=shift)
+                    d[name]=value.strftime(_format)
 
 
     file=file.replace('PROTECTED/','GENERAL/')
