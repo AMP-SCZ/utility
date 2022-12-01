@@ -58,7 +58,8 @@ for file in files[:2]:
         dict2=json.load(f)
         
     print('Comparing', file)
-
+    
+    _shift={}
     for d1,d2 in zip(dict1,dict2):
         for name,value in d1.items():
             try:
@@ -69,14 +70,14 @@ for file in files[:2]:
             if df.loc[name,valid_header]=='date_ymd':
                 _format='%Y-%m-%d'
                 if value:
-                    print(datetime.strptime(d1[name],_format) - datetime.strptime(d2[name],_format))
+                    _shift[datetime.strptime(d2[name],_format) - datetime.strptime(d1[name],_format)]=''
             elif df.loc[name,valid_header]=='datetime_ymd':
                 _format='%Y-%m-%d %H:%M'
                 if value:
-                    print(datetime.strptime(d1[name],_format) - datetime.strptime(d2[name],_format))
+                    _shift[datetime.strptime(d2[name],_format) - datetime.strptime(d1[name],_format)]=''
         
 
-    print('')
+    print(_shift.keys(),'\n')
 
 chdir(dir_bak)
 
