@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import numpy as np
 from os import getcwd, chdir, makedirs
-from os.path import dirname
+from os.path import dirname, basename
 from datetime import datetime, timedelta
 import sys
 from glob import glob
@@ -13,17 +13,27 @@ from glob import glob
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
 # Usage:
 # __file__ NDA_ROOT /path/to/redcap_data_dict.csv "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json"
+# __file__ PHOENIX_PROTECTED /path/to/redcap_data_dict.csv "*/raw/*/surveys/*.Pronet.json"
 
 _shift= [-14,-7,7,14]
 L= len(_shift)
 prob= [1/L]*L
 
+df=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
+
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-df=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
-
 files=glob(sys.argv[3])
+dfshift=pd.read_csv('date_offset.csv')
+dfshift.set_index('subject',inplace=True)
+for file in files:
+    if file not in dfshift.index:
+        # randomize according to multinomial distribution
+        shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
+        dfshift.at[basename(file),'days']=shift
+
+dfshift.to_csv('date_offset.csv')
 
 
 # when downloaded through GUI
@@ -47,16 +57,15 @@ df.set_index(var_header,inplace=True)
 
 
 for file in files[:2]:
+
+    # skip unchanged JSONs
+
     # load json
     with open(file) as f:
         dict1=json.load(f)
         
-    # randomize according to multinomial distribution
-    shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
+    shift= dfshift.loc[basename(file),'days']
     
-    # TBD find and load metadata
-    # metadata.at[subject,days_shift]=shift
-        
     print('Processing', file)
 
     for d in dict1:
@@ -75,7 +84,6 @@ for file in files[:2]:
 
             elif df.loc[name,valid_header]=='datetime_ymd':
                 if value:
-                    print(value)
                     _format='%Y-%m-%d %H:%M'
                     # shift it
                     value=datetime.strptime(value,_format)+timedelta(days=shift)
@@ -89,10 +97,6 @@ for file in files[:2]:
     with open(file,'w') as f:
         json.dump(dict1,f)
 
-
-# save metadata
-
-# skip unchanged JSONs
 
 chdir(dir_bak)
 
