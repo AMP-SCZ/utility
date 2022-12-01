@@ -5,7 +5,7 @@ import json
 import numpy as np
 from os import getcwd, chdir, makedirs
 from os.path import dirname
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 import sys
 from glob import glob
 
@@ -32,6 +32,7 @@ field_type='Field Type'
 form_header='Form Name'
 branch_header='Branching Logic (Show field only if...)'
 calc_header='Choices, Calculations, OR Slider Labels'
+valid_header='Text Validation Type OR Show Slider Number'
 
 # when downloaded through API
 if var_header not in df:
@@ -40,6 +41,7 @@ if var_header not in df:
     form_header='form_name'
     branch_header='branching_logic'
     calc_header='select_choices_or_calculations'
+    valid_header='text_validation_type_or_show_slider_number'
 
 df.set_index(var_header,inplace=True)
 
@@ -64,10 +66,11 @@ for file in files[:2]:
             except:
                 continue
 
-            if df.loc[name,field_type]=='date_ymd':
-                if not (pd.isna(value) and np.isnan(value) and value==''):
+            if df.loc[name,valid_header]=='date_ymd':
+                if value:
                     # shift it
-                    d[name]=value+timedelta(days=shift)
+                    value=datetime.strptime(value,'%Y-%m-%d')+timedelta(days=shift)
+                    d[name]=value.strftime('%Y-%m-%d')
 
 
     file=file.replace('PROTECTED/','GENERAL/')
