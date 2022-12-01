@@ -67,8 +67,13 @@ for file in files[:2]:
                 continue
 
             if df.loc[name,valid_header]=='date_ymd':
+                _format='%Y-%m-%d'
                 if value:
-                    print(datetime.strptime(d1[name],'%Y-%m-%d') - datetime.strptime(d2[name],'%Y-%m-%d'))
+                    print(datetime.strptime(d1[name],_format) - datetime.strptime(d2[name],_format))
+            elif df.loc[name,valid_header]=='datetime_ymd':
+                _format='%Y-%m-%d %H:%M'
+                if value:
+                    print(datetime.strptime(d1[name],_format) - datetime.strptime(d2[name],_format))
         
 
     print('')
