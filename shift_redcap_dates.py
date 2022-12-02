@@ -8,6 +8,7 @@ from os.path import dirname, basename, abspath
 from datetime import datetime, timedelta
 import sys
 from glob import glob
+from multiprocessing import Pool
 
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
@@ -61,6 +62,7 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
+pool= Pool(sys.argv[4] if len(sys.argv)==5 else 12)
 for file in files:
 
     # skip unchanged JSONs
@@ -103,6 +105,10 @@ for file in files:
     makedirs(dirname(file), mode=0o775, exist_ok=True)
     with open(file,'w') as f:
         json.dump(dict1,f)
+
+
+pool.close()
+pool.join()
 
 
 chdir(dir_bak)
