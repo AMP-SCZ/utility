@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import sys
 from glob import glob
 from multiprocessing import Pool
+import signal
 
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
@@ -62,6 +63,10 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
+def RAISE(err):
+    raise err
+
+
 def _shift_date(file):
     # skip unchanged JSONs
 
@@ -106,12 +111,27 @@ def _shift_date(file):
 
 
 
-pool= Pool(sys.argv[4] if len(sys.argv)==5 else 12)
-pool.map_async(_shift_date, files)
-pool.close()
-pool.join()
-for file in files:
-    _shift_date(file)
+if len(sys.argv)==5:
+    ncpu=int(sys.argv[4])
+else:
+    ncpu=16
+
+if ncpu==1:
+    # useful for debugging
+    for file in files:
+        _shift_date(file)
+else:
+    sigint_handler= signal.signal(signal.SIGINT, signal.SIG_IGN)
+    pool= Pool(ncpu)
+    signal.signal(signal.SIGINT, sigint_handler)
+    try:
+        pool.map_async(_shift_date, files, error_callback=RAISE)
+    except KeyboardInterrupt:
+        pool.terminate()
+    else:
+        pool.close()
+    pool.join()
+
 
 chdir(dir_bak)
 
