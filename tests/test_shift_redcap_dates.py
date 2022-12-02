@@ -4,19 +4,16 @@ import pandas as pd
 import json
 import numpy as np
 from os import getcwd, chdir, makedirs
-from os.path import dirname
+from os.path import dirname, abspath, basename
 from datetime import datetime, timedelta
 import sys
 from glob import glob
-
+from multiprocessing import Pool
+import signal
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
 # Usage:
 # __file__ NDA_ROOT /path/to/redcap_data_dict.csv "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json"
-
-_shift= [-14,-7,7,14]
-L= len(_shift)
-prob= [1/L]*L
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
@@ -46,12 +43,16 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-for file in files:
+def RAISE(err):
+    raise err
+
+def _test_shift(file):
     # load original json
     with open(file) as f:
         dict1=json.load(f)
     
     # load shifted json
+    file=abspath(file)
     file=file.replace('PROTECTED/','GENERAL/')
     file=file.replace('/raw/','/processed/')
     with open(file) as f:
@@ -77,7 +78,36 @@ for file in files:
                     _shift[datetime.strptime(d2[name],_format) - datetime.strptime(d1[name],_format)]=''
         
 
-    print(_shift.keys(),'\n')
+    # print(_shift.keys(),'\n')
+
+    return list(_shift.keys())
+
+
+if len(sys.argv)==5:
+    ncpu=int(sys.argv[4])
+else:
+    ncpu=16
+
+if ncpu==1:
+    # useful for debugging
+    for file in files:
+        _test_shift(file)
+else:
+    sigint_handler= signal.signal(signal.SIGINT, signal.SIG_IGN)
+    pool= Pool(ncpu)
+    signal.signal(signal.SIGINT, sigint_handler)
+    try:
+        res=pool.map_async(_test_shift, files, error_callback=RAISE)
+        shifts= res.get()
+    except KeyboardInterrupt:
+        pool.terminate()
+    else:
+        pool.close()
+    pool.join()
+
+
+for f,s in zip(files,shifts):
+    print(basename(f).split('.')[0],s)
 
 chdir(dir_bak)
 
