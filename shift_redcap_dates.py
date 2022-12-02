@@ -62,9 +62,7 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-pool= Pool(sys.argv[4] if len(sys.argv)==5 else 12)
-for file in files:
-
+def _shift_date(file):
     # skip unchanged JSONs
 
     # load json
@@ -107,9 +105,13 @@ for file in files:
         json.dump(dict1,f)
 
 
+
+pool= Pool(sys.argv[4] if len(sys.argv)==5 else 12)
+pool.map_async(_shift_date, files)
 pool.close()
 pool.join()
-
+for file in files:
+    _shift_date(file)
 
 chdir(dir_bak)
 
