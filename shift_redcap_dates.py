@@ -89,7 +89,7 @@ for file in files:
                     d[name]=value.strftime(_format)
 
             elif df.loc[name,valid_header]=='datetime_ymd':
-                if value:
+                if value and value not in ['-3','-9','1909-09-09','1903-03-03','1901-01-01']:
                     _format='%Y-%m-%d %H:%M'
                     # shift it
                     value=datetime.strptime(value,_format)+timedelta(days=shift)

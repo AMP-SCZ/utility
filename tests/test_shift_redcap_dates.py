@@ -46,7 +46,7 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-for file in files[:2]:
+for file in files:
     # load original json
     with open(file) as f:
         dict1=json.load(f)
@@ -69,11 +69,11 @@ for file in files[:2]:
 
             if df.loc[name,valid_header]=='date_ymd':
                 _format='%Y-%m-%d'
-                if value:
+                if value and value not in ['-3','-9','1909-09-09','1903-03-03','1901-01-01']:
                     _shift[datetime.strptime(d2[name],_format) - datetime.strptime(d1[name],_format)]=''
             elif df.loc[name,valid_header]=='datetime_ymd':
                 _format='%Y-%m-%d %H:%M'
-                if value:
+                if value and value not in ['-3','-9','1909-09-09','1903-03-03','1901-01-01']:
                     _shift[datetime.strptime(d2[name],_format) - datetime.strptime(d1[name],_format)]=''
         
 
