@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import numpy as np
 from os import getcwd, chdir, makedirs
-from os.path import dirname, basename
+from os.path import dirname, basename, abspath
 from datetime import datetime, timedelta
 import sys
 from glob import glob
@@ -27,13 +27,18 @@ chdir(sys.argv[1])
 files=glob(sys.argv[3])
 dfshift=pd.read_csv('date_offset.csv')
 dfshift.set_index('subject',inplace=True)
+save=0
 for file in files:
-    if file not in dfshift.index:
+    subject=basename(file).split('.')[0]
+
+    if subject not in dfshift.index:
         # randomize according to multinomial distribution
         shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
-        dfshift.at[basename(file),'days']=shift
+        dfshift.at[subject,'days']=shift
+        save=1
 
-dfshift.to_csv('date_offset.csv')
+if save:
+    dfshift.to_csv('date_offset.csv')
 
 
 # when downloaded through GUI
@@ -56,15 +61,16 @@ if var_header not in df:
 df.set_index(var_header,inplace=True)
 
 
-for file in files[:2]:
+for file in files:
 
     # skip unchanged JSONs
 
     # load json
     with open(file) as f:
         dict1=json.load(f)
-        
-    shift= dfshift.loc[basename(file),'days']
+    
+    subject=basename(file).split('.')[0]
+    shift= int(dfshift.loc[subject,'days'])
     
     print('Processing', file)
 
@@ -76,7 +82,7 @@ for file in files[:2]:
                 continue
 
             if df.loc[name,valid_header]=='date_ymd':
-                if value:
+                if value and value not in ['-3','-9','1909-09-09','1903-03-03','1901-01-01']:
                     _format='%Y-%m-%d'
                     # shift it
                     value=datetime.strptime(value,_format)+timedelta(days=shift)
@@ -89,7 +95,8 @@ for file in files[:2]:
                     value=datetime.strptime(value,_format)+timedelta(days=shift)
                     d[name]=value.strftime(_format)
 
-
+    
+    file=abspath(file)
     file=file.replace('PROTECTED/','GENERAL/')
     file=file.replace('/raw/','/processed/')
 
