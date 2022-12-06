@@ -14,34 +14,22 @@ import signal
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
 # Usage:
-# __file__ NDA_ROOT /path/to/redcap_data_dict.csv "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json"
-# __file__ PHOENIX_PROTECTED /path/to/redcap_data_dict.csv "*/raw/*/surveys/*.Pronet.json"
+# __file__ NDA_ROOT "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv
+# __file__ PHOENIX_PROTECTED "*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv
 
 _shift= [-14,-7,7,14]
 L= len(_shift)
 prob= [1/L]*L
 
-df=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
-
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-files=glob(sys.argv[3])
+files=glob(sys.argv[2])
+
 dfshift=pd.read_csv('date_offset.csv')
 dfshift.set_index('subject',inplace=True)
-save=0
-for file in files:
-    subject=basename(file).split('.')[0]
 
-    if subject not in dfshift.index:
-        # randomize according to multinomial distribution
-        shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
-        dfshift.at[subject,'days']=shift
-        save=1
-
-if save:
-    dfshift.to_csv('date_offset.csv')
-
+df=pd.read_csv(sys.argv[3], encoding='ISO-8859-1')
 
 # when downloaded through GUI
 var_header='Variable / Field Name'
