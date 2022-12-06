@@ -8,7 +8,7 @@ PHOENIX_PROTECTED=$1
 JSON=$2
 
 cd /data/predict/utility/
-./_set_date_shifts.py $PHOENIX_PROTECTED $JSON
+./set_date_shifts.py $PHOENIX_PROTECTED $JSON
 ./shift_redcap_dates.py $PHOENIX_PROTECTED $JSON $3
 
 
