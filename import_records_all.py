@@ -53,30 +53,21 @@ forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignati
 if sys.argv[-1]=='1':
     pass
 else:
-    # load and compare old os.stat() of REDCap JSON file
-    hashfile= pjoin(abspath(dirname(__file__)), '.json_os.stat_hashes.npy')
+    subject=basename(sys.argv[1]).split('.')[0]
+    
+    hashfile=abspath('date_offset.csv')
     if isfile(hashfile):
-        hashes= load(hashfile, allow_pickle=True).item()
-    else:
-        hashes= {}
 
-    json_file= basename(sys.argv[1])
-    if json_file in hashes:
-        old_hash= hashes[json_file]
-    else:
-        old_hash= ''
+        dfshift=pd.read_csv(hashfile)
+        dfshift.set_index('subject',inplace=True)
 
-    curr_stat= stat(sys.argv[1])
-    curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
-    curr_hash= md5(curr_stat.encode('utf-8')).hexdigest()
-
-    hashes1= deepcopy(hashes)
-    hashes1[json_file]= curr_hash
-    if curr_hash != old_hash:
-        print(json_file, 'does not exist in REDCap or has been modified, preparing for upload to REDCap')
+        # skip unchanged JSONs
+        if dfshift.loc[subject,'upload']==0:
+            print(sys.argv[1], 'has not been modified, skipping')
+            exit()
+    
     else:
-        print(json_file, 'has not been modified, skipping')
-        exit()
+        print('Could not find {}, so force uploading {}'.format(hashfile,sys.argv[1]))
 
 
 dirbak= getcwd()
