@@ -56,13 +56,17 @@ def RAISE(err):
 
 
 def _shift_date(file):
+
+    subject=basename(file).split('.')[0]
+    
     # skip unchanged JSONs
+    if dfshift.loc[subject,'upload']==0:
+        return
 
     # load json
     with open(file) as f:
         dict1=json.load(f)
     
-    subject=basename(file).split('.')[0]
     shift= int(dfshift.loc[subject,'days'])
     
     print('Processing', file)
