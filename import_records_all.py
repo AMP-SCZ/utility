@@ -184,10 +184,3 @@ for visit in data:
         print('')
 
 
-if sys.argv[-1]=='1':
-    pass
-else:
-    # save new hash
-    save(hashfile, hashes1)
-
-
