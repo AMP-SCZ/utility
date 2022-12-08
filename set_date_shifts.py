@@ -25,20 +25,10 @@ dir_bak=getcwd()
 chdir(sys.argv[1])
 
 files=glob(sys.argv[2])
-
-# date shifter
 dfshift=pd.read_csv('date_offset.csv')
 dfshift.set_index('subject',inplace=True)
-for file in files:
-    subject=basename(file).split('.')[0]
-
-    if subject not in dfshift.index:
-        # randomize according to multinomial distribution
-        shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
-        dfshift.at[subject,'days']=shift
 
 
-# changed determiner
 for file in files:
     subject=basename(file).split('.')[0]
     
@@ -46,6 +36,21 @@ for file in files:
     curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
     curr_hash= md5(curr_stat.encode('utf-8')).hexdigest()
 
+    try:
+        dfshift.loc[subject]
+    except:
+        # date shift setter
+        print('New subject', subject)
+
+        # randomize according to multinomial distribution
+        shift= _shift[np.where(np.random.multinomial(1,prob))[0][0]]
+        dfshift.at[subject,'days']=shift
+        # always upload new subjects
+        dfshift.loc[subject]=[shift,curr_hash,1]
+        continue
+
+
+    # changed determiner
     if dfshift.loc[subject,'stat_hash']!=curr_hash:
         # store the new hash
         dfshift.at[subject,'stat_hash']=curr_hash
@@ -57,6 +62,7 @@ for file in files:
 
 
 dfshift= dfshift.astype({'days':'short','stat_hash':str,'upload':'short'})
+dfshift.sort_index(inplace=True)
 pd.set_option("display.max_rows", None)
 print(dfshift)
 dfshift.to_csv('date_offset.csv')
