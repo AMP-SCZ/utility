@@ -1,10 +1,12 @@
-# generate lochness datalake's files status hourly for dpdash, hourly
-20 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda/ rc-predict
-25 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda_dev/ dpstage
+# PREDICT cron jobs are at eris2n4, eris2n5, hna002
 
-# import AVL QC data, daily at 4 pm
-00 16 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda/ rc-predict
-05 16 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda_dev/ dpstage
+# generate lochness datalake's files status at 6 am and 9pm for dpdash
+00 6,21 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda/ rc-predict
+30 6,21 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda_dev/ dpstage
+
+# import AVL QC data, daily at 10 pm
+30 22 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda/ rc-predict
+45 22 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda_dev/ dpstage
 
 # clear REDCap upload logs, every monday at 12 am
 0 * * * 1 rm -f /data/predict/utility/bsub/*
@@ -22,7 +24,12 @@
 0 0 * * 2 /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda_dev/Pronet/PHOENIX/PROTECTED /data/predict/utility/redcap-ii-yale 123456
 
 # ProNET real
-0 23 * * * /data/predict/utility/_shift_redcap_dates.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict/utility/yale-real/ProNETPsychosisRiskOutcomesNet_DataDictionary_2022-10-28_checkbox.csv
-0 0 * * 3 /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict/utility/yale-real 123456
+0 22 * * * /data/predict/utility/_shift_redcap_dates.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict/utility/yale-real/ProNETPsychosisRiskOutcomesNet_DataDictionary_2022-10-28_checkbox.csv && /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict/utility/yale-real 123456
 
+# every morning at 3 am
+0 3 * * * /data/predict/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict/data_from_nda/Pronet
+# every morning at 4 am
+0 4 * * * /data/predict/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict/data_from_nda/Prescient
 
+# generate dictionary diff between AMP-SCZ and networks
+0 6 * * * /data/predict/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix gjacobs1
