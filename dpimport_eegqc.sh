@@ -22,7 +22,7 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"EEGqc\"]" /data/predict/utility/remove_assess.js
+--eval "assess=[\"EEGqc\",\"EEGquick\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
@@ -65,4 +65,4 @@ popd
 # subject level data
 cd $NDA_ROOT
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv"
-
+import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGquick-day1to*.csv"
