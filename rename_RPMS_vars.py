@@ -6,6 +6,7 @@ from glob import glob
 from datetime import date
 from os import getcwd, chdir
 import sys
+import re
 
 suffix=date.today().strftime('%d.%m.%Y.csv')
 suffix='13.12.2022.csv'
@@ -20,12 +21,14 @@ for prefix in dict1.keys():
     
     with open(file) as f:
         content=f.read()
+        header=content.split('\n')[0]
         
     
     for line in dict1[prefix]:
         v,vnew=line.split(',')
         
-        content=content.replace(v,vnew)
+        if vnew not in header:
+            content=content.replace(v,vnew)
         
 
     copyfile(file, file+'.bak')
