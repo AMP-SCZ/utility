@@ -1,0 +1,78 @@
+PrescientStudy_Prescient_item_promis_for_sleep_:
+- chrpromise_sleep108,chrpromis_sleep108
+
+PrescientStudy_Prescient_global_functioning_social_scale_:
+- chrgfss_overallsat,chrgfs_overallsat
+- chrgfss_gf_social_scale,chrgfs_gf_social_scale
+- chrgfss_gf_social_low,chrgfs_gf_social_low
+- chrgfss_gf_social_high,chrgfs_gf_social_high
+- chrgfssfu_overallsat,chrgfsfu_overallsat
+- chrgfssfu_gf_social_scale,chrgfsfu_gf_social_scale
+
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_checkin_:
+- chrdig_discuss_process,chrdig_discuss_process___1
+- chrdig_permission_on,chrdig_permission_on___1
+- chrdig_technical,chrdig_technical___1
+- chrdig_practical,chrdig_practical___1
+- chrdig_motivational,chrdig_motivational___1
+- chrdig_reminder,chrdig_reminder___1
+
+PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_: 
+- chrscid_scid_checked,chrscid_scid_checked___1
+- chrscid_remote_agree,chrscid_remote_agree___1
+- chrscid_lifechart_check,chrscid_lifechart_check___0
+- chrscid_s_skip,chrscid_s_skip___1
+- chrscid_current_mde_spec,chrscid_current_mde_spec___1
+- chrscid_scid5_pastmde_yes,chrscid_scid5_pastmde_yes___1
+- chrscid_current_mania_spec,chrscid_current_mania_spec___1
+- chrscid_scid5_hypomania_skip,chrscid_scid5_hypomania_skip___1
+- chrscid_a88,chrscid_a88___1
+- chrscid_a89,chrscid_a89___1
+- chrscid_current_hypo_spec,chrscid_current_hypo_spec___1
+- chrscid_scid5_pastmanic_yes,chrscid_scid5_pastmanic_yes___1
+- chrscid_a126,chrscid_a126___1
+- chrscid_a127,chrscid_a127___1
+- chrscid_a131,chrscid_a131___1
+- chrscid_current_cyclo_spec,chrscid_current_cyclo_spec___1
+- chrscid_a139,chrscid_a139___1
+- chrscid_a156,chrscid_a156___1
+- chrscid_current_persist_spec,chrscid_current_persist_spec___1
+- chrscid_a172,chrscid_a172___1
+- chrscid_complete_gmcsub_dep,chrscid_complete_gmcsub_dep___1
+- chrscid_complete_gmcsub_bipolar,chrscid_complete_gmcsub_bipolar___1
+- chrscid_a194,chrscid_a194___1
+- chrscid_a199,chrscid_a199___1
+- chrscid_a201,chrscid_a201___1
+- chrscid_a207,chrscid_a207___1
+- chrscid_a209,chrscid_a209___1
+- chrscid_a214,chrscid_a214___1
+- chrscid_a216,chrscid_a216___1
+- chrscid_a222,chrscid_a222___1
+- chrscid_b23,chrscid_b23___1
+- chrscid_b49,chrscid_b49___1
+- chrscid_b54,chrscid_b54___1
+- chrscid_b59,chrscid_b59___1
+- chrscid_b64,chrscid_b64___1
+- chrscid_c11,chrscid_c11___1
+- chrscid_c21,chrscid_c21___1
+- chrscid_c28,chrscid_c28___1
+- chrscid_c39,chrscid_c39___1
+- chrscid_c46,chrscid_c46___1
+- chrscid_c47,chrscid_c47___1
+- chrscid_show_gmcsubst,chrscid_show_gmcsubst___1
+- chrscid_d1,chrscid_d1___1
+- chrscid_d25,chrscid_d25___1
+- chrscid_d30,chrscid_d30___1
+- chrscid_d41,chrscid_d41___1
+- chrscid_d47_d52,chrscid_d47_d52___1
+- chrscid_d50_d55_d57,chrscid_d50_d55_d57___1
+- chrscid_d63,chrscid_d63___1
+- chrscid_d66,chrscid_d66___1
+- chrscid_e18,chrscid_e18___1
+- chrscid_e19_b,chrscid_e19_b___1
+- chrscid_e17_35,chrscid_e17_35___1
+- chrscid_no_drug_lifetime,chrscid_no_drug_lifetime___1
+- chrscid_e162_340,chrscid_e162_340___1
+- chrscid_e193_331,chrscid_e193_331___1
+
+
