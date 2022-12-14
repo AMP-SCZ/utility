@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from shutil import copyfile
+from shutil import move
 from yaml import safe_load
 from glob import glob
 from datetime import date
 from os import getcwd, chdir, environ
 from os.path import isfile
 import sys
-import re
+
 
 suffix=date.today().strftime('%d.%m.%Y.csv')
 
@@ -40,17 +40,23 @@ for pattern in dict1.keys():
     
     with open(file) as f:
         content=f.read()
-        header=content.split('\n')[0]
+        header,data=content.split('\n',1)
+        _header=header
         
     
     for line in dict1[pattern]:
         v,vnew=line.split(',')
         
         if vnew not in header:
-            content=content.replace(v,vnew)
-        
+            # we know that v occurs only once in the header
+            header=header.replace(v,vnew,1)
 
-    copyfile(file, file+'.bak')
+    # we know that header occurs only once in the content
+    # the 1 should prevent search over the entire content
+    content=content.replace(_header,header,1)
+    
+
+    move(file, file+'.bak')
     with open(file,'w') as f:
         f.write(content)
 
