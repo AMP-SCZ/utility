@@ -4,20 +4,30 @@ from shutil import copyfile
 from yaml import safe_load
 from glob import glob
 from datetime import date
-from os import getcwd, chdir
+from os import getcwd, chdir, environ
 import sys
 import re
 
-suffix=date.today().strftime('%d.%m.%Y.csv')
-suffix='13.12.2022.csv'
+if environ['HOSTNAME'].endswith('orygen.org.au'):
+    suffix=date.today().strftime('%d.%m.%Y.csv')
+
 with open('rename_RPMS_vars.yaml') as f:
     dict1=safe_load(f)
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
     
-for prefix in dict1.keys():
-    file=prefix+suffix
+for pattern in dict1.keys():
+
+    if environ['HOSTNAME'].endswith('orygen.org.au'):
+        file=pattern+suffix
+    else:
+        try:
+            file=glob('*'+pattern)[0]
+        except IndexError:
+            # file does not exist
+            continue
+
     
     with open(file) as f:
         content=f.read()
