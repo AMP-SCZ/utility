@@ -40,21 +40,23 @@ for pattern in dict1.keys():
     
     with open(file) as f:
         content=f.read()
+        # we need only 1 split
         header,data=content.split('\n',1)
-        _header=header
         
     
     for line in dict1[pattern]:
         v,vnew=line.split(',')
+        # stricten the patterns
+        v=f',{v},'
+        vnew=f',{vnew},'
         
         if vnew not in header:
             # we know that v occurs only once in the header
+            # the 1 should prevent search over the entire header
+            # and thereby increase speed
             header=header.replace(v,vnew,1)
 
-    # we know that header occurs only once in the content
-    # the 1 should prevent search over the entire content
-    content=content.replace(_header,header,1)
-    
+    content=header+'\n'+data
 
     move(file, file+'.bak')
     with open(file,'w') as f:
