@@ -75,4 +75,25 @@ PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_:
 - chrscid_e162_340,chrscid_e162_340___1
 - chrscid_e193_331,chrscid_e193_331___1
 
+_health_conditions_medical_historypsychiatric_histo.csv.flat:
+- chrmed_cond1_offset,chrcond1_offset
+
+_traumatic_brain_injury_screen.csv.flat:
+- chrtbi_subject_age1,chrtbi_subject_age
+- chrtbi_subject_circumstance1,chrtbi_subject_circumstance
+- chrtbi_subject_length1,chrtbi_subject_length
+- chrtbi_subject_anterograde1,chrtbi_subject_anterograde
+- chrtbi_subject_retrograde1,chrtbi_subject_retrograde
+- chrtbi_subject_symptoms2_1,chrtbi_subject_symptoms2
+- chrtbi_subject_symptom_length1,chrtbi_subject_symptom_length
+- chrtbi_subject_med_find1,chrtbi_subject_med_find
+- chrtbi_parent_age1,chrtbi_parent_age
+- chrtbi_parent_circumstance1,chrtbi_parent_circumstance
+- chrtbi_parent_length1,chrtbi_parent_length
+- chrtbi_parent_anterograde1,chrtbi_parent_anterograde
+- chrtbi_parent_retrograde1,chrtbi_parent_retrograde
+- chrtbi_parent_symptoms2_1,chrtbi_parent_symptoms2
+- chrtbi_parent_symptom_length1,chrtbi_parent_symptom_length
+- chrtbi_parent_medical_findings1,chrtbi_parent_medical_findings
+
 
