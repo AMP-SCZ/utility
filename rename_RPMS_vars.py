@@ -22,7 +22,7 @@ for pattern in dict1.keys():
     if environ['HOSTNAME'].endswith('orygen.org.au'):
         # rename vars at RPMS end
         file=pattern+suffix
-        if not isfile:
+        if not isfile(file):
             # this file exists at DPACC
             # skip DPACC suffixes
             continue
