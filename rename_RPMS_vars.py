@@ -5,13 +5,13 @@ from yaml import safe_load
 from glob import glob
 from datetime import date
 from os import getcwd, chdir, environ
-from os.path import isfile
+from os.path import isfile, dirname
 import sys
 
 
 suffix=date.today().strftime('%d.%m.%Y.csv')
 
-with open('rename_RPMS_vars.yaml') as f:
+with open(dirname(__file__)+'/rename_RPMS_vars.yaml') as f:
     dict1=safe_load(f)
 
 dir_bak=getcwd()
