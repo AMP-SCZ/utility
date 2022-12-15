@@ -36,5 +36,6 @@ export PATH=/data/predict/miniconda3/bin:$PATH
 cd ${NDA_ROOT}
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*.csv"
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/actigraphy/*/??-*.csv"
-
+import.py -c /data/predict/dpimport/examples/$CONFIG "digitalqc/??-*.csv"
+import.py -c /data/predict/dpimport/examples/$CONFIG "digitalqc/combined-*.csv"
 
