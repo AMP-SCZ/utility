@@ -78,7 +78,8 @@ for event,vars in rows.items():
         print('Report of',event,v)
         print('=====================')
         for i in range(L):
-            print(values[event][v][i])
+            if values[event][v][i]:
+                print(values[event][v][i])
 
         print('=====================\n')
 
