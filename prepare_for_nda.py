@@ -38,7 +38,7 @@ def populate():
     twins_study='No'
     sibling_study='No'
     family_study='No'
-
+    sample_taken='No'
     
     subjectkey=get_value('chrguid_guid',f'screening_arm_{arm}')
     if not subjectkey.startswith('NDAR'):
@@ -91,7 +91,7 @@ def populate():
     interview_date=datetime.strptime(interview_date,'%Y-%m-%d').strftime('%m/%d/%Y')
     
     
-    df.at[row,["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype","phenotype_description","twins_study","sibling_study","family_study"]]=[subjectkey,src_subject_id,interview_date,interview_age,sex,race,phenotype,phenotype_description,twins_study,sibling_study,family_study]
+    df.at[row,["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype","phenotype_description","twins_study","sibling_study","family_study","sample_taken"]]=[subjectkey,src_subject_id,interview_date,interview_age,sex,race,phenotype,phenotype_description,twins_study,sibling_study,family_study,sample_taken]
 
 
     # return df
