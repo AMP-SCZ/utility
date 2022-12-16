@@ -33,3 +33,14 @@
 
 # generate dictionary diff between AMP-SCZ and networks
 0 6 * * * /data/predict/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix gjacobs1
+
+
+# cron in 1200941-Prescient.orygen.org.au
+SHELL=/bin/bash
+HOSTNAME=1200941-Prescient.orygen.org.au
+
+MAILTO=xyz@bwh.harvard.edu
+50 20 * * * /usr/bin/rm /mnt/prescient/RPMS_incoming/*bak
+0 21 * * * /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/rename_RPMS_vars.py /mnt/prescient/RPMS_incoming/
+
+
