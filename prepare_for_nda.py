@@ -53,11 +53,8 @@ def populate():
     elif arm==2:
         interview_age=get_value('chrdemo_age_mos_hc','baseline_arm_2')
     
-    try:
-        int(interview_age)
-    except TypeError:
-        # it is either empty or None
-        # skip this subject
+    if interview_age=='' or interview_age==None:
+         # we cannot submit a subject w/o an age
         return
 
         
@@ -156,7 +153,7 @@ if __name__=='__main__':
     remove(name)
     
     with open(args.output,'w') as f:
-        f.write(title+'\n',data)
+        f.write(title+'\n'+data)
     
 
 
