@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 
-from os.path import join as pjoin
+from os.path import join as pjoin, dirname
 import sys
 from glob import glob
 import pandas as pd
 import numpy as np
 
-def concat_site_csv(data_root="/data/predict/data_from_nda",
-    output_root="/data/predict/data_from_nda/AVL_quick_qc",
-    center_name="Pronet"):
+def concat_site_csv(data_root,output_root,center_name):
 
-    individual_qc_paths = glob(
-        f"{data_root}/{center_name}/PHOENIX/GENERAL/*/processed/*/interviews/*/*_combinedQCRecords.csv")
+    if len(center_name)==2:
+        # site level combination
+        template="processed/*/interviews/*/*_combinedQCRecords.csv"
+    else:
+        # network level combination
+        template="PHOENIX/GENERAL/*/processed/*/interviews/*/*_combinedQCRecords.csv"
+        
+    individual_qc_paths = glob(f"{data_root}/{template}")
+    if not individual_qc_paths:
+        return
     
     individual_qc_dfs = [pd.read_csv(x) for x in individual_qc_paths]
     individual_qc_concat = pd.concat(individual_qc_dfs)
@@ -29,14 +35,17 @@ def concat_site_csv(data_root="/data/predict/data_from_nda",
     individual_qc_concat["weekday"] = [np.nan for x in range(individual_qc_concat.shape[0])]
     individual_qc_concat = individual_qc_concat[dpdash_cols]
     
-    individual_qc_concat.to_csv(pjoin(output_root,"combined-" + center_name + "-avlqc-day1to1.csv"), index=False)
+    individual_qc_concat.to_csv(f"{output_root}/combined-{center_name}-avlqc-day1to1.csv", index=False)
     
 
 if __name__ == '__main__':
-    # map command line arguments to function arguments.
-    try:
-        # sys.argv[1:]= [data_root, output_root, center_name]
-        concat_site_csv(sys.argv[1], sys.argv[2], sys.argv[3])
-    except:
-        concat_site_csv()
-        
+
+    concat_site_csv(f'{sys.argv[1]}/Pronet', f'{sys.argv[1]}/AVL_quick_qc', 'PRONET')
+    for site in glob(f'{sys.argv[1]}/Pronet/PHOENIX/GENERAL/*'):
+        concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
+    
+    concat_site_csv(f'{sys.argv[1]}/Prescient', f'{sys.argv[1]}/AVL_quick_qc', 'PRESCIENT')
+    for site in glob(f'{sys.argv[1]}/Prescient/PHOENIX/GENERAL/*'):
+        concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
+
+    
