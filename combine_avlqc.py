@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 
 def concat_site_csv(data_root,output_root,center_name):
+    
+    print('Combining',center_name)
 
     if len(center_name)==2:
         # site level combination
