@@ -23,16 +23,16 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewMonoVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\"]" /data/predict/utility/remove_assess.js
+--eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewMonoVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\",\"avlqc\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
 # import new data
 export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}
-# temporary renaming, will be removed after
-# https://github.com/dptools/process_offsite_audio/pull/1 is merged
-/data/predict/utility/avlqc_to_site.py $NDA_ROOT
 import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 
+
+/data/predict/utility/combine_avlqc.py ${NDA_ROOT}
+import.py -c /data/predict/dpimport/examples/$CONFIG "AVL_quick_qc/combined-*-avlqc-day1to1.csv"
 
