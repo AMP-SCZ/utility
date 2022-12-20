@@ -49,7 +49,7 @@ dtype= {}
 # otherwise, we shall get
 # pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
 # even though we omit 'reftime','timeofday','weekday' from dtype
-df1.fillna(0, inplace=True)
+df1[['reftime', 'timeofday', 'weekday']].fillna(0, inplace=True)
 for c,d in zip(df.columns.values,df.dtypes):
 
     if 'int' in d.name:
