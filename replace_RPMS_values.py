@@ -11,7 +11,6 @@ import pandas as pd
 
 
 suffix=date.today().strftime('%d.%m.%Y.csv')
-suffix='26.12.2022.csv'
 
 with open(dirname(__file__)+'/replace_RPMS_values.yaml') as f:
     dict1=safe_load(f)
@@ -45,8 +44,7 @@ for pattern in dict1.keys():
         content=f.read()
     
     data=content.split('\n')
-    _header=data[0]
-    header=_header.split(',')
+    header=data[0].split(',')
     
     for line in dict1[pattern]:
         v,rpms,redcap=line.split(',')
@@ -75,10 +73,10 @@ for pattern in dict1.keys():
 
             data[i]=','.join(_row)
             
-    datanew=_header+'\n'+'\n'.join(data)
+    datanew='\n'.join(data)
 
-    # move(file, file+'.bak')
-    with open(f'/home/tashrifbillah/tmp/{basename(file)}','w') as f:
+    move(file, file+'.bak')
+    with open(file,'w') as f:
         f.write(datanew)
 
 chdir(dir_bak)
