@@ -41,24 +41,45 @@ for pattern in dict1.keys():
 
     
     print('Processing',file)
-
-    df=pd.read_csv(file)
+    with open(file) as f:
+        content=f.read()
     
+    data=content.split('\n')
+    _header=data[0]
+    header=_header.split(',')
     
     for line in dict1[pattern]:
         v,rpms,redcap=line.split(',')
         dict2=dict(zip(rpms.split(),redcap.split()))
+        
 
-        for i in df.index:
+        for i,row in enumerate(data):
+            
+            # skip header
+            if i==0:
+                continue
+
+            # find the position of the variable in header
+            for ind,h in enumerate(header):
+                if h==v:
+                    break
+            
+            # replace the value in corresponding position
+            _row=row.split(',')
+            
+            # bypass '' and missing data codes
             try:
-                df.at[i,v]=dict2[str(int(df.loc[i,v]))]
+                _row[ind]=dict2[_row[ind]]
             except:
                 pass
 
-        # print('')
+            data[i]=','.join(_row)
+            
+    datanew=_header+'\n'+'\n'.join(data)
 
     # move(file, file+'.bak')
-    df.to_csv(f'~/tmp/{basename(file)}', index=False)
+    with open(f'/home/tashrifbillah/tmp/{basename(file)}','w') as f:
+        f.write(datanew)
 
 chdir(dir_bak)
 
