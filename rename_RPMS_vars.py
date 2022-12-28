@@ -43,7 +43,8 @@ for pattern in dict1.keys():
         # we need only 1 split
         header,data=content.split('\n',1)
         
-    
+
+    replace=0
     for line in dict1[pattern]:
         v,vnew=line.split(',')
         # stricten the patterns
@@ -55,12 +56,16 @@ for pattern in dict1.keys():
             # the 1 should prevent search over the entire header
             # and thereby increase speed
             header=header.replace(v,vnew,1)
+            replace=1
 
-    content=header+'\n'+data
 
-    move(file, file+'.bak')
-    with open(file,'w') as f:
-        f.write(content)
+    # replace the file if any header has been renamed
+    if replace:
+        content=header+'\n'+data
+
+        move(file, file+'.bak')
+        with open(file,'w') as f:
+            f.write(content)
 
 chdir(dir_bak)
 
