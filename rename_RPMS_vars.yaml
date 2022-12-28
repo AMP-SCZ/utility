@@ -1,15 +1,42 @@
-PrescientStudy_Prescient_item_promis_for_sleep_:
-- chrpromis_sleep108,chrpromise_sleep108
+# files at RPMS
+PrescientStudy_Prescient_assist_:
+- interview_date,chrassist_interview_date
 
-PrescientStudy_Prescient_global_functioning_social_scale_:
-- chrgfss_overallsat,chrgfs_overallsat
-- chrgfss_gf_social_scale,chrgfs_gf_social_scale
-- chrgfss_gf_social_low,chrgfs_gf_social_low
-- chrgfss_gf_social_high,chrgfs_gf_social_high
-- chrgfssfu_overallsat,chrgfsfu_overallsat
-- chrgfssfu_gf_social_scale,chrgfsfu_gf_social_scale
+PrescientStudy_Prescient_blood_sample_preanalytic_quality_assurance_:
+- interview_date,chrblood_interview_date
+
+PrescientStudy_Prescient_bprs_:
+- interview_date,chrbprs_interview_date
+
+PrescientStudy_Prescient_cbc_with_differential_:
+- interview_date,chrcbc_interview_date
+
+PrescientStudy_Prescient_cdss_:
+- interview_date,chrcdss_interview_date
+
+PrescientStudy_Prescient_cssrs_baseline_:
+- interview_date,chrcssrsb_interview_date
+
+PrescientStudy_Prescient_cssrs_followup_:
+- interview_date,chrcssrsfu_interview_date
+
+PrescientStudy_Prescient_current_health_status_:
+- interview_date,chrchs_interview_date
+
+PrescientStudy_Prescient_daily_activity_and_saliva_sample_collection_:
+- interview_date,chrsaliva_interview_date
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_checkin_:
+- interview_date,chraxci_interview_date
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_end_of_12month_study_pe_:
+- interview_date,chraxe_interview_date
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_onboarding_:
+- interview_date,chrax_interview_date
 
 PrescientStudy_Prescient_digital_biomarkers_mindlamp_checkin_:
+- interview_date,chrdig_interview_date
 - chrdig_discuss_process,chrdig_discuss_process___1
 - chrdig_permission_on,chrdig_permission_on___1
 - chrdig_technical,chrdig_technical___1
@@ -17,7 +44,117 @@ PrescientStudy_Prescient_digital_biomarkers_mindlamp_checkin_:
 - chrdig_motivational,chrdig_motivational___1
 - chrdig_reminder,chrdig_reminder___1
 
-PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_: 
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_end_of_12month_study_p_:
+- interview_date,chrdbe_interview_date
+
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_onboarding_:
+- interview_date,chrdbb_interview_date
+
+PrescientStudy_Prescient_eeg_run_sheet_:
+- interview_date,chreeg_interview_date
+
+PrescientStudy_Prescient_family_interview_for_genetic_studies_figs_:
+- interview_date,chrfigs_interview_date
+
+PrescientStudy_Prescient_gcp_cbc_with_differential_:
+- interview_date,chrcbccs_review_date
+
+PrescientStudy_Prescient_gcp_current_health_status_:
+- interview_date,chrgpc_date
+
+PrescientStudy_Prescient_global_functioning_role_scale_:
+- interview_date,chrgfrs_interview_date
+
+PrescientStudy_Prescient_global_functioning_role_scale_followup_:
+- interview_date,chrgfrsfu_interview_date
+
+PrescientStudy_Prescient_global_functioning_social_scale_:
+- interview_date,chrgfss_interview_date
+- chrgfss_overallsat,chrgfs_overallsat
+- chrgfss_gf_social_scale,chrgfs_gf_social_scale
+- chrgfss_gf_social_low,chrgfs_gf_social_low
+- chrgfss_gf_social_high,chrgfs_gf_social_high
+- chrgfssfu_overallsat,chrgfsfu_overallsat
+- chrgfssfu_gf_social_scale,chrgfsfu_gf_social_scale
+
+PrescientStudy_Prescient_global_functioning_social_scale_followup_:
+- interview_date,chrgfssfu_interview_date
+
+PrescientStudy_Prescient_guid_form_:
+- interview_date,chrguid_interview_date
+
+PrescientStudy_Prescient_health_conditions_genetics_fluid_biomarkers_:
+- interview_date,chrhealth_interview_date
+
+PrescientStudy_Prescient_inclusionexclusion_criteria_review_:
+- interview_date,chrcrit_date
+
+PrescientStudy_Prescient_informed_consent_run_sheet_:
+- interview_date,chric_consent_date
+
+PrescientStudy_Prescient_iq_assessment_wasiii_wiscv_waisiv_:
+- interview_date,chriq_interview_date
+
+PrescientStudy_Prescient_item_promis_for_sleep_:
+- interview_date,chrpromis_interview_date
+- chrpromis_sleep108,chrpromise_sleep108
+
+PrescientStudy_Prescient_lifetime_ap_exposure_screen_:
+- interview_date,chrap_date
+
+PrescientStudy_Prescient_mri_run_sheet_:
+- interview_date,chrmri_entry_date
+
+PrescientStudy_Prescient_nsipr_:
+- interview_date,chrnsipr_interview_date
+
+PrescientStudy_Prescient_oasis_:
+- interview_date,chroasis_interview_date
+
+PrescientStudy_Prescient_past_pharmaceutical_treatment_:
+- interview_date,chrpharm_interview_date
+
+PrescientStudy_Prescient_penncnb_:
+- interview_date,chrpenn_interview_date
+
+PrescientStudy_Prescient_perceived_discrimination_scale_:
+- interview_date,chrdim_interview_date
+
+PrescientStudy_Prescient_perceived_stress_scale_:
+- interview_date,chrpss_interview_date
+
+PrescientStudy_Prescient_pgis_:
+- interview_date,chrpgi_interview_date
+
+PrescientStudy_Prescient_premorbid_adjustment_scale_:
+- interview_date,chrpas_interview_date
+
+PrescientStudy_Prescient_premorbid_iq_reading_accuracy_:
+- interview_date,chrpreiq_interview_date
+
+PrescientStudy_Prescient_psychosis_polyrisk_score_:
+- interview_date,chrpps_interview_date
+
+PrescientStudy_Prescient_PSYCHS_AV_Recording_RunSheet_:
+- interview_date,chrpsychs_av_interview_date
+
+PrescientStudy_Prescient_psychs_p1p8_:
+- interview_date,chrpsychs_scr_interview_date
+
+PrescientStudy_Prescient_psychs_p1p8_fu_:
+- interview_date,chrpsychs_fu_interview_date
+
+PrescientStudy_Prescient_pubertal_developmental_scale_:
+- interview_date,chrpds_interview_date
+
+PrescientStudy_Prescient_ra_prediction_:
+- interview_date,chrpred_interview_date
+
+PrescientStudy_Prescient_recruitment_source_:
+- interview_date,chrrecruit_interview_date
+
+PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_:
+- interview_date,chrscid_interview_date
 - chrscid_scid_checked,chrscid_scid_checked___1
 - chrscid_remote_agree,chrscid_remote_agree___1
 - chrscid_lifechart_check,chrscid_lifechart_check___0
@@ -75,6 +212,26 @@ PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_:
 - chrscid_e162_340,chrscid_e162_340___1
 - chrscid_e193_331,chrscid_e193_331___1
 
+PrescientStudy_Prescient_scid5_schizotypal_personality_sciddpq_:
+- interview_date,chrschizotypal_interview_date
+
+PrescientStudy_Prescient_sociodemographics_:
+- interview_date,chrdemo_interview_date
+
+PrescientStudy_Prescient_sofas_followup_:
+- interview_date,chrsofas_interview_date
+
+PrescientStudy_Prescient_sofas_screening_:
+- interview_date,chrsofas_interview_date
+
+PrescientStudy_Prescient_speech_sampling_run_sheet_:
+- interview_date,chrspeech_interview_date
+
+PrescientStudy_Prescient_traumatic_brain_injury_screen_:
+- interview_date,chrtbi_interview_date
+
+
+# files at DPACC
 _health_conditions_medical_historypsychiatric_histo.csv.flat:
 - chrmed_cond1_offset,chrcond1_offset
 
