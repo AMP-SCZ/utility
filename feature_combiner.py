@@ -44,12 +44,6 @@ for f in files:
 
 # restore the data types
 dtype= {}
-
-# replace the NaNs for the purpose of dtype restoration
-# otherwise, we shall get
-# pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
-# even though we omit 'reftime','timeofday','weekday' from dtype
-df1[['reftime', 'timeofday', 'weekday']].fillna(0, inplace=True)
 for c,d in zip(df.columns.values,df.dtypes):
 
     if 'int' in d.name:
@@ -59,10 +53,9 @@ for c,d in zip(df.columns.values,df.dtypes):
     else:
         dtype[c]= d.name
 
-df1= df1.astype(dtype)
-
-# now reset the mandatory columns
-df1[['reftime', 'timeofday', 'weekday']]=''
+# ['reftime', 'timeofday', 'weekday'] columns yield:
+# pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+df1= df1.astype(dtype, errors='ignore')
 
 curr_dir= getcwd()
 if curr_dir.endswith('Pronet'):
