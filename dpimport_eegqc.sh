@@ -34,12 +34,19 @@ pushd .
 cd $NDA_ROOT
 FEATURE_DIR=${NDA_ROOT}/EEGqc_features
 rm -f ${FEATURE_DIR}/*-day1to1.csv
-out_template=${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv
 
+out_template=${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv
 cd ${NDA_ROOT}/Pronet
-/data/predict/utility/feature_combiner.py $out_template
+/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
 cd ${NDA_ROOT}/Prescient
-/data/predict/utility/feature_combiner.py $out_template
+/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
+
+out_template=${FEATURE_DIR}/combined-SITE-EEGquick-day1to1.csv
+cd ${NDA_ROOT}/Pronet
+/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
+cd ${NDA_ROOT}/Prescient
+/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
+
 
 cd ${NDA_ROOT}
 for net in Pronet Prescient
@@ -50,7 +57,8 @@ do
         echo Combining $d features
         pushd . > /dev/null
         cd $d
-        /data/predict/utility/feature_combiner.py $out_template
+        /data/predict/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv "./**/??-*-EEGqc-day1to*.csv"
+        /data/predict/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGquick-day1to1.csv "./**/??-*-EEGquick-day1to*.csv"
         popd > /dev/null
     done
 done
