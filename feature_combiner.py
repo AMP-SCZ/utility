@@ -32,7 +32,12 @@ df1= pd.DataFrame(columns= list(df.columns)+['subject'])
 
 i=0
 for f in files:
-    df= pd.read_csv(f)
+    
+    try:
+        df= pd.read_csv(f)
+    except pd.errors.EmptyDataError:
+        continue
+        
     subject= f.split('-')[1]
     
     for _,row in df.iterrows():
