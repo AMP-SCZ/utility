@@ -221,20 +221,21 @@ for _,visit in data.iterrows():
                 # date, string
                 except ValueError:
                     dtype= row['Text Validation Type OR Show Slider Number']
-                    if dtype=='date_ymd':
-                        try:
-                            # interview_date e.g. 11/30/2022
-                            value= datetime.strptime(visit[v], '%m/%d/%Y').strftime('%Y-%m-%d')
-                        except ValueError:
-                            try:
-                                # psychs form e.g. 03/03/1903
-                                value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
-                            except ValueError:
-                                # all other forms e.g. 1/05/2022 12:00:00 AM
-                                value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+                    if dtype=='date_ymd' or dtype=='datetime_ymd':
 
-                    elif dtype=='datetime_ymd':
-                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d %H:%M')
+                        # date_ymd
+                        if len(visit[v])==10:
+                            try:
+                                # interview_date e.g. 11/30/2022
+                                value= datetime.strptime(visit[v], '%m/%d/%Y').strftime('%Y-%m-%d')
+                            except ValueError:
+                                    # psychs form e.g. 03/03/1903
+                                    value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
+
+                        # datetime_ymd
+                        elif len(visit[v])>10:
+                            value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+                            
                     elif dtype=='time':
                         value= visit[v][:5]
                     else:
