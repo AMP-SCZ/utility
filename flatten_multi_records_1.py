@@ -70,7 +70,15 @@ def flatten_one_new(filename):
     subjectkey= filename.split('_')[0]
     form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
 
-    default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender']
+    # default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender']
+    # interview_date variable has become different across forms
+    # so use the following for loop to obtain default columns
+    default_cols=[]
+    for c in dfmulti.columns:
+        default_cols.append(c)
+        if c=='gender':
+            break
+
     cols= [c for c in dfmulti.columns if c not in default_cols]
 
     dfall= pd.DataFrame()
@@ -100,7 +108,14 @@ def flatten_many_new():
     dfunique= pd.read_csv(filename)
     subjectkey= filename.split('_')[0]
 
-    default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender','visit']
+    # default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender','visit']
+    # interview_date variable has become different across forms
+    # so use the following for loop to obtain default columns
+    default_cols=[]
+    for c in dfmulti.columns:
+        default_cols.append(c)
+        if c=='visit':
+            break
 
     df1= pd.DataFrame(columns=dfunique.columns)
     dfall= pd.DataFrame()
