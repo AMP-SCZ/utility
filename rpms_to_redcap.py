@@ -188,61 +188,64 @@ for _,visit in data.iterrows():
         # also for bypassing empty forms
         try:
             # consider non-empty only
-            if not (visit[v] is np.nan or pd.isna(visit[v])
-                or visit[v]=='' or visit[v]=='nan'
-                or visit[v]=='NaN' or visit[v]=='None'
-                or visit[v]=='-' or visit[v]=='na'):
+            if pd.isna(visit[v]):
+                continue
+            elif isinstance(visit[v],str) and visit[v].lower() in ['','-','none','not applicable', 'n/a','na']:
+                continue
+            elif visit[v] in [-3,-99]:
+                continue
+                
+            # leave checkbox variables out of consideration
+            # to decide whether a form is empty
+            if '___' not in v:
+                empty=False
 
-                # leave checkbox variables out of consideration
-                # to decide whether a form is empty
-                if '___' not in v:
-                    empty=False
+            # number
+            try:
+                residue= int(visit[v])-float(visit[v])
+                if residue:
+                    # float
+                    value= visit[v]
+                else:
+                    # int
+                    value= int(visit[v])
 
-                # number
-                try:
-                    residue= int(visit[v])-float(visit[v])
-                    if residue:
-                        # float
-                        value= visit[v]
-                    else:
-                        # int
-                        value= int(visit[v])
+                    # RPMS yields 0 for unchecked-single-choice radio variables
+                    # but REDCap only accepts '' for such
+                    # e.g. _missing variables
+                    # REDCap coded as 1 or '', RPMS coded as 1 or 0
+                    if value==0 and row['Field Type']=='radio' and \
+                        len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
+                        value=''
+                        
+                value= str(value)
 
-                        # RPMS yields 0 for unchecked-single-choice radio variables
-                        # but REDCap only accepts '' for such
-                        # e.g. _missing variables
-                        # REDCap coded as 1 or '', RPMS coded as 1 or 0
-                        if value==0 and row['Field Type']=='radio' and \
-                            len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
-                            value=''
-                            
-                    value= str(value)
+            # date, string
+            except ValueError:
+                dtype= row['Text Validation Type OR Show Slider Number']
+                if dtype=='date_ymd' or dtype=='datetime_ymd':
 
-                # date, string
-                except ValueError:
-                    dtype= row['Text Validation Type OR Show Slider Number']
-                    if dtype=='date_ymd' or dtype=='datetime_ymd':
+                    # date_ymd
+                    if len(visit[v])==10:
+                        try:
+                            # interview_date e.g. 11/30/2022
+                            value= datetime.strptime(visit[v], '%m/%d/%Y').strftime('%Y-%m-%d')
+                        except ValueError:
+                                # psychs form e.g. 03/03/1903
+                                value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
 
-                        # date_ymd
-                        if len(visit[v])==10:
-                            try:
-                                # interview_date e.g. 11/30/2022
-                                value= datetime.strptime(visit[v], '%m/%d/%Y').strftime('%Y-%m-%d')
-                            except ValueError:
-                                    # psychs form e.g. 03/03/1903
-                                    value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
+                    # datetime_ymd
+                    elif len(visit[v])>10:
+                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
+                        
+                elif dtype=='time':
+                    value= visit[v][:5]
+                else:
+                    # string
+                    value= visit[v]
 
-                        # datetime_ymd
-                        elif len(visit[v])>10:
-                            value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
-                            
-                    elif dtype=='time':
-                        value= visit[v][:5]
-                    else:
-                        # string
-                        value= visit[v]
+            data_form[v]= value
 
-                data_form[v]= value
         except KeyError:
             pass
     
