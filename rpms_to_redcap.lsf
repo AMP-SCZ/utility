@@ -25,7 +25,7 @@ fi
 
 # flatten multi-records
 /data/predict/utility/_flatten_multi_records.sh $subject
-
+/data/predict/utility/rename_RPMS_vars.py .
 
 # upload all records
 for suffix in $(cat /data/predict/utility/rpms_file_suffix.txt)
