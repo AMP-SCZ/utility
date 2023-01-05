@@ -112,7 +112,7 @@ def flatten_many_new():
     # interview_date variable has become different across forms
     # so use the following for loop to obtain default columns
     default_cols=[]
-    for c in dfmulti.columns:
+    for c in dfunique.columns:
         default_cols.append(c)
         if c=='visit':
             break
