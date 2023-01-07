@@ -58,20 +58,29 @@ for pattern in dict1.keys():
                 continue
 
             # find the position of the variable in header
+            absent=1
             for ind,h in enumerate(header):
                 if h==v:
+                    absent=0
                     break
             
+            if absent:
+                continue
+
             # replace the value in corresponding position
             _row=row.split(',')
             
-            # bypass '' and missing data codes
+            # try-except for skipping '' and missing data codes
+            # replaced for skipping subjects with no value for v
+            replaced=0
             try:
                 _row[ind]=dict2[_row[ind]]
+                replaced=1
             except:
                 pass
-
-            data[i]=','.join(_row)
+            
+            if replaced:
+                data[i]=','.join(_row)
             
     datanew='\n'.join(data)
 
