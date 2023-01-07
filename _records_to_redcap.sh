@@ -24,7 +24,7 @@ export PATH=/data/predict/miniconda3/bin/:$PATH
 
 echo  'Uploading new records ...'
 cd $redcap_phoenix
-find . -name *Pronet.json > $redcap_records
+ls */raw/*/surveys/*.Pronet.json > $redcap_records
 N=`cat $redcap_records | wc -l`
 
 source /etc/profile
