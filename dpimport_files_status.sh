@@ -2,16 +2,25 @@
 
 export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
-
-if [ -z $HOST ] || [ -z $PORT ] || [ -z $state ] || [ -z $MONGO_PASS ] || [ -z $CONFIG ] || [ -z $NDA_ROOT ]
+if [ -z $1 ] || [ ! -d $1 ]
 then
-    echo Define HOST, PORT, state, MONGO_PASS, CONFIG, NDA_ROOT and try again
-    exit 1
+    echo """./dpimport_files_status.sh /path/to/nda_root/ VM
+Provide /path/to/nda_root/ and VM
+VM name examples:
+    dpstage for dpstage.dipr.partners.org
+    rc-predict for rc-predict.bwh.harvard.edu
+    rc-predict-dev for rc-predict-dev.bwh.harvard.edu
+    It is the first part of the server name."""
+    exit
+else
+    export NDA_ROOT=$1
 fi
+
+source /data/predict/utility/.vault/.env.${2}
 
 echo Importing to mongodb://dpdash:MONGO_PASS@$HOST:$PORT
 echo ''
-
+exit
 # delete old collections
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\"]" /data/predict/utility/remove_assess.js
 
