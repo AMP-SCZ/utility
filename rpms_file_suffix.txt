@@ -14,7 +14,7 @@ digital_biomarkers_mindlamp_checkin.csv
 digital_biomarkers_mindlamp_end_of_12month_study_p.csv
 digital_biomarkers_mindlamp_onboarding.csv
 eeg_run_sheet.csv
-cbc_with_differential.csv
+gcp_cbc_with_differential.csv
 current_health_status.csv
 global_functioning_role_scale.csv
 global_functioning_role_scale_followup.csv
