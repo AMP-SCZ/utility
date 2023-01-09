@@ -40,5 +40,5 @@ tail -n +2 Prescient_status/${name}-PRESCIENT-flowcheck-day1to1.csv >> ${name}-A
 
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
-source .vault/.env.${2} && ./dpimport_files_status.sh
+./dpimport_files_status.sh $NDA_ROOT $2
 
