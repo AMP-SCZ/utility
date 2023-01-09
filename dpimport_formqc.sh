@@ -31,9 +31,9 @@ export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}/formqc
 
 # project level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "combined-*-form_*-day1to*.csv"
+import.py -c $CONFIG "combined-*-form_*-day1to*.csv"
 
 # subject level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "??-*-form_*-day1to*.csv"
+import.py -c $CONFIG "??-*-form_*-day1to*.csv"
 
 

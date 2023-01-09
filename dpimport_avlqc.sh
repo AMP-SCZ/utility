@@ -30,9 +30,9 @@ echo ''
 # import new data
 export PATH=/data/predict/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}
-import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
+import.py -c $CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 
 
 /data/predict/utility/combine_avlqc.py ${NDA_ROOT}
-import.py -c /data/predict/dpimport/examples/$CONFIG "AVL_quick_qc/combined-*-avlqc-day1to1.csv"
+import.py -c $CONFIG "AVL_quick_qc/combined-*-avlqc-day1to1.csv"
 

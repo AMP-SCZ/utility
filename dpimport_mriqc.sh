@@ -31,8 +31,8 @@ export PATH=/data/predict/miniconda3/bin:$PATH
 cd ${NDA_ROOT}
 
 # project level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "MRI_ROOT/derivatives/quick_qc/combined-*-mriqc-day1to*.csv"
+import.py -c $CONFIG "MRI_ROOT/derivatives/quick_qc/combined-*-mriqc-day1to*.csv"
 
 # subject level data
-import.py -c /data/predict/dpimport/examples/$CONFIG "MRI_ROOT/derivatives/quick_qc/*/??-???????-mriqc-day1to*.csv"
+import.py -c $CONFIG "MRI_ROOT/derivatives/quick_qc/*/??-???????-mriqc-day1to*.csv"
 

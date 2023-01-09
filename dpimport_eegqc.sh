@@ -66,11 +66,11 @@ done
 
 # project level data
 cd $FEATURE_DIR
-import.py -c /data/predict/dpimport/examples/$CONFIG "*.csv"
+import.py -c $CONFIG "*.csv"
 
 popd
 
 # subject level data
 cd $NDA_ROOT
-import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv"
-import.py -c /data/predict/dpimport/examples/$CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGquick-day1to*.csv"
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv"
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGquick-day1to*.csv"

@@ -24,12 +24,12 @@ export PATH=/data/predict/miniconda3/bin:$PATH
 cd $NDA_ROOT
 
 # metadata
-import.py -c /data/predict/dpimport/examples/$CONFIG combined_metadata.csv
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/*_metadata.csv"
+import.py -c $CONFIG combined_metadata.csv
+import.py -c $CONFIG "*_status/*_metadata.csv"
 
 # project level files status
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/combined-*-flowcheck-day1to1.csv"
+import.py -c $CONFIG "*_status/combined-*-flowcheck-day1to1.csv"
 
 # subject level files status
-import.py -c /data/predict/dpimport/examples/$CONFIG "*_status/??-*-flowcheck-day1to1.csv"
+import.py -c $CONFIG "*_status/??-*-flowcheck-day1to1.csv"
 
