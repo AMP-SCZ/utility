@@ -10,7 +10,7 @@ for file in files:
     with open(file) as f:
         content=f.read().split('\n')
 
-    print('\033[92m','Parsing', file,'\033[0m')
+    print('\033[92m','Parsing',file,'\033[0m')
 
     for i,line in enumerate(content):
         if 'HTTP Status: 400' in line:
