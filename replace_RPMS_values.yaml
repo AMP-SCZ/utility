@@ -1,14 +1,153 @@
+PrescientStudy_Prescient_recruitment_source_:
+- chrrecruit_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_coenrollment_form_:
+- chrcoen_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_lifetime_ap_exposure_screen_:
+- chrap_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_sociodemographics_:
+- chrdemo_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_health_conditions_genetics_fluid_biomarkers_:
+- chrhealth_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_scid5_schizotypal_personality_sciddpq_:
+- chrschizotypal_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_traumatic_brain_injury_screen_:
+- chrtbi_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_family_interview_for_genetic_studies_figs_:
+- chrfigs_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_sofas_screening_:
+- chrsofas_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
 PrescientStudy_Prescient_sofas_followup_:
-- chrsofas_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+- chrsofas_missing_spec_fu,1 2 3 4 5,M1 M2 M3 M4 M5
 
 PrescientStudy_Prescient_psychs_p1p8_fu_:
 - chrpsychs_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+
+PrescientStudy_Prescient_psychs_p1p8_fu_hc_:
+- hcpsychs_missing_spec_fu,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_inclusionexclusion_criteria_review_:
+- chrcrit_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_premorbid_adjustment_scale_:
+- chrpas_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_perceived_discrimination_scale_:
+- chrdim_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_penncnb_:
+- chrpenn_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_iq_assessment_wasiii_wiscv_waisiv_:
+- chriq_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_premorbid_iq_reading_accuracy_:
+- chrpreiq_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_eeg_run_sheet_:
+- chreeg_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_mri_run_sheet_:
+- chrmri_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_onboarding_:
+- chrdbb_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_checkin_:
+- chrdig_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_mindlamp_end_of_12month_study_p_:
+- chrdbe_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_onboarding_:
+- chrax_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_checkin_:
+- chraxci_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_digital_biomarkers_axivity_end_of_12month_study_pe_:
+- chraxe_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_current_health_status_:
+- chrchs_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_daily_activity_and_saliva_sample_collection_:
+- chrsaliva_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_blood_sample_preanalytic_quality_assurance_:
+- chrblood_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_cbc_with_differential_:
+- chrcbc_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_speech_sampling_run_sheet_:
+- chrspeech_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_nsipr_:
+- chrnsipr_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_cdss_:
+- chrcdss_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_oasis_:
+- chroasis_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_assist_:
+- chrassist_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_cssrs_baseline_:
+- chrcssrsb_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_cssrs_followup_:
+- chrcssrsfu_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_perceived_stress_scale_:
+- chrpss_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_global_functioning_social_scale_:
+- chrgfss_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_global_functioning_social_scale_followup_:
+- chrgfssfu_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_global_functioning_role_scale_:
+- chrgfrs_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_global_functioning_role_scale_followup_:
+- chrgfrsfu_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_item_promis_for_sleep_:
+- chrpromis_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_bprs_:
+- chrbprs_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_pgis_:
+- chrpgi_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_psychosis_polyrisk_score_:
+- chrpps_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_ra_prediction_:
+- chrpred_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_guid_form_:
+- chrguid_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
 PrescientStudy_Prescient_missing_data_:
 - chrmiss_withdrawn_spec,1 2 3 4 5 6 7 8 9 10 11 12,W1 W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12
 - chrmiss_domain_spec,1 2 3 4 5 6 7 8 9 10,M1 M2 M3 M4 M5 M6 M7 M8 M9 M10
 
 PrescientStudy_Prescient_pubertal_developmental_scale_:
+- chrpds_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 - chrpds_pds_f4_p,-99,999
 - chrpds_pds_f5b_p,-99,999
 
