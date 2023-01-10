@@ -50,6 +50,15 @@ for pattern in dict1.keys():
         v,rpms,redcap=line.split(',')
         dict2=dict(zip(rpms.split(),redcap.split()))
         
+        # find the position of the variable in header
+        absent=1
+        for ind,h in enumerate(header):
+            if h==v:
+                absent=0
+                break
+        
+        if absent:
+            continue
 
         for i,row in enumerate(data):
             
@@ -57,19 +66,27 @@ for pattern in dict1.keys():
             if i==0:
                 continue
 
-            # find the position of the variable in header
-            absent=1
-            for ind,h in enumerate(header):
-                if h==v:
-                    absent=0
-                    break
-            
-            if absent:
+
+            # for value replacement, consider only subject lines
+            # they start as e.g. 20/01/2023 2:10:00 AM,ME12345,01/20/2023
+            # all other lines are due to \n within a cell
+            _row=row.split(',')
+
+            try:
+                # LastModifiedDate
+                datetime.strptime(_row[0], '%d/%m/%Y %I:%M:%S %p')
+                # subjectkey
+                assert len(_row[1])==7
+                # *_interview_date
+                datetime.strptime(_row[2], '%m/%d/%Y')
+            except:
                 continue
 
-            # replace the value in corresponding position
-            _row=row.split(',')
+            # NOTE the above line detection scheme will not be able to replace
+            # values positioned after cells with \n
             
+            
+            # replace the value in corresponding position
             # try-except for skipping '' and missing data codes
             # replaced for skipping subjects with no value for v
             replaced=0
