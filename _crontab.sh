@@ -58,6 +58,13 @@
 
 
 
+# === rc-predict-gen ===
+
+# back up EEG QC web app scores
+22 15 * * * /opt/eeg-qc-dash/backup_scores.cron /data/eegqc/ /opt/data/eegqc-mock/
+
+
+
 # === 1200941-Prescient.orygen.org.au ===
 
 SHELL=/bin/bash
