@@ -66,6 +66,14 @@
 
 
 
+# === rc-predict ===
+
+# generate list of DPdash users
+# run as root
+0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah sbouix ekotler
+
+
+
 # === 1200941-Prescient.orygen.org.au ===
 
 SHELL=/bin/bash
