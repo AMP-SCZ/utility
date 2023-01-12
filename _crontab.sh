@@ -64,7 +64,7 @@ SHELL=/bin/bash
 HOSTNAME=1200941-Prescient.orygen.org.au
 
 MAILTO=xyz@bwh.harvard.edu
-50 20 * * * /usr/bin/cp /mnt/prescient/RPMS_incoming/*csv /mnt/prescient/one_day_backup/
+50 20 * * * /usr/bin/rm /mnt/prescient/one_day_backup/* && /usr/bin/cp /mnt/prescient/RPMS_incoming/*csv /mnt/prescient/one_day_backup/
 0 21 * * * /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/rename_RPMS_vars.py /mnt/prescient/RPMS_incoming/
 30 21 * * * /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/replace_RPMS_values.py /mnt/prescient/RPMS_incoming/
 
