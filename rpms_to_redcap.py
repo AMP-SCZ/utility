@@ -50,6 +50,25 @@ rpmsTime_to_redcapTime= {
 }
 
 
+def _date(time_value):
+    
+    if len(time_value)==10:
+    
+        try:
+            # interview_date e.g. 11/30/2022
+            int_value= datetime.strptime(time_value, '%m/%d/%Y')
+        except ValueError:
+            # psychs form e.g. 03/03/1903
+            int_value= datetime.strptime(time_value, '%d/%m/%Y')
+
+    elif len(visit[v])>10:
+        # all other forms e.g. 1/05/2022 12:00:00 AM
+        int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
+        
+    
+    return int_value
+
+
 def _visit_to_event(chr_hc, form, visit_num):
     pass
     
@@ -223,21 +242,15 @@ for _,visit in data.iterrows():
             # date, string
             except ValueError:
                 dtype= row['Text Validation Type OR Show Slider Number']
-                if dtype=='date_ymd' or dtype=='datetime_ymd':
 
-                    # date_ymd
-                    if len(visit[v])==10:
-                        try:
-                            # interview_date e.g. 11/30/2022
-                            value= datetime.strptime(visit[v], '%m/%d/%Y').strftime('%Y-%m-%d')
-                        except ValueError:
-                                # psychs form e.g. 03/03/1903
-                                value= datetime.strptime(visit[v], '%d/%m/%Y').strftime('%Y-%m-%d')
+                if dtype=='date_ymd':
+                    _string=_date(visit[v])
+                    value=_string.strftime('%Y-%m-%d')
 
-                    # datetime_ymd
-                    elif len(visit[v])>10:
-                        value= datetime.strptime(visit[v], '%d/%m/%Y %I:%M:%S %p').strftime('%Y-%m-%d')
-                        
+                elif dtype=='datetime_ymd':
+                    _string=_date(visit[v])
+                    value=_string.strftime('%Y-%m-%d %H:%M')
+                    
                 elif dtype=='time':
                     value= visit[v][:5]
                 else:
