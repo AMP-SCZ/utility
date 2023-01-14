@@ -63,7 +63,7 @@ for pattern in dict1.keys():
     if replace:
         content=header+'\n'+data
 
-        move(file, file+'.bak')
+        # move(file, file+'.bak')
         with open(file,'w') as f:
             f.write(content)
 
