@@ -7,7 +7,7 @@ db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME'
 
 // 2.    provide access to configs
 
-[['date-avl-cnb-mriqc-kcho','chief'], ['combined-mriqc','kcho'], ['eegqc-2','speroncire'],['avlqc_combined', 'dpdash'],['subj-formqc-details','grace_jacobs'],['combined-screening-forms','grace_jacobs'],['combined-baseline-forms2','grace_jacobs'],['Digital Biomarker: Axivity+Mindlamp','habibrahimi']].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
+[['date-avl-cnb-mriqc-kcho','chief'], ['combined-mriqc','kcho'], ['eegqc-2','speroncire'],['avlqc_combined', 'dpdash'],['subj-formqc-details','grace_jacobs'],['combined-screening-forms-4','grace_jacobs'],['combined-baseline-forms-4','grace_jacobs'],['Digital Biomarker: Axivity+Mindlamp','habibrahimi']].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
 
 
 // 3.    set default config
