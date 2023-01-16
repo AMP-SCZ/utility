@@ -145,6 +145,8 @@ PrescientStudy_Prescient_guid_form_:
 PrescientStudy_Prescient_missing_data_:
 - chrmiss_withdrawn_spec,1 2 3 4 5 6 7 8 9 10 11 12,W1 W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12
 - chrmiss_domain_spec,1 2 3 4 5 6 7 8 9 10,M1 M2 M3 M4 M5 M6 M7 M8 M9 M10
+- chrmiss_time_spec,1 2 3 4 5 6 7 8 9 10 11,A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11
+- chrmiss_discon_spec,1 2 3 4 5 6 7,S1 S2 S3 S4 S5 S6 S7
 
 PrescientStudy_Prescient_pubertal_developmental_scale_:
 - chrpds_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5

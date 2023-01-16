@@ -116,7 +116,7 @@ for pattern in dict1.keys():
             
     datanew='\n'.join(data)
 
-    move(file, file+'.bak')
+    # move(file, file+'.bak')
     with open(file,'w') as f:
         f.write(datanew)
 
