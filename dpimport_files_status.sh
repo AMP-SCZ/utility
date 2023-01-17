@@ -20,7 +20,7 @@ source /data/predict/utility/.vault/.env.${2}
 
 echo Importing to mongodb://dpdash:MONGO_PASS@$HOST:$PORT
 echo ''
-exit
+
 # delete old collections
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\"]" /data/predict/utility/remove_assess.js
 

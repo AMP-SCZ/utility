@@ -25,7 +25,7 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
       -d $DATA \
       https://redcap.partners.org/redcap/api/ > $pronet
 CMT
-cp /data/predict/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
+cp /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
 
 
 # download prescient dictionary
