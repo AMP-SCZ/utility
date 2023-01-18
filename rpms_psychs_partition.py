@@ -10,6 +10,10 @@ sys.path.append(dirname(abspath(__file__)))
 
 from idvalidator import validate
 
+if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+    print(f'''Usage: ./{__file__} /path/to/RPMS_incoming/
+Splits PSYCHS follow up forms into CHRs and HCs''')
+    exit(0)
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
@@ -27,7 +31,7 @@ for file in files:
     dfchr.set_index('subjectkey',inplace=True)
     dfhc.set_index('subjectkey',inplace=True)
 
-    dfincl=pd.read_csv(sys.argv[2])
+    dfincl=pd.read_csv(glob('PrescientStudy_Prescient_inclusionexclusion_criteria_review_*.csv')[0])
 
     for i,row in dfincl.iterrows():
         
