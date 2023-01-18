@@ -39,7 +39,9 @@ for file in files:
             continue
            
         try:
-            subject_row=dfpsychs.loc[row['subjectkey']]
+            # additional [ ] used around row['subjectkey']
+            # to make the result a row when there is a single row
+            subject_row=dfpsychs.loc[ [row['subjectkey']] ]
         except KeyError:
             continue
         
@@ -55,15 +57,16 @@ for file in files:
             # irrelevant
             continue
 
+    print('')
         
     # TBD dtype conversion
 
     outfile=file
-    dfchr.reset_index(inplace=True)
+    dfchr=dfchr.reset_index()
     dfchr.to_csv(outfile,index=False)
 
     outfile=file.replace('_fu_','_fu_hc_')
-    dfhc.reset_index(inplace=True)
+    dfhc=dfhc.reset_index()
     dfhc.to_csv(outfile,index=False)
 
 
