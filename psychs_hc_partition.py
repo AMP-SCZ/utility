@@ -17,7 +17,7 @@ chdir(sys.argv[1])
 files=[glob(p)[0] for p in ['PrescientStudy_Prescient_psychs_p1p8_fu_*.csv','PrescientStudy_Prescient_psychs_p9ac32_fu_*.csv']]
 
 for file in files:
-
+    print(file)
     dfpsychs=pd.read_csv(file)
     dfhc=pd.DataFrame(columns=[c.replace('chrpsychs','hcpsychs') for c in dfpsychs.columns])
 
@@ -26,7 +26,6 @@ for file in files:
 
     dfincl=pd.read_csv(sys.argv[2])
 
-    j=0
     for i,row in dfincl.iterrows():
         
         if not validate(row['subjectkey']):
@@ -37,16 +36,23 @@ for file in files:
             continue
         
         try:
-            dfhc.loc[row['subjectkey']]=dfpsychs.loc[row['subjectkey']].values
+            subject_row=dfpsychs.loc[row['subjectkey']].values
+            if subject_row.shape[0]<10:
+                # this subject has multiple rows, could be a test subject
+                # 10 is a safe threshold as single row length > 500
+                continue
+                # in future, we can just extract the last (presumably latest) row
+
+            dfhc.loc[row['subjectkey']]=subject_row
         except KeyError:
             continue
         
-        j+=1
-      
+        print(row['subjectkey'])
+        
     # TBD dtype conversion
 
     dfhc.reset_index(inplace=True)
-    outfile=sys.argv[1].replace('_fu_','_fu_hc_')
+    outfile=file.replace('_fu_','_fu_hc_')
     dfhc.to_csv(outfile,index=False)
 
 
