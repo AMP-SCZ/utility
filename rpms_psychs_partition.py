@@ -38,18 +38,6 @@ for file in files:
         if not validate(row['subjectkey']):
             continue
            
-        if row['chrcrit_part']==1:
-            # CHR
-            outfile=file
-            frame=dfchr
-        elif row['chrcrit_part']==2:
-            # HC
-            outfile=file.replace('_fu_','_fu_hc_')
-            frame=dfhc
-        else:
-            # irrelevant
-            continue
-            
         try:
             subject_row=dfpsychs.loc[row['subjectkey']].values
             if subject_row.shape[0]<10:
@@ -58,16 +46,32 @@ for file in files:
                 continue
                 # in future, we can just extract the last (presumably latest) row
 
-            frame.loc[row['subjectkey']]=subject_row
+
         except KeyError:
             continue
         
         print(row['subjectkey'])
+
+        if row['chrcrit_part']==1:
+            # CHR
+            dfchr.loc[row['subjectkey']]=subject_row
+        elif row['chrcrit_part']==2:
+            # HC
+            dfhc.loc[row['subjectkey']]=subject_row
+        else:
+            # irrelevant
+            continue
+
         
     # TBD dtype conversion
 
-    frame.reset_index(inplace=True)
-    frame.to_csv(outfile,index=False)
+    outfile=file
+    dfchr.reset_index(inplace=True)
+    dfchr.to_csv(outfile,index=False)
+
+    outfile=file.replace('_fu_','_fu_hc_')
+    dfhc.reset_index(inplace=True)
+    dfhc.to_csv(outfile,index=False)
 
 
 chdir(dir_bak)
