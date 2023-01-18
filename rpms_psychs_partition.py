@@ -39,14 +39,7 @@ for file in files:
             continue
            
         try:
-            subject_row=dfpsychs.loc[row['subjectkey']].values
-            if subject_row.shape[0]<10:
-                # this subject has multiple rows, could be a test subject
-                # 10 is a safe threshold as single row length > 500
-                continue
-                # in future, we can just extract the last (presumably latest) row
-
-
+            subject_row=dfpsychs.loc[row['subjectkey']]
         except KeyError:
             continue
         
@@ -54,10 +47,10 @@ for file in files:
 
         if row['chrcrit_part']==1:
             # CHR
-            dfchr.loc[row['subjectkey']]=subject_row
+            dfchr=pd.concat([dfchr,subject_row])
         elif row['chrcrit_part']==2:
             # HC
-            dfhc.loc[row['subjectkey']]=subject_row
+            dfhc=pd.concat([dfhc,subject_row])
         else:
             # irrelevant
             continue
