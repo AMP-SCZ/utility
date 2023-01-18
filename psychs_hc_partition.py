@@ -18,10 +18,13 @@ files=[glob(p)[0] for p in ['PrescientStudy_Prescient_psychs_p1p8_fu_*.csv','Pre
 
 for file in files:
     print(file)
+
     dfpsychs=pd.read_csv(file)
+    dfchr=pd.DataFrame(columns=dfpsychs.columns)
     dfhc=pd.DataFrame(columns=[c.replace('chrpsychs','hcpsychs') for c in dfpsychs.columns])
 
     dfpsychs.set_index('subjectkey',inplace=True)
+    dfchr.set_index('subjectkey',inplace=True)
     dfhc.set_index('subjectkey',inplace=True)
 
     dfincl=pd.read_csv(sys.argv[2])
@@ -33,8 +36,16 @@ for file in files:
            
         if row['chrcrit_part']==1:
             # CHR
+            outfile=file
+            frame=dfchr
+        elif row['chrcrit_part']==2:
+            # HC
+            outfile=file.replace('_fu_','_fu_hc_')
+            frame=dfhc
+        else:
+            # irrelevant
             continue
-        
+            
         try:
             subject_row=dfpsychs.loc[row['subjectkey']].values
             if subject_row.shape[0]<10:
@@ -43,7 +54,7 @@ for file in files:
                 continue
                 # in future, we can just extract the last (presumably latest) row
 
-            dfhc.loc[row['subjectkey']]=subject_row
+            frame.loc[row['subjectkey']]=subject_row
         except KeyError:
             continue
         
@@ -51,9 +62,8 @@ for file in files:
         
     # TBD dtype conversion
 
-    dfhc.reset_index(inplace=True)
-    outfile=file.replace('_fu_','_fu_hc_')
-    dfhc.to_csv(outfile,index=False)
+    frame.reset_index(inplace=True)
+    frame.to_csv(outfile,index=False)
 
 
 chdir(dir_bak)
