@@ -34,5 +34,12 @@ import.py -c $CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-intervie
 
 
 /data/predict/utility/combine_avlqc.py ${NDA_ROOT}
-import.py -c $CONFIG "AVL_quick_qc/combined-*-avlqc-day1to1.csv"
+cd AVL_quick_qc
+assess=avlqc
+name=combined
+cat ${name}-PRONET-${assess}-day1to1.csv > ${name}-AMPSCZ-avlqc-day1to1.csv
+tail -n +2 ${name}-PRESCIENT-${assess}-day1to1.csv >> ${name}-AMPSCZ-${assess}-day1to1.csv
+renumber_days.py ${name}-AMPSCZ-${assess}-day1to1.csv
+
+import.py -c $CONFIG "combined-*-avlqc-day1to1.csv"
 
