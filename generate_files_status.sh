@@ -37,6 +37,7 @@ cd ${NDA_ROOT}
 echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
 cat Pronet_status/${name}-PRONET-flowcheck-day1to1.csv > ${name}-AMPSCZ-flowcheck-day1to1.csv
 tail -n +2 Prescient_status/${name}-PRESCIENT-flowcheck-day1to1.csv >> ${name}-AMPSCZ-flowcheck-day1to1.csv
+renumber_days.py ${name}-AMPSCZ-flowcheck-day1to1.csv
 
 # export the above csv files to remote MongoDB server
 cd /data/predict/utility
