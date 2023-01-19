@@ -37,6 +37,7 @@ import.py -c $CONFIG combined_metadata.csv
 import.py -c $CONFIG "*_status/*_metadata.csv"
 
 # project level files status
+import.py -c $CONFIG combined-AMPSCZ-flowcheck-day1to1.csv
 import.py -c $CONFIG "*_status/combined-*-flowcheck-day1to1.csv"
 
 # subject level files status
