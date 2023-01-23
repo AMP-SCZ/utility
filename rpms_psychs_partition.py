@@ -2,6 +2,7 @@
 
 import pandas as pd
 import sys
+from datetime import date, datetime
 from os.path import abspath, dirname
 from os import getcwd, chdir
 from glob import glob
@@ -11,14 +12,22 @@ sys.path.append(dirname(abspath(__file__)))
 from idvalidator import validate
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print(f'''Usage: ./{__file__} /path/to/RPMS_incoming/
+    print(f'''Usage:
+./{__file__} /path/to/RPMS_incoming/
+./{__file__} /path/to/RPMS_incoming/ 31.12.2022.csv
 Splits PSYCHS follow up forms into CHRs and HCs''')
     exit(0)
+
+try:
+    suffix=sys.argv[2]
+except:
+    suffix=date.today().strftime('%d.%m.%Y.csv')
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-files=[glob(p)[0] for p in ['PrescientStudy_Prescient_psychs_p1p8_fu_*.csv','PrescientStudy_Prescient_psychs_p9ac32_fu_*.csv']]
+files=[glob(p)[0] for p in [f'PrescientStudy_Prescient_psychs_p1p8_fu_{suffix}',
+    f'PrescientStudy_Prescient_psychs_p9ac32_fu_{suffix}']]
 
 for file in files:
     print(file)
