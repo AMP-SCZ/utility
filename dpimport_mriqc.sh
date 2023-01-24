@@ -9,7 +9,7 @@ export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 if [ -z $1 ] || [ ! -d $1 ]
 then
-    echo """./dpimport_eegqc.sh /path/to/nda_root/ VM
+    echo """./dpimport_mriqc.sh /path/to/nda_root/ VM
 Provide /path/to/nda_root/ and VM
 VM name examples:
     dpstage for dpstage.dipr.partners.org
