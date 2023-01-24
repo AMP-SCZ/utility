@@ -23,6 +23,9 @@ then
     exit 1
 fi
 
+# this echo is for knowing which subject a .err file corresponds to
+echo -e '\033[0;31m' $subject '\033[0m' >&2
+
 # flatten multi-records
 /data/predict/utility/_flatten_multi_records.sh $subject
 /data/predict/utility/rename_RPMS_vars.py .
@@ -34,7 +37,7 @@ do
     if [ -f $form ]
     then
         ls -lah $form
-        /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $FORCE
+        /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $redcap_phoenix/date_offset.csv $FORCE
         echo ''
         echo ''
     fi
