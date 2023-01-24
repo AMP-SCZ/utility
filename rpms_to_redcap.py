@@ -87,20 +87,21 @@ def _visit_to_event(chr_hc, form, visit_num):
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
     print('''Usage:
-    /path/to/import_records.py ME57953.csv forms-dir API_TOKEN 1
-    /path/to/import_records.py ME57953/surveys/ forms-dir API_TOKEN 1
+    /path/to/import_records.py ME57953.csv forms-dir API_TOKEN /path/to/date_offset.csv 1
+    /path/to/import_records.py ME57953/surveys/ forms-dir API_TOKEN /path/to/date_offset.csv 1
 first input can be either file or directory
 forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files
-1 is for force re-upload''')
+optional: date_offset.csv is the file with 1/0 upload bit
+optional: 1 is for force re-upload''')
     exit(0)
 
 
 if sys.argv[-1]=='1':
     pass
 else:
-    subject=basename(sys.argv[1]).split('.')[0]
+    subject=basename(sys.argv[1]).split('_')[0]
     
-    hashfile=abspath('date_offset.csv')
+    hashfile=abspath(sys.argv[4])
     if isfile(hashfile):
 
         dfshift=pd.read_csv(hashfile)
@@ -310,12 +311,4 @@ print('\t','HTTP Status: ' + str(r.status_code))
 print('\t',r.json())
 
 # break 
-
-if sys.argv[-1]=='1':
-    pass
-else:
-    # save new hash
-    save(hashfile, hashes1)
-
-
 
