@@ -13,6 +13,6 @@ First arg is pattern, second arg is ls or rm"""
 for i in $1
 do
     aws s3 $2 s3://prescient-test/PHOENIX_ROOT_PRESCIENT/PROTECTED/$i
-    rm $i
+    $2 $i
 done
 
