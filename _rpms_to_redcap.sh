@@ -14,7 +14,7 @@ redcap_records=/data/predict/utility/bsub/rpms_records.txt
 redcap_phoenix=$1
 redcap_dict=$2
 API_TOKEN=$3
-FORCE=1
+FORCE=0
 export redcap_records redcap_phoenix redcap_dict API_TOKEN FORCE
 # export is to allow them to be used within records_to_redcap.lsf
 
