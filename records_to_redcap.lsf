@@ -10,7 +10,10 @@ cd ${redcap_phoenix}
 
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
+# this echo is for knowing which subject a .err file corresponds to
+echo -e '\033[0;31m' $i '\033[0m' >&2
+
 ls -la $i
-/data/predict/utility/import_records_all.py $i $redcap_dict $API_TOKEN $FORCE
+/data/predict/utility/import_records_all.py $i $redcap_dict $API_TOKEN ${redcap_phoenix}/date_offset.csv $FORCE
 
 
