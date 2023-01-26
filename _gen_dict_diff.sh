@@ -57,3 +57,7 @@ do
 done
 
 
+# backup the ampscz and pronet dictionaries
+source /data/pnl/soft/pnlpipe3/duply_backup/env.sh
+duply /data/pnl/soft/pnlpipe3/duply_backup/duply_profile/amp-scz-data-dicts backup
+
