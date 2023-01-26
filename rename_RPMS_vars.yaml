@@ -135,7 +135,7 @@ PrescientStudy_Prescient_premorbid_iq_reading_accuracy_:
 PrescientStudy_Prescient_psychosis_polyrisk_score_:
 - interview_date,chrpps_interview_date
 
-PrescientStudy_Prescient_PSYCHS_AV_Recording_RunSheet_:
+PrescientStudy_Prescient_psychs_av_recording_run_sheet_:
 - interview_date,chrpsychs_av_interview_date
 
 PrescientStudy_Prescient_psychs_p1p8_:
