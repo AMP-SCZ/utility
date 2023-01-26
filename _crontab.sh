@@ -50,7 +50,7 @@
 
 
 
-# === hna008 ===
+# === dn020 ===
 
 # copy EEG QC images over to web app VM
 0 4 * * * /data/predict/utility/rsync_eegqc.sh /data/predict/data_from_nda/ /data/eegqc/
