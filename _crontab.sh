@@ -29,14 +29,26 @@
 # PRESCIENT mock
 0 0 * * 0 /data/predict/utility/_rpms_to_redcap.sh /data/predict/data_from_nda_dev/Prescient/PHOENIX/PROTECTED /data/predict/utility/amp-scz-form 123456
 
-# PRESCIENT real
-0 0 * * 1 /data/predict/utility/_rpms_to_redcap.sh /data/predict/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict/utility/amp-scz-form 123456
-
 # ProNET mock
 0 0 * * 2 /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda_dev/Pronet/PHOENIX/PROTECTED /data/predict/utility/redcap-ii-yale 123456
 
+
+
+# === dn001 ===
+
+# PRESCIENT real
+# determine if new and upload to REDCap
+# 0 21 * * 2 /data/predict/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict/utility/rpms-to-yale 5611DD73234AED9E0B956F21F97C317A
+
+# keep one day difference between upload and download so upload can complete
+
+# download from REDCap and shift dates
+# 0 21 * * 4 /data/predict/utility/down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 5611DD73234AED9E0B956F21F97C317A && /data/predict/utility/shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" ${DICT_DIR}/CloneOfYaleRealRecords_DataDictionary_2022-12-26_calc_to_text_checkbox.csv
+
 # ProNET real
-0 22 * * * /data/predict/utility/_shift_redcap_dates.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict/utility/yale-real/ProNETPsychosisRiskOutcomesNet_DataDictionary_2022-10-28_checkbox.csv && /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict/utility/yale-real 123456
+# determine if new and shift dates
+# determine if new and upload to REDCap
+# 00 22 * * * /data/predict/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2022-12-26_checkbox.csv && /data/predict/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict/utility/yale-real 4FDFF9FCF91AADDFE6C59064BEE2F795
 
 
 
