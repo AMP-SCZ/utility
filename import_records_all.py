@@ -63,9 +63,11 @@ else:
         dfshift.set_index('subject',inplace=True)
 
         # skip unchanged JSONs
-        if dfshift.loc[subject,'upload']==0:
+        if subject in dfshift.index and dfshift.loc[subject,'upload']==0:
             print(sys.argv[1], 'has not been modified, skipping')
             exit()
+         # if a subject is not in dfshift.index, that got downloaded after date_offset.csv was created
+         # that is a new one and we let it upload
     
     else:
         print('Could not find {}, so force uploading {}'.format(hashfile,sys.argv[1]))
