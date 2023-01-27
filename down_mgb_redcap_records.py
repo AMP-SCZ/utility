@@ -26,6 +26,7 @@ chdir(sys.argv[1])
 try:
     df=pd.read_csv('date_offset.csv')
     subjects=df['subject'].values
+    df.set_index('subject',inplace=True)
     force=0
 except:
     subjects= [p.split('/')[-1] for p in glob("*/raw/*")]
@@ -36,7 +37,7 @@ def RAISE(err):
     raise err
 
 
-def _shift_date(sub):
+def down_record(sub):
     
     if force==0 and df.loc[sub,'upload']==0:
         return
@@ -61,19 +62,23 @@ def _shift_date(sub):
     }
     
     r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
-    print('HTTP Status: ' + str(r.status_code))
     
-    if r.status_code=='200':
+    if len(r.json()):
         # success
+        print(f'{sub} HTTP Status: {r.status_code}')
         with open(json_file, 'w') as f:
             json.dump(r.json(),f)
     else:
-        # failure
-        print(r.json())
+        if len(r.json())==0:
+            # record does not exist in REDCap
+            pass
+        else:
+            # failure
+            print(f'{sub} HTTP Status: {r.status_code}')
+            print(r.json())
 
 
-
-if len(sys.argv)==3:
+if len(sys.argv)==4:
     ncpu=int(sys.argv[3])
 else:
     ncpu=16
@@ -81,13 +86,13 @@ else:
 if ncpu==1:
     # useful for debugging
     for sub in subjects:
-        _down_record(sub)
+        down_record(sub)
 else:
     sigint_handler= signal.signal(signal.SIGINT, signal.SIG_IGN)
     pool= Pool(ncpu)
     signal.signal(signal.SIGINT, sigint_handler)
     try:
-        pool.map_async(_down_record, subjects, error_callback=RAISE)
+        pool.map_async(down_record, subjects, error_callback=RAISE)
     except KeyboardInterrupt:
         pool.terminate()
     else:
