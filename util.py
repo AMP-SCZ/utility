@@ -5,7 +5,7 @@ import json
 
 
 def get_study(ampscz_id: str,
-              data_from_nda_path: str = '/data/predict/data_from_nda/') -> str:
+              data_from_nda_path: str = '/data/predict1/data_from_nda/') -> str:
     '''Get name of the study based on the AMP-SCZ ID
 
     Key arguments:
@@ -20,7 +20,7 @@ def get_study(ampscz_id: str,
     site = ampscz_id[:2]
     data_from_nda_path = Path(data_from_nda_path)
     metadata_paths = data_from_nda_path.glob(
-            '*/PHOENIX/GENERAL/*_metadata.csv')
+            '*/PHOENIX/GENERAL/*/*_metadata.csv')
     for metadata_path in metadata_paths:
         study = metadata_path.parent.parent.parent.parent.name
         if site in metadata_path.name:
@@ -57,7 +57,7 @@ def check_file_delay(file: str, date_str: str) -> int:
 
 def get_guid_prescient(
         ampscz_id: str,
-        PHOENIX_root: str = '/data/predict/data_from_nda/Prescient/PHOENIX') \
+        PHOENIX_root: str = '/data/predict1/data_from_nda/Prescient/PHOENIX') \
                 -> str:
     '''Get GUID for a Prescient subject ID'''
     prescient_protected = Path(PHOENIX_root) / 'PROTECTED'
@@ -81,7 +81,7 @@ def get_guid_prescient(
 
 def get_guid_pronet(
         ampscz_id: str,
-        PHOENIX_root: str = '/data/predict/data_from_nda/Pronet/PHOENIX') \
+        PHOENIX_root: str = '/data/predict1/data_from_nda/Pronet/PHOENIX') \
                 -> str:
     '''Get GUID for a Pronet subject ID'''
     pronet_protected = Path(PHOENIX_root) / 'PROTECTED'
@@ -117,11 +117,10 @@ def get_guid(ampscz_id: str) -> str:
         return None
 
 
-def get_survey_mri_df_pronet(ampscz_id: str, fields_to_check: list,
-                             timepoint: str) -> str:
+def get_survey_pronet(ampscz_id: str) -> str:
     site = ampscz_id[:2]
 
-    data_location = '/data/predict/data_from_nda'
+    data_location = '/data/predict1/data_from_nda'
     pronet_root = Path(data_location) / 'Pronet'
     pronet_protected = pronet_root / 'PHOENIX' / 'PROTECTED'
     study_protected = pronet_protected / f'Pronet{site}'
@@ -130,7 +129,35 @@ def get_survey_mri_df_pronet(ampscz_id: str, fields_to_check: list,
     subject_protected_raw = study_protected_raw / ampscz_id
     survey_protected_raw = subject_protected_raw / 'surveys'
     survey_json_path = survey_protected_raw / f'{ampscz_id}.Pronet.json'
+    return survey_json_path
 
+
+def get_mri_df_pronet(ampscz_id: str, timepoint: str):
+    survey_json_path = get_survey_pronet(ampscz_id)
+    with open(survey_json_path, 'r') as fp:
+        data = json.load(fp)
+        
+    df = pd.DataFrame(data)
+
+    if timepoint == 'baseline':
+        df = df[df['redcap_event_name'] == 'baseline_arm_1']
+        df.redcap_event_name = 'baseline'
+    elif timepoint == 'followup':
+        df = df[df['redcap_event_name'] == 'month_2_arm_1']
+        df.redcap_event_name = 'followup'
+
+    mri_avail_df = df[df.chrmri_consent != '']
+    mri_avail_df = mri_avail_df[
+            ['redcap_event_name'] +
+            [x for x in mri_avail_df.columns if x.startswith('chrmri')]
+        ].set_index('redcap_event_name').T
+
+    return mri_avail_df[timepoint]
+
+
+def get_survey_mri_df_pronet(ampscz_id: str, fields_to_check: list,
+                             timepoint: str) -> str:
+    survey_json_path = get_survey_pronet(ampscz_id)
     with open(survey_json_path, 'r') as fp:
         data = json.load(fp)
         
@@ -172,7 +199,7 @@ def get_survey_mri_df_prescient(ampscz_id: str, fields_to_check: list,
 
     site = ampscz_id[:2]
 
-    data_location = '/data/predict/data_from_nda'
+    data_location = '/data/predict1/data_from_nda'
     prescient_root = Path(data_location) / 'Prescient'
     prescient_protected = prescient_root / 'PHOENIX' / 'PROTECTED'
     site = 'ME'
