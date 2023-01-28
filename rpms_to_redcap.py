@@ -283,7 +283,6 @@ for _,visit in data.iterrows():
     # print('\t',data2)
     
 
-    # for debugging, shift the entire following block by one tab
 
     # save it as text and load it back to avoid REDCap import error
     fw= NamedTemporaryFile('w', delete=False)
@@ -312,7 +311,4 @@ for _,visit in data.iterrows():
     print('\t','HTTP Status: ' + str(r.status_code))
     print('\t',r.json())
 
-    # break
-
     print('')
-    
