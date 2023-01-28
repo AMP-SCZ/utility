@@ -88,7 +88,6 @@ with open(sys.argv[1]) as f:
     data= json.load(f)
 
 
-data2= []
 for visit in data:
     data2= []
     
