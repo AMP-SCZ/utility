@@ -86,14 +86,14 @@ def _visit_to_event(chr_hc, form, visit_num):
 
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print('''Usage:
-    /path/to/import_records.py ME57953.csv forms-dir API_TOKEN /path/to/date_offset.csv 1
-    /path/to/import_records.py ME57953/surveys/ forms-dir API_TOKEN /path/to/date_offset.csv 1
-first input can be either file or directory
+    print(f'''Usage:
+    {abspath(__file__)} ME57953.csv forms-dir API_TOKEN /path/to/date_offset.csv 1
+execute it within /path/to/ME57953/surveys/ directory
 forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files
 optional: date_offset.csv is the file with 1/0 upload bit
 optional: 1 is for force re-upload''')
     exit(0)
+
 
 
 if sys.argv[-1]=='1':
@@ -177,8 +177,9 @@ form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
 data= pd.read_csv(sys.argv[1])
 
-data2= []
+
 for _,visit in data.iterrows():
+    data2= []
     
     # skip Parent/Guardian consent if any
     if 'version' in visit and visit['version']=='Parent/Guardian':
@@ -198,7 +199,7 @@ for _,visit in data.iterrows():
     data_form={}
     for _,row in forms_group.get_group(form).iterrows():
         v= row['Variable / Field Name']
-        # try/except block for bypassing nonexistent vars in JSON
+        # try/except block for bypassing nonexistent vars in CSV
         # also for bypassing empty forms
         try:
             # consider non-empty only
@@ -279,38 +280,39 @@ for _,visit in data.iterrows():
     data1[completion]= entry_status(form,visit['visit'])
     
     data2.append(data1)
-    # print(data2)
-    # print('')
+    # print('\t',data2)
     
 
-# for debugging, shift the entire following block by one tab
+    # for debugging, shift the entire following block by one tab
 
-# save it as text and load it back to avoid REDCap import error
-fw= NamedTemporaryFile('w', delete=False)
-json.dump(data2,fw)
-fw.close()
+    # save it as text and load it back to avoid REDCap import error
+    fw= NamedTemporaryFile('w', delete=False)
+    json.dump(data2,fw)
+    fw.close()
 
-with open(fw.name) as f:
-    data2= f.read()
+    with open(fw.name) as f:
+        data2= f.read()
 
-remove(fw.name)
+    remove(fw.name)
 
 
-fields = {
-    'token': sys.argv[3],
-    'content': 'record',
-    'action': 'import',
-    'format': 'json',
-    'type': 'flat',
-    'data': data2,
-    'overwriteBehavior': 'normal',
-    'returnContent': 'count',
-    'returnFormat': 'json'
-}
+    fields = {
+        'token': sys.argv[3],
+        'content': 'record',
+        'action': 'import',
+        'format': 'json',
+        'type': 'flat',
+        'data': data2,
+        'overwriteBehavior': 'normal',
+        'returnContent': 'count',
+        'returnFormat': 'json'
+    }
 
-r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
-print('\t','HTTP Status: ' + str(r.status_code))
-print('\t',r.json())
+    r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+    print('\t','HTTP Status: ' + str(r.status_code))
+    print('\t',r.json())
 
-# break 
+    # break
 
+    print('')
+    
