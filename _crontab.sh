@@ -43,7 +43,7 @@
 # keep one day difference between upload and download so upload can complete
 
 # download from REDCap and shift dates
-# 0 21 * * 4 /data/predict/utility/down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456 && /data/predict/utility/shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" ${DICT_DIR}/CloneOfYaleRealRecords_DataDictionary_2022-12-26_calc_to_text_checkbox.csv
+# 0 21 * * 4 /data/predict/utility/down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456 && /data/predict/utility/shift_redcap_dates.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/*.Prescient.json" ${DICT_DIR}/CloneOfYaleRealRecords_DataDictionary_2022-12-26_calc_to_text_checkbox.csv
 
 # ProNET real
 # determine if new and shift dates
