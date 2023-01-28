@@ -44,7 +44,7 @@ from glob import glob
 
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
-    print('''Usage: /path/to/import_records.py CA00007.json forms-dir API_TOKEN /path/to/date_offset.csv 1
+    print(f'''Usage: {abspath(__file__)} CA00007.json forms-dir API_TOKEN /path/to/date_offset.csv 1
 forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files
 optional: date_offset.csv is the file with 1/0 upload bit
 optional: 1 is for force re-upload''')
@@ -146,10 +146,6 @@ for visit in data:
         
         data2.append(data1)
 
-        # print('')
-        
-
-        # for debugging, shift the entire following block by one tab
 
         # save it as text and load it back to avoid REDCap import error
         fw= NamedTemporaryFile('w', delete=False)
@@ -182,8 +178,5 @@ for visit in data:
         print('\t HTTP Status: ' + str(r.status_code))
         print('\t',r.json())
 
-        # break
-        
         print('')
-
 
