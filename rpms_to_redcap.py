@@ -258,6 +258,13 @@ for _,visit in data.iterrows():
         except KeyError:
             pass
     
+    
+    if form=='sociodemographics':
+        if chr_hc==1:
+            data_form['chrdemo_age_mos_chr'] = visit['interview_age']
+        elif chr_hc==2:
+            data_form['chrdemo_age_mos_hc'] = visit['interview_age']
+
 
     completion= f'{form}_complete'
     # bypass empty forms
@@ -278,7 +285,7 @@ for _,visit in data.iterrows():
 
     data1.update(data_form)
     data1[completion]= entry_status(form,visit['visit'])
-    
+
     data2.append(data1)
     # print('\t',data2)
     
