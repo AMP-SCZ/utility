@@ -59,7 +59,7 @@ def populate():
 
         
     sex=get_value('chrdemo_sexassigned',f'baseline_arm_{arm}')
-    sex='M' if sex==1 else 'F'
+    sex='M' if sex=='1' else 'F'
 
     race_to_nda={
         1:'American Indian/Alaska Native',
