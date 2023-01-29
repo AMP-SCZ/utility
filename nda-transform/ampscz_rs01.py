@@ -16,7 +16,10 @@ def get_value(var,event):
 
     for d in dict1:
         if d['redcap_event_name']==event:
-            return d[var]
+            try:
+                return d[var]
+            except KeyError:
+                return ''
 
 
 def calc_age(consent,interview):
@@ -32,10 +35,6 @@ def populate():
     except KeyError:
         return
 
-    print('Processing',file)
-    
-    with open(file) as f:
-        dict1=json.load(f)
 
     if dfshared.loc[src_subject_id,'phenotype']=='CHR':
         arm=1
@@ -48,15 +47,17 @@ def populate():
     interview_date=get_value('chrrecruit_interview_date',f'screening_arm_{arm}')
     interview_age=calc_age(chric_consent_date,interview_date)
 
-    for v in ['subjectkey','src_subject_id','sex']:
-        df.loc[row,v]=dfshared.loc[src_subject_id,v]
-    
-    df.loc[row,'interview_date']=interview_date
-    df.loc[row,'interview_age']=interview_age
+    for v in ['subjectkey','sex']:
+        df.at[row,v]=dfshared.loc[src_subject_id,v]
+
+    for v in ['src_subject_id','interview_date','interview_age']:
+        df.at[row,v]=eval(v)
+    #df.at[row,'interview_date']=interview_date
+    #df.at[row,'interview_age']=interview_age
     
     for v in columns:
         if 'chrrecruit' in v:
-            df.loc[row,v]=get_value(v,f'screening_arm_{arm}')
+            df.at[row,v]=get_value(v,f'screening_arm_{arm}')
 
     # return df
 
@@ -78,8 +79,18 @@ if __name__=='__main__':
     
     args= parser.parse_args()
     
-    dfshared=pd.read_csv(args.shared)
-    dfshared.set_index('src_subject_id',inplace=True)
+    # load shared ndar_subject01
+    with open(args.shared) as f:
+        title,df=f.read().split('\n',1)
+
+        _,name=mkstemp()
+        with open(name,'w') as fw:
+            fw.write(df)
+        
+        dfshared=pd.read_csv(name)
+        remove(name)
+        dfshared.set_index('src_subject_id',inplace=True)
+    
     
     # load NDA dictionary
     with open(args.dict) as f:
@@ -103,13 +114,18 @@ if __name__=='__main__':
     
     files=glob(args.template)
     for row,file in enumerate(files):
+        
+        print('Processing',file)
+        
+        with open(file) as f:
+            dict1=json.load(f)
+
         populate()
 
 
     pd.set_option("display.max_rows", None)
     pd.set_option("display.max_columns", None)
     pd.set_option("display.max_colwidth", None)
-    print(df[["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype"]])
 
     chdir(dir_bak)
     
