@@ -73,10 +73,19 @@ def populate():
         if 'chrrecruit' in v:
             value=get_value(v,f'screening_arm_{arm}')
 
-            if definition.loc[v,'DataType']=='Integer' and value=='':
-                # NDA missing: -300
-                # NDA N/A: -900
-                value='-300'
+            if definition.loc[v,'DataType']=='Integer':
+                if value=='':
+                    # NDA missing: -300
+                    # NDA N/A: -900
+                    value='-300'
+                elif value in ['-3','-9']:
+                    value+='00'
+                elif '.' in value:
+                    value=value.split('.')[-1]
+
+            elif definition.loc[v,'DataType']=='String':
+                if value in ['-3','-9']:
+                    value=''
 
             df.at[row,v]=value
 
