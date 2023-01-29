@@ -30,7 +30,7 @@ def calc_age(consent,interview):
 def nda_date(redcap_date):
     Y=redcap_date[:4]
     m,d=redcap_date[5:].split('-')
-    new_date=f'{Y}/{m}/{d}'
+    new_date=f'{m}/{d}/{Y}'
 
     return new_date
 
