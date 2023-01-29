@@ -29,7 +29,9 @@ def months_since_consent(interview,consent):
 
 def nda_date(redcap_date):
     if redcap_date=='':
-        return ''
+        # REDCap missing: 1909-09-09
+        # REDCap N/A: 1903-03-03
+        return '1903-03-03'
 
     Y=redcap_date[:4]
     m,d=redcap_date[5:].split('-')
@@ -69,10 +71,23 @@ def populate():
 
     for v in columns:
         if 'chrrecruit' in v:
-            if '_date' in v:
-                df.at[row,v]=nda_date(get_value(v,f'screening_arm_{arm}'))
-            else:
-                df.at[row,v]=get_value(v,f'screening_arm_{arm}')
+            value=get_value(v,f'screening_arm_{arm}')
+
+            if definition.loc[v,'DataType']=='Integer' and value=='':
+                # NDA missing: -300
+                # NDA N/A: -900
+                value='-300'
+
+            df.at[row,v]=value
+
+    missing=get_value('chrrecruit_missing',f'screening_arm_{arm}')
+    if missing=='':
+        # not clicked
+        missing='0'
+    df.at[row,'ampscz_missing']=missing
+    # if ampscz_missing=0, then ampscz_missing_spec is N/A
+    # but NDA does not have a code of missing_spec=N/A
+    # df.at[row,'ampscz_missing_spec']=get_value('chrrecruit_missing_spec',f'screening_arm_{arm}')[1]
 
     # return df
 
@@ -110,20 +125,24 @@ if __name__=='__main__':
     # load NDA dictionary
     with open(args.dict) as f:
         title,df=f.read().split('\n',1)
+
+        # delete vars
+        df=df.replace(',\"ampscz_missing_spec\",\"ampscz_entry_date\"','')
         
         # rename vars
-        # df=df.replace('interview_date','chrrecruit_interview_date')
-        df=df.replace('ampscz','chrrecruit')
+        # df=df.replace('ampscz_','chrrecruit_')
 
+        # save the remaining template
         _,name=mkstemp()
         with open(name,'w') as fw:
             fw.write(df)
         
+        # load template as DataFrame
         df=pd.read_csv(name)
         columns=df.columns.values
         remove(name)
         
-        # load definition
+        # load template definition
         definition=pd.read_csv(args.dict.replace('_template','_definitions'))
         definition.set_index('ElementName',inplace=True)
 
