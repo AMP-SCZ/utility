@@ -122,7 +122,10 @@ if __name__=='__main__':
         df=pd.read_csv(name)
         columns=df.columns.values
         remove(name)
-
+        
+        # load definition
+        definition=pd.read_csv(args.dict.replace('_template','_definitions'))
+        definition.set_index('ElementName',inplace=True)
 
     dir_bak=getcwd()
     chdir(args.root)
