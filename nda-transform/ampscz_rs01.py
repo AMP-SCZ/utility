@@ -23,8 +23,16 @@ def get_value(var,event):
 
 
 def calc_age(consent,interview):
-    age= datetime.strptime(consent,'%Y-%m-%d')-datetime.strptime(interview,'%Y-%m-%d')
+    age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
     return round(age.days/30)
+
+
+def nda_date(redcap_date):
+    Y=redcap_date[:4]
+    m,d=redcap_date[5:].split('-')
+    new_date=f'{Y}/{m}/{d}'
+
+    return new_date
 
 
 def populate():
@@ -41,8 +49,8 @@ def populate():
     else:
         arm=2
 
-    # get form specific variables
 
+    # get shared variables
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     interview_date=get_value('chrrecruit_interview_date',f'screening_arm_{arm}')
     interview_age=calc_age(chric_consent_date,interview_date)
@@ -50,14 +58,18 @@ def populate():
     for v in ['subjectkey','sex']:
         df.at[row,v]=dfshared.loc[src_subject_id,v]
 
-    for v in ['src_subject_id','interview_date','interview_age']:
-        df.at[row,v]=eval(v)
-    #df.at[row,'interview_date']=interview_date
-    #df.at[row,'interview_age']=interview_age
-    
+    df.at[row,'src_subject_id']=src_subject_id
+    df.at[row,'interview_date']=nda_date(interview_date)
+    df.at[row,'interview_age']=interview_age
+
+
+    # get form specific variables
     for v in columns:
         if 'chrrecruit' in v:
-            df.at[row,v]=get_value(v,f'screening_arm_{arm}')
+            if '_date' in v:
+                df.at[row,v]=nda_date(get_value(v,f'screening_arm_{arm}'))
+            else:
+                df.at[row,v]=get_value(v,f'screening_arm_{arm}')
 
     # return df
 
