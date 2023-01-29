@@ -28,6 +28,9 @@ def months_since_consent(interview,consent):
 
 
 def nda_date(redcap_date):
+    if redcap_date=='':
+        return ''
+
     Y=redcap_date[:4]
     m,d=redcap_date[5:].split('-')
     new_date=f'{m}/{d}/{Y}'
