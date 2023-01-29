@@ -22,7 +22,7 @@ def get_value(var,event):
                 return ''
 
 
-def calc_age(consent,interview):
+def months_since_consent(interview,consent):
     age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
     return round(age.days/30)
 
@@ -51,19 +51,19 @@ def populate():
 
 
     # get shared variables
-    chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
-    interview_date=get_value('chrrecruit_interview_date',f'screening_arm_{arm}')
-    interview_age=calc_age(chric_consent_date,interview_date)
-
-    for v in ['subjectkey','sex']:
-        df.at[row,v]=dfshared.loc[src_subject_id,v]
-
     df.at[row,'src_subject_id']=src_subject_id
-    df.at[row,'interview_date']=nda_date(interview_date)
-    df.at[row,'interview_age']=interview_age
+    for v in ['subjectkey','interview_age','sex']:
+        df.at[row,v]=dfshared.loc[src_subject_id,v]
 
 
     # get form specific variables
+    interview_date=get_value('chrrecruit_interview_date',f'screening_arm_{arm}')
+    df.at[row,'interview_date']=nda_date(interview_date)
+    
+    chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
+    months=months_since_consent(interview_date,chric_consent_date)
+    df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
+
     for v in columns:
         if 'chrrecruit' in v:
             if '_date' in v:
