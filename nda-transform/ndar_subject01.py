@@ -90,8 +90,10 @@ def populate():
     interview_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     interview_date=datetime.strptime(interview_date,'%Y-%m-%d').strftime('%m/%d/%Y')
     
-    
-    df.at[row,["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype","phenotype_description","twins_study","sibling_study","family_study","sample_taken"]]=[subjectkey,src_subject_id,interview_date,interview_age,sex,race,phenotype,phenotype_description,twins_study,sibling_study,family_study,sample_taken]
+    for c in df.columns:
+        df.at[row,c]=eval(c)
+
+    # df.at[row,["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype","phenotype_description","twins_study","sibling_study","family_study","sample_taken"]]=[subjectkey,src_subject_id,interview_date,interview_age,sex,race,phenotype,phenotype_description,twins_study,sibling_study,family_study,sample_taken]
 
 
     # return df
@@ -115,13 +117,12 @@ if __name__=='__main__':
     # load NDA dictionary
     with open(args.dict) as f:
         title,df=f.read().split('\n',1)
+       
+        columns=["subjectkey","src_subject_id","interview_date","interview_age","sex",
+            "race","phenotype","phenotype_description",
+            "twins_study","sibling_study","family_study","sample_taken"]
         
-        _,name=mkstemp()
-        with open(name,'w') as fw:
-            fw.write(df)
-        
-        df=pd.read_csv(name)
-        remove(name)
+        df=pd.DataFrame(columns=columns)
 
 
     dir_bak=getcwd()
