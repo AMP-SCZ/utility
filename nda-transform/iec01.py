@@ -57,7 +57,7 @@ def populate():
 
     # get shared variables
     df.at[row,'src_subject_id']=src_subject_id
-    for v in ['subjectkey','interview_age','sex']:
+    for v in ['subjectkey','sex']:
         df.at[row,v]=dfshared.loc[src_subject_id,v]
 
 
@@ -137,13 +137,17 @@ if __name__=='__main__':
 
         prefix='chrcrit_'
 
-        # delete vars
-        df=df.replace(',\"ampscz_missing_spec\"','')
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+        for c in df.split(','):
+            if prefix in c:
+                columns.append(c.strip())
+
+        columns.append(f'ampscz_missing')
         
         # save the remaining template
         _,name=mkstemp()
         with open(name,'w') as fw:
-            fw.write(df)
+            fw.write(','.join(columns))
         
         # load template as DataFrame
         df=pd.read_csv(name)
