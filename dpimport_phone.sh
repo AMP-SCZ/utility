@@ -22,7 +22,18 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"phone_\",\"actigraphy_\",\"dpgvail\",\"dppay\"]" /data/predict/utility/remove_assess.js
+--eval "assess=\"phone_\"" /data/predict/utility/remove_assess.js
+
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
+--tlsCertificateKeyFile $state/ssl/mongo_client.pem \
+mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
+--eval "assess=\"actigraphy_\"" /data/predict/utility/remove_assess.js
+
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
+--tlsCertificateKeyFile $state/ssl/mongo_client.pem \
+mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
+--eval "assess=[\"dpgvail\",\"dppay\"]" /data/predict/utility/remove_assess.js
+
 echo ''
 
 
