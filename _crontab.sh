@@ -21,7 +21,7 @@
 # === eris2n4 ===
 
 # clear REDCap upload logs, every monday at 12 am
-0 * * * 1 rm -f /data/predict/utility/bsub/*
+0 0 * * 1 rm -f /data/predict/utility/bsub/*
 
 # import records to REDCap, once a week
 # used to be 0 */3, 15 */3, 30 */3, 45 */3 (every three hours)
@@ -75,6 +75,9 @@
 # back up EEG QC web app scores
 # run as service account
 22 15 * * * /opt/eeg-qc-dash/backup_scores.cron /data/eegqc/ /opt/data/eegqc-mock/
+
+# run as Tashrif
+0 0 * * * rsync -a /data/eegqc/.scores.pkl eris2n4.research.partners.org:/data/predict1/data_from_nda/
 
 
 
