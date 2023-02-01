@@ -23,7 +23,7 @@ source /data/predict/utility/.vault/.env.${2}
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewMonoVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\",\"avlqc\", \"open_count\"]" /data/predict/utility/remove_assess.js
+--eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewMonoVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\",\"avlqc\",\"open_count\",\"psychs_count\",\"subject_count\"]" /data/predict/utility/remove_assess.js
 echo ''
 
 
@@ -44,5 +44,5 @@ tail -n +2 ${name}-PRESCIENT-${assess}-day1to1.csv >> ${name}-AMPSCZ-${assess}-d
 /data/predict/utility/renumber_days.py ${name}-AMPSCZ-${assess}-day1to1.csv
 
 import.py -c $CONFIG "combined-*-avlqc-day1to1.csv"
-import.py -c $CONFIG "open_count/??-*-open_count-day1to*csv"
+import.py -c $CONFIG "*_count/??-*-*_count-day1to*csv"
 
