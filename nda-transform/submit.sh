@@ -21,8 +21,12 @@ do
     title=${prefix}_${datestamp}
     data=${prefix}.csv
     python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
-    -u $user -c $collection -b -t $title \
-    $root/to_nda/nda-submissions/$data
+    -u $user -t $title -d $title \
+    -a $collection \
+    -b $root/to_nda/nda-submissions/$data
+
+    # the wait maybe useful
+    sleep 30
 done
 
 
