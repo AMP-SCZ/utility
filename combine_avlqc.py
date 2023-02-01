@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from os.path import join as pjoin, dirname
+from os import makedirs
 import sys
 from glob import glob
 import pandas as pd
@@ -65,8 +66,9 @@ def concat_site_csv(data_root,output_root,center_name):
             cur_df = cur_df[category_cols]
             # note the day number here will indicate the number of available open sessions, not the actual day numbers
             # (timepoint will have the actual day numbers)
-            cur_name = subject_id[:2] + "-" + subject_id + "-" + "open_qc_count" + "-" + "day1to" + str(cur_df.shape[0]) + ".csv"
+            cur_name = subject_id[:2] + "-" + subject_id + "-" + "open_count" + "-" + "day1to" + str(cur_df.shape[0]) + ".csv"
             # they will be saved in subfolder of main folder on the server
+            makedirs(f"{output_root}/open_count",exist_ok=True)
             cur_df.to_csv(f"{output_root}/open_count/{cur_name}",index=False)
     
 
