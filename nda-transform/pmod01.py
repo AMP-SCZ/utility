@@ -19,7 +19,9 @@ def get_value(var,event):
             try:
                 return d[var]
             except KeyError:
-                return ''
+                break
+
+    return ''
 
 
 def months_since_consent(interview,consent):
@@ -181,11 +183,6 @@ if __name__=='__main__':
 
         populate()
 
-
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.max_columns", None)
-    pd.set_option("display.max_colwidth", None)
-
     chdir(dir_bak)
     
     _,name=mkstemp()
@@ -198,4 +195,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-
+    print('Generated',args.output)
+    
