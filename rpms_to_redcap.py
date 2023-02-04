@@ -61,7 +61,7 @@ def _date(time_value):
             # psychs form e.g. 03/03/1903
             int_value= datetime.strptime(time_value, '%d/%m/%Y')
 
-    elif len(visit[v])>10:
+    elif len(time_value)>10:
         # all other forms e.g. 1/05/2022 12:00:00 AM
         int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
         
