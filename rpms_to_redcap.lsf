@@ -8,7 +8,6 @@ cd ${redcap_phoenix}
 #BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
 #BSUB -n 4
 #BSUB -R "span[hosts=1]"
-#BSUB -m "dn042 dn044 dn045 dn046 hna004 hna005"
 
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
