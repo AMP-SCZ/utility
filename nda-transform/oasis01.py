@@ -20,7 +20,10 @@ def get_value(var,event):
                 return d[var]
             except KeyError:
                 return ''
-
+                
+    # the subject has not reached the event yet
+    return ''
+    
 
 def months_since_consent(interview,consent):
     age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
@@ -57,7 +60,7 @@ def populate():
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
     if interview_date=='':
-        # either no data in this form or the subject has not reached the event yet
+        # no data in this form
         return
 
     # get shared variables
@@ -117,6 +120,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event", required=True,
+        help="Event name: screening, baseline, month_1, etc.")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -141,7 +146,7 @@ if __name__=='__main__':
         title,df=f.read().split('\n',1)
 
         prefix='chroasis'
-        event='baseline'
+        event=args.event
 
         columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
             'chroasis_oasis_1','chroasis_oasis_2','chroasis_oasis_3',
