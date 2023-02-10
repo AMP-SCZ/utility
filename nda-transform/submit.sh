@@ -2,39 +2,56 @@
 
 export PATH=/data/predict/miniconda3/bin:$PATH
 
-if [ $# -lt 2 ] || [ $1 = '-h' ] || [ $1 == '--help' ]
-then
+_help()
+{
     echo """Usage:
-./submit.sh ndar_subject01 tashrif
-./submit.sh ndar_subject01 tashrif Prescient
-Provide NDA dict name & submitter's NDA username
-Network name is optional. It is useful when you will have to retry just one submission."""
-    exit
-fi
+./submit.sh -u tashrif -f ndar_subject01 -n Pronet -e baseline
+./submit.sh -u tashrif -f ndar_subject01 -n Prescient
+./submit.sh -u tashrif -f ndar_subject01
 
-form=$1
-user=$2
+Mandatory:
+-f : NDA dict name 
+-u : submitter's NDA username
+
+Optional:
+-n : network
+-e : event
+
+nda-submission directory is globed for \${f}_\${n}_\${e}.csv to find files to submit
+"""
+
+    exit
+}
+
+
+while getopts "u:f:n:e:" i
+do
+    case $i in
+        u) user=$OPTARG ;;
+        f) form=$OPTARG ;;
+        n) network=$OPTARG ;;
+        e) event=$OPTARG ;;
+        ?) _help ;;
+    esac
+done
+
+
 collection=PROD-AMPSCZ
 root=/data/predict1
 datestamp=$(date +"%Y%m%d")
 
-if [ ! -z $3 ]
-then
-    network=$3
-else
-    network="Pronet Prescient"
-fi
 
-for net in $network
+for data in `ls $root/to_nda/nda-submissions/${form}*${network}*${event}.csv`
 do
-    prefix=${form}_${net}
-    title=${prefix}_${datestamp}
-    data=${prefix}.csv
+    echo Processing $data
+
+    title=`basename ${data/.csv/}`
     python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
     -u $user -t $title -d $title \
     -a $collection \
-    -b $root/to_nda/nda-submissions/$data
+    -b $data
     
+    echo ''
     # the wait maybe useful
     sleep 30
 done
