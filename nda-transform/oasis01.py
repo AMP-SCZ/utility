@@ -102,9 +102,10 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
-    # if ampscz_missing=0, then ampscz_missing_spec is N/A
-    # but NDA does not have a code of missing_spec=N/A
-    # df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+    if missing=='1':
+        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+    else:
+        df.at[row,'ampscz_missing_spec']=''
 
     # return df
 
@@ -198,4 +199,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-
+    print('Generated',args.output)
+    
