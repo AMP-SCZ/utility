@@ -7,6 +7,7 @@ cd ${redcap_phoenix}
 #BSUB -o /data/predict/utility/bsub/redcap-import-%J-%I.out
 #BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
 #BSUB -n 4
+#BSUB -R "span[hosts=1]"
 
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
@@ -37,6 +38,8 @@ do
     if [ -f $form ]
     then
         ls -lah $form
+        echo -e '\033[0;31m' $form '\033[0m' >&2
+
         /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $redcap_phoenix/date_offset.csv $FORCE
         echo ''
         echo ''
