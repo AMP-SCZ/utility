@@ -1,17 +1,5 @@
-PrescientStudy_Prescient_adverse_events_:
-- visit,1 2 3 4 5,99 99 99 99 99
-
-PrescientStudy_Prescient_psychosocial_treatment_form_:
-- visit,1 2 3 4 5,99 99 99 99 99
-
-PrescientStudy_Prescient_health_conditions_medical_historypsychiatric_histo_:
-- visit,1 2 3 4 5,99 99 99 99 99
-
-PrescientStudy_Prescient_current_pharmaceutical_treatment_floating_med_125_:
-- visit,1 2 3 4 5,99 99 99 99 99
-
-PrescientStudy_Prescient_resource_use_log_:
-- visit,1 2 3 4 5,99 99 99 99 99
+PrescientStudy_Prescient_entry_status_:
+- visit,100,1
 
 PrescientStudy_Prescient_recruitment_source_:
 - chrrecruit_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
