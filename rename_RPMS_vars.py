@@ -8,10 +8,25 @@ from os import getcwd, chdir, environ
 from os.path import isfile, dirname
 import sys
 
+if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+    print(f'''Usage:
+    {__file__} /mnt/prescient/RPMS_incoming/
+    {__file__} /mnt/prescient/RPMS_incoming/ 31.12.2022.csv
+    {__file__} /mnt/prescient/RPMS_incoming/ 31.12.2022.csv /path/to/rename_RPMS_vars.yaml
+First arg is mandatory, rest are optional.''')
+    exit(0)
 
-suffix=date.today().strftime('%d.%m.%Y.csv')
+try:
+    suffix=sys.argv[2]
+except:
+    suffix=date.today().strftime('%d.%m.%Y.csv')
 
-with open(dirname(__file__)+'/rename_RPMS_vars.yaml') as f:
+try:
+    yaml_file=sys.argv[3]
+except:
+    yaml_file=dirname(__file__)+'/rename_RPMS_vars.yaml'
+
+with open(yaml_file) as f:
     dict1=safe_load(f)
 
 dir_bak=getcwd()
