@@ -74,11 +74,11 @@ PrescientStudy_Prescient_global_functioning_social_scale_:
 - chrgfss_gf_social_scale,chrgfs_gf_social_scale
 - chrgfss_gf_social_low,chrgfs_gf_social_low
 - chrgfss_gf_social_high,chrgfs_gf_social_high
-- chrgfssfu_overallsat,chrgfsfu_overallsat
-- chrgfssfu_gf_social_scale,chrgfsfu_gf_social_scale
 
 PrescientStudy_Prescient_global_functioning_social_scale_followup_:
 - interview_date,chrgfssfu_interview_date
+- chrgfssfu_overallsat,chrgfsfu_overallsat
+- chrgfssfu_gf_social_scale,chrgfsfu_gf_social_scale
 
 PrescientStudy_Prescient_guid_form_:
 - interview_date,chrguid_interview_date
