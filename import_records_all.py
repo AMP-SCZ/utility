@@ -105,7 +105,18 @@ for visit in data:
 
         empty=True
         data_form={}
-        for v in forms_group.get_group(form)['Variable / Field Name']:
+        _group=forms_group.get_group(form)
+        for i,row in _group.iterrows():
+            
+            v=row['Variable / Field Name']
+
+            # skip non-input variables:
+            # descriptive fields are already in REDCap
+            # REDCap re-calculates the calc fields
+            # we are not uploading any files to REDCap
+            if _group.loc[i,'Field Type'] in ['descriptive','calc','file']:
+                continue
+
             # try/except block for bypassing nonexistent vars in JSON
             # also for bypassing empty forms
             try:
