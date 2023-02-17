@@ -52,6 +52,7 @@ for pattern in dict1.keys():
 
         file=file[0]
 
+    print('Processing',file)
     
     with open(file) as f:
         content=f.read()
