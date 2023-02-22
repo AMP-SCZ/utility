@@ -52,6 +52,7 @@ for pattern in dict1.keys():
 
         file=file[0]
 
+    print('Processing',file)
     
     with open(file) as f:
         content=f.read()
@@ -83,4 +84,6 @@ for pattern in dict1.keys():
             f.write(content)
 
 chdir(dir_bak)
+
+print('')
 
