@@ -36,11 +36,6 @@ import.py -c $CONFIG "MRI_ROOT/derivatives/quick_qc/combined-*-mriqc-day1to*.csv
 # subject level data
 import.py -c $CONFIG "MRI_ROOT/derivatives/quick_qc/*/??-*-mriqc-day1to*.csv"
 
-# eeg count data : temporary
-import.py -c $CONFIG "MRI_ROOT/eeg_mri_count/??-*-eegcount-day1to*.csv"
+# eeg count, mri count, mri qc final score
+import.py -c $CONFIG "MRI_ROOT/eeg_mri_count/??-*-day1to*.csv"
 
-# mri count data : temporary
-import.py -c $CONFIG "MRI_ROOT/eeg_mri_count/??-*-mricount-day1to*.csv"
-
-# mri qc final data : temporary
-import.py -c $CONFIG "MRI_ROOT/eeg_mri_count/??-*-mriqcval-day1to*.csv"
