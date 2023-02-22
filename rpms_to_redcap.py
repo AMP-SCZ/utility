@@ -207,7 +207,7 @@ for _,visit in data.iterrows():
                 continue
             elif isinstance(visit[v],str) and visit[v].lower() in ['','-','none','not applicable', 'n/a','na']:
                 continue
-            elif visit[v] in [-3,-99]:
+            elif visit[v] in [-3,-9,-99]:
                 continue
                 
             # leave checkbox variables out of consideration
