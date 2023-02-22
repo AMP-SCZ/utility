@@ -28,7 +28,7 @@ echo ''
 
 
 # import new data
-export PATH=/data/predict/miniconda3/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}
 import.py -c $CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
 

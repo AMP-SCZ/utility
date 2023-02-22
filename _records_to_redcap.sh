@@ -19,7 +19,7 @@ export redcap_records redcap_phoenix redcap_dict API_TOKEN FORCE
 # export is to allow them to be used within records_to_redcap.lsf
 
 # echo 'Deleting old records ...'
-export PATH=/data/predict/miniconda3/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 # /data/predict/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
 
 echo  'Uploading new records ...'

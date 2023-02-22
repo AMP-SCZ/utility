@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=/data/predict/miniconda3/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd /data/predict/utility/dict_diff
 CURL=`which curl`
 datestamp=$(date +"%Y%m%d")

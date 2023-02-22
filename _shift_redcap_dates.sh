@@ -2,7 +2,7 @@
 
 export OPENBLAS_NUM_THREADS=16
 
-export PATH=/data/predict/miniconda3/bin:$PATH
+export PATH=/data/predict1/miniconda3/bin:$PATH
 
 PHOENIX_PROTECTED=$1
 JSON=$2

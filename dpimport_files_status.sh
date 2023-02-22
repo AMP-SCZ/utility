@@ -29,7 +29,7 @@ mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/
 
 
 # import new collections
-export PATH=/data/predict/miniconda3/bin:$PATH
+export PATH=/data/predict1/miniconda3/bin:$PATH
 cd $NDA_ROOT
 
 # metadata

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=/data/pnl/soft/pnlpipe3/miniconda3/envs/dpimport/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${redcap_phoenix}
 
 #BSUB -q pri_pnl
