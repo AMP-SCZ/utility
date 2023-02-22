@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-database-tools-rhel70-x86_64-100.5.2/bin:$PATH
+export PATH=/data/predict1/mongodb-database-tools-rhel70-x86_64-100.5.2/bin:$PATH
 
 if [[ $# -lt 3 ]]
 then

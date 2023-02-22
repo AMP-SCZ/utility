@@ -5,7 +5,7 @@
 # base hash:
 # 813e15eb4006956b1d804e211ce95c656bc1704e625c718630d21343a85bc617
 
-export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+export PATH=/data/predict1/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 if [ -z $1 ] || [ ! -d $1 ]
 then

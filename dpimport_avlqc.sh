@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+export PATH=/data/predict1/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 
 if [ -z $1 ] || [ ! -d $1 ]
