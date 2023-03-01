@@ -26,6 +26,6 @@ dict1=r.json()
 
 for i,d in enumerate(dict1):
     print('{:2d} {} {:4s} {} {:16.16s} {:.40s}'.format(
-        i,d['submission_id'],d['collection']['id'],d['dataset_created_date'][:16],d['submission_status'],d['dataset_title']))
+        i+1,d['submission_id'],d['collection']['id'],d['dataset_created_date'][:16],d['submission_status'],d['dataset_title']))
 
 
