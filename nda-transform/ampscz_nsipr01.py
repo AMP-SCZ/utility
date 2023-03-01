@@ -154,6 +154,7 @@ if __name__=='__main__':
         for c in df.split(','):
             if prefix in c:
                 columns.append(c.strip())
+                
         columns=columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
