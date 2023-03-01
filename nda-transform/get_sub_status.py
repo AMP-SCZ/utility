@@ -24,6 +24,8 @@ print('HTTP Status: ' + str(r.status_code))
 
 dict1=r.json()
 
+print('   {} {:4s} {:16s} {:16.16s} {:.40s}'.format(
+    'sub#','coll#','datetime','status','title'))
 for i,d in enumerate(dict1):
     print('{:2d} {} {:4s} {} {:16.16s} {:.40s}'.format(
         i+1,d['submission_id'],d['collection']['id'],d['dataset_created_date'][:16],d['submission_status'],d['dataset_title']))
