@@ -17,7 +17,7 @@ args=parser.parse_args()
 # password=getenv('DOWNLOAD_MANAGER_PASSWORD')
 
 
-req_string=f"https://{args.user}:{args.password}@nda.nih.gov/api/submission/?collectionId=3705"
+req_string=f"https://{args.user}:{args.password}@nda.nih.gov/api/submission/"
 
 r = requests.get(req_string)
 print('HTTP Status: ' + str(r.status_code))
@@ -25,7 +25,7 @@ print('HTTP Status: ' + str(r.status_code))
 dict1=r.json()
 
 for i,d in enumerate(dict1):
-    print('{:2d} {} {} {:.16s} {:.40s}'.format(
-        i,d['submission_id'],d['dataset_created_date'][:16],d['submission_status'],d['dataset_title']))
+    print('{:2d} {} {:4s} {} {:16.16s} {:.40s}'.format(
+        i,d['submission_id'],d['collection']['id'],d['dataset_created_date'][:16],d['submission_status'],d['dataset_title']))
 
 
