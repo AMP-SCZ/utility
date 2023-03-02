@@ -14,5 +14,10 @@ for a in df['Aliases'].values:
 
     for v in a.split(','):
         if f'{sys.argv[2]}_' in v:
-            print(v)
+            print(f"'{v}',",end='')
+            # each cell has one relevant alias
+            # so it is safe to break out
+            break
+
+print('')
 
