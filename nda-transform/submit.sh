@@ -11,13 +11,14 @@ _help()
 
 Mandatory:
 -f : NDA dict name 
--u : submitter's NDA username
 
 Optional:
+-u : submitter's NDA username
 -n : network
 -e : event
 
 nda-submission directory is globed for \${f}_\${n}_\${e}.csv to find files to submit
+do not provide -u for only validation
 """
 
     exit
@@ -45,12 +46,22 @@ for data in `ls $root/to_nda/nda-submissions/${form}*${network}*${event}.csv`
 do
     echo Processing $data
 
-    title=`basename ${data/.csv/}`
-    python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
-    -u $user -t $title -d $title \
-    -a $collection \
-    -b $data
-    
+    if [ -z $user ]
+    then
+        # validate only
+        python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+        $data
+
+    else
+        # validate and submit
+        title=`basename ${data/.csv/}`
+        python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+        -u $user -t $title -d $title \
+        -a $collection \
+        -b $data
+        
+    fi
+
     echo ''
     # the wait maybe useful
     sleep 30
