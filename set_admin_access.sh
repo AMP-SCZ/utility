@@ -15,6 +15,6 @@ mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
 --eval "uid=\"$MONGO_UID\"" \
-/data/predict/utility/_set_admin_access.js
+/data/predict1/utility/_set_admin_access.js
 
 
