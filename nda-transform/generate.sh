@@ -13,7 +13,6 @@ Mandatory:
 -n : network
 -e : event
 -p : variable name prefix e.g. chrnsipr, chrassist
-
 """
 
     exit
@@ -31,6 +30,10 @@ do
     esac
 done
 
+if [ -z $form ] || [ -z $network ] || [ -z $event ] || [ -z $prefix ]
+then
+    _help
+fi
 
 datestamp=$(date +"%Y%m%d")
 

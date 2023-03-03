@@ -37,6 +37,11 @@ do
     esac
 done
 
+if [ -z $form ]
+then
+    _help
+fi
+
 
 collection=PROD-AMPSCZ
 root=/data/predict1
