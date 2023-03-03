@@ -8,6 +8,7 @@ _help()
 ./submit.sh -u tashrif -f ndar_subject01 -n Pronet -e baseline
 ./submit.sh -u tashrif -f ndar_subject01 -n Prescient
 ./submit.sh -u tashrif -f ndar_subject01
+./submit.sh -f ndar_subject01
 
 Mandatory:
 -f : NDA dict name 
