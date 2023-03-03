@@ -2,7 +2,25 @@
 
 This repository is the storehouse of all DPdash utility scripts. Currently, it consists of scripts that make DPdash importable files.
 
+
+### Install
+
+Prerequisites are only Python libraries. Install them against Python 3 as:
+
+> pip install -r requirements.txt
+
+https://github.com/AMP-SCZ/dpimport and https://github.com/NDAR/nda-tools
+are two packages used by several programs in this repository.
+They are put in the *requirements.txt* too.
+
 ---
+
+### Usage
+
+Most scripts' usage can be obtained by `script.* --help`.
+Some scripts' usage can be obtained by `cat script.*`.
+Only outstanding ones are noted below:
+
 
 * `remove_collections.js`
 
