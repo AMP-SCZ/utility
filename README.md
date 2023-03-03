@@ -17,8 +17,10 @@ They are put in the *requirements.txt* too.
 
 ### Usage
 
-Most scripts' usage can be obtained by `script.* --help`.
-Some scripts' usage can be obtained by `cat script.*`.
+Most scripts' usage can be obtained by `./script.* --help`.
+
+Some scripts' usage can be obtained by `cat ./script.*`.
+
 Only outstanding ones are noted below:
 
 
