@@ -93,6 +93,11 @@ def populate():
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
+                
+                size=definition.loc[v,'Size']
+                if size:
+                    value=value[:int(size)]
+
 
             df.at[row,v]=value
 
