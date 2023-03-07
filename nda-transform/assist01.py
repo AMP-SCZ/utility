@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename, abspath
 
 
 # this function should have knowledge of dict1
@@ -208,5 +208,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     
