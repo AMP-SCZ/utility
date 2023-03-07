@@ -66,8 +66,11 @@ for i,file in enumerate(files):
 
             for d in dict1:
                 if d['redcap_event_name']==event:
-                    values[event][v][i]=d['chric_record_id']+' '+d[v]
-                    break
+                    try:
+                        values[event][v][i]=d['chric_record_id']+' '+d[v]
+                        break
+                    except:
+                        print('\t','\033[0;31m Variable absent in json \033[0m')
     print('\n')
 
 
