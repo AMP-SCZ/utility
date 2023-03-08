@@ -77,8 +77,6 @@ def populate():
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
     for v in columns:
-        if v=='chrap_total':
-            pass
         if prefix in v:
             value=get_value(v,f'{event}_arm_{arm}')
 
