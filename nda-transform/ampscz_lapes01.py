@@ -82,13 +82,19 @@ def populate():
         if prefix in v:
             value=get_value(v,f'{event}_arm_{arm}')
 
-            if definition.loc[v,'DataType'] in ['Integer','Float']:
+            if definition.loc[v,'ValueRange'] in ['-900;-300']:
                 if value in ['-3','-9']:
                     value+='00'
 
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
+
+            if definition.loc[v,'DataType']=='Float':
+                try:
+                    value=round(float(value),3)
+                except ValueError:
+                    pass
 
             df.at[row,v]=value
 
