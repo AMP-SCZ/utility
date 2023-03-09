@@ -13,19 +13,23 @@ Mandatory:
 -n : network
 -e : event
 -p : variable name prefix e.g. chrnsipr, chrassist
+
+Optional:
+-d : name of interview date variable if it is not {prefix}_interview_date
 """
 
     exit
 }
 
 
-while getopts "f:n:e:p:" i
+while getopts "f:n:e:p:d:" i
 do
     case $i in
         f) form=$OPTARG ;;
         n) network=$OPTARG ;;
         e) event=$OPTARG ;;
         p) prefix=$OPTARG ;;
+        d) idate=$OPTARG ;;
         ?) _help ;;
     esac
 done
@@ -41,7 +45,16 @@ datestamp=$(date +"%Y%m%d")
 pushd .
 cd /data/predict1/to_nda/
 
+if [ -z $idate ]
+then
+
 /data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix
 
+else
+
+/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix --interview_date_var $idate
+
+
+fi
 popd
 
