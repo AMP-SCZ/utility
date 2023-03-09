@@ -34,7 +34,7 @@ def nda_date(redcap_date):
     if redcap_date in ['','-3','-9']:
         # REDCap missing: 1909-09-09
         # REDCap N/A: 1903-03-03
-        return '1903-03-03'
+        return '03/03/1903'
 
     Y=redcap_date[:4]
     m,d=redcap_date[5:].split('-')
@@ -103,6 +103,9 @@ def populate():
                 size=definition.loc[v,'Size']
                 if size:
                     value=value[:int(size)]
+            
+            elif definition.loc[v,'DataType']=='Date':
+                value=nda_date(value)
 
             if definition.loc[v,'DataType']=='Float':
                 try:
