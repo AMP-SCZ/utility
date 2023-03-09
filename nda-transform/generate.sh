@@ -15,21 +15,22 @@ Mandatory:
 -p : variable name prefix e.g. chrnsipr, chrassist
 
 Optional:
--d : name of interview date variable if it is not {prefix}_interview_date
+-o : any optional arguments to pass to data generator e.g.
+     --interview_date_var, --follow
 """
 
     exit
 }
 
 
-while getopts "f:n:e:p:d:" i
+while getopts "f:n:e:p:o:" i
 do
     case $i in
         f) form=$OPTARG ;;
         n) network=$OPTARG ;;
         e) event=$OPTARG ;;
         p) prefix=$OPTARG ;;
-        d) idate=$OPTARG ;;
+        o) optional=$OPTARG ;;
         ?) _help ;;
     esac
 done
@@ -45,16 +46,9 @@ datestamp=$(date +"%Y%m%d")
 pushd .
 cd /data/predict1/to_nda/
 
-if [ -z $idate ]
-then
+cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix $optional"
 
-/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix
-
-else
-
-/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix --interview_date_var $idate
-
-
-fi
-popd
+echo $cmd
+echo
+$cmd
 
