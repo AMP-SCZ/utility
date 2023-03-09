@@ -58,7 +58,7 @@ def populate():
         arm=2
 
 
-    interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
+    interview_date=get_value(interview_date_var,f'{event}_arm_{arm}')
     if interview_date=='':
         # no data in this form
         return
@@ -132,6 +132,8 @@ if __name__=='__main__':
         help="Event name: screening, baseline, month_1, etc.")
     parser.add_argument("-p","--prefix", required=True,
         help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
+    parser.add_argument("--interview_date_var",
+        help="Provide interview date variable if it is not {prefix}_interview_date")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -183,6 +185,11 @@ if __name__=='__main__':
     dir_bak=getcwd()
     chdir(args.root)
     
+    if args.interview_date_var:
+        interview_date_var=args.interview_date_var
+    else:
+        interview_date_var=f'{prefix}_interview_date'
+     
     files=glob(args.template)
     for row,file in enumerate(files):
         
