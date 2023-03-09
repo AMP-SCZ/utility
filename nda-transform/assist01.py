@@ -80,15 +80,12 @@ def populate():
         if prefix in v:
             value=get_value(v,f'{event}_arm_{arm}')
 
-            if definition.loc[v,'DataType']=='Integer':
-                if value=='':
-                    # NDA missing: -300
-                    # NDA N/A: -900
-                    value='-300'
-                elif value in ['-3','-9']:
+            vrange=definition.loc[v,'ValueRange']
+            if not pd.isna(vrange) and '-300' in vrange:
+                # NDA missing: -300
+                # NDA N/A: -900
+                if value in ['-3','-9']:
                     value+='00'
-                elif '.' in value:
-                    value=value.split('.')[-1]
 
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
@@ -98,6 +95,11 @@ def populate():
                 if size:
                     value=value[:int(size)]
 
+            if definition.loc[v,'DataType']=='Float':
+                try:
+                    value=round(float(value),3)
+                except ValueError:
+                    pass
 
             df.at[row,v]=value
 
