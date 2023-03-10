@@ -170,9 +170,12 @@ if __name__=='__main__':
         prefix=args.prefix
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
-            'chrtbi_age_first_inj','chrtbi_age_recent_inj','chrtbi_number_injs','chrtbi_sourceinfo','chrtbi_parent_medical_findings1','chrtbi_parent_medical_findings2','chrtbi_parent_medical_findings3','chrtbi_parent_medical_findings4','chrtbi_parent_medical_findings5',
-            'ampscz_missing','ampscz_missing_spec']
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+        for c in df.split(','):
+            if prefix in c:
+                columns.append(c.strip())
+
+        columns+=['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()
