@@ -146,13 +146,16 @@ if __name__=='__main__':
     with open(args.dict) as f:
         title,df=f.read().split('\n',1)
 
-        prefix='chrnsipr'
+        prefix='chrpred'
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
-            'chrnsipr_item1_rating','chrnsipr_item2_rating','chrnsipr_item3_rating',
-            'chrnsipr_item5_rating']
-        columns.append(f'ampscz_missing')
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+
+        for c in df.split(','):
+            if prefix in c:
+                columns.append(c.strip())
+                
+        columns=columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()

@@ -10,7 +10,7 @@ then
     exit 1
 fi
 
-redcap_records=/data/predict/utility/bsub/redcap_records.txt
+redcap_records=/data/predict1/utility/bsub/redcap_records.txt
 redcap_phoenix=$1
 redcap_dict=$2
 API_TOKEN=$3
@@ -19,8 +19,8 @@ export redcap_records redcap_phoenix redcap_dict API_TOKEN FORCE
 # export is to allow them to be used within records_to_redcap.lsf
 
 # echo 'Deleting old records ...'
-export PATH=/data/predict/miniconda3/bin/:$PATH
-# /data/predict/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
+export PATH=/data/predict1/miniconda3/bin/:$PATH
+# /data/predict1/utility/delete_redcap_records.py $redcap_phoenix $API_TOKEN
 
 echo  'Uploading new records ...'
 cd $redcap_phoenix
@@ -30,5 +30,5 @@ N=`cat $redcap_records | wc -l`
 source /etc/profile
 # prevent getting thousand emails
 export LSB_JOB_REPORT_MAIL=N
-bsub -J "redcap-import[1-$N]%12" < /data/predict/utility/records_to_redcap.lsf
+bsub -J "redcap-import[1-$N]%12" < /data/predict1/utility/records_to_redcap.lsf
 

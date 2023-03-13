@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export PATH=/data/predict/miniconda3/bin/:$PATH
-cd /data/predict/utility/dict_diff
+export PATH=/data/predict1/miniconda3/bin/:$PATH
+cd /data/predict1/utility/dict_diff
 CURL=`which curl`
 datestamp=$(date +"%Y%m%d")
 
@@ -40,7 +40,7 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
 
 for net in pronet prescient
 do
-    /data/predict/utility/gen_dict_diff.py $ampscz ${net}/${net}_dict_${datestamp}.csv $net
+    /data/predict1/utility/gen_dict_diff.py $ampscz ${net}/${net}_dict_${datestamp}.csv $net
     suffix=${net}_${datestamp}
 
     # email report

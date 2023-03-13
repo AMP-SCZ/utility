@@ -1,6 +1,13 @@
 #!/bin/bash
 
-# it is run within VM as root
+# It is run within VM as root
+# Usage:
+# ./_account_approval.sh abc123@partners.org
+# ./_account_approval.sh list.txt
+# Where list.txt contains:
+# abc123@partners.org
+# def456@gmail.com
+# ...
 
 source /opt/dpdash/dpdash/singularity/.env
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \

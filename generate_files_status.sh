@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/utility/:$PATH
+export PATH=/data/predict1/utility/:$PATH
 if [ -z $1 ] || [ ! -d $1 ]
 then
     echo """./generate_file_status.sh /path/to/nda_root/ VM
@@ -40,6 +40,6 @@ tail -n +2 Prescient_status/${name}-PRESCIENT-flowcheck-day1to1.csv >> ${name}-A
 renumber_days.py ${name}-AMPSCZ-flowcheck-day1to1.csv
 
 # export the above csv files to remote MongoDB server
-cd /data/predict/utility
+cd /data/predict1/utility
 ./dpimport_files_status.sh $NDA_ROOT $2
 

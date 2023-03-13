@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+export PATH=/data/predict1/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 if [ -z $1 ] || [ ! -d $1 ]
 then
@@ -16,20 +16,20 @@ else
     export NDA_ROOT=$1
 fi
 
-source /data/predict/utility/.vault/.env.${2}
+source /data/predict1/utility/.vault/.env.${2}
 
 echo Importing to mongodb://dpdash:MONGO_PASS@$HOST:$PORT
 echo ''
 
 # delete old collections
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\"]" /data/predict/utility/remove_assess.js
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\"]" /data/predict1/utility/remove_assess.js
 
 # delete metadata
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin /data/predict/utility/remove_metadata.js
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin /data/predict1/utility/remove_metadata.js
 
 
 # import new collections
-export PATH=/data/predict/miniconda3/bin:$PATH
+export PATH=/data/predict1/miniconda3/bin:$PATH
 cd $NDA_ROOT
 
 # metadata

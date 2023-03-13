@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=/data/predict/miniconda3/bin/:/data/predict/utility/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:/data/predict1/utility/:$PATH
 
 # this script is run from each surveys directory
 # ${1} is the subject ID passed as an arg to this script

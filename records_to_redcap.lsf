@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export PATH=/data/pnl/soft/pnlpipe3/miniconda3/envs/dpimport/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${redcap_phoenix}
 
 #BSUB -q pri_pnl
-#BSUB -o /data/predict/utility/bsub/redcap-import-%J-%I.out
-#BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
+#BSUB -o /data/predict1/utility/bsub/redcap-import-%J-%I.out
+#BSUB -e /data/predict1/utility/bsub/redcap-import-%J-%I.err
 #BSUB -n 4
 #BSUB -R "span[hosts=1]"
 
@@ -15,6 +15,6 @@ i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 echo -e '\033[0;31m' $i '\033[0m' >&2
 
 ls -la $i
-/data/predict/utility/import_records_all.py $i $redcap_dict $API_TOKEN ${redcap_phoenix}/date_offset.csv $FORCE
+/data/predict1/utility/import_records_all.py $i $redcap_dict $API_TOKEN ${redcap_phoenix}/date_offset.csv $FORCE
 
 

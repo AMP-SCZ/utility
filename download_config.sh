@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-database-tools-rhel70-x86_64-100.5.2/bin:$PATH
+export PATH=/data/predict1/mongodb-database-tools-rhel70-x86_64-100.5.2/bin:$PATH
 
 if [[ $# -lt 3 ]]
 then
@@ -26,7 +26,7 @@ scriptDir=`dirname $0`
 # export from mongodb
 mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ssl/mongo_client.pem --uri="mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdmongo?authSource=admin" --collection=configs --query="{\"name\":\"$1\",\"owner\":\"$2\"}" --out=$tmpJson
 # modify according to https://github.com/AMP-SCZ/dpdash/wiki/Configuration-schema
-export PATH=/data/predict/miniconda3/bin:$PATH
+export PATH=/data/predict1/miniconda3/bin:$PATH
 $scriptDir/_download_config.py $tmpJson $3
 
 rm $tmpJson

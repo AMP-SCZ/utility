@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH=/data/predict/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
+export PATH=/data/predict1/mongodb-linux-x86_64-rhel70-4.4.6/bin:$PATH
 
 if [ -z $1 ] || [ ! -d $1 ]
 then
@@ -15,19 +15,19 @@ else
     export NDA_ROOT=$1
 fi
 
-source /data/predict/utility/.vault/.env.${2}
+source /data/predict1/utility/.vault/.env.${2}
 
 
 # remove old data
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"EEGqc\",\"EEGquick\"]" /data/predict/utility/remove_assess.js
+--eval "assess=[\"EEGqc\",\"EEGquick\"]" /data/predict1/utility/remove_assess.js
 echo ''
 
 
 # import new data
-export PATH=/data/predict/miniconda3/bin:$PATH
+export PATH=/data/predict1/miniconda3/bin:$PATH
 
 pushd .
 
@@ -37,15 +37,15 @@ rm -f ${FEATURE_DIR}/*-day1to1.csv
 
 out_template=${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv
 cd ${NDA_ROOT}/Pronet
-/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
+/data/predict1/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
 cd ${NDA_ROOT}/Prescient
-/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
+/data/predict1/utility/feature_combiner.py $out_template "./**/??-*-EEGqc-day1to*.csv"
 
 out_template=${FEATURE_DIR}/combined-SITE-EEGquick-day1to1.csv
 cd ${NDA_ROOT}/Pronet
-/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
+/data/predict1/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
 cd ${NDA_ROOT}/Prescient
-/data/predict/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
+/data/predict1/utility/feature_combiner.py $out_template "./**/??-*-EEGquick-day1to*.csv"
 
 
 cd ${NDA_ROOT}
@@ -57,8 +57,8 @@ do
         echo Combining $d features
         pushd . > /dev/null
         cd $d
-        /data/predict/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv "./**/??-*-EEGqc-day1to*.csv"
-        /data/predict/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGquick-day1to1.csv "./**/??-*-EEGquick-day1to*.csv"
+        /data/predict1/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGqc-day1to1.csv "./**/??-*-EEGqc-day1to*.csv"
+        /data/predict1/utility/feature_combiner.py ${FEATURE_DIR}/combined-SITE-EEGquick-day1to1.csv "./**/??-*-EEGquick-day1to*.csv"
         popd > /dev/null
     done
 done

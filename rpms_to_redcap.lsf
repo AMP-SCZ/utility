@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export PATH=/data/predict/miniconda3/bin/:$PATH
+export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${redcap_phoenix}
 
 #BSUB -q pri_pnl
-#BSUB -o /data/predict/utility/bsub/redcap-import-%J-%I.out
-#BSUB -e /data/predict/utility/bsub/redcap-import-%J-%I.err
+#BSUB -o /data/predict1/utility/bsub/redcap-import-%J-%I.out
+#BSUB -e /data/predict1/utility/bsub/redcap-import-%J-%I.err
 #BSUB -n 4
 #BSUB -R "span[hosts=1]"
 
@@ -28,11 +28,11 @@ fi
 echo -e '\033[0;31m' $subject '\033[0m' >&2
 
 # flatten multi-records
-/data/predict/utility/_flatten_multi_records.sh $subject
-/data/predict/utility/rename_RPMS_vars.py .
+/data/predict1/utility/_flatten_multi_records.sh $subject
+/data/predict1/utility/rename_RPMS_vars.py .
 
 # upload all records
-for suffix in $(cat /data/predict/utility/rpms_file_suffix.txt)
+for suffix in $(cat /data/predict1/utility/rpms_file_suffix.txt)
 do
     form=${subject}_${suffix}
     if [ -f $form ]
@@ -40,7 +40,7 @@ do
         ls -lah $form
         echo -e '\033[0;31m' $form '\033[0m' >&2
 
-        /data/predict/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $redcap_phoenix/date_offset.csv $FORCE
+        /data/predict1/utility/rpms_to_redcap.py $form $redcap_dict $API_TOKEN $redcap_phoenix/date_offset.csv $FORCE
         echo ''
         echo ''
     fi

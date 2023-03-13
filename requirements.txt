@@ -1,3 +1,6 @@
 ipython
 pandas
 pyyaml
+keyrings.alt
+git+https://github.com/NDAR/nda-tools.git
+git+https://github.com/AMP-SCZ/dpimport.git
