@@ -133,8 +133,9 @@ events_group= dfevent.groupby('unique_event_name')
 
 subjectkey= sys.argv[1].split('_')[0]
 incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
-if not isfile(incl_excl):
-    raise FileNotFoundError(f'Cannot determine redcap_event_name w/o {incl_excl} file')
+inform_consent= subjectkey+ '_informed_consent_run_sheet.csv'
+if not isfile(inform_consent):
+    raise FileNotFoundError(f'Cannot determine redcap_event_name w/o {inform_consent} file')
 
 
 # load files for populating {form}_completion variable
@@ -167,11 +168,23 @@ def entry_status(redcap_label,rpms_visit):
         return 2
 
 
-df= pd.read_csv(incl_excl)
+# one try-except block to handle absence of incl_excl and empty chrcrit_part
 try:
+    df= pd.read_csv(incl_excl)
     chr_hc= int(df['chrcrit_part'])
-except ValueError:
-    raise ValueError(f'Value of chrcrit_part in {incl_excl} must be 1(CHR) or 2(HC)')
+    
+except (FileNotFoundError,ValueError):
+
+    df= pd.read_csv(inform_consent)
+    # extract Young Patient's rows only, we do not need Guardian's rows
+    # to account for re-consent scenario, consider only the last row
+    chr_hc= df[df['version']=='YP'].iloc[-1]['group']
+    if chr_hc=='UHR':
+        chr_hc=1
+    elif chr_hc=='HealthyControl':
+        chr_hc=2
+    else:
+        raise ValueError(f'CHR/HC status could not be determined')
 
 form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
