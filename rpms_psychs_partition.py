@@ -61,6 +61,7 @@ for file in files:
             dfchr=pd.concat([dfchr,subject_row])
         elif row['chrcrit_part']==2:
             # HC
+            subject_row.columns=dfhc.columns
             dfhc=pd.concat([dfhc,subject_row])
         else:
             # irrelevant
