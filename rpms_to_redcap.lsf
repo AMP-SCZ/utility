@@ -17,7 +17,7 @@ pushd .
 cd $i
 subject=$(basename $(dirname $i))
 
-incl_excl=${subject}_inclusionexclusion_criteria_review.csv
+incl_excl=${subject}_informed_consent_run_sheet.csv
 if [ ! -f ${incl_excl} ]
 then
     echo ${incl_excl} does not exist
