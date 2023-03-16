@@ -9,6 +9,7 @@ from tempfile import mkstemp
 import pandas as pd
 from glob import glob
 from os.path import basename,abspath
+import re
 
 
 # this function should have knowledge of dict1
@@ -164,32 +165,31 @@ if __name__=='__main__':
     
     
     # load NDA dictionary
-    with open(args.dict) as f:
-        title,df=f.read().split('\n',1)
+    args.dict=args.dict.replace('_template.csv','_definitions.csv')
+    title=re.search('/(.+?)01_definitions.csv',args.dict).group(1)
+    definition=pd.read_csv(args.dict)
+    definition.set_index('ElementName',inplace=True)
+    
+    prefix=args.prefix
+    event=args.event
 
-        prefix=args.prefix
-        event=args.event
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    for c in definition.index:
+        if prefix in c:
+            columns.append(c.strip())
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
-        for c in df.split(','):
-            if prefix in c:
-                columns.append(c.strip())
+    columns+=['ampscz_missing','ampscz_missing_spec']
+    
+    # save the remaining template
+    _,name=mkstemp()
+    with open(name,'w') as fw:
+        fw.write(','.join(columns))
+    
+    # load template as DataFrame
+    df=pd.read_csv(name)
+    columns=df.columns.values
+    remove(name)
 
-        columns+=['ampscz_missing','ampscz_missing_spec']
-        
-        # save the remaining template
-        _,name=mkstemp()
-        with open(name,'w') as fw:
-            fw.write(','.join(columns))
-        
-        # load template as DataFrame
-        df=pd.read_csv(name)
-        columns=df.columns.values
-        remove(name)
-        
-        # load template definition
-        definition=pd.read_csv(args.dict.replace('_template','_definitions'))
-        definition.set_index('ElementName',inplace=True)
 
     dir_bak=getcwd()
     chdir(args.root)
@@ -219,7 +219,7 @@ if __name__=='__main__':
     remove(name)
     
     with open(args.output,'w') as f:
-        f.write(title+'\n'+data)
+        f.write(title+',01'+'\n'+data)
     
     print('Generated',abspath(args.output))
     
