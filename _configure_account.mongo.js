@@ -7,9 +7,24 @@ db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME'
 
 // 2.    provide access to configs
 
-// [['date-avl-cnb-mriqc-kcho','chief'], ['combined-mriqc','kcho'], ['eegqc-2','speroncire'],['avlqc_combined', 'dpdash'],['subj-formqc-details','grace_jacobs'],['combined-screening-forms-4','grace_jacobs'],['combined-baseline-forms-4','grace_jacobs'],['Digital Biomarker: Axivity+Mindlamp','habibrahimi']].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
-
-[["Combined - Dataflow",'sbouix'], ["Combined - Forms - Screening",'sbouix'], ["Combined - Forms - Baseline",'sbouix'], ["Combined - Forms - Month1",'sbouix'], ["Combined - Forms - Month 2",'sbouix'], ["Combined - EEG QC",'sbouix'], ["Combined - MRI QC",'sbouix'], ["Combined - Fluid Biomarkers",'sbouix'], ["Combined - Digital Biomarkers",'sbouix'], ["Combined - Audio/Video QC",'sbouix'], ["Digital Biomarker: Mindlamp QC",'sbouix'], ["Digital Biomarker: Axivity+Mindlamp",'sbouix'], ["Individual - Forms",'sbouix'], ["Combined - Forms - Baseline (v.5)", 'grace_jacobs'], ["Combined - Forms - Month 1 (v.2)", 'grace_jacobs'], ["Combined - Forms - Screening (v.5)", 'grace_jacobs']].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
+[
+["Combined - Dataflow",'sbouix'],
+["Combined - Forms - Screening",'sbouix'],
+["Combined - Forms - Baseline",'sbouix'],
+["Combined - Forms - Month1",'sbouix'],
+["Combined - Forms - Month 2",'sbouix'],
+["Combined - EEG QC",'sbouix'],
+["Combined - MRI QC",'sbouix'],
+["Combined - Fluid Biomarkers",'sbouix'],
+["Combined - Digital Biomarkers",'sbouix'],
+["Combined - Audio/Video QC",'sbouix'],
+["Digital Biomarker: Mindlamp QC",'sbouix'],
+["Digital Biomarker: Axivity+Mindlamp",'sbouix'],
+["Individual - Forms",'sbouix'],
+["Combined - Forms - Baseline (v.5)",'grace_jacobs'],
+["Combined - Forms - Month 1 (v.2)",'grace_jacobs'],
+["Combined - Forms - Screening (v.5)",'grace_jacobs']
+].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
 
 
 // 3.    set default config
