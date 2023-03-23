@@ -28,11 +28,30 @@ PrescientStudy_Prescient_sofas_screening_:
 PrescientStudy_Prescient_sofas_followup_:
 - chrsofas_missing_spec_fu,1 2 3 4 5,M1 M2 M3 M4 M5
 
-PrescientStudy_Prescient_psychs_p1p8_fu_:
-- chrpsychs_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
 
+# three pairs of psychs missing spec variables are below
+
+PrescientStudy_Prescient_psychs_p1p8_:
+- chrpsychs_scr_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
+PrescientStudy_Prescient_psychs_p9ac32_:
+- chrpsychs_scr_missing_spec_2,1 2 3 4 5,M1 M2 M3 M4 M5
+
+# RPMS is currently providing only this one with a mistaken name chrpsychs_missing_spec_fu
+PrescientStudy_Prescient_psychs_p1p8_fu_:
+- chrpsychs_fu_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+
+PrescientStudy_Prescient_psychs_p9ac32_fu_:
+- chrpsychs_fu_missing_spec_fu_2,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+
+# RPMS is currently providing only this one with a mistaken name chrpsychs_missing_spec_fu
 PrescientStudy_Prescient_psychs_p1p8_fu_hc_:
-- hcpsychs_missing_spec_fu,1 2 3 4 5,M1 M2 M3 M4 M5
+- hcpsychs_fu_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+
+PrescientStudy_Prescient_psychs_p9ac32_fu_hc_:
+- hcpsychs_fu_missing_spec_fu_2,1 2 3 4 5 6,M1 M2 M3 M4 M5 M6
+
+
 
 PrescientStudy_Prescient_inclusionexclusion_criteria_review_:
 - chrcrit_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
