@@ -26,7 +26,7 @@ PrescientStudy_Prescient_sofas_screening_:
 - chrsofas_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
 PrescientStudy_Prescient_sofas_followup_:
-- chrsofas_missing_spec_fu,1 2 3 4 5,M1 M2 M3 M4 M5
+- chrsofas_missing_spec_fu,1 2 3 4 5 6,M1 M2 M3 M4 M5 0
 
 
 # three pairs of psychs missing spec variables are below
