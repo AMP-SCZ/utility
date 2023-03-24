@@ -9,9 +9,6 @@ db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME'
 
 [
 ["Combined - Dataflow",'sbouix'],
-["Combined - Forms - Screening",'sbouix'],
-["Combined - Forms - Baseline",'sbouix'],
-["Combined - Forms - Month1",'sbouix'],
 ["Combined - Forms - Month 2",'sbouix'],
 ["Combined - EEG QC",'sbouix'],
 ["Combined - MRI QC",'sbouix'],
