@@ -16,3 +16,30 @@ do
     echo '' | mailx -s $prefix -a users/$prefix.txt -r tbillah@partners.org -- $to@partners.org
 done
 
+
+# generate list of new registrants
+
+current_list=users/dpdash_users_$(date +"%Y%m%d").csv
+past_list=`ls users/dpdash_users_*.csv | tail -n 2 | head -n 1`
+
+current_number=`cat $current_list | wc -l`
+past_number=`cat $past_list | wc -l`
+
+if [ $current_number -gt $past_number ]
+then
+    ind=$(( past_number+1 ))
+    notify=1
+fi
+
+if [ ! -z $notify ]
+then
+    for to in $@
+    do
+        # sed -n ${ind},${current_number}p $current_list
+
+        sed -n ${ind},${current_number}p $current_list | mailx -s "New DPdash registrants: verify their NDA DUC" -r tbillah@partners.org -- $to@partners.org
+
+    done
+fi
+
+
