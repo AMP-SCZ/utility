@@ -32,7 +32,12 @@ mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
---eval "assess=[\"dpgvail\",\"dppay\"]" /data/predict1/utility/remove_assess.js
+--eval "assess=\"watch_\"" /data/predict1/utility/remove_assess.js
+
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
+--tlsCertificateKeyFile $state/ssl/mongo_client.pem \
+mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
+--eval "assess=[\"dpgvail\",\"dppay\",\"dpaxty\"]" /data/predict1/utility/remove_assess.js
 
 echo ''
 
