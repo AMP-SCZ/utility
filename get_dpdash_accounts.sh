@@ -3,6 +3,15 @@
 # running at predict VM
 # 0 8 * * * /opt/dpdash/dpdash/get_accounts.sh tbillah
 
+check_null(){
+
+    # check for nullity in server down situation
+    if [[ `tail -n 1 $1` == *"code 1" ]]
+    then
+        exit
+    fi
+}
+
 cd /opt/dpdash/dpdash
 source singularity/.env
 prefix=dpdash_users_$(date +"%Y%m%d")
@@ -10,6 +19,8 @@ prefix=dpdash_users_$(date +"%Y%m%d")
 echo Name,Username,Email > users/$prefix.csv
 
 /root/mongodb-linux-x86_64-rhel70-4.4.6/bin/mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@`hostname`:27017/dpdmongo?authSource=admin --eval "db.users.find().forEach(u=>print(u.display_name+','+u.uid+','+u.mail))" | tail -n +5 >> users/$prefix.csv
+
+check_null users/$prefix.csv
 
 for to in $@
 do
@@ -21,6 +32,8 @@ done
 
 current_list=users/dpdash_users_$(date +"%Y%m%d").csv
 past_list=`ls users/dpdash_users_*.csv | tail -n 2 | head -n 1`
+
+check_null $past_list
 
 current_number=`cat $current_list | wc -l`
 past_number=`cat $past_list | wc -l`
