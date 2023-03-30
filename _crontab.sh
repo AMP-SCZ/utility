@@ -51,6 +51,8 @@
 # 00 22 * * * /data/predict/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2022-12-26_checkbox.csv && /data/predict/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict/utility/yale-real 123456
 
 
+# mongodb backup
+0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
 
 # === eris2n5 ===
 
