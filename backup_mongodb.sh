@@ -13,7 +13,7 @@ VM name examples:
     exit
 fi
 
-source /data/predict1/utility/.vault/.env.${2}
+source /data/predict1/utility/.vault/.env.${1}
 
 if [ -z $HOST ] || [ -z $PORT ] || [ -z $state ] || [ -z $MONGO_PASS ]
 then
@@ -42,7 +42,8 @@ mongoexport --ssl --sslCAFile=$state/ssl/ca/cacert.pem --sslPEMKeyFile=$state/ss
 
 
 
-source /data/predict1/utility/.vault/.aws-keys
+source /data/pnl/soft/pnlpipe3/duply_backup/.aws-keys
+export PATH=/data/predict1/aws-cli/bin:$PATH
 
 if [ -z $AWS_ACCESS_KEY_ID ] || [ -z $AWS_SECRET_ACCESS_KEY ]
 then
@@ -51,8 +52,11 @@ then
 fi
 
 
-for i in *_${datestamp}.json
-do
-    aws s3 cp $i s3://predict-mongodb/$i
-done
+# for i in *_${datestamp}.json
+# do
+#     aws s3 cp $i s3://predict-mongodb/$i
+# done
+
+aws s3 cp . s3://predict-mongodb/ --recursive --exclude "*" --include "*_${datestamp}.json" --storage-class DEEP_ARCHIVE
+
 
