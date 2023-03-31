@@ -2,6 +2,7 @@ from pathlib import Path
 import re
 from typing import Union
 import sys
+import os
 
 
 '''
@@ -118,9 +119,14 @@ def remove_data(data_path: Union[Path, str],
         return
 
     if print_only:
+        print(f'{rm_command} {data_path}')
         print(s3_command)
         print(agg_command)
         return
+
+    os.popen(f'{rm_command} {data_path}').read()
+    os.popen(s3_command).read()
+    os.popen(agg_command).read()
 
 
 def test_get_path():
@@ -157,6 +163,6 @@ if __name__ == '__main__':
 
     for local_path in sys.argv[1:]:
         if Path(local_path).is_file() or Path(local_path).is_dir():
-            remove_data(local_path)
+            remove_data(local_path, print_only=False)
         else:
             print(f'{local_path} does not exist')
