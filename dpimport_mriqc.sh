@@ -24,11 +24,14 @@ fi
 source /data/predict1/utility/.vault/.env.${2}
 
 # remove old data
-mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"mriqc\",\"eegcount\",\"mricount\",\"mriqcval\"]" /data/predict1/utility/remove_assess.js
+mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"mriqc\",\"eegcount\",\"mricount\",\"mriqcval\", \"mridataflow\"]" /data/predict1/utility/remove_assess.js
 
 # import new data
 export PATH=/data/predict1/miniconda3/bin:$PATH
 cd ${NDA_ROOT}
+
+# mridataflow checker
+import.py -c $CONFIG "MRI_ROOT/flow_check/*mridataflow-day1to*.csv"
 
 # project level data
 import.py -c $CONFIG "MRI_ROOT/derivatives/quick_qc/combined-*-mriqc-day1to*.csv"
