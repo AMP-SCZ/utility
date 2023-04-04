@@ -27,7 +27,7 @@ for e in $recepients
 do
     echo $e
     cat account_approval.txt | mailx -s "DPdash account approved" -r tbillah@partners.org \
-    -c sylvain.bouix@etsmtl.ca -c jtbaker@partners.org -- $e
+    -c sylvain.bouix@etsmtl.ca -c jtbaker@partners.org -c tkapur@partners.org -- $e
 done
 
 
