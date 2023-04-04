@@ -98,3 +98,22 @@ MAILTO=xyz@bwh.harvard.edu
 03 20 * * * /usr/bin/rm /mnt/prescient/one_day_backup/* && /usr/bin/cp /mnt/prescient/RPMS_incoming/*csv /mnt/prescient/one_day_backup/ && /mnt/prescient/utility/modify_PICF_UHR_Self.sh && /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/rename_RPMS_vars.py /mnt/prescient/RPMS_incoming/ && /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/replace_RPMS_values.py /mnt/prescient/RPMS_incoming/ && /home/tashrifbillah/miniconda3/bin/python /mnt/prescient/utility/rpms_psychs_partition.py /mnt/prescient/RPMS_incoming/
 
 
+
+# /data/predict1/ backups
+# directory,server,frequency (days)
+
+# *,dn025,90
+0 19 * */3 THU /data/predict1/utility/backup_predict1.sh predict1-software
+
+# data_from_nda,dn025,7
+0 19 * * */FRI /data/predict1/utility/backup_predict1.sh predict1-prod-data
+
+# data_from_nda_dev,dn026,7
+0 19 * * */TUE /data/predict1/utility/backup_predict1.sh predict1-dev-data
+
+# home,dn027,7
+0 19 * * */WED /data/predict1/utility/backup_predict1.sh predict1-home
+
+# to_nda,dn025,7
+0 19 * * */THU /data/predict1/utility/backup_predict1.sh predict1-sub-data
+
