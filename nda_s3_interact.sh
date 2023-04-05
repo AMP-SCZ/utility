@@ -18,9 +18,6 @@ then
 fi
 
 
-for i in $1
-do
-    aws s3 $2 s3://prescient-test/PHOENIX_ROOT_PRESCIENT/PROTECTED/$i
-    $2 $i
-done
+aws s3 $2 --exclude "*" --include "PHOENIX_ROOT_PRESCIENT/PROTECTED/$1" s3://prescient-test
+$2 $1
 
