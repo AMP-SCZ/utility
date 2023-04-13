@@ -117,3 +117,12 @@ MAILTO=xyz@bwh.harvard.edu
 # to_nda,dn025,7
 0 19 * * */THU /data/predict1/utility/backup_predict1.sh predict1-sub-data
 
+
+
+# all dpimport are run by tb571 in dn020
+# TODO run by sf284
+0 20 * * * /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict
+0 00 * * * /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict
+0 02 * * * /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
+0 03 * * * /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
+
