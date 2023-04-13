@@ -30,10 +30,13 @@ echo ''
 export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}/formqc
 
-# project level data
-import.py -c $CONFIG "combined-*-form_*-day1to*.csv"
-
 # subject level data
 import.py -c $CONFIG "??-*-form_*-day1to*.csv"
 
+# project level data
+# do it in multiple steps to circumvent unknown mongo timeout
+import.py -c $CONFIG "combined-??-form_*-day1to*.csv"
+import.py -c $CONFIG "combined-PRONET-form_*-day1to*.csv"
+import.py -c $CONFIG "combined-PRESCIENT-form_*-day1to*.csv"
+import.py -c $CONFIG "combined-AMPSCZ-form_*-day1to*.csv"
 
