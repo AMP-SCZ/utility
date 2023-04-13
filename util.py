@@ -30,11 +30,11 @@ def get_study(ampscz_id: str,
 
 
 def str_date_minus_str_date(date_str1: str, date_str2: str) -> int:
-    '''Get time delta between dates in string:  -(date_str1 - date_str2)'''
+    '''Get time delta between dates in string:  (date_str2 - date_str1)'''
     date1 = datetime.strptime(date_str1, '%Y-%m-%d')
     date2 = datetime.strptime(date_str2, '%Y-%m-%d')
 
-    time_delta = -(date1 - date2)
+    time_delta = (date2 - date1)
     diff_days = time_delta.days
 
     return diff_days
