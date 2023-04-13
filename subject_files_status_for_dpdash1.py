@@ -7,13 +7,32 @@ import pandas as pd
 import sys
 
 
+def get_value(var,event):
+    """Extract value from JSON"""
+
+    for d in dict1:
+        if timepoint in d['redcap_event_name']:
+            try:
+                return d[var]
+            except KeyError:
+                pass
+                
+    # the subject has not reached the event yet
+    return ''
+
+
+
 def get_mri_status():
-    """available variables:
+    """Available variables:
+
     nda_root
     network
     timepoint
     s: JSON path
     data: two-element JSON array of timepoint of CHR and HC arms
+    consent_date
+    site
+    subject
     """
     pass
 
@@ -21,11 +40,48 @@ def get_mri_status():
 
 
 def get_eeg_status():
-    pass
+
+    chreeg_interview_date=get_value(timepoint,'chreeg_interview_date')
+
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,consent_date)
+    
+
+    # populate QC Score row
+    # search for {site}-{subject}-EEGquick-day1to{days_since_scan+1} file
+    try:
+        score_file=pjoin(nda_root,network,
+            f'PHOENIX/PROTECTED/{network}??/*/processed/*/eeg/{site}-{subject}-EEGquick-day1to{days_since_scan+1}.csv')
+        
+        dfscore=pd.read_csv(score_file)
+        assert dfscore['Rating']>=1 and dfscore['Rating']<=4
+        eeg_score=dfscore.loc[0,'Rating']
+
+    except:
+        eeg_score=-days_since_scan
+
+
+    # populate Data Transferred row
+    # search for zip files
+    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/surveys/*.{network}.json')
+        eeg_data=1
+    else:
+        eeg_data=-days_since_scan
+
+
+    # populate Protocol Followed row
+    chreeg_run[1-12]==1
+    if not all 1
+    eeg_protocol=and among all vars
+    do it in a for loop and break
+
+    return eeg_score, eeg_data, eeg_protocol, eeg_date
 
     
 def get_avl_status():
     pass
+
+
+
 
 
 
@@ -64,6 +120,8 @@ if __name__=='__main__':
             'site':site,'subject_id':subject}
 
         
+        consent_date=get_value('screening','chric_consent_date')
+
         # populate MRI block
         dict_mri=get_mri_status()
             
