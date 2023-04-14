@@ -67,12 +67,12 @@ def get_eeg_status():
     # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent+1} file
     try:
         score_file=pjoin(nda_root,network,
-            f'PHOENIX/PROTECTED/{network}??/*/processed/*/eeg/{site}-{subject}-EEGquick-day1to{scan_minus_consent+1}.csv')
+            f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/eeg/{site}-{subject}-EEGquick-day1to{scan_minus_consent+1}.csv')
         
         dfscore=pd.read_csv(score_file)
-        assert dfscore['Rating']>=1 and dfscore['Rating']<=4
         eeg_score=dfscore.loc[0,'Rating']
-
+        assert eeg_score>=1 and eeg_score<=4
+    
     except:
         eeg_score=-days_since_scan
 
@@ -80,7 +80,7 @@ def get_eeg_status():
     # populate Data Transferred row
     # search for zip files
     _chreeg_interview_date=chreeg_interview_date.replace('-','')
-    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/eeg/{subject}_eeg_{_chreeg_interview_date}.zip')):
+    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}{site}/raw/{subject}/eeg/{subject}_eeg_{_chreeg_interview_date}.zip')):
         eeg_data=1
     else:
         eeg_data=-days_since_scan
@@ -163,7 +163,7 @@ if __name__=='__main__':
         df=pd.DataFrame(dict_all)
 
         # write out subject DataFrame
-        outfile=pjoin(outdir,f'{site}-{subject}-data_{timepoint}.day1to1.csv')
+        outfile=pjoin(outdir,f'{site}-{subject}-data_{timepoint}-day1to1.csv')
         df.to_csv(outfile,index=False)
     
     
