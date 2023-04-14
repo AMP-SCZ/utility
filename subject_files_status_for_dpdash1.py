@@ -99,10 +99,59 @@ def get_eeg_status():
 
 
 def get_avl_status():
-    pass
+    chreeg_interview_date=get_value(timepoint,'chrspeech_interview_date')
+    if chreeg_interview_date=='':
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
+
+    if get_value(timepoint,'chrspeech_missing')=='1':
+        missing_code=get_value(timepoint,'chrspeech_missing_spec')
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
 
 
+    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
+    
+    # populate QC Score row
+    # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent+1} file
+    try:
+        score_file=pjoin(nda_root,'AVL_quick_qc/open_count/{site}-{subject}-open_count-day1to*.csv')
+        
+        dfscore=pd.read_csv(score_file[0])
 
+        for i,row in dfscore.iterrows():
+            if row['timepoint']==int(scan_minus_consent)+1:
+                eeg_score=row['audio_quality_category']
+ 
+    except:
+        eeg_score=-days_since_scan
+
+
+    # populate Data Transferred row
+    # search for zip files
+    _chreeg_interview_date=chreeg_interview_date.replace('-','')
+    prefix=pjoin(nda_root,network,f'PHOENIX/GENERAL/{network}??/processed/{subject}/interviews/open/')
+
+    eeg_data=1
+    for suffix in [f'interviewRedactedTranscriptQC_open-day*to{_chreeg_interview_date}.csv',
+        f'interviewMonoAudioQC_open-day*to{_chreeg_interview_date}.csv',
+        f'interviewVideoQC_open-day*to{_chreeg_interview_date}.csv']:
+        
+        if len(glob(prefix+suffix))!=1
+            eeg_data=0
+            eeg_data=-days_since_scan
+            break
+
+
+    # populate Protocol Followed row
+    eeg_protocol=1
+    if get_value(timepoint,'chrspeech_deviation')=='0' or get_value(timepoint,'chrspeech_quality')=='0':
+        eeg_protocol=0
+
+
+    dict2={'eeg_score':eeg_score, 'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date,
+        'eeg_missing':''}
+
+    return dict2
 
 
 
@@ -148,16 +197,16 @@ if __name__=='__main__':
         # dict_mri=get_mri_status()
             
         # populate EEG block
-        dict_eeg=get_eeg_status()
+        # dict_eeg=get_eeg_status()
 
         # populate A/V/L block
-        # dict_avl=get_avl_status()
+        dict_avl=get_avl_status()
 
 
         # join the dicts
         # dict_all.update(dict_mri)
-        dict_all.update(dict_eeg)
-        # dict_all.update(dict_avl)
+        # dict_all.update(dict_eeg)
+        dict_all.update(dict_avl)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
