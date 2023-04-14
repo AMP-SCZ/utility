@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env python
 
 import json
 from glob import glob
-from os.path import abspath, basename, dirname, join as pjoin
+from os.path import isfile, abspath, basename, dirname, join as pjoin
 import pandas as pd
 import sys
 from util import str_date_minus_str_date
@@ -10,13 +10,14 @@ from datetime import datetime
 
 today=datetime.today().strftime('%Y-%m-%d')
 
-def get_value(var,event):
+def get_value(event,var):
     """Extract value from JSON"""
 
-    for d in dict1:
-        if timepoint in d['redcap_event_name']:
+    for d in data1:
+        if event in d['redcap_event_name']:
             try:
-                return d[var]
+                if d[var]!='':
+                    return d[var]
             except KeyError:
                 pass
                 
@@ -51,6 +52,13 @@ def get_mri_status():
 def get_eeg_status():
 
     chreeg_interview_date=get_value(timepoint,'chreeg_interview_date')
+    if chreeg_interview_date=='':
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
+
+    if get_value(timepoint,'chreeg_missing')=='1':
+        missing_code=get_value(timepoint,'chreeg_missing_spec')
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
+
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
@@ -71,24 +79,21 @@ def get_eeg_status():
 
     # populate Data Transferred row
     # search for zip files
-    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/eeg/{subject}_eeg_{chreeg_interview_date.replace('-','')}.zip'))
+    _chreeg_interview_date=chreeg_interview_date.replace('-','')
+    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/eeg/{subject}_eeg_{_chreeg_interview_date}.zip')):
         eeg_data=1
     else:
         eeg_data=-days_since_scan
 
 
     # populate Protocol Followed row
-    run=0
+    eeg_protocol=1
     for i in range(1,13):
-        run+=int(get_value(timepoint,f'chreeg_run{i}'))
+        if get_value(timepoint,f'chreeg_run{i}')==3:
+            eeg_protocol=0
 
-    if run<12:
-        eeg_protocol=0
-    else:
-        eeg_protocol=1
-
-
-    dict2={'eeg_score':eeg_score, 'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date}
+    dict2={'eeg_score':eeg_score, 'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date,
+        'eeg_missing':''}
 
     return dict2
 
@@ -116,28 +121,29 @@ if __name__=='__main__':
     df1=pd.DataFrame(columns=['day,reftime,timeofday,weekday,subject_id,site'.split(',')])
 
     for s in surveys:
+        
+        print('processing',s)
 
         with open(s) as f:
-            data1=json.load(f.read())
+            data1=json.load(f)
 
+        consent_date=get_value('screening','chric_consent_date')
 
         # extract and join CHR and HC arms
         data=[]
-        for d in data:
+        for d in data1:
             if timepoint in d['redcap_event_name']:
                 data.append(d)
-
+        data1=data
 
         subject=basename(s).split('.')[0]
         site=subject[:2]
 
         # initialize dict
-        dict_all={'day':1,'reftime':'','timeofday':'','weekday':'',
+        dict_all={'day':[1],'reftime':'','timeofday':'','weekday':'',
             'site':site,'subject_id':subject}
 
         
-        consent_date=get_value('screening','chric_consent_date')
-
         # populate MRI block
         # dict_mri=get_mri_status()
             
@@ -149,9 +155,9 @@ if __name__=='__main__':
 
 
         # join the dicts
-        dict_all.update(dict_mri)
+        # dict_all.update(dict_mri)
         dict_all.update(dict_eeg)
-        dict_all.update(dict_avl)
+        # dict_all.update(dict_avl)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
