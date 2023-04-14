@@ -99,29 +99,30 @@ def get_eeg_status():
 
 
 def get_avl_status():
+    
     chreeg_interview_date=get_value(timepoint,'chrspeech_interview_date')
     if chreeg_interview_date=='':
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
+        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':'', 'avl_missing':''}
 
     if get_value(timepoint,'chrspeech_missing')=='1':
         missing_code=get_value(timepoint,'chrspeech_missing_spec')
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
+        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':'', 'avl_missing':missing_code}
 
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
     # populate QC Score row
-    # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent+1} file
     try:
-        score_file=pjoin(nda_root,'AVL_quick_qc/open_count/{site}-{subject}-open_count-day1to*.csv')
-        
+        score_file=pjoin(nda_root,f'AVL_quick_qc/open_count/{site}-{subject}-open_count-day1to*.csv')
+        score_file=glob(score_file)
+
         dfscore=pd.read_csv(score_file[0])
 
         for i,row in dfscore.iterrows():
             if row['timepoint']==int(scan_minus_consent)+1:
                 eeg_score=row['audio_quality_category']
- 
+
     except:
         eeg_score=-days_since_scan
 
@@ -136,7 +137,7 @@ def get_avl_status():
         f'interviewMonoAudioQC_open-day*to{_chreeg_interview_date}.csv',
         f'interviewVideoQC_open-day*to{_chreeg_interview_date}.csv']:
         
-        if len(glob(prefix+suffix))!=1
+        if len(glob(prefix+suffix))!=1:
             eeg_data=0
             eeg_data=-days_since_scan
             break
@@ -148,8 +149,8 @@ def get_avl_status():
         eeg_protocol=0
 
 
-    dict2={'eeg_score':eeg_score, 'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date,
-        'eeg_missing':''}
+    dict2={'avl_score':eeg_score, 'avl_data':eeg_data, 'avl_protocol':eeg_protocol, 'avl_date':chreeg_interview_date,
+        'avl_missing':''}
 
     return dict2
 
