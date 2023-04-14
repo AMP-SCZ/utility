@@ -5,7 +5,10 @@ from glob import glob
 from os.path import abspath, basename, dirname, join as pjoin
 import pandas as pd
 import sys
+from util import str_date_minus_str_date
+from datetime import datetime
 
+today=datetime.today().strftime('%Y-%m-%d')
 
 def get_value(var,event):
     """Extract value from JSON"""
@@ -34,6 +37,12 @@ def get_mri_status():
     site
     subject
     """
+    
+    chrmri_entry_date=get_value(timepoint,'chrmri_entry_date')
+    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
+
+
     pass
 
     # return a dictionary of {MRI QC Score, Data Transferred, Protocol Followed, Acquisition Date}
@@ -43,14 +52,14 @@ def get_eeg_status():
 
     chreeg_interview_date=get_value(timepoint,'chreeg_interview_date')
 
-    days_since_scan=str_date_minus_str_date(chreeg_interview_date,consent_date)
+    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
-
     # populate QC Score row
-    # search for {site}-{subject}-EEGquick-day1to{days_since_scan+1} file
+    # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent+1} file
     try:
         score_file=pjoin(nda_root,network,
-            f'PHOENIX/PROTECTED/{network}??/*/processed/*/eeg/{site}-{subject}-EEGquick-day1to{days_since_scan+1}.csv')
+            f'PHOENIX/PROTECTED/{network}??/*/processed/*/eeg/{site}-{subject}-EEGquick-day1to{scan_minus_consent+1}.csv')
         
         dfscore=pd.read_csv(score_file)
         assert dfscore['Rating']>=1 and dfscore['Rating']<=4
@@ -62,21 +71,28 @@ def get_eeg_status():
 
     # populate Data Transferred row
     # search for zip files
-    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/surveys/*.{network}.json')
+    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}??/raw/*/eeg/{subject}_eeg_{chreeg_interview_date.replace('-','')}.zip'))
         eeg_data=1
     else:
         eeg_data=-days_since_scan
 
 
     # populate Protocol Followed row
-    chreeg_run[1-12]==1
-    if not all 1
-    eeg_protocol=and among all vars
-    do it in a for loop and break
+    run=0
+    for i in range(1,13):
+        run+=int(get_value(timepoint,f'chreeg_run{i}'))
 
-    return eeg_score, eeg_data, eeg_protocol, eeg_date
+    if run<12:
+        eeg_protocol=0
+    else:
+        eeg_protocol=1
 
-    
+
+    dict2={'eeg_score':eeg_score, 'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date}
+
+    return dict2
+
+
 def get_avl_status():
     pass
 
@@ -123,13 +139,13 @@ if __name__=='__main__':
         consent_date=get_value('screening','chric_consent_date')
 
         # populate MRI block
-        dict_mri=get_mri_status()
+        # dict_mri=get_mri_status()
             
         # populate EEG block
         dict_eeg=get_eeg_status()
 
         # populate A/V/L block
-        dict_avl=get_avl_status()
+        # dict_avl=get_avl_status()
 
 
         # join the dicts
