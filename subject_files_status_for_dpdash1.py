@@ -73,10 +73,14 @@ def get_mri_status():
     except:
         pass
     
-    if row['mri_data_exist']:
-        eeg_data=1
-
+    try:
+        eeg_data=int(row['mri_data_exist'])
+    except:
+        pass
     
+
+    eeg_protocol=1
+
     for v in ['chrmri_confirm','chrmri_consent',
         'chrmri_metal','chrmri_physicalmetal','chrmri_dental']:
 
@@ -107,7 +111,7 @@ def get_mri_status():
             'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
             'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
     
-        if get_value(timepoint,v)!='3':
+        if get_value(timepoint,v)=='3':
             eeg_protocol=0
             break
 
@@ -243,7 +247,7 @@ if __name__=='__main__':
 
     nda_root='/data/predict1/data_from_nda/'
     network='Pronet'
-    timepoint='month_2'
+    timepoint='baseline'
 
     outdir=pjoin(nda_root,f'{network}_status')
 
