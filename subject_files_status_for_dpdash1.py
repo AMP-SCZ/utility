@@ -9,6 +9,8 @@ from util import str_date_minus_str_date
 from datetime import datetime
 
 today=datetime.today().strftime('%Y-%m-%d')
+df_mri=pd.read_csv('/data/predict1/data_from_nda/MRI_ROOT/eeg_mri_count/mri_all_db.csv')
+df_mri.set_index('subject',inplace=True)
 
 def get_value(event,var):
     """Extract value from JSON"""
@@ -39,9 +41,34 @@ def get_mri_status():
     subject
     """
     
-    chrmri_entry_date=get_value(timepoint,'chrmri_entry_date')
+    for s,row in df_mri.loc[subject]:
+        if timepoint in row['timepoint_text']:
+            break
+
+
+    chreeg_interview_date=get_value(timepoint,'chrmri_entry_date')
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
-    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
+
+    if chreeg_interview_date=='':
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
+
+    if get_value(timepoint,'chrmri_missing')=='1':
+        missing_code=get_value(timepoint,'chrmri_missing_spec')
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
+
+
+    eeg_score=int(row['mriqc_int'])
+    eeg_data=int(row['mri_data_exist'])
+
+    if not eeg_score:
+        eeg_score=-days_since_scan
+
+    if not eeg_data:
+        eeg_data=-days_since_scan
+        
+
+
 
 
     pass
@@ -172,7 +199,7 @@ if __name__=='__main__':
 
     nda_root='/data/predict1/data_from_nda/'
     network='Pronet'
-    timepoint='baseline'
+    timepoint='month_2'
 
     outdir=pjoin(nda_root,f'{network}_status')
 
@@ -210,7 +237,7 @@ if __name__=='__main__':
         # dict_mri=get_mri_status()
             
         # populate EEG block
-        # dict_eeg=get_eeg_status()
+        dict_eeg=get_eeg_status()
 
         # populate A/V/L block
         dict_avl=get_avl_status()
@@ -218,7 +245,7 @@ if __name__=='__main__':
 
         # join the dicts
         # dict_all.update(dict_mri)
-        # dict_all.update(dict_eeg)
+        dict_all.update(dict_eeg)
         dict_all.update(dict_avl)
 
         # transform to DataFrame
