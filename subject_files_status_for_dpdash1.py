@@ -110,9 +110,11 @@ def get_avl_status():
 
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    scan_minus_consent=int(scan_minus_consent)+1
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
     # populate QC Score row
+    eeg_score=-days_since_scan
     try:
         score_file=pjoin(nda_root,f'AVL_quick_qc/open_count/{site}-{subject}-open_count-day1to*.csv')
         score_file=glob(score_file)
@@ -120,8 +122,12 @@ def get_avl_status():
         dfscore=pd.read_csv(score_file[0])
 
         for i,row in dfscore.iterrows():
-            if row['timepoint']==int(scan_minus_consent)+1:
+            if row['timepoint']==scan_minus_consent:
                 eeg_score=row['audio_quality_category']
+        
+        if eeg_score==-days_since_scan:
+            print(scan_minus_consent)
+
 
     except:
         eeg_score=-days_since_scan
@@ -133,12 +139,11 @@ def get_avl_status():
     prefix=pjoin(nda_root,network,f'PHOENIX/GENERAL/{network}??/processed/{subject}/interviews/open/')
 
     eeg_data=1
-    for suffix in [f'interviewRedactedTranscriptQC_open-day*to{_chreeg_interview_date}.csv',
-        f'interviewMonoAudioQC_open-day*to{_chreeg_interview_date}.csv',
-        f'interviewVideoQC_open-day*to{_chreeg_interview_date}.csv']:
+    for desc in ['interviewRedactedTranscriptQC_open','interviewMonoAudioQC_open','interviewVideoQC_open']:
         
-        if len(glob(prefix+suffix))!=1:
-            eeg_data=0
+        pattern= prefix+ '*'+ desc+ f'-day*to{scan_minus_consent}.csv'
+
+        if len(glob(pattern))!=1:
             eeg_data=-days_since_scan
             break
 
