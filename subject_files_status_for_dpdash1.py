@@ -41,15 +41,8 @@ def get_mri_status():
     subject
     """
     
-    for s,row in df_mri.loc[subject]:
-        if timepoint in row['timepoint_text']:
-            break
-
 
     chreeg_interview_date=get_value(timepoint,'chrmri_entry_date')
-    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
-    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
-
     if chreeg_interview_date=='':
         return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
 
@@ -57,23 +50,70 @@ def get_mri_status():
         missing_code=get_value(timepoint,'chrmri_missing_spec')
         return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
 
+    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
 
-    eeg_score=int(row['mriqc_int'])
-    eeg_data=int(row['mri_data_exist'])
 
-    if not eeg_score:
+    
+
+    for s,row in df_mri.loc[subject].iterrows():
+        if timepoint in row['timepoint_text']:
+            break
+
+    try:
+        eeg_score=int(row['mriqc_int'])
+        assert eeg_score>=0 and eeg_score<=4
+
+    except:
         eeg_score=-days_since_scan
+
+    eeg_data=int(row['mri_data_exist'])
 
     if not eeg_data:
         eeg_data=-days_since_scan
         
 
+    for v in ['chrmri_confirm','chrmri_consent',
+        'chrmri_metal','chrmri_physicalmetal','chrmri_dental']:
+
+        if get_value(timepoint,v)!='1':
+            eeg_protocol=0
+            break
+
+    for v in ['chrmri_aahscout',
+            'chrmri_calib_ge', 'chrmri_calib_ge_2', 'chrmri_calib_ge_3',
+            'chrmri_localizeraligned', 'chrmri_localizerseq',
+            'chrmri_localizerseq_ge',
+            'chrmri_dmap', 'chrmri_dmap2', 'chrmri_dmap3',
+            'chrmri_dmap_qc', 'chrmri_dmap_qc_2', 'chrmri_dmap_qc_3',
+            'chrmri_dmpa', 'chrmri_dmpa2', 'chrmri_dmpa3',
+            'chrmri_dmpa_qc', 'chrmri_dmpa_qc_2', 'chrmri_dmpa_qc_3',
+            'chrmri_t1', 'chrmri_t1_qc',
+            'chrmri_t2', 'chrmri_t2_qc', 'chrmri_t2_ge', 'chrmri_t2_qc_ge',
+            'chrmri_dmri126', 'chrmri_dmri126_qc',
+            'chrmri_dmri176', 'chrmri_dmri176_qc',
+            'chrmri_dmri_b0', 'chrmri_dmri_b0_2',
+            'chrmri_dmri_b0_qc', 'chrmri_dmri_b0_qc_2',
+            'chrmri_rfmriap', 'chrmri_rfmriap2',
+            'chrmri_rfmriap2_qc', 'chrmri_rfmriap_qc',
+            'chrmri_rfmriap_ref_num', 'chrmri_rfmriap_ref_num_2',
+            'chrmri_rfmriap_ref_qc', 'chrmri_rfmriap_ref_qc_2',
+            'chrmri_rfmripa', 'chrmri_rfmripa2',
+            'chrmri_rfmripa2_qc', 'chrmri_rfmripa_qc',
+            'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
+            'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
+    
+        if get_value(timepoint,v)!='3':
+            eeg_protocol=0
+            break
 
 
+    dict2={'mri_score':eeg_score, 'mri_data':eeg_data, 'mri_protocol':eeg_protocol, 'mri_date':chreeg_interview_date,
+        'mri_missing':''}
 
-    pass
+    return dict2
 
-    # return a dictionary of {MRI QC Score, Data Transferred, Protocol Followed, Acquisition Date}
+
 
 
 def get_eeg_status():
@@ -234,19 +274,19 @@ if __name__=='__main__':
 
         
         # populate MRI block
-        # dict_mri=get_mri_status()
+        dict_mri=get_mri_status()
             
         # populate EEG block
-        dict_eeg=get_eeg_status()
+        # dict_eeg=get_eeg_status()
 
         # populate A/V/L block
-        dict_avl=get_avl_status()
+        # dict_avl=get_avl_status()
 
 
         # join the dicts
-        # dict_all.update(dict_mri)
-        dict_all.update(dict_eeg)
-        dict_all.update(dict_avl)
+        dict_all.update(dict_mri)
+        # dict_all.update(dict_eeg)
+        # dict_all.update(dict_avl)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
