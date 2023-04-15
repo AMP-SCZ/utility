@@ -141,13 +141,18 @@ def get_avl_status():
     # if there is a valid score, data is surely here
     if eeg_score!=-days_since_scan:
 
+        if len(glob(prefix+ '*interview*_open-day*to*.csv'))<2:
+            eeg_data=-days_since_scan
+        
+        # following could be a stricter way to detect data availability
+        '''
         for desc in ['interviewRedactedTranscriptQC_open','interviewMonoAudioQC_open','interviewVideoQC_open']:
-            
-            pattern= prefix+ '*'+ desc+ f'-day*to{scan_minus_consent}.csv'
 
+            pattern= prefix+ '*'+ desc+ f'-day*to{scan_minus_consent}.csv'
             if len(glob(pattern))!=1:
                 eeg_data=-days_since_scan
                 break
+        '''
 
 
     # populate Protocol Followed row
