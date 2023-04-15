@@ -53,26 +53,30 @@ def get_mri_status():
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
 
-
     
+    eeg_score=-days_since_scan
+    eeg_data=-days_since_scan
 
-    for s,row in df_mri.loc[subject].iterrows():
-        if timepoint in row['timepoint_text']:
-            break
+    try:
+        for s,row in df_mri.loc[subject].iterrows():
+            if timepoint in row['timepoint_text']:
+                break
+                
+    except:
+        pass
+
 
     try:
         eeg_score=int(row['mriqc_int'])
         assert eeg_score>=0 and eeg_score<=4
 
     except:
-        eeg_score=-days_since_scan
+        pass
+    
+    if row['mri_data_exist']:
+        eeg_data=1
 
-    eeg_data=int(row['mri_data_exist'])
-
-    if not eeg_data:
-        eeg_data=-days_since_scan
-        
-
+    
     for v in ['chrmri_confirm','chrmri_consent',
         'chrmri_metal','chrmri_physicalmetal','chrmri_dental']:
 
