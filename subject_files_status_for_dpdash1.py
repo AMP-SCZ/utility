@@ -125,12 +125,10 @@ def get_avl_status():
             if row['timepoint']==scan_minus_consent:
                 eeg_score=row['audio_quality_category']
         
-        if eeg_score==-days_since_scan:
-            print(scan_minus_consent)
-
+        assert eeg_score>=1 and eeg_score<=5
 
     except:
-        eeg_score=-days_since_scan
+        pass
 
 
     # populate Data Transferred row
@@ -138,14 +136,18 @@ def get_avl_status():
     _chreeg_interview_date=chreeg_interview_date.replace('-','')
     prefix=pjoin(nda_root,network,f'PHOENIX/GENERAL/{network}??/processed/{subject}/interviews/open/')
 
-    eeg_data=1
-    for desc in ['interviewRedactedTranscriptQC_open','interviewMonoAudioQC_open','interviewVideoQC_open']:
-        
-        pattern= prefix+ '*'+ desc+ f'-day*to{scan_minus_consent}.csv'
 
-        if len(glob(pattern))!=1:
-            eeg_data=-days_since_scan
-            break
+    eeg_data=1
+    # if there is a valid score, data is surely here
+    if eeg_score!=-days_since_scan:
+
+        for desc in ['interviewRedactedTranscriptQC_open','interviewMonoAudioQC_open','interviewVideoQC_open']:
+            
+            pattern= prefix+ '*'+ desc+ f'-day*to{scan_minus_consent}.csv'
+
+            if len(glob(pattern))!=1:
+                eeg_data=-days_since_scan
+                break
 
 
     # populate Protocol Followed row
