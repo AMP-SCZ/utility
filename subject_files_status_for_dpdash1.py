@@ -79,11 +79,11 @@ def get_eeg_status():
 
     # populate Data Transferred row
     # search for zip files
-    _chreeg_interview_date=chreeg_interview_date.replace('-','')
-    if isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}{site}/raw/{subject}/eeg/{subject}_eeg_{_chreeg_interview_date}.zip')):
-        eeg_data=1
-    else:
-        eeg_data=-days_since_scan
+    eeg_data=1
+    if eeg_score==-days_since_scan:
+        _chreeg_interview_date=chreeg_interview_date.replace('-','')
+        if not isfile(pjoin(nda_root,network,f'PHOENIX/PROTECTED/{network}{site}/raw/{subject}/eeg/{subject}_eeg_{_chreeg_interview_date}.zip')):
+            eeg_data=-days_since_scan
 
 
     # populate Protocol Followed row
@@ -139,7 +139,7 @@ def get_avl_status():
 
     eeg_data=1
     # if there is a valid score, data is surely here
-    if eeg_score!=-days_since_scan:
+    if eeg_score==-days_since_scan:
 
         if len(glob(prefix+ '*interview*_open-day*to*.csv'))<2:
             eeg_data=-days_since_scan
