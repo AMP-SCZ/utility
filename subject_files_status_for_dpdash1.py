@@ -82,11 +82,14 @@ def get_mri_status():
     eeg_protocol=1
 
     for v in ['chrmri_confirm','chrmri_consent',
-        'chrmri_metal','chrmri_physicalmetal','chrmri_dental']:
+        'chrmri_metal','chrmri_physicalmetal']:
 
         if get_value(timepoint,v)!='1':
             eeg_protocol=0
             break
+
+    if get_value(timepoint,'chrmri_dental')=='1':
+        eeg_protocol=0
 
     for v in ['chrmri_aahscout',
             'chrmri_calib_ge', 'chrmri_calib_ge_2', 'chrmri_calib_ge_3',
