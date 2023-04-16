@@ -11,9 +11,13 @@ COMBINED_SUBJECT=sys.argv[1]
 metadata= sys.argv[2]
 files= sorted(sys.argv[3:])
 
-if sys.argv[3]=='*-flowcheck-day1to1.csv':
+
+if isinstance(files, list):
+    suffix= files[0][11:]
+else:
     print('No subject level files are present')
     exit(0)
+
 
 # read subject-level summary
 # generate combined list of datatype
@@ -46,8 +50,14 @@ dfnew.fillna(0, inplace=True)
 
 # 2. restore the integers
 dtype= {}
-for d in dfnew.columns.values[7:]:
+for d in dfnew.columns.values[6:]:
+    try:
+        if d=='mtime' or d.endswith('_date') or d.endswith('_missing'):
+            continue
+    except:
+        pass
     dtype[d]= 'short'
+    
 dfnew= dfnew.astype(dtype)
 
 # 3. reset the mandatory columns
@@ -56,13 +66,16 @@ dfnew[['reftime', 'timeofday', 'weekday']]=''
 # dfnew.replace(0,'',inplace=True)
 
 # sort dfnew by mtime
-dfnew.sort_values(by='mtime', ascending=False, inplace=True)
+try:
+    dfnew.sort_values(by='mtime', ascending=False, inplace=True)
+except:
+    pass
 
 # populate day column
 dfnetw= dfnew.copy()
 dfnetw['day']= [i+1 for i in range(dfnew.shape[0])]
 
-outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-flowcheck-day1to1.csv'
+outfile= f'{COMBINED_STUDY}-{COMBINED_SUBJECT}-{suffix}'
 dfnetw.to_csv(outfile, index=False)
 
 
@@ -87,7 +100,7 @@ for site,dfsite in dfnew.groupby('site'):
 
     dfsitemeta.to_csv(f'{site}_metadata.csv', index=False)
     
-    outfile= f'{COMBINED_STUDY}-{site}-flowcheck-day1to1.csv'
+    outfile= f'{COMBINED_STUDY}-{site}-{suffix}'
     dfsite.to_csv(outfile, index=False)
 
     # generate metadata
