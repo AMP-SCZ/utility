@@ -48,7 +48,7 @@ def get_mri_status():
 
     if get_value(timepoint,'chrmri_missing')=='1':
         missing_code=get_value(timepoint,'chrmri_missing_spec')
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':chreeg_interview_date, 'eeg_missing':missing_code}
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
@@ -135,7 +135,7 @@ def get_eeg_status():
 
     if get_value(timepoint,'chreeg_missing')=='1':
         missing_code=get_value(timepoint,'chreeg_missing_spec')
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':missing_code}
+        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':chreeg_interview_date, 'eeg_missing':missing_code}
 
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
@@ -184,7 +184,7 @@ def get_avl_status():
 
     if get_value(timepoint,'chrspeech_missing')=='1':
         missing_code=get_value(timepoint,'chrspeech_missing_spec')
-        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':'', 'avl_missing':missing_code}
+        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':chreeg_interview_date, 'avl_missing':missing_code}
 
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
