@@ -245,6 +245,39 @@ def get_avl_status():
     return dict2
 
 
+def get_cnb_status():
+
+    chreeg_interview_date=get_value(timepoint,'chrpenn_interview_date')
+    if chreeg_interview_date=='':
+        return {'cnb_data':'', 'cnb_protocol':'', 'cnb_date':'', 'cnb_missing':''}
+
+    if get_value(timepoint,'chrpenn_missing')=='1':
+        missing_code=get_value(timepoint,'chrpenn_missing_spec')
+        return {'cnb_data':'', 'cnb_protocol':'', 'cnb_date':chreeg_interview_date, 'cnb_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
+    
+
+    # populate Data Transferred row
+    # search for zip files
+    eeg_data=1
+    if not isfile(s.replace('.Pronet.json','.UPENN.json')):
+        eeg_data=-days_since_scan
+
+
+    # populate Protocol Followed row
+    eeg_protocol=1
+    if get_value(timepoint,f'chrpenn_complete')!='0':
+        eeg_protocol=0
+
+    dict2={'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date,
+        'eeg_missing':''}
+
+    return dict2
+
+
 
 if __name__=='__main__':
 
@@ -293,11 +326,14 @@ if __name__=='__main__':
         # populate A/V/L block
         # dict_avl=get_avl_status()
 
+        # populate CNB block
+        dict_cnb=get_cnb_status()
 
         # join the dicts
-        dict_all.update(dict_mri)
+        # dict_all.update(dict_mri)
         # dict_all.update(dict_eeg)
         # dict_all.update(dict_avl)
+        dict_all.update(dict_cnb)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
