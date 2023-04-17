@@ -272,8 +272,8 @@ def get_cnb_status():
     if get_value(timepoint,f'chrpenn_complete')!='0':
         eeg_protocol=0
 
-    dict2={'eeg_data':eeg_data, 'eeg_protocol':eeg_protocol, 'eeg_date':chreeg_interview_date,
-        'eeg_missing':''}
+    dict2={'cnb_data':eeg_data, 'cnb_protocol':eeg_protocol, 'cnb_date':chreeg_interview_date,
+        'cnb_missing':''}
 
     return dict2
 
@@ -321,18 +321,18 @@ if __name__=='__main__':
         dict_mri=get_mri_status()
             
         # populate EEG block
-        # dict_eeg=get_eeg_status()
+        dict_eeg=get_eeg_status()
 
         # populate A/V/L block
-        # dict_avl=get_avl_status()
+        dict_avl=get_avl_status()
 
         # populate CNB block
         dict_cnb=get_cnb_status()
 
         # join the dicts
-        # dict_all.update(dict_mri)
-        # dict_all.update(dict_eeg)
-        # dict_all.update(dict_avl)
+        dict_all.update(dict_mri)
+        dict_all.update(dict_eeg)
+        dict_all.update(dict_avl)
         dict_all.update(dict_cnb)
 
         # transform to DataFrame
