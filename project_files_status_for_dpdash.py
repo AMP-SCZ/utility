@@ -46,16 +46,14 @@ for i,f in enumerate(files):
 # deal with the NaN values in three steps
 
 # 1. remove the NaN values
-dfnew.fillna(0, inplace=True)
+dfnew.fillna(-9999, inplace=True)
 
 # 2. restore the integers
 dtype= {}
 for d in dfnew.columns.values[6:]:
-    try:
-        if d=='mtime' or d.endswith('_date') or d.endswith('_missing'):
-            continue
-    except:
-        pass
+    if d in ['reftime', 'timeofday', 'weekday', 'mtime'] or \
+        d.endswith('_date') or d.endswith('_missing'):
+        continue
     dtype[d]= 'short'
     
 dfnew= dfnew.astype(dtype)
@@ -63,13 +61,11 @@ dfnew= dfnew.astype(dtype)
 # 3. reset the mandatory columns
 dfnew[['reftime', 'timeofday', 'weekday']]=''
 # Justin Baker and Habib Rahimi asked for removal of all 0s
-# dfnew.replace(0,'',inplace=True)
+dfnew.replace(-9999,'',inplace=True)
 
 # sort dfnew by mtime
-try:
+if 'mtime' in dfnew.columns:
     dfnew.sort_values(by='mtime', ascending=False, inplace=True)
-except:
-    pass
 
 # populate day column
 dfnetw= dfnew.copy()
