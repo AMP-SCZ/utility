@@ -35,7 +35,7 @@ def str_date_minus_str_date(date_str1: str, date_str2: str) -> int:
     date2 = datetime.strptime(date_str2, '%Y-%m-%d')
 
     time_delta = (date2 - date1)
-    diff_days = time_delta.days
+    diff_days = time_delta.days+1
 
     return diff_days
 
