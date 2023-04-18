@@ -44,11 +44,11 @@ def get_mri_status():
 
     chreeg_interview_date=get_value(timepoint,'chrmri_entry_date')
     if chreeg_interview_date=='':
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':'', 'eeg_missing':''}
+        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':'', 'mri_missing':''}
 
     if get_value(timepoint,'chrmri_missing')=='1':
         missing_code=get_value(timepoint,'chrmri_missing_spec')
-        return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':chreeg_interview_date, 'eeg_missing':missing_code}
+        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':chreeg_interview_date, 'mri_missing':missing_code}
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
