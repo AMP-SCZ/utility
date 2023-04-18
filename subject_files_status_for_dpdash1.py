@@ -253,7 +253,7 @@ def get_avl_status():
 def get_cnb_status():
 
     interview_date=get_value(timepoint,'chrpenn_interview_date')
-    if chreeg_interview_date=='':
+    if interview_date=='':
         return {'cnb_data':'', 'cnb_protocol':'', 'cnb_date':'', 'cnb_missing':''}
 
     if get_value(timepoint,'chrpenn_missing')=='1':
