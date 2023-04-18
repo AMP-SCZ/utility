@@ -15,7 +15,7 @@ df_mri.set_index('subject',inplace=True)
 def get_value(event,var):
     """Extract value from JSON"""
 
-    for d in data1:
+    for d in dict1:
         if event in d['redcap_event_name']:
             try:
                 if d[var]!='':
@@ -303,16 +303,16 @@ if __name__=='__main__':
         print('processing',s)
 
         with open(s) as f:
-            data1=json.load(f)
+            dict1=json.load(f)
 
         consent_date=get_value('screening','chric_consent_date')
 
         # extract and join CHR and HC arms
-        data=[]
-        for d in data1:
+        dict2=[]
+        for d in dict1:
             if timepoint in d['redcap_event_name']:
-                data.append(d)
-        data1=data
+                dict2.append(d)
+        dict1=dict2
 
         subject=basename(s).split('.')[0]
         site=subject[:2]
