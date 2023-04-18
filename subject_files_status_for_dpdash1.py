@@ -199,24 +199,17 @@ def get_avl_status():
 
         dfscore=pd.read_csv(score_file[0])
         
-        found=0
-        for i,row in dfscore.iterrows():
-            if row['timepoint']==scan_minus_consent:
-                eeg_score=row['audio_quality_category']
-                found=1
+        # find the nearest day number among dfscore['timepoint']
+        min_diff=9999
+        for d in dfscore['timepoint'].values:
+            diff=abs(d-scan_minus_consent)
+            if diff<min_diff:
+                min_diff=diff
+                nearest_day=d
         
-        if not found:
-            # find the nearest day number among dfscore['timepoint']
-            min_diff=9999
-            for d in dfscore['timepoint'].values:
-                diff=abs(d-scan_minus_consent)
-                if diff<min_diff:
-                    min_diff=diff
-                    nearest_day=d
-
-            for i,row in dfscore.iterrows():
-                if row['timepoint']==nearest_day:
-                    eeg_score=row['audio_quality_category']
+        for i,row in dfscore.iterrows():
+            if row['timepoint']==nearest_day:
+                eeg_score=row['audio_quality_category']
                 
         assert eeg_score>=1 and eeg_score<=5
 
