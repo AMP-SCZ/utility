@@ -53,8 +53,6 @@ def get_mri_status():
     scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
     days_since_scan=str_date_minus_str_date(interview_date,today)
     
-    score=-days_since_scan
-    data=-days_since_scan
 
     try:
         for s,row in df_mri.loc[subject].iterrows():
@@ -68,16 +66,15 @@ def get_mri_status():
     try:
         score=int(row['mriqc_int'])
         assert score>=0 and score<=4
-
     except:
-        pass
+        score=-days_since_scan
     
     try:
         data=int(row['mri_data_exist'])
     except:
-        pass
+        data=-days_since_scan
+        
     
-
     protocol=1
 
     for v in ['chrmri_confirm','chrmri_consent',
@@ -190,7 +187,6 @@ def get_avl_status():
     days_since_scan=str_date_minus_str_date(interview_date,today)
     
     # populate QC Score row
-    score=-days_since_scan
     try:
         score_file=pjoin(nda_root,f'AVL_quick_qc/open_count/{site}-{subject}-open_count-day1to*.csv')
         score_file=glob(score_file)
@@ -212,7 +208,7 @@ def get_avl_status():
         assert score>=1 and score<=5
 
     except:
-        pass
+        score=-days_since_scan
 
 
     # populate Data Transferred row
