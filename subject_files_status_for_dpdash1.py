@@ -51,8 +51,7 @@ def get_mri_status():
         return {'eeg_score':'', 'eeg_data':'', 'eeg_protocol':'', 'eeg_date':chreeg_interview_date, 'eeg_missing':missing_code}
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
-    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)+1
-
+    days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
     eeg_score=-days_since_scan
     eeg_data=-days_since_scan
@@ -126,7 +125,6 @@ def get_mri_status():
 
 
 
-
 def get_eeg_status():
 
     chreeg_interview_date=get_value(timepoint,'chreeg_interview_date')
@@ -142,10 +140,10 @@ def get_eeg_status():
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
     # populate QC Score row
-    # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent+1} file
+    # search for {site}-{subject}-EEGquick-day1to{scan_minus_consent} file
     try:
         score_file=pjoin(nda_root,network,
-            f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/eeg/{site}-{subject}-EEGquick-day1to{scan_minus_consent+1}.csv')
+            f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/eeg/{site}-{subject}-EEGquick-day1to{scan_minus_consent}.csv')
         
         dfscore=pd.read_csv(score_file)
         eeg_score=dfscore.loc[0,'Rating']
@@ -176,6 +174,7 @@ def get_eeg_status():
     return dict2
 
 
+
 def get_avl_status():
     
     chreeg_interview_date=get_value(timepoint,'chrspeech_interview_date')
@@ -188,7 +187,6 @@ def get_avl_status():
 
 
     scan_minus_consent=str_date_minus_str_date(consent_date,chreeg_interview_date)
-    scan_minus_consent=int(scan_minus_consent)+1
     days_since_scan=str_date_minus_str_date(chreeg_interview_date,today)
     
     # populate QC Score row
@@ -218,7 +216,6 @@ def get_avl_status():
 
 
     # populate Data Transferred row
-    # search for zip files
     _chreeg_interview_date=chreeg_interview_date.replace('-','')
     prefix=pjoin(nda_root,network,f'PHOENIX/GENERAL/{network}??/processed/{subject}/interviews/open/')
 
@@ -253,6 +250,7 @@ def get_avl_status():
     return dict2
 
 
+
 def get_cnb_status():
 
     chreeg_interview_date=get_value(timepoint,'chrpenn_interview_date')
@@ -269,7 +267,6 @@ def get_cnb_status():
     
 
     # populate Data Transferred row
-    # search for zip files
     eeg_data=1
     if not isfile(s.replace('.Pronet.json','.UPENN.json')):
         eeg_data=-days_since_scan
