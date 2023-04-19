@@ -7,6 +7,7 @@ import pandas as pd
 import sys
 from util import str_date_minus_str_date
 from datetime import datetime
+import argparse
 
 today=datetime.today().strftime('%Y-%m-%d')
 df_mri=pd.read_csv('/data/predict1/data_from_nda/MRI_ROOT/eeg_mri_count/mri_all_db.csv')
@@ -282,8 +283,15 @@ def get_cnb_status():
 if __name__=='__main__':
 
     nda_root='/data/predict1/data_from_nda/'
-    network='Pronet'
-    timepoint='baseline'
+    
+    parser = argparse.ArgumentParser(description='Data status generator')
+    parser.add_argument('--timepoint', type=str, default='baseline', help='baseline or month_2')
+    parser.add_argument('--network', type=str, required=True, help='Pronet or Prescient')
+
+    args = parser.parse_args()
+
+    network=args.network
+    timepoint=args.timepoint
 
     outdir=pjoin(nda_root,f'{network}_status')
 
