@@ -18,6 +18,16 @@ then
 fi
 
 
-aws s3 $2 --exclude "*" --include "PHOENIX_ROOT_PRESCIENT/PROTECTED/$1" s3://prescient-test
-$2 $1
+if [ $2 == 'ls' ]
+then
+    for i in $1
+    do
+        aws s3 ls s3://prescient-test/PHOENIX_ROOT_PRESCIENT/PROTECTED/$i
+    done
+
+elif [ $2 == 'rm' ]
+then
+    aws s3 rm --recursive --exclude "*" --include "PHOENIX_ROOT_PRESCIENT/PROTECTED/$1" s3://prescient-test
+    rm $1
+fi
 
