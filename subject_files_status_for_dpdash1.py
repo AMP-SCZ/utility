@@ -66,7 +66,8 @@ def get_mri_status():
 
     try:
         score=int(row['mriqc_int'])
-        assert score>=0 and score<=4
+        assert score>=0 and score<=2
+        # 0: unusable, 1: partial pass, 2: full pass
     except:
         score=-days_since_scan
     
@@ -146,6 +147,7 @@ def get_eeg_status():
         dfscore=pd.read_csv(score_file)
         score=dfscore.loc[0,'Rating']
         assert score>=1 and score<=4
+        # 1: poor, 2: average, 3: good, 4: excellent
     
     except:
         score=-days_since_scan
@@ -207,6 +209,7 @@ def get_avl_status():
                 score=row['audio_quality_category']
                 
         assert score>=1 and score<=5
+        # 1: excellent, 2: good, 3: fair, 4: usable, 5: bad
 
     except:
         score=-days_since_scan
