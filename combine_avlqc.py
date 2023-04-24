@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from os.path import join as pjoin, dirname
+from os.path import join as pjoin, dirname, isdir
 from os import makedirs
 import sys
 from glob import glob
@@ -58,11 +58,24 @@ def concat_site_csv(data_root,output_root,center_name):
         # 0 awaiting transcription, 
         # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
         # these counts relate only to interviews that were able to be processed by QC
-        open_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else 
-            (5 if np.isnan(x) else 
-            (1 if x < 0.01 else 
-            (2 if x < 0.05 else 
-            (3 if x < 0.2 else 4)))) for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist())]
+        for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist()):
+
+            if np.isnan(x) and y > 40:
+                _score=0
+            elif np.isnan(x):
+                _score=1
+
+            if x < 0.01:
+                _score=5
+            elif x < 0.05:
+                _score=4
+            elif x < 0.2:
+                _score=3
+            else:
+                _score=2
+
+        open_only["audio_quality_category"] = _score
+
 
         open_only.insert(0, 'day', [x+1 for x in range(open_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
@@ -173,10 +186,16 @@ if __name__ == '__main__':
 
     concat_site_csv(f'{sys.argv[1]}/Pronet', f'{sys.argv[1]}/AVL_quick_qc', 'PRONET')
     for site in glob(f'{sys.argv[1]}/Pronet/PHOENIX/GENERAL/*'):
+        if not isdir(site):
+            continue
+            
         concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
     
     concat_site_csv(f'{sys.argv[1]}/Prescient', f'{sys.argv[1]}/AVL_quick_qc', 'PRESCIENT')
     for site in glob(f'{sys.argv[1]}/Prescient/PHOENIX/GENERAL/*'):
+        if not isdir(site):
+            continue
+
         concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
 
     
