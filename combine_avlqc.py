@@ -58,7 +58,12 @@ def concat_site_csv(data_root,output_root,center_name):
         # 5 bad (db < 40 so not sent for transcription)
         # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
         # these counts relate only to interviews that were able to be processed by QC
-        open_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else (5 if np.isnan(x) else (1 if x < 0.01 else (2 if x < 0.05 else (3 if x < 0.2 else 4)))) for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist())]
+        open_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else 
+            (5 if np.isnan(x) else 
+            (1 if x < 0.01 else 
+            (2 if x < 0.05 else 
+            (3 if x < 0.2 else 4)))) for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist())]
+
         open_only.insert(0, 'day', [x+1 for x in range(open_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
         open_only.to_csv(f"{output_root}/combined-{center_name}-open_avlqc-day1to1.csv", index=False) # could be imported as open_avlqc instrument
@@ -95,7 +100,12 @@ def concat_site_csv(data_root,output_root,center_name):
         # 5 bad (db < 40 so not sent for transcription)
         # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
         # these counts relate only to interviews that were able to be processed by QC
-        psychs_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else (5 if np.isnan(x) else (1 if x < 0.01 else (2 if x < 0.05 else (3 if x < 0.2 else 4)))) for x,y in zip(psychs_only["inaudible_per_word"].tolist(),psychs_only["overall_db"].tolist())]
+        psychs_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else 
+            (5 if np.isnan(x) else 
+            (1 if x < 0.01 else 
+            (2 if x < 0.05 else 
+            (3 if x < 0.2 else 4)))) for x,y in zip(psychs_only["inaudible_per_word"].tolist(),psychs_only["overall_db"].tolist())]
+
         psychs_only.insert(0, 'day', [x+1 for x in range(psychs_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
         psychs_only.to_csv(f"{output_root}/combined-{center_name}-psychs_avlqc-day1to1.csv", index=False) # could be imported as psychs_avlqc instrument
