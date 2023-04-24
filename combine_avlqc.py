@@ -50,12 +50,12 @@ def concat_site_csv(data_root,output_root,center_name):
         open_only.reset_index(drop=True,inplace=True)
         open_only["inaudible_per_word"] = [x/(a + b + c) if not np.isnan(x) else np.nan for x,a,b,c in zip(open_only["num_inaudible"].tolist(),open_only["num_words_S1"].tolist(),open_only["num_words_S2"].tolist(),open_only["num_words_S3"].tolist())]
 
-        # 0 awaiting transcription, 
-        # 1 excellent (<1% inaud), 
-        # 2 good (<5% inaud), 
+        # 5 excellent (<1% inaud), 
+        # 4 good (<5% inaud), 
         # 3 fair (<20% inaud), 
-        # 4 usable (>20% inaud but transcript available), 
-        # 5 bad (db < 40 so not sent for transcription)
+        # 2 usable (>20% inaud but transcript available), 
+        # 1 bad (db < 40 so not sent for transcription), 
+        # 0 awaiting transcription, 
         # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
         # these counts relate only to interviews that were able to be processed by QC
         open_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else 
@@ -92,12 +92,12 @@ def concat_site_csv(data_root,output_root,center_name):
         psychs_only.reset_index(drop=True,inplace=True)
         psychs_only["inaudible_per_word"] = [x/(a + b + c) if not np.isnan(x) else np.nan for x,a,b,c in zip(psychs_only["num_inaudible"].tolist(),psychs_only["num_words_S1"].tolist(),psychs_only["num_words_S2"].tolist(),psychs_only["num_words_S3"].tolist())]
        
-        # 0 awaiting transcription, 
-        # 1 excellent (<1% inaud), 
-        # 2 good (<5% inaud), 
+        # 5 excellent (<1% inaud), 
+        # 4 good (<5% inaud), 
         # 3 fair (<20% inaud), 
-        # 4 usable (>20% inaud but transcript available), 
-        # 5 bad (db < 40 so not sent for transcription)
+        # 2 usable (>20% inaud but transcript available), 
+        # 1 bad (db < 40 so not sent for transcription), 
+        # 0 awaiting transcription, 
         # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
         # these counts relate only to interviews that were able to be processed by QC
         psychs_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else 
