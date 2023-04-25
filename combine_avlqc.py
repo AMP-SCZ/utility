@@ -7,6 +7,37 @@ from glob import glob
 import pandas as pd
 import numpy as np
 
+def get_score(zipped_list):
+
+    # 5 excellent (<1% inaud),
+    # 4 good (<5% inaud),
+    # 3 fair (<20% inaud),
+    # 2 usable (>20% inaud but transcript available),
+    # 1 bad (db < 40 so not sent for transcription),
+    # 0 awaiting transcription,
+    # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all!
+    # these counts relate only to interviews that were able to be processed by QC
+    score=[]
+    for x,y in zipped_list:
+
+        if np.isnan(x) and y > 40:
+            _score=0
+        elif np.isnan(x):
+            _score=1
+        elif x < 0.01:
+            _score=5
+        elif x < 0.05:
+            _score=4
+        elif x < 0.2:
+            _score=3
+        else:
+            _score=2
+        
+        score.append(_score)
+        
+    return score
+
+
 def concat_site_csv(data_root,output_root,center_name):
     
     print('Combining',center_name)
@@ -50,32 +81,9 @@ def concat_site_csv(data_root,output_root,center_name):
         open_only.reset_index(drop=True,inplace=True)
         open_only["inaudible_per_word"] = [x/(a + b + c) if not np.isnan(x) else np.nan for x,a,b,c in zip(open_only["num_inaudible"].tolist(),open_only["num_words_S1"].tolist(),open_only["num_words_S2"].tolist(),open_only["num_words_S3"].tolist())]
 
-        # 5 excellent (<1% inaud), 
-        # 4 good (<5% inaud), 
-        # 3 fair (<20% inaud), 
-        # 2 usable (>20% inaud but transcript available), 
-        # 1 bad (db < 40 so not sent for transcription), 
-        # 0 awaiting transcription, 
-        # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! 
-        # these counts relate only to interviews that were able to be processed by QC
-        for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist()):
-
-            if np.isnan(x) and y > 40:
-                _score=0
-            elif np.isnan(x):
-                _score=1
-
-            if x < 0.01:
-                _score=5
-            elif x < 0.05:
-                _score=4
-            elif x < 0.2:
-                _score=3
-            else:
-                _score=2
-
-        open_only["audio_quality_category"] = _score
-
+        
+        open_only["audio_quality_category"] = get_score(
+            zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist()))
 
         open_only.insert(0, 'day', [x+1 for x in range(open_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
