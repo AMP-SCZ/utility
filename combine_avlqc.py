@@ -1,11 +1,42 @@
 #!/usr/bin/env python
 
-from os.path import join as pjoin, dirname
+from os.path import join as pjoin, dirname, isdir
 from os import makedirs
 import sys
 from glob import glob
 import pandas as pd
 import numpy as np
+
+def get_score(zipped_list):
+
+    # 5 excellent (<1% inaud),
+    # 4 good (<5% inaud),
+    # 3 fair (<20% inaud),
+    # 2 usable (>20% inaud but transcript available),
+    # 1 bad (db < 40 so not sent for transcription),
+    # 0 awaiting transcription,
+    # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all!
+    # these counts relate only to interviews that were able to be processed by QC
+    score=[]
+    for x,y in zipped_list:
+
+        if np.isnan(x) and y > 40:
+            _score=0
+        elif np.isnan(x):
+            _score=1
+        elif x < 0.01:
+            _score=5
+        elif x < 0.05:
+            _score=4
+        elif x < 0.2:
+            _score=3
+        else:
+            _score=2
+        
+        score.append(_score)
+        
+    return score
+
 
 def concat_site_csv(data_root,output_root,center_name):
     
@@ -49,9 +80,11 @@ def concat_site_csv(data_root,output_root,center_name):
         open_only.dropna(subset=["overall_db","num_inaudible"],how='all',inplace=True) # remove records with only video for these purposes, focus on audio
         open_only.reset_index(drop=True,inplace=True)
         open_only["inaudible_per_word"] = [x/(a + b + c) if not np.isnan(x) else np.nan for x,a,b,c in zip(open_only["num_inaudible"].tolist(),open_only["num_words_S1"].tolist(),open_only["num_words_S2"].tolist(),open_only["num_words_S3"].tolist())]
-        # 0 awaiting transcription, 1 excellent (<1% inaud), 2 good (<5% inaud), 3 fair (<20% inaud), 4 usable (>20% inaud but transcript available), 5 bad (db < 40 so not sent for transcription)
-        # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! these counts relate only to interviews that were able to be processed by QC
-        open_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else (5 if np.isnan(x) else (1 if x < 0.01 else (2 if x < 0.05 else (3 if x < 0.2 else 4)))) for x,y in zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist())]
+
+        
+        open_only["audio_quality_category"] = get_score(
+            zip(open_only["inaudible_per_word"].tolist(),open_only["overall_db"].tolist()))
+
         open_only.insert(0, 'day', [x+1 for x in range(open_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
         open_only.to_csv(f"{output_root}/combined-{center_name}-open_avlqc-day1to1.csv", index=False) # could be imported as open_avlqc instrument
@@ -79,9 +112,10 @@ def concat_site_csv(data_root,output_root,center_name):
         psychs_only.dropna(subset=["overall_db","num_inaudible"],how='all',inplace=True) # remove records with only video for these purposes, focus on audio
         psychs_only.reset_index(drop=True,inplace=True)
         psychs_only["inaudible_per_word"] = [x/(a + b + c) if not np.isnan(x) else np.nan for x,a,b,c in zip(psychs_only["num_inaudible"].tolist(),psychs_only["num_words_S1"].tolist(),psychs_only["num_words_S2"].tolist(),psychs_only["num_words_S3"].tolist())]
-        # 0 awaiting transcription, 1 excellent (<1% inaud), 2 good (<5% inaud), 3 fair (<20% inaud), 4 usable (>20% inaud but transcript available), 5 bad (db < 40 so not sent for transcription)
-        # note that interviews missing from audio QC due to SOP violations or other issues will not be reflected here at all! these counts relate only to interviews that were able to be processed by QC
-        psychs_only["audio_quality_category"] = [0 if np.isnan(x) and y > 40 else (5 if np.isnan(x) else (1 if x < 0.01 else (2 if x < 0.05 else (3 if x < 0.2 else 4)))) for x,y in zip(psychs_only["inaudible_per_word"].tolist(),psychs_only["overall_db"].tolist())]
+       
+        psychs_only["audio_quality_category"] = get_score(
+            zip(psychs_only["inaudible_per_word"].tolist(),psychs_only["overall_db"].tolist()))
+
         psychs_only.insert(0, 'day', [x+1 for x in range(psychs_only.shape[0])])
         # save the overall version anyway even though for the charts need individual CSVs
         psychs_only.to_csv(f"{output_root}/combined-{center_name}-psychs_avlqc-day1to1.csv", index=False) # could be imported as psychs_avlqc instrument
@@ -149,10 +183,16 @@ if __name__ == '__main__':
 
     concat_site_csv(f'{sys.argv[1]}/Pronet', f'{sys.argv[1]}/AVL_quick_qc', 'PRONET')
     for site in glob(f'{sys.argv[1]}/Pronet/PHOENIX/GENERAL/*'):
+        if not isdir(site):
+            continue
+            
         concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
     
     concat_site_csv(f'{sys.argv[1]}/Prescient', f'{sys.argv[1]}/AVL_quick_qc', 'PRESCIENT')
     for site in glob(f'{sys.argv[1]}/Prescient/PHOENIX/GENERAL/*'):
+        if not isdir(site):
+            continue
+
         concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
 
     
