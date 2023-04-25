@@ -79,12 +79,13 @@ def get_mri_status():
     
     protocol=1
 
-    for v in ['chrmri_confirm','chrmri_consent',
-        'chrmri_metal','chrmri_physicalmetal']:
-
+    for v in ['chrmri_consent','chrmri_metal','chrmri_physicalmetal']:
         if get_value(timepoint,v)!='1':
             protocol=0
             break
+
+    if get_value(timepoint,'chrmri_confirm')=='2':
+        protocol=0
 
     if get_value(timepoint,'chrmri_dental')=='1':
         protocol=0
