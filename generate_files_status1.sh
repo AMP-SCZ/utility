@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+export PATH=/data/predict1/utility/:/data/predict1/miniconda3/bin/:$PATH
+if [ -z $1 ] || [ ! -d $1 ]
+then
+    echo """./generate_file_status.sh /path/to/nda_root/ VM
+Provide /path/to/nda_root/ and VM
+VM name examples:
+    dpstage for dpstage.dipr.partners.org
+    rc-predict for rc-predict.bwh.harvard.edu
+    It is the first part of the server name."""
+    exit
+else
+    export NDA_ROOT=$1
+fi
+
+
+name='combined'
+rm ${NDA_ROOT}/${name}_metadata.csv
+rm ${NDA_ROOT}/Pronet_status/*csv
+rm ${NDA_ROOT}/Prescient_status/*csv
+
+
+for network in Pronet Prescient
+do
+
+subject_files_status_for_dpdash1.py --network $network --timepoint baseline
+subject_files_status_for_dpdash1.py --network $network --timepoint month_2
+
+done
+
+
+for visit in data_baseline data_month_2
+do
+
+cd ${NDA_ROOT}/Pronet_status
+project_files_status_for_dpdash.py PRONET ../${name}_metadata.csv *-${visit}-day1to1.csv
+
+cd ${NDA_ROOT}/Prescient_status
+project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-${visit}-day1to1.csv
+
+cd ${NDA_ROOT}
+echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
+cat Pronet_status/${name}-PRONET-${visit}-day1to1.csv > ${name}-AMPSCZ-${visit}-day1to1.csv
+tail -n +2 Prescient_status/${name}-PRESCIENT-${visit}-day1to1.csv >> ${name}-AMPSCZ-${visit}-day1to1.csv
+renumber_days.py ${name}-AMPSCZ-${visit}-day1to1.csv
+
+done
+
+# export the above csv files to remote MongoDB server
+dpimport_files_status.sh $NDA_ROOT $2
+
