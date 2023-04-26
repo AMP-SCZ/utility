@@ -8,7 +8,7 @@ db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME'
 // 2.    provide access to configs
 
 [
-["Combined - Dataflow",'sbouix'],
+["Combined - Basline+Month 2 - Dataflow",'chief'],
 ["Combined - Forms - Month 2",'sbouix'],
 ["Combined - EEG QC",'sbouix'],
 ["Combined - MRI QC",'sbouix'],
@@ -26,6 +26,6 @@ db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME'
 
 // 3.    set default config
 
-db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set: {"preferences" : { "complete" : {  }, "star" : {  }, "sort" : 0, "config" : "6415bbd8e0fb897e31326591" }}} ));
+db.users.find().forEach(u=>db.users.update({"uid":u.uid}, {$set: {"preferences" : { "complete" : {  }, "star" : {  }, "sort" : 0, "config" : "644848513a2446cb3c1ba4e1" }}} ));
 
 
