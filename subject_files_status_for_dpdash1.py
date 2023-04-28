@@ -59,9 +59,16 @@ def get_mri_status():
         for s,row in df_mri.loc[subject].iterrows():
             if timepoint in row['timepoint_text']:
                 break
-                
-    except:
-        pass
+    
+    except (KeyError,AttributeError,TypeError):
+        # KeyError: subject does not exist in df_mri
+        # AttributeError: only one row for the subject
+        # TypeError: timepoint_text cell is NaN for the subject
+        
+        try:
+            row=df_mri.loc[subject]
+        except (KeyError,TypeError):
+            pass
 
 
     try:
@@ -73,6 +80,7 @@ def get_mri_status():
     
     try:
         data=int(row['mri_data_exist'])
+        assert data==1
     except:
         data=-days_since_scan
         
