@@ -219,7 +219,7 @@ PrescientStudy_Prescient_sociodemographics_:
 - interview_date,chrdemo_interview_date
 
 PrescientStudy_Prescient_sofas_followup_:
-- interview_date,chrsofas_interview_date
+- interview_date,chrsofas_interview_date_fu
 
 PrescientStudy_Prescient_sofas_screening_:
 - interview_date,chrsofas_interview_date
