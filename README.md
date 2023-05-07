@@ -2,7 +2,7 @@
 
 Please cite this repository in AMP® SCZ papers as:
 
-Billah T, Cho KIK, Nicholas S, Ennis M, Eichi HR, Bouix S, Baker JT, *Accelerating Medicines Partnership® Schizophrenia (AMP® SCZ) Data Processing and Submission Software*, https://github.com/AMP-SCZ/utility, 2020, DOI: 10.5281/zenodo.7849718
+Billah T, Cho KIK, Nicholas S, Ennis M, Eichi HR, Bouix S, Baker JT, *Accelerating Medicines Partnership® Schizophrenia (AMP® SCZ) Data Processing and Submission Software*, https://github.com/AMP-SCZ/utility, 2022, DOI: 10.5281/zenodo.7849718
 
 # utility
 
