@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "Please cite this repository in AMP® SCZ papers as:"
+authors:
+- family-names: "Billah"
+  given-names: "Tashrif"
+- family-names: "Kang-IK"
+  given-names: "Cho"
+- family-names: "Nicholas"
+  given-names: "Spero"
+- family-names: "Ennis"
+  given-names: "Michaela"
+- family-names: "Eichi"
+  given-names: "Habiballah Rahimi"
+- family-names: "Baker"
+  given-names: "Justin T"
+- family-names: "Bouix"
+  given-names: "Sylvain"
+title: "Accelerating Medicines Partnership® Schizophrenia (AMP® SCZ) Data Processing and Submission Software"
+version: 0.0
+doi: 10.5281/zenodo.7849718
+date-released: 2022-01-22
+url: "https://github.com/AMP-SCZ/utility"
