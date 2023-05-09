@@ -275,10 +275,23 @@ def get_cnb_status():
     
 
     # populate Data Transferred row
-    data=1
-    if not isfile(s.replace(f'.{network}.json','.UPENN.json')):
-        data=-days_since_scan
+    # load .UPENN.json
+    # check if interview_date exists twice among all session_date
+    data=-days_since_scan
+    upenn=s.replace(f'.{network}.json','.UPENN.json')
+    if isfile(upenn):
+        with open(upenn) as f:
+            dict1=json.load(f)
 
+        count=0
+        for d in dict1:
+            if d['session_date']==interview_date:
+                count+=1
+        
+        # some subjects have just one session, so relaxing the condition
+        # if count==2:
+        if count>=1:
+            data=1
 
     # populate Protocol Followed row
     protocol=1
