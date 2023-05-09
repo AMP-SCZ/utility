@@ -276,7 +276,7 @@ def get_cnb_status():
 
     # populate Data Transferred row
     data=1
-    if not isfile(s.replace('.Pronet.json','.UPENN.json')):
+    if not isfile(s.replace(f'.{network}.json','.UPENN.json')):
         data=-days_since_scan
 
 
