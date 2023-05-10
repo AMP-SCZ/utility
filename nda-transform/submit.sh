@@ -80,6 +80,7 @@ do
             python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
             -u $user \
             --replace-submission $id \
+            -f \
             -b $data
         fi
 
