@@ -43,7 +43,8 @@ then
 fi
 
 
-collection=PROD-AMPSCZ
+# collection=PROD-AMPSCZ
+collection=3705
 root=/data/predict1
 datestamp=$(date +"%Y%m%d")
 
@@ -72,13 +73,12 @@ do
         then
             python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
             -u $user -t $title -d $title \
-            -a $collection \
+            -c $collection \
             -b $data
         else
             # -t and -d are disallowed with --replace-submission
             python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
             -u $user \
-            -a $collection \
             --replace-submission $id \
             -b $data
         fi
