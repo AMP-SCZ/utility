@@ -285,7 +285,7 @@ def get_cnb_status():
 
         count=0
         for d in dict1:
-            if d['session_date']==interview_date:
+            if abs(str_date_minus_str_date(d['session_date'],interview_date))<=30:
                 count+=1
         
         # some subjects have just one session, so relaxing the condition
