@@ -16,5 +16,4 @@ done
 
 rsync -avR --files-from=$list . rc-predict-gen.partners.org:$2
 
-popd
 
