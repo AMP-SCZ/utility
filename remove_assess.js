@@ -21,7 +21,14 @@ if (assess[0].length==1) {
         let num= colls.length();
 
         for (let i=0; i<num; i++) {
+            try {
                 print(db[ colls[i].collection ].remove({}));
+            }
+            catch (err) {
+                print('Could not successfully remove', colls[i].subject, colls[i].assessment);
+                print('Retrying ...')
+                print(db[ colls[i].collection ].remove({}));
+            }
         }
 
         // delete parent collection
