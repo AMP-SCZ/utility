@@ -43,12 +43,19 @@ then
 fi
 
 
-collection=PROD-AMPSCZ
+# collection=PROD-AMPSCZ
+collection=3705
 root=/data/predict1
 datestamp=$(date +"%Y%m%d")
 
 
-for data in `ls $root/to_nda/nda-submissions/${form}*${network}*${event}.csv`
+# look for existing submission ID
+idline=`grep "$form,$event," $root/utility/nda-transform/submission_ids.csv`
+IFS=, read -ra idarray <<< "$idline"
+id=${idarray[2]}
+echo $id
+
+for data in `ls $root/to_nda/nda-submissions/network_combined/${form}*${network}*${event}.csv`
 do
     echo Processing $data
 
@@ -61,16 +68,28 @@ do
     else
         # validate and submit
         title=`basename ${data/.csv/}`
-        python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
-        -u $user -t $title -d $title \
-        -a $collection \
-        -b $data
+
+        if [ -z $id ]
+        then
+            python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+            -u $user -t $title -d $title \
+            -c $collection \
+            -b $data
+        else
+            # -t and -d are disallowed with --replace-submission
+            python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+            -u $user \
+            --replace-submission $id \
+            -f \
+            -b $data
+        fi
+
         
     fi
 
     echo ''
     # the wait maybe useful
-    sleep 30
+    sleep 15
 done
 
 
