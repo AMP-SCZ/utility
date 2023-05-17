@@ -279,6 +279,10 @@ for _,visit in data.iterrows():
             data_form['chrdemo_age_mos_hc'] = visit['interview_age']
 
 
+    if form=='inclusionexclusion_criteria_review':
+        if pd.isna(visit['chrcrit_part']):
+            data_form['chrcrit_part']=chr_hc
+
     completion= f'{form}_complete'
     # bypass empty forms
     # essential for showing blank circles in REDCap record status dashboard
