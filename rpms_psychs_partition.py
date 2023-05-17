@@ -40,7 +40,7 @@ for file in files:
     dfchr.set_index('subjectkey',inplace=True)
     dfhc.set_index('subjectkey',inplace=True)
 
-    dfincl=pd.read_csv(glob('PrescientStudy_Prescient_inclusionexclusion_criteria_review_*.csv')[0])
+    dfincl=pd.read_csv(glob('PrescientStudy_Prescient_informed_consent_run_sheet_*.csv')[0])
 
     for i,row in dfincl.iterrows():
         
@@ -55,16 +55,22 @@ for file in files:
             continue
         
         print(row['subjectkey'])
+        
+        if row['version']!='YP':
+            continue
 
-        if row['chrcrit_part']==1:
+        chr_hc= row['group']
+
+        if chr_hc=='UHR':
             # CHR
             dfchr=pd.concat([dfchr,subject_row])
-        elif row['chrcrit_part']==2:
+        elif chr_hc=='HealthyControl':
             # HC
             subject_row.columns=dfhc.columns
             dfhc=pd.concat([dfhc,subject_row])
         else:
             # irrelevant
+            print(f'CHR/HC status could not be determined')
             continue
 
     print('')
