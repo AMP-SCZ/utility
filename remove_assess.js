@@ -18,10 +18,14 @@ assess.forEach(s => {
     let num= colls.length();
 
     for (let i=0; i<num; i++) {
-        db[ colls[i].collection ].deleteMany({});
+        db[ colls[i].collection ].drop();
+        db.adminCommand({ flushRouterConfig: colls[i].collection })
     }
+
 
     // delete parent collection
     db.toc.deleteMany({"assessment":s});
+
 })
+
 
