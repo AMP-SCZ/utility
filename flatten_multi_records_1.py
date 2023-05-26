@@ -156,13 +156,6 @@ def flatten_many_new():
             # vertically concatenate flat lists across split files
             dict1.update(_dict1)
 
-
-        # remove duplicate columns
-        # chrblood_serumfrztime column does not have ? in it
-        # so it can duplicated for Row# 2,3,4, ...
-        #for c in list(dict1.keys()):
-        #    if c in df1.columns:
-        #        del dict1[c]
         
         # vertically concatenate default columns and flat list
         df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
