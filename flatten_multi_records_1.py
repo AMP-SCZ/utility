@@ -5,6 +5,11 @@ import sys
 import re
 from os.path import isfile
 
+# useful settings for debugging
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+pd.set_option("display.max_colwidth", None)
+
 
 multi_records= {'adverse_events': {'visit': 99, 'vars': ['chrae_aescreen', 'chrae_?', 'chrae_tp?', 'chrae_diag?', 'chrae_ae?', 'chrae_aes?date', 'chrae_aes?off', 'chr_ae?date', 'chrae_sig?', 'chrae_dr?', 'chrae_d?', 'chrae_e?', 'chrae_expected?', 'chrae_sae?', 'chrae_ssi?', 'chr_ae?date_dr', 'chrae_sig?_dr', 'chrae_ae?_trans_q', 'chrae_ae?_mo1', 'chrae_ae?_mo2', 'chrae_ae?_mo3', 'chrae_ae?_mo4', 'chrae_ae?_mo5', 'chrae_ae?_mo6', 'chrae_ae?_mo7', 'chrae_ae?_mo8', 'chrae_ae?_mo9', 'chrae_ae?_mo10', 'chrae_ae?_mo11', 'chrae_ae?_mo12', 'chrae_ae?_mo18', 'chrae_ae?_mo24', 'chrae_ae?_trans', 'chrae_ae?_offmes', 'chrae_ae?_comments','chrae_add?']},
 
@@ -50,7 +55,15 @@ def flatten_group(df,form,cols):
             
         # go through the rows of that variable and generate a flat list
         for i,row in df.iterrows():
-            dict1[v.replace('?',str(row['Row#']))]= row[c]
+            if '?' in v:
+                dict1[v.replace('?',str(row['Row#']))]= row[c]
+
+            elif i==0:
+                # some variables like
+                # chrblood_bcfrztime, chrblood_plfrztime, chrblood_wbfrztime, chrblood_serumfrztime
+                # have valid values only in the first row
+                dict1[v]= row[c]
+
             
 
     # for n repeats, there are n-1 *_add vars, so delete the nth *_add var
@@ -116,13 +129,14 @@ def flatten_many_new():
         if c=='visit':
             break
 
-    df1= pd.DataFrame(columns=dfunique.columns)
     dfall= pd.DataFrame()
     for i,row in dfunique.iterrows():
         
         timepoint=row['visit']
 
+        df1= pd.DataFrame(columns=dfunique.columns)
         df1.loc[0]= row
+
         dict1={}
         for filename in sys.argv[2:]:
 
@@ -146,9 +160,9 @@ def flatten_many_new():
         # remove duplicate columns
         # chrblood_serumfrztime column does not have ? in it
         # so it can duplicated for Row# 2,3,4, ...
-        for c in list(dict1.keys()):
-            if c in df1.columns:
-                del dict1[c]
+        #for c in list(dict1.keys()):
+        #    if c in df1.columns:
+        #        del dict1[c]
         
         # vertically concatenate default columns and flat list
         df1= pd.concat([df1,pd.DataFrame([dict1])], axis=1)
