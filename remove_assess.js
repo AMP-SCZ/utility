@@ -9,29 +9,23 @@ if (assess[0].length==1) {
     assess=[ ... new Set(_assess)]
 }
 
-['toc'].forEach(g=> {
-    print('Removing',g)
+assess.forEach(s => {
 
-    assess.forEach(s => {
+    print(s);
 
-        print(s);
+    // delete children collections
+    let colls= db.toc.find({"assessment":s});
+    let num= colls.length();
 
-        // delete children collections
-        let colls= db[g].find({"assessment":s});
-        let num= colls.length();
+    for (let i=0; i<num; i++) {
+        db[ colls[i].collection ].drop();
+        db.adminCommand({ flushRouterConfig: colls[i].collection })
+    }
 
-        for (let i=0; i<num; i++) {
-            try {
-                print(db[ colls[i].collection ].remove({}));
-            }
-            catch (err) {
-                print('Could not successfully remove', colls[i].subject, colls[i].assessment);
-                print('Retrying ...')
-                print(db[ colls[i].collection ].remove({}));
-            }
-        }
 
-        // delete parent collection
-        print(db[g].remove({"assessment":s}));
-    })
+    // delete parent collection
+    db.toc.deleteMany({"assessment":s});
+
 })
+
+
