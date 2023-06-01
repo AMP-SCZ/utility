@@ -28,4 +28,5 @@ assess.forEach(s => {
 
 })
 
+db.adminCommand({ flushRouterConfig: 'toc' })
 
