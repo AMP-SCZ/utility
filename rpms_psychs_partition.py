@@ -32,7 +32,7 @@ files=[glob(p)[0] for p in [f'PrescientStudy_Prescient_psychs_p1p8_fu_{suffix}',
 for file in files:
     print(file)
 
-    dfpsychs=pd.read_csv(file)
+    dfpsychs=pd.read_csv(file,dtype=str)
     dfchr=pd.DataFrame(columns=dfpsychs.columns)
     dfhc=pd.DataFrame(columns=[c.replace('chrpsychs','hcpsychs') for c in dfpsychs.columns])
 
@@ -40,7 +40,9 @@ for file in files:
     dfchr.set_index('subjectkey',inplace=True)
     dfhc.set_index('subjectkey',inplace=True)
 
-    dfincl=pd.read_csv(glob('PrescientStudy_Prescient_informed_consent_run_sheet_*.csv')[0])
+    dfincl=pd.read_csv(glob('PrescientStudy_Prescient_inclusionexclusion_criteria_review_*.csv')[0])
+    dfconsent=pd.read_csv(glob('PrescientStudy_Prescient_informed_consent_run_sheet_*.csv')[0])
+    dfconsent.set_index('subjectkey',inplace=True)
 
     for i,row in dfincl.iterrows():
         
@@ -55,11 +57,30 @@ for file in files:
             continue
         
         print(row['subjectkey'])
-        
-        if row['version']!='YP':
-            continue
 
-        chr_hc= row['group']
+        try:
+            chr_hc= int(row['chrcrit_part'])
+            if chr_hc==1:
+                chr_hc='UHR'
+            elif chr_hc==2:
+                chr_hc='HealthyControl'
+
+        except ValueError:
+            # chrcrit_part is empty for this subject
+            print('attempt to infer chrcrit_part from group column in informed_consent_run_sheet')
+
+            # extract Young Patient's rows only, we do not need Guardian's rows
+            # to account for re-consent scenario, consider only the last row
+            try:
+                group1= dfconsent.loc[row['subjectkey']]
+            except KeyError:
+                print('\tdoes not seem to have been consented\n')
+                continue
+
+            group2= group1[group1['version']!='YP'].iloc[-1]
+
+            chr_hc= group2['group']
+
 
         if chr_hc=='UHR':
             # CHR
@@ -75,7 +96,6 @@ for file in files:
 
     print('')
         
-    # TBD dtype conversion
 
     outfile=file
     dfchr=dfchr.reset_index()
