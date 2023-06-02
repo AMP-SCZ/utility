@@ -288,9 +288,8 @@ def get_cnb_status():
             if abs(str_date_minus_str_date(d['session_date'],interview_date))<=30:
                 count+=1
         
-        # some subjects have just one session, so relaxing the condition
-        # if count==2:
-        if count>=1:
+        # NOTE some subjects may have just one session
+        if count==2:
             data=1
 
     # populate Protocol Followed row
