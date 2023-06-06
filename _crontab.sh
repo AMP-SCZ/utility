@@ -6,11 +6,9 @@
 # === hna002 ===
 
 # generate lochness datalake's files status at 6 am and 9pm for dpdash
-00 6,21 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda/ rc-predict
 30 6,21 * * * * /data/predict/utility/generate_files_status.sh /data/predict/data_from_nda_dev/ dpstage
 
 # import AVL QC data, daily at 10 pm
-30 22 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda/ rc-predict
 45 22 * * * /data/predict/utility/dpimport_avlqc.sh /data/predict/data_from_nda_dev/ dpstage
 
 # generate difference between AMP-SCZ and network data dictionaries
@@ -121,8 +119,10 @@ MAILTO=xyz@bwh.harvard.edu
 
 # all dpimport are run by tb571 in dn020
 # TODO run by sf284
-0 20 * * * /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict
+# import all data to production DPdash in succession
+0 19 * * * /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict
+0 20 * * * /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
 0 00 * * * /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict
 0 02 * * * /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
 0 03 * * * /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
-
+0 06 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/ rc-predict
