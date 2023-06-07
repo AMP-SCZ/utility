@@ -45,7 +45,7 @@ then
 
 elif [ $form != "ndar_subject01" ]
 then
-    if [ -z $network ] || [ -z $event ] || [ -z $prefix ]
+    if [ -z $network ]
     then
         _help
     fi
@@ -65,11 +65,25 @@ cd /data/predict1/to_nda/
 if [ $form == "ndar_subject01" ]
 then
 
-cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}.csv"
+    cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}.csv"
+
+elif [ -z $event ]
+then
+
+    if [ -z $prefix ]
+    then
+    
+        cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}.csv --shared nda-submissions/ndar_subject01_${network}.csv $optional"
+
+    else
+
+        cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}.csv --shared nda-submissions/ndar_subject01_${network}.csv -p $prefix $optional"
+
+    fi
 
 else
 
-cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix $optional"
+    cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix $optional"
 
 fi
 
