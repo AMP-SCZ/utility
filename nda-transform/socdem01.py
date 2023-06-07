@@ -8,7 +8,8 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename, abspath
+import re
 
 
 # this function should have knowledge of dict1
@@ -55,6 +56,11 @@ def populate():
         arm=2
 
 
+    interview_date=get_value('chrdemo_interview_date',f'baseline_arm_{arm}')
+    if interview_date in ['','-3','-9']:
+        # no data in this form
+        return
+
     # get shared variables
     df.at[row,'src_subject_id']=src_subject_id
     for v in ['subjectkey','interview_age','sex']:
@@ -62,7 +68,6 @@ def populate():
 
 
     # get form specific variables
-    interview_date=get_value('chrdemo_interview_date',f'baseline_arm_{arm}')
     df.at[row,'interview_date']=nda_date(interview_date)
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
@@ -92,6 +97,18 @@ def populate():
             df.at[row,v]=value
 
 
+    missing=get_value(f'{prefix}_missing',f'{event}_arm_{arm}')
+    if missing=='':
+        # not clicked
+        missing='0'
+    df.at[row,'ampscz_missing']=missing
+    if missing=='1':
+        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+    else:
+        df.at[row,'ampscz_missing_spec']=''
+
+
+
     # return df
 
 
@@ -106,6 +123,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-p","--prefix", required=True,
+        help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -126,27 +145,31 @@ if __name__=='__main__':
     
     
     # load NDA dictionary
-    with open(args.dict) as f:
-        title,df=f.read().split('\n',1)
+    args.dict=args.dict.replace('_template.csv','_definitions.csv')
+    title=re.search('/(.+?)01_definitions.csv',args.dict).group(1)
+    definition=pd.read_csv(args.dict)
+    definition.set_index('ElementName',inplace=True)
+    
+    prefix=args.prefix
+    event='baseline'
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
-        for c in df.split(','):
-            if 'chrdemo_' in c:
-                columns.append(c)
-        
-        # save the remaining template
-        _,name=mkstemp()
-        with open(name,'w') as fw:
-            fw.write(','.join(columns))
-        
-        # load template as DataFrame
-        df=pd.read_csv(name)
-        columns=df.columns.values
-        remove(name)
-        
-        # load template definition
-        definition=pd.read_csv(args.dict.replace('_template','_definitions'))
-        definition.set_index('ElementName',inplace=True)
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    for c in definition.index:
+        if prefix in c:
+            columns.append(c.strip())
+
+    columns+=['ampscz_missing','ampscz_missing_spec']
+
+    # save the remaining template
+    _,name=mkstemp()
+    with open(name,'w') as fw:
+        fw.write(','.join(columns))
+    
+    # load template as DataFrame
+    df=pd.read_csv(name)
+    columns=df.columns.values
+    remove(name)
+    
 
     dir_bak=getcwd()
     chdir(args.root)
@@ -176,6 +199,7 @@ if __name__=='__main__':
     remove(name)
     
     with open(args.output,'w') as f:
-        f.write(title+'\n'+data)
+        f.write(title+',01'+'\n'+data)
     
+    print('Generated',abspath(args.output))
 
