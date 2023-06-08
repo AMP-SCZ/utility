@@ -23,6 +23,8 @@ oasis01,month_1,57451
 pds01,,57452
 pmod01,,57453
 scidvapd01,screening,57454
-socdem01,,57455
+socdem01,baseline,57718
 sri01,baseline,57456
 tbi01,screening,57457
+actirec01,,57716
+eeg_sub_files01,,57725
