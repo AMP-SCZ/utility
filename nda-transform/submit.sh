@@ -26,13 +26,14 @@ do not provide -u for only validation
 }
 
 
-while getopts "u:f:n:e:" i
+while getopts "u:f:n:e:c:" i
 do
     case $i in
         u) user=$OPTARG ;;
         f) form=$OPTARG ;;
         n) network=$OPTARG ;;
         e) event=$OPTARG ;;
+        c) collection=$OPTARG ;;
         ?) _help ;;
     esac
 done
@@ -44,7 +45,12 @@ fi
 
 
 # collection=PROD-AMPSCZ
-collection=3705
+if [ -z $collection ]
+then
+    collection=3705
+fi
+# Personal Tracking Device data are collected at 4366
+
 root=/data/predict1
 datestamp=$(date +"%Y%m%d")
 
