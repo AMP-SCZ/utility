@@ -59,7 +59,7 @@ def populate():
         arm=2
 
     try:
-        interview_date=data.loc[src_subject_id,'start_date']
+        interview_date=data.loc[src_subject_id,interview_date_var]
     except KeyError:
         # no data for this subject
         return
@@ -102,6 +102,8 @@ if __name__=='__main__':
         help="/path/to/submission_ready.csv")
     parser.add_argument("--data", required=True,
         help="/path/to/data01*.csv containing non-survey data e.g. actirec01, image03")
+    parser.add_argument("--interview_date_var",
+        help="Provide interview date variable if it is not interview_date in --data file")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -122,9 +124,14 @@ if __name__=='__main__':
     
     columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
 
-    data=pd.read_csv(args.data,header=1)
+    data=pd.read_csv(args.data)
     df=pd.DataFrame(columns=data.columns)
     data.set_index('src_subject_id',inplace=True)
+
+    if args.interview_date_var:
+        interview_date_var=args.interview_date_var
+    else:
+        interview_date_var='interview_date'
 
     dir_bak=getcwd()
     chdir(args.root)
@@ -153,7 +160,7 @@ if __name__=='__main__':
         data=f.read()
     remove(name)
     
-    title=title=re.search('/(.+?)01_template.csv',args.dict).group(1)
+    title=re.search('/(.+?)01_template.csv',args.dict).group(1)
     version='01'
     with open(args.output,'w') as f:
         f.write(title+',01''\n'+data)
