@@ -138,7 +138,7 @@ if __name__=='__main__':
     
     columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
 
-    data=pd.read_csv(args.data)
+    data=pd.read_csv(args.data,dtype=str)
     df=pd.DataFrame(columns=data.columns)
     data.set_index('src_subject_id',inplace=True)
 
