@@ -79,8 +79,8 @@ def populate():
     # extract the src_subject_id group
     group=data.loc[src_subject_id]
     
-    # subjectkey=dfshared.loc[src_subject_id,'subjectkey']
-    # sex=dfshared.loc[src_subject_id,'sex']
+    subjectkey=dfshared.loc[src_subject_id,'subjectkey']
+    sex=dfshared.loc[src_subject_id,'sex']
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
 
     # populate one row in df for each row in group
@@ -91,11 +91,12 @@ def populate():
     group.reset_index(inplace=True)
     for i,r in group.iterrows():
 
-        # currently, only updating the age
-        # Kevin Cho already populated the other required columns. Let's trust his work.
         interview_date=r['interview_date']
         months=months_since_consent(interview_date,chric_consent_date)
         r['interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
+        r['subjectkey']=subjectkey
+        r['sex']=sex
+
         df.loc[current_index+i]=r
 
 
