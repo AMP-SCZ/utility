@@ -77,7 +77,6 @@ def populate():
 
 
     # extract the src_subject_id group
-    # group=groups.get_group(src_subject_id)
     group=data.loc[src_subject_id]
     
     # subjectkey=dfshared.loc[src_subject_id,'subjectkey']
@@ -141,7 +140,6 @@ if __name__=='__main__':
     data=pd.read_csv(args.data)
     df=pd.DataFrame(columns=data.columns)
     data.set_index('src_subject_id',inplace=True)
-    # groups=data.groupby('src_subject_id')
 
     if args.interview_date_var:
         interview_date_var=args.interview_date_var
