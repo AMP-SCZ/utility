@@ -127,7 +127,15 @@ def populate():
         missing='0'
     df.at[row,'ampscz_missing']=missing
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+        value=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+        
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
     else:
         df.at[row,'ampscz_missing_spec']=''
 
@@ -159,6 +167,8 @@ def populate():
     for i,_row in dfavl.iterrows():
         if _row['day']==nearest_day:
 
+            total_words=sum(_row[t] for t in 'num_words_S1,num_words_S2,num_words_S3'.split(','))
+
             for v in avl_vars:
                 if v=='num_turns_total':
                     value=sum(_row[t] for t in 'num_turns_S1,num_turns_S2,num_turns_S3'.split(','))
@@ -177,6 +187,9 @@ def populate():
                         value=1
                     elif _row[v]=='psychs':
                         value=2
+
+                elif v in 'num_inaudible,num_redacted':
+                    value=_row[v]/total_words
 
                 else:
                     value=_row[v]
@@ -291,6 +304,8 @@ if __name__=='__main__':
         data=f.read()
     remove(name)
     
+    
+    args.output=args.output.replace('.csv',f'_{interview_type}.csv')
     with open(args.output,'w') as f:
         f.write(title+',01'+'\n'+data)
     
