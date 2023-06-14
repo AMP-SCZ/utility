@@ -189,7 +189,7 @@ def populate():
                         value=2
 
                 elif v in 'num_inaudible,num_redacted':
-                    value=_row[v]/total_words
+                    value=round(_row[v]/total_words*100,3)
 
                 else:
                     value=_row[v]
