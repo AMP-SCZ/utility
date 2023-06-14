@@ -61,7 +61,10 @@ IFS=, read -ra idarray <<< "$idline"
 id=${idarray[2]}
 echo $id
 
-for data in `ls $root/to_nda/nda-submissions/network_combined/${form}*${network}*${event}.csv`
+pushd .
+cd $root/to_nda/nda-submissions/network_combined/
+
+for data in `ls ${form}*${network}*${event}.csv`
 do
     echo Processing $data
 
@@ -98,4 +101,5 @@ do
     sleep 15
 done
 
+popd
 
