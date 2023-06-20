@@ -171,8 +171,13 @@ PrescientStudy_Prescient_missing_data_:
 
 PrescientStudy_Prescient_pubertal_developmental_scale_:
 - chrpds_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
-- chrpds_pds_f4_p,-99,999
-- chrpds_pds_f5b_p,-99,999
+- chrpds_pds_1_p,0,999
+- chrpds_pds_2_p,0,999
+- chrpds_pds_3_p,0,999
+- chrpds_pds_m4_p,0,999
+- chrpds_pds_m5_p,0,999
+- chrpds_pds_f4_p,0,999
+- chrpds_pds_f5b_p,0,999
 
 PrescientStudy_Prescient_family_interview_for_genetic_studies_figs_:
 - chrfigs_mother_m01,0 2,2 NA
