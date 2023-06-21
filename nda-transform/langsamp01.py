@@ -143,15 +143,17 @@ def populate():
     # Example paths:
     # PronetOR/processed/OR10684/interviews/open/OR10684_open_combinedQCRecords.csv
     # PrescientSG/processed/SG99731/interviews/psychs/SG99731_psychs_combinedQCRecords.csv
-    avl_file=pjoin(file.split('surveys')[0], 'interviews', interview_type,
-        f'{src_subject_id}_{interview_type}_combinedQCRecords.csv')
 
-    if not isfile(avl_file):
+    _root=pjoin(file.split('surveys')[0], 'interviews', interview_type)
+    features_file=pjoin(_root, f'{src_subject_id}_{interview_type}_combinedQCRecords.csv')
+
+    if not isfile(features_file):
         return
-    
-    print('processing',avl_file)
 
-    dfavl=pd.read_csv(avl_file)
+    
+    print('processing',features_file)
+
+    dfavl=pd.read_csv(features_file)
 
     _days_since_consent=days_since_consent(interview_date,chric_consent_date)
 
@@ -162,6 +164,21 @@ def populate():
         if diff<min_diff:
             min_diff=diff
             nearest_day=d
+
+    
+    # Example paths:
+    # PronetYA/processed/YA16945/interviews/open/transcripts/PronetYA_YA16945_interviewAudioTranscript_open_day0019_session001_REDACTED.txt
+    # PrescientME/processed/ME98165/interviews/open/transcripts/ME98165_interviewAudioTranscript_open_day0150_session002_REDACTED.txt
+    transcript_=pjoin(_root,
+        f'transcripts/*_{src_subject_id}_interviewAudioTranscript_open_day{nearest_day:04}_session*_REDACTED.txt')
+    transcript_file=glob(transcript_)
+
+    # sanity check
+    if len(transcript_file)!=1:
+        print(transcript_, 'could not be found')
+
+    else:
+        df.at[row,'transcript_file']=transcript_file[0]
 
 
     for i,_row in dfavl.iterrows():
@@ -202,7 +219,7 @@ def populate():
             
             break
             
-
+    
     # return df
 
 
@@ -264,7 +281,7 @@ if __name__=='__main__':
     # audio/video/transcript vars
     avl_vars='interview_type,interview_number,length_minutes,final_timestamp_minutes,overall_db,num_redacted,num_inaudible,num_subjects,num_words_s1,num_words_s2,num_words_s3,num_turns_total'.split(',')
 
-    columns=columns+run_sheet_vars+avl_vars+['ampscz_missing','ampscz_missing_spec']
+    columns=columns+run_sheet_vars+avl_vars+['transcript_file','ampscz_missing','ampscz_missing_spec']
     
     # save the remaining template
     _,name=mkstemp()
