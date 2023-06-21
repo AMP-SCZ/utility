@@ -9,6 +9,7 @@ _help()
 ./submit.sh -u tashrif -f ndar_subject01 -n Prescient
 ./submit.sh -u tashrif -f ndar_subject01
 ./submit.sh -f ndar_subject01
+./submit.sh -f langsamp01 -e baseline -s open
 
 Mandatory:
 -f : NDA dict name 
@@ -17,8 +18,9 @@ Optional:
 -u : submitter's NDA username
 -n : network
 -e : event
+-s : suffix
 
-nda-submission directory is globed for \${f}_\${n}_\${e}.csv to find files to submit
+nda-submission directory is globed for \${f}_\${n}_\${e}_\${s}.csv to find files to submit
 do not provide -u for only validation
 """
 
@@ -26,7 +28,7 @@ do not provide -u for only validation
 }
 
 
-while getopts "u:f:n:e:c:" i
+while getopts "u:f:n:e:c:s:" i
 do
     case $i in
         u) user=$OPTARG ;;
@@ -34,6 +36,7 @@ do
         n) network=$OPTARG ;;
         e) event=$OPTARG ;;
         c) collection=$OPTARG ;;
+        s) suffix=$OPTARG ;;
         ?) _help ;;
     esac
 done
@@ -64,7 +67,7 @@ echo $id
 pushd .
 cd $root/to_nda/nda-submissions/network_combined/
 
-for data in `ls ${form}*${network}*${event}.csv`
+for data in `ls ${form}*${network}*${event}*${suffix}.csv`
 do
     echo Processing $data
 
