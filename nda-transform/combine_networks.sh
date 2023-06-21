@@ -20,7 +20,7 @@ Optional:
 -e : event
 -s : suffix
 
-nda-submission directory is globed for \${f}_\${n}_\${e}.csv to find files to submit
+nda-submission directory is globed for \${f}_\${n}_\${e}_\${s}.csv to find files to submit
 do not provide -u for only validation
 """
 
