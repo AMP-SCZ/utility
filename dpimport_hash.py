@@ -56,17 +56,20 @@ for i,file in enumerate(iglob(sys.argv[1])):
 
     hash=md5(content).hexdigest()
     
-    # key=basename(file).split('-day')[0]
-    key=basename(file).split('.csv')[0]
+    key=basename(file)
     if key in hash_record:
         if hash_record[key][0]!=hash:
             hash_record[key][0]=hash
             hash_record[key][1]=True
+
+            
     
     else:
         hash_record[key]=[hash,False]
 
     print(i,key,hash_record[key])
+
+f.close()
 
 print('hash calculation complete')
 
