@@ -13,6 +13,11 @@ for i,row in df.iterrows():
 
     if pd.isna(aliases):
         continue
+    
+    if row['ElementName'] in 'interview_date,ampscz_missing,ampscz_missing_spec,ampscz_entry_date':
+        # we are submitting the above variables by the above names
+        # so need to replace them by prefixed aliases
+        continue
 
     for v in aliases.split(','):
         if f'{sys.argv[2]}_' in v:
