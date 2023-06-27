@@ -84,7 +84,13 @@ def populate():
 
     for v in psychs_columns:
         if prefix in v:
-            value=get_value(v,f'{event}_arm_{arm}')
+
+            if arm==1:
+                v1=v
+            else:
+                v1=v.replace('chrpsychs_','hcpsychs_')
+
+            value=get_value(v1,f'{event}_arm_{arm}')
             
             vrange=definition.loc[v,'ValueRange']
             if not pd.isna(vrange):
