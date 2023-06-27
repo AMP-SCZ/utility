@@ -23,7 +23,7 @@ _users.forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME', 'AD', '
 ["Combined - Forms - Baseline (v.5)",'grace_jacobs'],
 ["Combined - Forms - Month 1 (v.2)",'grace_jacobs'],
 ["Combined - Forms - Screening (v.5)",'grace_jacobs']
-].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": _users.map(u=>u.uid)}}));
+].forEach(n=> db.configs.update({"name":n[0],'owner':n[1]},{"$set":{"readers": db.users.find().map(u=>u.uid)}}));
 
 
 // 3.    set default config
