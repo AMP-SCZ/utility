@@ -162,7 +162,10 @@ def populate():
     
     for v in psychs_columns:
         if prefix not in v:
-            df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+            value=df1.loc[v,f'{event}_arm_{arm}']['value']
+            if v.endswith('_date'):
+                value=nda_date(value[:10])
+            df.at[row,v]=value
             
     
     # return df
@@ -214,7 +217,10 @@ if __name__=='__main__':
     columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
     psychs_columns=[]
     for c in definition.index:
-        if not (c in columns or c.startswith('ampscz_')):
+        if c in columns or c.startswith('ampscz_'):
+            continue
+
+        elif prefix in c:
             psychs_columns.append(c)
     
     columns=columns+psychs_columns+['ampscz_missing','ampscz_missing_spec']
