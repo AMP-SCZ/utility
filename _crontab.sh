@@ -21,6 +21,9 @@
 # clear REDCap upload logs, every monday at 12 am
 0 0 * * 1 rm -f /data/predict/utility/bsub/*
 
+# clear NDA upload logs every Monday at 12 am
+0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
+
 # import records to REDCap, once a week
 # used to be 0 */3, 15 */3, 30 */3, 45 */3 (every three hours)
 # changed to only once a week to unburden the compute nodes
@@ -29,7 +32,6 @@
 
 # ProNET mock
 0 0 * * 2 /data/predict/utility/_records_to_redcap.sh /data/predict/data_from_nda_dev/Pronet/PHOENIX/PROTECTED /data/predict/utility/redcap-ii-yale 123456
-
 
 
 # === dn001 ===
