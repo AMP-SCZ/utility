@@ -162,10 +162,7 @@ def populate():
     
     for v in psychs_columns:
         if prefix not in v:
-            value=df1.loc[v,f'{event}_arm_{arm}']['value']
-            if v.endswith('_date'):
-                value=nda_date(value[:10])
-            df.at[row,v]=value
+            df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
             
     
     # return df
@@ -220,9 +217,13 @@ if __name__=='__main__':
         if c in columns or c.startswith('ampscz_'):
             continue
 
-        elif prefix in c:
+        elif 'chr' in c:
+            if c.startswith(prefix):
+                psychs_columns.append(c)
+
+        elif 'chr' not in c:
             psychs_columns.append(c)
-    
+
     columns=columns+psychs_columns+['ampscz_missing','ampscz_missing_spec']
 
     # save the remaining template
