@@ -125,7 +125,15 @@ def populate():
         missing='0'
     df.at[row,'ampscz_missing']=missing
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+        value=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+    
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
     else:
         df.at[row,'ampscz_missing_spec']=''
 
