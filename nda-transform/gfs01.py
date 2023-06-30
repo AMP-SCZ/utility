@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename,abspath
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -76,8 +76,8 @@ def populate():
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
-    for v in columns:
-        if 'chrgfr' in v:
+    for v in gfs_columns:
+        if not v.startswith(prefix+'_global_'):
             value=get_value(v,f'{event}_arm_{arm}')
             
             vrange=definition.loc[v,'ValueRange']
@@ -119,6 +119,31 @@ def populate():
         df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
     else:
         df.at[row,'ampscz_missing_spec']=''
+
+
+    # Example paths:
+    # PronetOR/processed/OR10684/surveys/psychs.csv
+    # PrescientSG/processed/SG99731/surveys/psychs.csv
+
+    if prefix=='chrgfrs':
+        _file='global_functional_role_scale.csv'
+    elif prefix=='chrgfss':
+        _file='global_functional_social_scale.csv'
+    else:
+        return
+
+    features_file=pjoin(dirname(file),_file)
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+    
+    for v in gfs_columns:
+        if v.startswith(prefix+'_global_'):
+            df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
     # return df
 
@@ -170,8 +195,10 @@ if __name__=='__main__':
             'chrgfrsfu':'chrgfrfu_gf_primaryrole,chrgfrfu_gf_role_scole',
             'chrgfss':'chrgfs_gf_social_scale,chrgfs_gf_social_high,chrgfs_gf_social_low,chrgfs_overallsat,chrgfss_global_social_decline',
             'chrgfssfu':'chrgfsfu_gf_social_scale,chrgfsfu_overallsat'}
+        
+        gfs_columns=form_columns[prefix].split(',')
 
-        columns=columns+form_columns[prefix].split(',')+['ampscz_missing','ampscz_missing_spec']
+        columns=columns+gfs_columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()
