@@ -164,9 +164,14 @@ if __name__=='__main__':
         prefix=args.prefix
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
-            'chrgfr_gf_primaryrole','chrgfr_gf_role_high','chrgfr_gf_role_low','chrgfr_gf_role_scole',
-            'ampscz_missing','ampscz_missing_spec']
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+
+        form_columns={'chrgfrs':'chrgfr_gf_primaryrole,chrgfr_gf_role_high,chrgfr_gf_role_low,chrgfr_gf_role_scole,chrgfrs_global_role_decline',
+            'chrgfrsfu':'chrgfrfu_gf_primaryrole,chrgfrfu_gf_role_scole',
+            'chrgfss':'chrgfs_gf_social_scale,chrgfs_gf_social_high,chrgfs_gf_social_low,chrgfs_overallsat,chrgfss_global_social_decline',
+            'chrgfssfu':'chrgfsfu_gf_social_scale,chrgfsfu_overallsat'}
+
+        columns=columns+form_columns[prefix].split(',')+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()
@@ -209,6 +214,7 @@ if __name__=='__main__':
         data=f.read()
     remove(name)
     
+    args.output=args.output.replace('.csv',f'_{prefix}.csv')
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
