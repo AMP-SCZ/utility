@@ -59,7 +59,14 @@ datestamp=$(date +"%Y%m%d")
 
 
 # look for existing submission ID
-idline=`grep "$form,$event," $root/utility/nda-transform/submission_ids.csv`
+if [ -z $suffix ]
+then
+    event1=$event
+else
+    event1=${event}_${suffix}
+fi
+
+idline=`grep "$form,$event1," $root/utility/nda-transform/submission_ids.csv`
 IFS=, read -ra idarray <<< "$idline"
 id=${idarray[2]}
 echo $id
