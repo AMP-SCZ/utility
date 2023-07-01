@@ -16,7 +16,8 @@ clgry01,month_1,57444
 cssrs01,baseline,57445
 dsm_iv_es01,baseline,57446
 dsm_iv_es01,screening,57447
-gfs01,baseline,57448
+gfs01,baseline_chrgfrs,57448
+gfs01,baseline_chrgfss,58231
 iec01,,57449
 oasis01,baseline,57450
 oasis01,month_1,57451
@@ -29,7 +30,9 @@ tbi01,screening,57457
 actirec01,,57716
 eeg_sub_files01,,57725
 image03,baseline,57776
-langsamp01,baseline,57864
+langsamp01,baseline_open,57864
+langsamp01,baseline_screening,57865
+langsamp01,baseline_psychs,57868
 ampscz_iqa01,baseline,57897
 wais_iv_part101,baseline,57898
 wasi201,baseline,57910
