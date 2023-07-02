@@ -126,9 +126,9 @@ def populate():
     # PrescientSG/processed/SG99731/surveys/psychs.csv
 
     if prefix=='chrgfrs':
-        _file='global_functional_role_scale.csv'
+        _file='global_functioning_role_scale.csv'
     elif prefix=='chrgfss':
-        _file='global_functional_social_scale.csv'
+        _file='global_functioning_social_scale.csv'
     else:
         return
 
