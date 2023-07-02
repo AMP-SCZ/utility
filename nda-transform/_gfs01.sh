@@ -8,7 +8,7 @@ fi
 
 event=$1
 
-if $event=='baseline'
+if [ $event == baseline ]
 then
     prefixes="chrgfss chrgfrs"
 else
