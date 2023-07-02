@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import isfile,basename,dirname,abspath,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -109,6 +109,18 @@ def populate():
 
     # return df
 
+    features_file=pjoin(dirname(file),'cdss.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+    v='chrcdss_total'
+    df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
+
 
 if __name__=='__main__':
 
@@ -123,6 +135,8 @@ if __name__=='__main__':
         help="/path/to/submission_ready.csv")
     parser.add_argument("-e","--event", required=True,
         help="Event name: screening, baseline, month_1, etc.")
+    parser.add_argument("-p","--prefix", required=True,
+        help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -146,7 +160,7 @@ if __name__=='__main__':
     with open(args.dict) as f:
         title,df=f.read().split('\n',1)
 
-        prefix='chrcdss'
+        prefix=args.prefix
         event=args.event
 
         columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
@@ -198,5 +212,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     
