@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -56,7 +56,8 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if len(interview_date)<10 or interview_date=='1903-03-03' \
+        or interview_date=='1909-09-09':
         # either no data in this form or the subject has not reached the event yet
         return
 
@@ -77,28 +78,61 @@ def populate():
         if prefix in v:
             value=get_value(v,f'{event}_arm_{arm}')
 
+            vrange=definition.loc[v,'ValueRange']
+            if not pd.isna(vrange):
+                if '-300' in vrange or '-900' in vrange \
+                    or '77' in vrange:
+                    # NDA missing: -900
+                    # NDA N/A: -300
+                    if value=='-3':
+                        value='-300'
+                    elif value=='-9':
+                        value='-900'
+
             if definition.loc[v,'DataType']=='Integer':
-                if value=='':
-                    # NDA missing: -300
-                    # NDA N/A: -900
-                    value='-300'
-                elif value in ['-3','-9']:
-                    value+='00'
-                elif '.' in value:
-                    value=value.split('.')[-1]
+                try:
+                    value=int(value)
+                except ValueError:
+                    value=''
 
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
+    
+                size=definition.loc[v,'Size']
+                if size:
+                    value=value[:int(size)]
+
+            elif definition.loc[v,'DataType']=='Date':
+                value=nda_date(value)
+
+            elif definition.loc[v,'DataType']=='Float':
+                try:
+                    value=round(float(value),3)
+                except ValueError:
+                    pass
 
             df.at[row,v]=value
 
 
     missing=get_value(f'{prefix}_missing',f'{event}_arm_{arm}')
-    if missing=='':
+    if missing!='1':
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
+    if missing=='1':
+        value=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+        
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
+    else:
+        df.at[row,'ampscz_missing_spec']=''
+    
     # if ampscz_missing=0, then ampscz_missing_spec is N/A
     # but NDA does not have a code of missing_spec=N/A
     # df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
@@ -107,6 +141,20 @@ def populate():
     df.at[row,'respond']='999'
 
     # return df
+
+
+    features_file=pjoin(dirname(file),'pubertal_developmental_scale.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+    for s in 'male female'.split():
+        v=f'chrpds_total_score_{s}_sex'
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 
 if __name__=='__main__':
@@ -197,4 +245,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
+    print('Generated',abspath(args.output))
 
