@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -76,7 +76,7 @@ def populate():
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
-    for v in columns:
+    for v in redcap_columns:
         if prefix in v:
             value=get_value(v,f'{event}_arm_{arm}')
 
@@ -108,6 +108,17 @@ def populate():
         df.at[row,'ampscz_missing_spec']=''
 
     # return df
+
+    features_file=pjoin(dirname(file),'nsipr.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+    for v in derived_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
 
 
 if __name__=='__main__':
@@ -150,12 +161,17 @@ if __name__=='__main__':
         event=args.event
 
         columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
-
+        
+        redcap_columns=[]
         for c in df.split(','):
             if prefix in c:
-                columns.append(c.strip())
-                
-        columns=columns+['ampscz_missing','ampscz_missing_spec']
+                redcap_columns.append(c.strip())
+        
+        derived_columns='chrnsipr_motivation_and_pleasure_dimension chrnsipr_diminished_expression_dimension \
+            chrnsipr_avolition_domain chrnsipr_asociality_domain chrnsipr_anhedonia_domain \
+            chrnsipr_blunted_affect_domain'.split()
+            
+        columns=columns+redcap_columns+derived_columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()
@@ -201,5 +217,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     
