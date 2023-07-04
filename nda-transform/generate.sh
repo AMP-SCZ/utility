@@ -82,9 +82,16 @@ then
     fi
 
 else
+    if [ -z $prefix ]
+    then
 
-    cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix $optional"
+        cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} $optional"
 
+    else
+
+        cmd="/data/predict1/utility/nda-transform/${form}.py --dict nda-templates/${form}_template.csv --root /data/predict1/data_from_nda/${network}/PHOENIX/GENERAL/ -t "*/processed/*/surveys/*.${network}.json" -o nda-submissions/${form}_${network}_${event}.csv --shared nda-submissions/ndar_subject01_${network}.csv -e ${event} -p $prefix $optional"
+
+    fi
 fi
 
 echo $cmd
