@@ -8,7 +8,8 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename,abspath
+from os.path import isfile,basename,dirname,abspath,join as pjoin
+import re
 
 
 # this function should have knowledge of dict1
@@ -90,6 +91,12 @@ def populate():
                     elif value=='-9':
                         value='-900'
 
+            if definition.loc[v,'DataType']=='Integer':
+                try:
+                    value=int(value)
+                except ValueError:
+                    value=''
+
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
@@ -101,7 +108,7 @@ def populate():
             elif definition.loc[v,'DataType']=='Date':
                 value=nda_date(value)
 
-            if definition.loc[v,'DataType']=='Float':
+            elif definition.loc[v,'DataType']=='Float':
                 try:
                     value=round(float(value),3)
                 except ValueError:
@@ -121,6 +128,22 @@ def populate():
         df.at[row,'ampscz_missing_spec']=''
 
     # return df
+
+
+    features_file=pjoin(dirname(file),'cssrs_baseline.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+
+    if prefix=='chrcssrsb':
+        for v in columns:
+            if v.startswith('chrcssrs_'):
+                df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 
 if __name__=='__main__':
@@ -158,29 +181,32 @@ if __name__=='__main__':
     
     
     # load NDA dictionary
-    with open(args.dict) as f:
-        title,df=f.read().split('\n',1)
+    args.dict=args.dict.replace('_template.csv','_definitions.csv')
+    title=re.search('/(.+?)01_definitions.csv',args.dict).group(1)
+    definition=pd.read_csv(args.dict)
+    definition.set_index('ElementName',inplace=True)
+    
+    prefix=args.prefix
+    event=args.event
 
-        prefix=args.prefix
-        event=args.event
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    for c in definition.index:
+        if prefix in c:
+            columns.append(c.strip())
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
-            'chrcssrsb_si1l','chrcssrsb_si2l','chrcssrsb_si3l','chrcssrsb_si4l','chrcssrsb_si5l','chrcssrsb_sidfrql','chrcssrsb_siddurl','chrcssrsb_sidctrl','chrcssrsb_siddtrl','chrcssrsb_sidrsnl','chrcssrsb_sb1l','chrcssrsb_sb3l','chrcssrsb_sb4l','chrcssrsb_sb5l','chrcssrsb_cssrs_mlmrllt1','chrcssrsb_cssrs_plmrlt1','chrcssrsb_cssrs_mlmlllt1','chrcssrsb_cssrs_plmllt1','chrcssrsb_actlthl3','chrcssrsb_potlthl3','chrcssrsb_css_sim1','chrcssrsb_css_sim2','chrcssrsb_css_sim3','chrcssrsb_css_sim4','chrcssrsb_css_sim5','chrcssrsb_css_sipmfreq','chrcssrsb_css_sipmdur','chrcssrsb_css_sipmctrl','chrcssrsb_css_sipmdet','chrcssrsb_css_sipmreas','chrcssrsb_idintsvl','chrcssrsb_cssrs_actual','chrcssrsb_snmacatl','chrcssrsb_sbnssibl','chrcssrsb_cssrs_nssi','chrcssrsb_cssrs_yrs_ia','chrcssrsb_nminatl','chrcssrsb_cssrs_yrs_pab','chrcssrsb_nmapab','chrcssrsb_cssrs_yrs_aa','chrcssrsb_nmabatl','chrcssrsb_css_sipmms',
-            'ampscz_missing','ampscz_missing_spec']
-        
-        # save the remaining template
-        _,name=mkstemp()
-        with open(name,'w') as fw:
-            fw.write(','.join(columns))
-        
-        # load template as DataFrame
-        df=pd.read_csv(name)
-        columns=df.columns.values
-        remove(name)
-        
-        # load template definition
-        definition=pd.read_csv(args.dict.replace('_template','_definitions'))
-        definition.set_index('ElementName',inplace=True)
+    columns+=['chrcssrs_intensity_lifetime','chrcssrs_intensity_pastmonth']
+    columns+=['ampscz_missing','ampscz_missing_spec']
+    
+    # save the remaining template
+    _,name=mkstemp()
+    with open(name,'w') as fw:
+        fw.write(','.join(columns))
+    
+    # load template as DataFrame
+    df=pd.read_csv(name)
+    columns=df.columns.values
+    remove(name)
+
 
     dir_bak=getcwd()
     chdir(args.root)
@@ -210,7 +236,7 @@ if __name__=='__main__':
     remove(name)
     
     with open(args.output,'w') as f:
-        f.write(title+'\n'+data)
+        f.write(title+',01'+'\n'+data)
     
     print('Generated',abspath(args.output))
     
