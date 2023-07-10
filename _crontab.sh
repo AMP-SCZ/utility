@@ -18,6 +18,9 @@
 
 # === eris2n4 ===
 
+# track /data/predict1/ size, every monday at 12 am
+0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
+
 # clear REDCap upload logs, every monday at 12 am
 0 0 * * 1 rm -f /data/predict/utility/bsub/*
 
