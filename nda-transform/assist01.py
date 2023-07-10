@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename, abspath
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -119,6 +119,20 @@ def populate():
 
     # return df
 
+    if prefix!='chrassist':
+        return
+
+    features_file=pjoin(dirname(file),'assist.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+    
+    for v in csv_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+    
 
 if __name__=='__main__':
 
@@ -167,10 +181,20 @@ if __name__=='__main__':
 
         for c in df.split(','):
             if prefix in c:
-                columns.append(c.strip())
+                columns.append(c.strip().replace('\"',''))
                 
         columns=columns+['ampscz_missing','ampscz_missing_spec']
         
+        if prefix=='chrassist':
+        
+            csv_columns='chrassist_tobacco chrassist_alcohol chrassist_cannabis \
+                chrassist_cocaine chrassist_amphetamines chrassist_inhalants \
+                chrassist_sedatives chrassist_hallucinogens chrassist_opiods \
+                chrassist_other'.split()
+            
+            columns=[c for c in columns if c not in csv_columns]
+            
+
         # save the remaining template
         _,name=mkstemp()
         with open(name,'w') as fw:
