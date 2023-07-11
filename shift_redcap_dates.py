@@ -14,9 +14,13 @@ import signal
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
 # Usage:
-# __file__ NDA_ROOT "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv 1
-# __file__ PHOENIX_PROTECTED "*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv 1
-# optional: 1 is for force re-shift of unchanged JSONs
+# __file__ NDA_ROOT "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv
+# __file__ NDA_ROOT "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv 8
+# __file__ PHOENIX_PROTECTED "*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv 8 1
+#    the trailing 1 is for force re-shift of unchanged JSONs
+#    it needs to be preceded by NCPU
+#    if not preceded by NCPU, 1 will be regarded as NCPU
+
 
 _shift= [-14,-7,7,14]
 L= len(_shift)
@@ -61,7 +65,7 @@ def _shift_date(file):
     subject=basename(file).split('.')[0]
     
     # skip unchanged JSONs
-    if sys.argv[-1]=='1' and dfshift.loc[subject,'upload']==0:
+    if sys.argv[-1]!='1' and dfshift.loc[subject,'upload']==0:
         return
 
     # load json
@@ -104,7 +108,7 @@ def _shift_date(file):
 
 
 
-if len(sys.argv)==5:
+if len(sys.argv)>=5:
     ncpu=int(sys.argv[4])
 else:
     ncpu=16
