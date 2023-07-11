@@ -18,7 +18,7 @@ _size=${_size[4]}
 size=${_size//%}
 
 # notify if needed
-if [ $size -gt 89 ]
+if [ $size -gt 84 ]
 then
     # df -HP /data/predict1/
 
