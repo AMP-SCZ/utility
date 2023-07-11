@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -77,7 +77,7 @@ def populate():
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
     for v in columns:
-        if prefix in v:
+        if prefix in v and v not in csv_columns:
             value=get_value(v,f'{event}_arm_{arm}')
 
             if definition.loc[v,'DataType']=='Integer':
@@ -102,11 +102,33 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
-    # if ampscz_missing=0, then ampscz_missing_spec is N/A
-    # but NDA does not have a code of missing_spec=N/A
-    # df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+    if missing=='1':
+        value=df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
+    else:
+        df.at[row,'ampscz_missing_spec']=''
 
     # return df
+
+
+    features_file=pjoin(dirname(file),'premorbid_adjustment_scale.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+    
+    for v in csv_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 
 if __name__=='__main__':
@@ -152,9 +174,16 @@ if __name__=='__main__':
            'chrpas_pmod_adol_early4','chrpas_pmod_adol_early5',
            'chrpas_pmod_adol_late1','chrpas_pmod_adol_late2','chrpas_pmod_adol_late3',
            'chrpas_pmod_adol_late4','chrpas_pmod_adol_late5',
-           'chrpas_pmod_adult1','chrpas_pmod_adult2','chrpas_pmod_adult3v1','chrpas_pmod_adult3v3']
+           'chrpas_pmod_adult1','chrpas_pmod_adult2','chrpas_pmod_adult3v1','chrpas_pmod_adult3v3',
+           'ampscz_missing','ampscz_missing_spec']
 
-        columns.append(f'ampscz_missing')
+        csv_columns='chrpas_childhood_subtotal chrpas_early_adolescence_subtotal \
+            chrpas_late_adolescence_subtotal chrpas_adulthood_subtotal \
+            chrpas_total_score_only_childhood chrpas_total_score_upto_early_adolescence \
+            chrpas_total_score_upto_late_adolescence chrpas_total_score_upto_adulthood'.split()
+
+        columns+=csv_columns
+
         
         # save the remaining template
         _,name=mkstemp()
@@ -195,5 +224,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     
