@@ -11,16 +11,16 @@ from glob import glob
 from multiprocessing import Pool
 import signal
 
-# Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
+# Test if shifted REDCap dates are one of [-14,-7,7,14] randomly chosen days
 # Usage:
-# __file__ NDA_ROOT /path/to/redcap_data_dict.csv "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json"
+# __file__ NDA_ROOT "Pronet/PHOENIX/PROTECTED/*/raw/*/surveys/*.Pronet.json" /path/to/redcap_data_dict.csv
 
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-df=pd.read_csv(sys.argv[2], encoding='ISO-8859-1')
+df=pd.read_csv(sys.argv[3], encoding='ISO-8859-1')
 
-files=glob(sys.argv[3])
+files=glob(sys.argv[2])
 
 
 # when downloaded through GUI
