@@ -59,7 +59,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','-9','1903-03-03','1909-09-09']:
         # either no data in this form or the subject has not reached the event yet
         return
 
@@ -142,6 +142,10 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event", required=True,
+        help="Event name: screening, baseline, month_1, etc.")
+    parser.add_argument("-p","--prefix", required=True,
+        help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -165,24 +169,35 @@ if __name__=='__main__':
     with open(args.dict) as f:
         title,df=f.read().split('\n',1)
 
-        prefix='chrpas'
-        event='month_1'
+        prefix=args.prefix
+        event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
-           'chrpas_pmod_child1','chrpas_pmod_child2','chrpas_pmod_child3','chrpas_pmod_child4',
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+
+        pas_columns=['chrpas_pmod_child1','chrpas_pmod_child2','chrpas_pmod_child3','chrpas_pmod_child4',
            'chrpas_pmod_adol_early1','chrpas_pmod_adol_early2','chrpas_pmod_adol_early3',
            'chrpas_pmod_adol_early4','chrpas_pmod_adol_early5',
            'chrpas_pmod_adol_late1','chrpas_pmod_adol_late2','chrpas_pmod_adol_late3',
            'chrpas_pmod_adol_late4','chrpas_pmod_adol_late5',
-           'chrpas_pmod_adult1','chrpas_pmod_adult2','chrpas_pmod_adult3v1','chrpas_pmod_adult3v3',
-           'ampscz_missing','ampscz_missing_spec']
+           'chrpas_pmod_adult1','chrpas_pmod_adult2','chrpas_pmod_adult3v1','chrpas_pmod_adult3v3']
 
-        csv_columns='chrpas_childhood_subtotal chrpas_early_adolescence_subtotal \
-            chrpas_late_adolescence_subtotal chrpas_adulthood_subtotal \
-            chrpas_total_score_only_childhood chrpas_total_score_upto_early_adolescence \
-            chrpas_total_score_upto_late_adolescence chrpas_total_score_upto_adulthood'.split()
+        preiq_columns='chrpreiq_reading_task chrpreiq_total_raw chrpreiq_standard_score'.split()
 
-        columns+=csv_columns
+        if prefix=='chrpas':
+
+            csv_columns='chrpas_childhood_subtotal chrpas_early_adolescence_subtotal \
+                chrpas_late_adolescence_subtotal chrpas_adulthood_subtotal \
+                chrpas_total_score_only_childhood chrpas_total_score_upto_early_adolescence \
+                chrpas_total_score_upto_late_adolescence chrpas_total_score_upto_adulthood'.split()
+
+            columns=columns+pas_columns+csv_columns
+
+        elif prefix=='chrpreiq':
+            
+            csv_columns=[]
+            columns=columns+preiq_columns
+            
+        columns+=['ampscz_missing','ampscz_missing_spec']
 
         
         # save the remaining template
