@@ -1,10 +1,20 @@
 #!/bin/bash
 
+create_link()
+{
+    if [ -d $1 ]
+    then
+        echo $1
+        ln -s $1 .
+    fi
+}
+
+
 caselist=/data/predict1/to_nda/nda-submissions/network_combined/all_subjects.txt
 rm $caselist
 
 
-# create caselist
+echo create caselist
 
 cd /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED
 
@@ -24,8 +34,10 @@ do
        
 done
 
+echo
 
-# create subject folders
+
+echo create subject folders
 
 pushd .
 
@@ -35,30 +47,33 @@ do
     mkdir -p $d
 done
 
+echo
 
-# create softlinks to datatypes: eeg, actigraphy, sensors, interviews
+
+echo create softlinks to datatypes: eeg, actigraphy, sensors, interviews
 
 for d in $(cat $caselist)
 do
     cd $d
     
     # TODO the * can be made definite
-    root=`ls -d /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/*/processed/$d`
+    root=`ls -d /data/predict1/data_from_nda/*/PHOENIX/PROTECTED/*/processed/$d`
 
 
     # eeg
-    ln -s ${root}/eeg .
+    create_link ${root}/eeg .
 
     # actigraphy
-    ln -s ${root}/actigraphy .
+    create_link ${root}/actigraphy .
 
-    # senors
-    ln -s ${root}/phone .
+    # sensors
+    create_link ${root}/phone .
 
     # interviews
-    root=`ls -d /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/*/processed/$d`
-    ln -s ${root}/interviews .
-    
+    root=`ls -d /data/predict1/data_from_nda/*/PHOENIX/GENERAL/*/processed/$d`
+    create_link $root/interviews
+
+
     cd ..
 
 done
