@@ -112,6 +112,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event", required=True,
+        help="Event name: screening, baseline, month_1, etc.")
     parser.add_argument("--data", required=True,
         help="/path/to/data01*.csv containing non-survey data e.g. actirec01, image03")
     parser.add_argument("--interview_date_var",
