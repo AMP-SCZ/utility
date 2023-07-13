@@ -178,7 +178,7 @@ def populate():
         print(transcript_, 'could not be found')
 
     else:
-        df.at[row,'transcript_file']=abspath(transcript_file[0]).replace('/data/predict1/data_from_nda/','')
+        df.at[row,'transcript_file']=abspath(transcript_file[0]).split('/processed/')[-1]
 
 
     for i,_row in dfavl.iterrows():
