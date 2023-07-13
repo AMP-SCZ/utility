@@ -85,8 +85,11 @@ def populate():
             if c.endswith('_date'):
                 value=nda_date(value)
 
+            if c=='data_file1':
+                value=value.split('/processed/')[-1]
+
             df.at[row,c]=value
-    
+            
 
 
 if __name__=='__main__':
