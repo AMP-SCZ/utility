@@ -77,7 +77,8 @@ def populate():
 
 
     # extract the src_subject_id group
-    group=data.loc[src_subject_id]
+    # [] around src_subject_id needed to make a single row an iterable
+    group=data.loc[ [src_subject_id] ]
     
     subjectkey=dfshared.loc[src_subject_id,'subjectkey']
     sex=dfshared.loc[src_subject_id,'sex']
@@ -91,11 +92,16 @@ def populate():
     group.reset_index(inplace=True)
     for i,r in group.iterrows():
 
-        interview_date=r['interview_date']
+        interview_date=r[interview_date_var]
         months=months_since_consent(interview_date,chric_consent_date)
+        r['interview_date']=interview_date
         r['interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
         r['subjectkey']=subjectkey
         r['sex']=sex
+        
+        # for ampscz_sp_sensors01
+        if 'data_file1' in r.keys():
+            r['data_file1']=r['data_file1'].split('/processed/')[-1]
 
         df.loc[current_index+i]=r
 
@@ -112,7 +118,7 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
-    parser.add_argument("-e","--event", required=True,
+    parser.add_argument("-e","--event",
         help="Event name: screening, baseline, month_1, etc.")
     parser.add_argument("--data", required=True,
         help="/path/to/data01*.csv containing non-survey data e.g. actirec01, image03")
@@ -121,7 +127,7 @@ if __name__=='__main__':
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
     parser.add_argument("--version",
-        help="version string in form's NDA short name: 01, 03, etc.")
+        help="version string in form's NDA short name: 01, 03, etc.", default='01')
 
     
     args= parser.parse_args()
