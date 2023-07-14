@@ -68,6 +68,19 @@ def populate():
         # no data in this form
         return
 
+    try:
+        # [] around index is required to make the resultant a DataFrame
+        metadata=data.loc[[(src_subject_id,interview_type)]].values[0]
+        study,nearest_day,session=metadata
+
+        transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{nearest_day:04}_session{session:03}_REDACTED.txt'
+        
+        assert isfile(transcript_)==True
+
+    except KeyError:
+        return
+
+
     # get shared variables
     df.at[row,'src_subject_id']=src_subject_id
     for v in ['subjectkey','sex']:
@@ -151,10 +164,11 @@ def populate():
         return
 
     
-    print('processing',features_file)
+    print('\tprocessing',features_file)
 
     dfavl=pd.read_csv(features_file)
-
+    
+    """
     _days_since_consent=days_since_consent(interview_date,chric_consent_date)
 
     # find the nearest day number among dfavl['day']
@@ -164,14 +178,17 @@ def populate():
         if diff<min_diff:
             min_diff=diff
             nearest_day=d
-
+    
     
     # Example paths:
     # PronetYA/processed/YA16945/interviews/open/transcripts/PronetYA_YA16945_interviewAudioTranscript_open_day0019_session001_REDACTED.txt
-    # PrescientME/processed/ME98165/interviews/open/transcripts/ME98165_interviewAudioTranscript_open_day0150_session002_REDACTED.txt
+    # PrescientME/processed/ME98165/interviews/open/transcripts/PrescientME_ME98165_interviewAudioTranscript_open_day0150_session002_REDACTED.txt
+    
     transcript_=pjoin(_root,
         f'transcripts/*_{src_subject_id}_interviewAudioTranscript_open_day{nearest_day:04}_session*_REDACTED.txt')
+    """
     transcript_file=glob(transcript_)
+
 
     # sanity check
     if len(transcript_file)!=1:
@@ -236,6 +253,8 @@ if __name__=='__main__':
         help="/path/to/submission_ready.csv")
     parser.add_argument("-e","--event", required=True,
         help="Event name: screening, baseline, month_1, etc.")
+    parser.add_argument("--data", required=True,
+        help="/path/to/data01*.csv containing non-survey data e.g. actirec01, image03")
     parser.add_argument("-p","--prefix", required=True,
         help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
     parser.add_argument("--shared", required=True,
@@ -283,6 +302,10 @@ if __name__=='__main__':
 
     columns=columns+run_sheet_vars+avl_vars+['transcript_file','ampscz_missing','ampscz_missing_spec']
     
+    data=pd.read_csv(args.data)
+    data.set_index(['subject','interview_type'],inplace=True)
+
+
     # save the remaining template
     _,name=mkstemp()
     with open(name,'w') as fw:
