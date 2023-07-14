@@ -164,7 +164,7 @@ def populate():
         return
 
     
-    print('\tprocessing',features_file)
+    print('\tProcessing',features_file)
 
     dfavl=pd.read_csv(features_file)
     
