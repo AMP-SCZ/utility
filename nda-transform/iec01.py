@@ -94,9 +94,18 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
-    # if ampscz_missing=0, then ampscz_missing_spec is N/A
-    # but NDA does not have a code of missing_spec=N/A
-    # df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}missing_spec',f'screening_arm_{arm}')[1]
+    if missing=='1':
+        value=get_value(f'{prefix}_missing_spec',f'screening_arm_{arm}')
+        
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
+    else:
+        df.at[row,'ampscz_missing_spec']=''
 
     # return df
 
