@@ -3,7 +3,7 @@ set -e
 
 ### generation step ###
 
-for n in Pronet
+for n in Pronet Prescient
 do
 
 # assist01 group
@@ -32,7 +32,7 @@ do
 ./generate.sh -n $n -f bprs01 -e baseline -p chrbprs
 ./generate.sh -n $n -f clgry01 -e baseline -p chrcdss
 ./generate.sh -n $n -f cssrs01 -e baseline -p chrcssrsb
-./generate.sh -n $n -f dsm_iv_es01 -e baseline -p chrsofas
+./generate.sh -n $n -f dsm_iv_es01 -e screening -p chrsofas
 ./generate.sh -n $n -f gfs01 -e baseline -p chrgfrs
 ./generate.sh -n $n -f gfs01 -e baseline -p chrgfss
 ./generate.sh -n $n -f oasis01 -e baseline -p chroasis
@@ -54,12 +54,12 @@ done
 exit
 
 ### combination step ###
-for f in assist01 ampscz_iqa01 wasi201 wisc_v01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01 ampscz_rap01
+for f in assist01 ampscz_iqa01 wasi201 wisc_v01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 oasis01 pmod01 sri01 pss01 ampscz_rap01
 do
     ./combine_networks.sh -f $f -e baseline
 done
 
-for f in ampscz_hcgfb01 ampscz_lapes01 scidvapd01 tbi01 ampscz_psychs01
+for f in ampscz_hcgfb01 ampscz_lapes01 scidvapd01 tbi01 dsm_iv_es01 ampscz_psychs01
 do
     ./combined_networks.sh -f $f -e screening
 done
