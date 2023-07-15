@@ -54,6 +54,10 @@ def populate():
     else:
         arm=2
 
+    interview_date=get_value(f'{prefix}date',f'screening_arm_{arm}')
+    if len(interview_date)<10:
+        # no data in this form
+        return
 
     # get shared variables
     df.at[row,'src_subject_id']=src_subject_id
@@ -62,7 +66,6 @@ def populate():
 
 
     # get form specific variables
-    interview_date=get_value(f'{prefix}date',f'screening_arm_{arm}')
     df.at[row,'interview_date']=nda_date(interview_date)
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
