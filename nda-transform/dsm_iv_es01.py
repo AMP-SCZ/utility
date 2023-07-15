@@ -116,11 +116,6 @@ def populate():
             df.at[row,v]=value
 
 
-    # required for https://nda.nih.gov/data_structure.html?short_name=dsm_iv_es01
-    # but not applicable to AMP-SCZ
-    df.at[row,'dsmasd']=-1
-    df.at[row,'dsmpdd']=-1
-
     missing=get_value(f'{prefix}_missing',f'{event}_arm_{arm}')
     if missing=='':
         # not clicked
@@ -186,7 +181,7 @@ if __name__=='__main__':
             if prefix in c:
                 columns.append(c.strip())
                 
-        columns=columns+['dsmasd','dsmpdd','ampscz_missing','ampscz_missing_spec']
+        columns=columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()
