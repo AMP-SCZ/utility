@@ -11,5 +11,11 @@ do
     ./generate.sh -f figs01 -n $1 -p chrfigs -e screening -o "--member $m"
 done
 
-./combine_networks -f figs01 -e screening
+# run the combining step outside this script
+#
+# network level combination of family members
+# ./combine_networks -f figs01 -e screening -n $1
+#
+# project level combination
+# ./combine_networks -f figs01 -e screening
 
