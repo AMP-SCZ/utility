@@ -164,7 +164,7 @@ def entry_status(redcap_label,rpms_visit):
         return ''
     elif status==1:
         return 0
-    elif status==2:
+    elif status>=2 and status<=4:
         return 2
 
 
