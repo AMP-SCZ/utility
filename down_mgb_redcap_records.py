@@ -15,8 +15,12 @@ import requests
 # Usage:
 # __file__ PHOENIX_PROTECTED API_TOKEN
 # __file__ PHOENIX_PROTECTED API_TOKEN 16
+# __file__ PHOENIX_PROTECTED API_TOKEN 16 1
 # API TOKEN for the REDCap project to pull records from
-# optional: 16 is for ncpu
+# Optional: 16 (NCPU) and 1 (force)
+#    the trailing 1 is for force re-download of unchanged JSONs
+#    it needs to be preceded by NCPU
+#    if not preceded by NCPU, 1 will be regarded as NCPU
 
 
 
@@ -31,6 +35,11 @@ try:
 except:
     subjects= [p.split('/')[-1] for p in glob("*/raw/*")]
     force=1
+
+
+# helpful for force re-download
+if len(sys.argv)==5:
+    force=int(sys.argv[-1])
 
 
 def RAISE(err):
