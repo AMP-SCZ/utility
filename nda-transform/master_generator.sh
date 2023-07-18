@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+
+if [ "$1" == "generate" ]
+then
+
 ### generation step ###
 
 for n in Pronet Prescient
@@ -51,9 +55,12 @@ do
 
 done
 
-exit
+
+elif [ "$1" == "combine" ]
+then
 
 ### combination step ###
+
 for f in assist01 ampscz_iqa01 wasi201 wisc_v01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 oasis01 pmod01 sri01 pss01 ampscz_rap01
 do
     ./combine_networks.sh -f $f -e baseline
@@ -61,13 +68,21 @@ done
 
 for f in ampscz_hcgfb01 ampscz_lapes01 scidvapd01 tbi01 dsm_iv_es01 ampscz_psychs01
 do
-    ./combined_networks.sh -f $f -e screening
+    ./combine_networks.sh -f $f -e screening
 done
 
 for f in ampscz_dim01 ampscz_rs01 iec01 pds01 figs01
 do
-   ./combined_networks.sh -f $f
+   ./combine_networks.sh -f $f
 done
 
 ./wais_iv_part101.sh /data/predict1/to_nda/nda-submissions/network_combined/wisc_v01_baseline.csv
+
+else
+
+echo """Usage:
+$0 generate
+$0 combine"""
+
+fi
 
