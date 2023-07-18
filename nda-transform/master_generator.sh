@@ -18,7 +18,7 @@ do
 ./generate.sh -n $n -f tbi01 -e screening -p chrtbi
 ./generate.sh -n $n -f wasi201 -e baseline -p chriq
 ./generate.sh -n $n -f wisc_v01 -e baseline -p chriq
-./wais_iv_part101.sh wisc_v01_${n}_baseline.csv
+# ./wais_iv_part101.sh wisc_v01_${n}_baseline.csv
 
 
 # individual group
@@ -69,4 +69,5 @@ do
    ./combined_networks.sh -f $f
 done
 
+./wais_iv_part101.sh /data/predict1/to_nda/nda-submissions/network_combined/wisc_v01_baseline.csv
 
