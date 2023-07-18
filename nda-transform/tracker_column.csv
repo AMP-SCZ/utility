@@ -13,6 +13,7 @@ bprs01_baseline.csv,bprs_baseline
 clgry01_baseline.csv,cdss_baseline
 cssrs01_baseline.csv,cssrs_baseline_baseline
 dsm_iv_es01_screening.csv,sofas_screening_screening
+dsm_iv_es01_baseline.csv,sofas_followup_baseline
 figs01.csv,family_interview_for_genetic_studies_figs_screening
 gfs01_chrgfrs.csv,global_functioning_role_scale_baseline
 gfs01_chrgfss.csv,global_functioning_social_scale_baseline
