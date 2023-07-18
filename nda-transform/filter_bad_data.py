@@ -17,8 +17,10 @@ for c in dfmap.index:
 
     if c.startswith('ampscz_psychs01'):
         continue
-    
+        
     column=dfmap.loc[c]['tracker_column']
+    
+    print(c,column)
             
     _df=pd.concat( (dfpre[['subject',column]], dfpro[['subject',column]]) )
     _df.set_index('subject',inplace=True)
@@ -35,7 +37,7 @@ for c in dfmap.index:
             cell=_df.loc[ row['src_subject_id'],column ]
         except:
             pass
-            # print(row['src_subject_id'],'does not exist in',column)
+            print(row['src_subject_id'],'does not exist in',column)
 
         if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
