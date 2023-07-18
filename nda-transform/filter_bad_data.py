@@ -13,6 +13,7 @@ dfpre=pd.read_excel('form_status_tracker_PRESCIENT.xlsx')
 dfmap=pd.read_csv('/data/predict1/utility/nda-transform/tracker_column.csv')
 dfmap.set_index('nda_data_file',inplace=True)
 
+subjects=[]
 for c in dfmap.index:
 
     if c.startswith('ampscz_psychs01'):
@@ -36,18 +37,24 @@ for c in dfmap.index:
         try:
             cell=_df.loc[ row['src_subject_id'],column ]
         except:
+            cell=''
             pass
-            print(row['src_subject_id'],'does not exist in',column)
+            print(row['src_subject_id'])
+            subjects.append(row['src_subject_id'])
 
         if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
             
             
     # move(c,c+'.bak')
-    # dfdata1.to_csv(c,index=False)
+    # dfdata1.to_csv(f,index=False)
+    dfdata1.to_csv(f'filtered/{c}',index=False)
     print(dfdata.shape, dfdata1.shape)
     print('')
 
+
+for s in set(subjects):
+    print(s)
 
 chdir(dir_bak)
     
