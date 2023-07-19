@@ -61,7 +61,7 @@ for c in dfmap.index:
     
     print(c,column)
             
-    _df=pd.concat( (dfpre[['subject',column]], dfpro[['subject',column]]) )
+    _df=pd.concat( (dfpre[['subject','current timepoint',column]], dfpro[['subject','current timepoint',column]]) )
     _df.set_index('subject',inplace=True)
     
     dfdata=pd.read_csv(c,dtype=str,header=1)
@@ -80,7 +80,8 @@ for c in dfmap.index:
             print(row['src_subject_id'], 'does not exist')
             subjects.append(row['src_subject_id'])
 
-        if not pd.isna(cell):
+        if not pd.isna(cell) or \
+            _df.loc[ row['src_subject_id'],'current timepoint' ]=='removed':
             dfdata1.drop(i,inplace=True)
             
             
