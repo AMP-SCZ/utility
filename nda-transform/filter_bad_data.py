@@ -11,6 +11,41 @@ chdir('/data/predict1/to_nda/nda-submissions/network_combined/')
 dfpro=pd.read_excel('form_status_tracker_PRONET.xlsx')
 dfpre=pd.read_excel('form_status_tracker_PRESCIENT.xlsx')
 
+
+# combine psychs_screening and psychs_followup columns
+
+def combine_psychs(dfp):
+
+    dfp['psychs_screening']=['']*dfp.shape[0]
+    dfp['psychs_baseline']=['']*dfp.shape[0]
+
+    # psychs_screening
+    for i,row in dfp.iterrows():
+        if pd.isna(row['psychs_p1p8_screening']) and pd.isna(row['psychs_p9ac32_screening']):
+            dfp.loc[i,'psychs_screening']=None
+        else:
+            dfp.loc[i,'psychs_screening']='omit'
+
+    # psychs_followup
+    for i,row in dfp.iterrows():
+
+        if row['HC or CHR']=='Clinical High Risk':
+            condition=pd.isna(row['psychs_p1p8_fu_baseline']) and pd.isna(row['psychs_p9ac32_fu_baseline'])
+        else:
+            condition=pd.isna(row['psychs_p1p8_fu_hc_baseline']) and pd.isna(row['psychs_p9ac32_fu_hc_baseline'])
+
+        if pd.isna(row['psychs_screening']) and condition:
+            dfp.loc[i,'psychs_baseline']=None
+        else:
+            dfp.loc[i,'psychs_baseline']='omit'
+
+    return dfp
+
+
+dfpro=combine_psychs(dfpro)
+dfpre=combine_psychs(dfpre)
+
+
 dfmap=pd.read_csv('/data/predict1/utility/nda-transform/tracker_column.csv')
 dfmap.set_index('nda_data_file',inplace=True)
 
@@ -19,8 +54,8 @@ subjects=[]
 print('\n(computer shape,human shape)\n')
 for c in dfmap.index:
 
-    if c.startswith('ampscz_psychs01'):
-        continue
+    #if c.startswith('ampscz_psychs01'):
+    #    continue
         
     column=dfmap.loc[c]['tracker_column']
     
