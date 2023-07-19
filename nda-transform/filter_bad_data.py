@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import pandas as pd
-from shutil import move,copyfile
-from os import getcwd, chdir
+from shutil import move
+from os import getcwd, chdir, remove
+from tempfile import mkstemp
 
 dir_bak=getcwd()
 chdir('/data/predict1/to_nda/nda-submissions/network_combined/')
@@ -14,6 +15,8 @@ dfmap=pd.read_csv('/data/predict1/utility/nda-transform/tracker_column.csv')
 dfmap.set_index('nda_data_file',inplace=True)
 
 subjects=[]
+
+print('\n(computer shape,human shape)\n')
 for c in dfmap.index:
 
     if c.startswith('ampscz_psychs01'):
@@ -37,9 +40,9 @@ for c in dfmap.index:
         try:
             cell=_df.loc[ row['src_subject_id'],column ]
         except:
-            cell=''
-            pass
-            print(row['src_subject_id'])
+            # if the subject does not exist in tracker, omit it
+            cell='omit'
+            print(row['src_subject_id'], 'does not exist')
             subjects.append(row['src_subject_id'])
 
         if not pd.isna(cell):
@@ -48,13 +51,28 @@ for c in dfmap.index:
             
     # move(c,c+'.bak')
     # dfdata1.to_csv(f,index=False)
-    dfdata1.to_csv(f'filtered/{c}',index=False)
+    _,name=mkstemp()
+    dfdata1.to_csv(name,index=False)
+    with open(name) as f:
+        data=f.read()
+    remove(name)
+
+    _c=c.strip('.csv')
+    title=_c[:-2]+','+_c[-2:]
+
+    with open(f'filtered/{c}','w') as f:
+        f.write(title+'\n'+data)
+
+    
     print(dfdata.shape, dfdata1.shape)
     print('')
 
 
+# print nonexistent subjects
 for s in set(subjects):
     print(s)
 
+
 chdir(dir_bak)
+
     
