@@ -43,6 +43,24 @@ def nda_date(redcap_date):
 
     return new_date
 
+fam_dict={
+    'mother':1,
+    'father':2,
+    'sibling1':3,
+    'sibling2':4,
+    'sibling3':5,
+    'sibling4':6,
+    'sibling5':7,
+    'sibling6':8,
+    'sibling7':9,
+    'sibling8':10,
+    'sibling9':11,
+    'child1':12,
+    'child2':13,
+    'child3':14,
+    'child4':15
+}
+
 
 def populate():
 
@@ -77,11 +95,11 @@ def populate():
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
-    df.at[row,'chrfigs_fam']=args.member
+    df.at[row,'chrfigs_fam']=fam_dict[args.member]
 
     for v in columns:
         
-        if prefix in v:
+        if prefix in v and v!='chrfigs_fam':
             v1=v.replace('fam',args.member)
             value=get_value(v1,f'{event}_arm_{arm}')
             
