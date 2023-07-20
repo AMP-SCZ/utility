@@ -11,6 +11,7 @@ CBCwithDifferential,cbc_with_differential
 CDSS,cdss
 Coenrollment,coenrollment_form
 CSSRS,cssrs_baseline
+CSSRS,cssrs_followup
 CurrentHealthStatus,current_health_status
 CurrentHealthStatus_GCP,gcp_current_health_status
 Demographics,sociodemographics
@@ -61,5 +62,6 @@ Saliva,daily_activity_and_saliva_sample_collection
 SCID5PD,scid5_schizotypal_personality_sciddpq
 SCIDv1,scid5_psychosis_mood_substance_abuse
 SOFAS,sofas_screening
+SOFAS,sofas_followup
 SpeechSampling,speech_sampling_run_sheet
 TBI,traumatic_brain_injury_screen
