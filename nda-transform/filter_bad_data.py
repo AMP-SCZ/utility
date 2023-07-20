@@ -83,8 +83,6 @@ for c in dfmap.index:
             dfdata1.drop(i,inplace=True)
             
             
-    # move(c,c+'.bak')
-    # dfdata1.to_csv(f,index=False)
     _,name=mkstemp()
     dfdata1.to_csv(name,index=False)
     with open(name) as f:
@@ -94,6 +92,9 @@ for c in dfmap.index:
     _c=c.strip('.csv')
     title=_c[:-2]+','+_c[-2:]
 
+
+    # move(c,f'original/{c}')
+    # with open(c,'w') as f:
     with open(f'filtered/{c}','w') as f:
         f.write(title+'\n'+data)
 
