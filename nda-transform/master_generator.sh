@@ -28,6 +28,8 @@ do
 # individual group
 ./generate.sh -n $n -f socdem01 -p chrdemo
 ./generate.sh -n $n -f cgis01 -e baseline
+./generate.sh -n $n -f ampscz_rap01 -e baseline
+
 
 # have outcome variables
 ./generate.sh -n $n -f ampscz_psychs01 -e screening -p chrpsychs_scr
@@ -47,7 +49,6 @@ do
 
 # no -e or -p required
 ./generate.sh -n $n -f ampscz_dim01
-./generate.sh -n $n -f ampscz_rap01 -e baseline
 ./generate.sh -n $n -f ampscz_rs01
 ./generate.sh -n $n -f iec01 
 ./generate.sh -n $n -f pds01
@@ -62,7 +63,7 @@ then
 
 ### combination step ###
 
-for f in assist01 ampscz_iqa01 wasi201 wisc_v01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 oasis01 pmod01 sri01 pss01 ampscz_rap01 dsm_iv_es01
+for f in assist01 ampscz_iqa01 wasi201 wisc_v01 cgis01 ampscz_rap01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01
 do
     ./combine_networks.sh -f $f -e baseline
 done
@@ -72,7 +73,7 @@ do
     ./combine_networks.sh -f $f -e screening
 done
 
-for f in ampscz_dim01 ampscz_rs01 iec01 pds01 figs01
+for f in socdem01 ampscz_dim01 ampscz_rs01 iec01 pds01 figs01
 do
    ./combine_networks.sh -f $f
 done
