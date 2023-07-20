@@ -10,6 +10,7 @@ ampscz_rap01_baseline.csv,ra_prediction_baseline
 ampscz_rs01.csv,recruitment_source_screening
 assist01_baseline.csv,assist_baseline
 bprs01_baseline.csv,bprs_baseline
+cgis01_baseline.csv,pgis_baseline
 clgry01_baseline.csv,cdss_baseline
 cssrs01_baseline.csv,cssrs_baseline_baseline
 dsm_iv_es01_screening.csv,sofas_screening_screening
@@ -23,6 +24,7 @@ pds01.csv,pubertal_developmental_scale_baseline
 pmod01_baseline.csv,premorbid_iq_reading_accuracy_baseline
 pss01_baseline.csv,perceived_stress_scale_baseline
 scidvapd01_screening.csv,scid5_schizotypal_personality_sciddpq_screening
+socdem01.csv,sociodemographics_baseline
 sri01_baseline.csv,item_promis_for_sleep_baseline
 tbi01_screening.csv,traumatic_brain_injury_screen_screening
 wais_iv_part101_baseline.csv,iq_assessment_wasiii_wiscv_waisiv_baseline
