@@ -15,6 +15,9 @@ dfpre=pd.read_excel('form_status_tracker_PRESCIENT.xlsx')
 # combine psychs_screening and psychs_followup columns
 
 def combine_psychs(dfp):
+    
+    # introduce a column for rawdata
+    dfp['rawdata']=[None]*dfp.shape[0]
 
     dfp['psychs_screening']=['']*dfp.shape[0]
     dfp['psychs_baseline']=['']*dfp.shape[0]
