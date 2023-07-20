@@ -53,10 +53,7 @@ subjects=[]
 
 print('\n(computer shape,human shape)\n')
 for c in dfmap.index:
-
-    #if c.startswith('ampscz_psychs01'):
-    #    continue
-        
+ 
     column=dfmap.loc[c]['tracker_column']
     
     print(c,column)
@@ -81,7 +78,8 @@ for c in dfmap.index:
             subjects.append(row['src_subject_id'])
 
         if not pd.isna(cell) or \
-            _df.loc[ row['src_subject_id'],'current timepoint' ]=='removed':
+            _df.loc[ row['src_subject_id'],'current timepoint' ]=='removed' \
+            or int(row['interview_age'])<10:
             dfdata1.drop(i,inplace=True)
             
             
