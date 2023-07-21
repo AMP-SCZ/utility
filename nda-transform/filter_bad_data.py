@@ -92,13 +92,19 @@ for c in dfmap.index:
         data=f.read()
     remove(name)
 
-    _c=c.strip('.csv')
-    title=_c[:-2]+','+_c[-2:]
+
+    parts=c.split('01')
+    version='01'
+    if len(parts)<2:
+        parts=c.split('03')
+        version='03'
+    title=parts[0]+','+version
+    print(title)
 
 
-    # move(c,f'original/{c}')
-    # with open(c,'w') as f:
-    with open(f'filtered/{c}','w') as f:
+    move(c,f'original/{c}')
+    with open(c,'w') as f:
+    # with open(f'filtered/{c}','w') as f:
         f.write(title+'\n'+data)
 
     
