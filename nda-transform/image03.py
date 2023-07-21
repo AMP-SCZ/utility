@@ -103,6 +103,11 @@ def populate():
         if 'data_file1' in r.keys():
             r['data_file1']=r['data_file1'].split('/processed/')[-1]
 
+        # for image03
+        elif 'data_file2' in r.keys():
+            r['data_file2']=r['data_file2'].replace('rawdata/','mri/rawdata/')
+
+
         df.loc[current_index+i]=r
 
 
