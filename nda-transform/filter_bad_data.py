@@ -32,9 +32,9 @@ def combine_psychs(dfp):
     # psychs_followup
     for i,row in dfp.iterrows():
 
-        if row['HC or CHR']=='Clinical High Risk':
+        if row['HC or CHR']=='chr':
             condition=pd.isna(row['psychs_p1p8_fu_baseline']) and pd.isna(row['psychs_p9ac32_fu_baseline'])
-        else:
+        elif row['HC or CHR']=='hc':
             condition=pd.isna(row['psychs_p1p8_fu_hc_baseline']) and pd.isna(row['psychs_p9ac32_fu_hc_baseline'])
 
         if pd.isna(row['psychs_screening']) and condition:
@@ -102,7 +102,7 @@ for c in dfmap.index:
         f.write(title+'\n'+data)
 
     
-    print(dfdata.shape, dfdata1.shape)
+    print(dfdata.shape[0], dfdata1.shape[0])
     print('')
 
 
