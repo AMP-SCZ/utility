@@ -29,12 +29,6 @@ scidvapd01,screening,57454
 socdem01,baseline,57718
 sri01,baseline,57456
 tbi01,screening,57457
-actirec01,,59262
-eeg_sub_files01,,57725
-image03,baseline,57776
-langsamp01,baseline_open,57864
-langsamp01,baseline_screening,57865
-langsamp01,baseline_psychs,57868
 ampscz_iqa01,baseline,57897
 wais_iv_part101,baseline,57898
 wasi201,baseline,57910
@@ -45,6 +39,13 @@ ampscz_psychs01,baseline,58063
 ampscz_pps01,baseline,58270
 pss01,baseline,58277
 ampscz_sp_survey01,,59207
+actirec01,,59262
+eeg_sub_files01,,57725
+image03,baseline,57776
+langsamp01,baseline_open,57864
+langsamp01,baseline_screening,57865
+langsamp01,baseline_psychs,57868
 ampscz_sp_sensors01,3705,59296
 ampscz_sp_sensors01,4366,59325
-
+release-1.0,3705,59959
+release-1.0,4366,59952
