@@ -29,6 +29,7 @@ do
 ./generate.sh -n $n -f socdem01 -p chrdemo
 ./generate.sh -n $n -f cgis01 -e baseline
 ./generate.sh -n $n -f ampscz_rap01 -e baseline
+./generate.sh -n $n -f ampscz_pps01 -e baseline -p chrpps
 
 
 # have outcome variables
@@ -63,7 +64,7 @@ then
 
 ### combination step ###
 
-for f in assist01 ampscz_iqa01 wasi201 wisc_v01 cgis01 ampscz_rap01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01
+for f in assist01 ampscz_iqa01 wasi201 wisc_v01 cgis01 ampscz_rap01 ampscz_pps01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01
 do
     ./combine_networks.sh -f $f -e baseline
 done
