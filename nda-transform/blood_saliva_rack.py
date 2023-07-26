@@ -106,7 +106,7 @@ def populate(i):
     for matcode in 'S'.split():
         v1=matcode_var[matcode]
         
-        draw_date=get_value('chrblood_coldate',f'{event}_arm_{arm}')
+        draw_date=get_value('chrsaliva_coldate',f'{event}_arm_{arm}')
         if len(draw_date)<10:
             continue
             
