@@ -91,6 +91,8 @@ def populate(i):
         rack_code=get_value('chrblood_rack_barcode',f'{event}_arm_{arm}')
         # deal with people's state of minds
         rack_code=rack_code.strip()
+        if rack_code in ['-3','-9']:
+            continue
         
         for j,v in enumerate(v1.split()):
             value=get_value(v,f'{event}_arm_{arm}')
@@ -128,6 +130,9 @@ def populate(i):
 
                 # deal with people's state of minds
                 rack_code=rack_code.strip()
+                if rack_code in ['-3','-9']:
+                    continue
+
                 if rack_code[:6].lower()=='pronet':
                     rack_code='ProNET-'+rack_code.strip()[-4:]
 
