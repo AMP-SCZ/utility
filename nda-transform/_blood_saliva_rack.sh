@@ -28,12 +28,15 @@ do
     
 done
 
-exit
+
 # filter the above by a rack code
 if [ ! -z  $1 ]
 then
-    echo $header > blood_saliva_rack_${1}.csv
-    grep ^$1, blood_saliva_rack_*csv >> blood_saliva_rack_${1}.csv
+    assorted=fluid_shipment/blood_saliva_rack_${1}.csv
+    echo $header > $assorted
+    grep ^$1, blood_saliva_rack_Pronet.csv >> $assorted
+    grep ^$1, blood_saliva_rack_Prescient.csv >> $assorted
+
 fi
 
 
