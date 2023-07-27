@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if [ "$1"=="-h" ]
+if [ "$1" == "-h" ]
 then
 
     echo """Usage:
