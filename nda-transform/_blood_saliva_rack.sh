@@ -21,12 +21,14 @@ for n in Pronet
 do
     for e in baseline month_2
     do
-    
+
+        echo $n $e
         /data/predict1/utility/nda-transform/blood_saliva_rack.py \
         --root /data/predict1/data_from_nda/${n}/PHOENIX/PROTECTED/ \
         -o blood_saliva_rack_${n}_${e}.csv --shared ndar_subject01_${n}.csv \
         --template "*/raw/*/surveys/*.${n}.json" -e $e
-        
+        echo
+
     done
 
 
@@ -51,7 +53,9 @@ then
             echo $header > $assorted
             grep ^$1, blood_saliva_rack_Pronet.csv >> $assorted
             # grep ^$1, blood_saliva_rack_Prescient.csv >> $assorted
-
+            
+            echo Generated $assorted
+            echo
         done
 
 fi
