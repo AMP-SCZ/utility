@@ -2,8 +2,8 @@
 
 
 cd /data/predict1/to_nda/nda-submissions/
-
 header="Rack Code,Position on Rack,Draw Date,Inventory Code,Matcode,AMPSCZ_ID,Cohort,Sex,Age on Draw Date,Age Unit,GUID"
+
 
 for n in Pronet
 do
@@ -32,10 +32,15 @@ done
 # filter the above by a rack code
 if [ ! -z  $1 ]
 then
-    assorted=fluid_shipment/blood_saliva_rack_${1}.csv
-    echo $header > $assorted
-    grep ^$1, blood_saliva_rack_Pronet.csv >> $assorted
-    grep ^$1, blood_saliva_rack_Prescient.csv >> $assorted
+    for code in "$@"
+        do
+            
+            assorted=fluid_shipment/blood_saliva_rack_${code}.csv
+            echo $header > $assorted
+            grep ^$1, blood_saliva_rack_Pronet.csv >> $assorted
+            # grep ^$1, blood_saliva_rack_Prescient.csv >> $assorted
+
+        done
 
 fi
 
