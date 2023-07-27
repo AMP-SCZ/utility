@@ -1,6 +1,18 @@
 #!/bin/bash
 
 
+if [ "$1"=="-h" ]
+then
+
+    echo """Usage:
+To generate list of all racks:
+$0
+To generate list of individual racks:
+$0 123456 ProNET-1234"""
+    exit
+
+fi
+
 cd /data/predict1/to_nda/nda-submissions/
 header="Rack Code,Position on Rack,Draw Date,Inventory Code,Matcode,AMPSCZ_ID,Cohort,Sex,Age on Draw Date,Age Unit,GUID"
 
