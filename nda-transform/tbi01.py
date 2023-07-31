@@ -32,7 +32,7 @@ def months_since_consent(interview,consent):
 
 
 def nda_date(redcap_date):
-    if redcap_date=='':
+    if redcap_date in ['','-3','-9']:
         # REDCap missing: 1909-09-09
         # REDCap N/A: 1903-03-03
         return '03/03/1903'
@@ -60,9 +60,11 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if len(interview_date)<10:
         # no data in this form
         return
+    else:
+        interview_date=interview_date[:10]
 
     # get shared variables
     df.at[row,'src_subject_id']=src_subject_id
