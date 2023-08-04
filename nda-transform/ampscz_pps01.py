@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename,abspath
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 import re
 
 
@@ -78,7 +78,7 @@ def populate():
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
 
     for v in columns:
-        if prefix in v:
+        if prefix in v and v not in csv_columns:
             value=get_value(v,f'{event}_arm_{arm}')
             
             vrange=definition.loc[v,'ValueRange']
@@ -130,6 +130,18 @@ def populate():
 
     # return df
 
+    features_file=pjoin(dirname(file),'psychosis_polyrisk_score.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+    
+    for v in csv_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
+
 
 if __name__=='__main__':
 
@@ -178,6 +190,8 @@ if __name__=='__main__':
     for c in definition.index:
         if prefix in c:
             columns.append(c.strip())
+    
+    csv_columns='chrpps_sum1,chrpps_sum2,chrpps_sum7,chrpps_sum8,chrpps_sum9,chrpps_sum10,chrpps_sum11,chrpps_sum12,chrpps_sum13,chrpps_sum14'.split(',')
 
     columns+=['ampscz_missing','ampscz_missing_spec']
     
