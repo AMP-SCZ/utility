@@ -85,7 +85,7 @@ def populate():
     df1=pd.read_csv(features_file,dtype=str)
     df1.set_index(['variable', 'redcap_event_name'],inplace=True)
     
-    for v in columns:
+    for v in csv_columns:
         df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
     
 
@@ -133,11 +133,12 @@ if __name__=='__main__':
         event=args.event
 
         columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
-
+        csv_columns=[]
         for c in df.split(','):
             if prefix in c:
-                columns.append(c.strip().replace('\"',''))
+                csv_columns.append(c.strip().replace('\"',''))
         
+        columns=columns+csv_columns
 
         # save the remaining template
         _,name=mkstemp()
