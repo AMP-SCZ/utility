@@ -7,7 +7,7 @@ ASSIST,assist
 BloodSpecimenPQA,blood_sample_preanalytic_quality_assurance
 BPRS,bprs
 CBC_GCP,gcp_cbc_with_differential
-CBCwithDifferential,cbc_with_differential
+CBC,cbc_with_differential
 CDSS,cdss
 Coenrollment,coenrollment_form
 CSSRS,cssrs_baseline
