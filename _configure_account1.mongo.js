@@ -1,6 +1,13 @@
 // Three commands to provide new users access to DPdash
 
-let _users=[db.users.findOne({"mail":user})];
+let _users;
+if (typeof user === 'undefined'){
+    _users=db.users.find()
+}
+else {
+    _users=[db.users.findOne({"mail":user})];
+}
+
 
 // 1.    provide access to studies
 
