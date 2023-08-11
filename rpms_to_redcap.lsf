@@ -7,7 +7,7 @@ cd ${redcap_phoenix}
 #BSUB -o /data/predict1/utility/bsub/redcap-import-%J-%I.out
 #BSUB -e /data/predict1/utility/bsub/redcap-import-%J-%I.err
 #BSUB -n 4
-#BSUB -R "span[hosts=1] order[slots]"
+#BSUB -R "span[hosts=1] order[!slots]"
 
 i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
 
