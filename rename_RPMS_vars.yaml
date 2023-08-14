@@ -59,9 +59,6 @@ PrescientStudy_Prescient_family_interview_for_genetic_studies_figs_:
 PrescientStudy_Prescient_gcp_cbc_with_differential_:
 - interview_date,chrcbccs_review_date
 
-PrescientStudy_Prescient_gcp_current_health_status_:
-- interview_date,chrgpc_date
-
 PrescientStudy_Prescient_global_functioning_role_scale_:
 - interview_date,chrgfrs_interview_date
 
