@@ -70,9 +70,13 @@ def _date(time_value):
 
 
 def _visit_to_event(chr_hc, form, visit_num):
-    pass
     
-    prefix= rpmsTime_to_redcapTime[visit_num]
+    try:
+        visit_num=int(visit_num)
+    except ValueError:
+        visit_num=int(float(visit_num))
+            
+    prefix= rpmsTime_to_redcapTime[int(visit_num)]
     events= _dfevent.loc[(chr_hc, form)]['unique_event_name'].values
     for e in events:
         if prefix in e:
@@ -188,7 +192,7 @@ except (FileNotFoundError,ValueError):
 
 form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
-data= pd.read_csv(sys.argv[1])
+data= pd.read_csv(sys.argv[1], dtype=str)
 
 
 for _,visit in data.iterrows():
@@ -212,15 +216,31 @@ for _,visit in data.iterrows():
     data_form={}
     for _,row in forms_group.get_group(form).iterrows():
         v= row['Variable / Field Name']
+        dtype= row['Text Validation Type OR Show Slider Number']
+        ftype= row['Field Type']
+        try:
+            annotation= row['Field Annotation'].strip()
+        except AttributeError:
+            annotation= ''
+
         # try/except block for bypassing nonexistent vars in CSV
         # also for bypassing empty forms
         try:
             # consider non-empty only
             if pd.isna(visit[v]):
                 continue
-            elif isinstance(visit[v],str) and visit[v].lower() in ['','-','none','not applicable', 'n/a','na']:
+                
+            elif visit[v].lower() in ['-','none','not applicable', 'n/a','na']:
+                if ftype=='calc':
+                    # always reject not applicable
+                    continue
+                elif ftype=='text' and not pd.isna(dtype):
+                    # if any validation is set, reject not applicable
+                    continue
+
+            elif visit[v] in ['-3','-9','1903-03-03','1909-09-09'] and annotation!='@NOMISSING':
                 continue
-            elif visit[v] in [-3,-9,-99]:
+            elif visit[v]=='-99' and ftype in ['dropdown','yesno','radio']:
                 continue
                 
             # leave checkbox variables out of consideration
@@ -230,13 +250,20 @@ for _,visit in data.iterrows():
 
             # number
             try:
-                residue= int(visit[v])-float(visit[v])
+                _value=visit[v]
+                if _value=='True':
+                    _value=1
+                elif _value=='False':
+                    _value=0
+
+                _value=float(_value)
+                residue= int(_value)-_value
                 if residue:
                     # float
-                    value= visit[v]
+                    value= _value
                 else:
                     # int
-                    value= int(visit[v])
+                    value= int(_value)
 
                     # RPMS yields 0 for unchecked-single-choice radio variables
                     # but REDCap only accepts '' for such
@@ -250,7 +277,6 @@ for _,visit in data.iterrows():
 
             # date, string
             except ValueError:
-                dtype= row['Text Validation Type OR Show Slider Number']
 
                 if dtype=='date_ymd':
                     _string=_date(visit[v])
