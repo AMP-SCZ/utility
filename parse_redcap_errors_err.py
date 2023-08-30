@@ -5,6 +5,10 @@ import re
 from glob import glob
 from tqdm import tqdm
 
+# Example Usage:
+# python parse_redcap_errors_err.py /path/to/redcap-import-<JOBID>-*.err
+# ./parse_redcap_errors_err.py /path/to/redcap-import-<JOBID>-*.err
+
 def parse_file(file_path) -> tuple:
     """
     Parses a file for errors and returns the file path and the number of errors found.

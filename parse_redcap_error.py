@@ -4,6 +4,10 @@ import sys
 from glob import glob
 from tqdm import tqdm
 
+# Example Usage:
+# python parse_redcap_error.py /path/to/redcap-import-<JOBID>-*.out
+# ./parse_redcap_error.py /path/to/redcap-import-<JOBID>-*.out
+
 def parse_file(file) -> tuple:
     """
     Parses a file and returns a tuple containing the file path and the number of HTTP 400 errors found in the file.
