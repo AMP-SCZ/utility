@@ -21,6 +21,9 @@ def get_value(var,event):
             except KeyError:
                 return ''
 
+    # the subject has not reached the event yet
+    return ''
+
 
 def months_since_consent(interview,consent):
     age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
