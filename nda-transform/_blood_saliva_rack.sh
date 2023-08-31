@@ -43,6 +43,7 @@ do
 done
 
 
+
 # filter the above by a rack code
 if [ ! -z  $1 ]
 then
@@ -51,8 +52,8 @@ then
             
             assorted=fluid_shipment/blood_saliva_rack_${code}.csv
             echo $header > $assorted
-            grep ^$1, blood_saliva_rack_Pronet.csv >> $assorted
-            # grep ^$1, blood_saliva_rack_Prescient.csv >> $assorted
+            grep ^$code, blood_saliva_rack_Pronet.csv >> $assorted
+            # grep ^$code, blood_saliva_rack_Prescient.csv >> $assorted
             
             echo Generated $assorted
             echo
