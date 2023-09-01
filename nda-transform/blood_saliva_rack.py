@@ -92,6 +92,9 @@ def populate(i):
         interview_age=dfshared.loc[src_subject_id,'interview_age']+months
         
         rack_code=get_value('chrblood_rack_barcode',f'{event}_arm_{arm}')
+        if matcode=='BC':
+            rack_code=get_value('chrblood_bc1box',f'{event}_arm_{arm}')
+
         # deal with people's state of minds
         rack_code=rack_code.strip()
         if rack_code in ['-3','-9']:
