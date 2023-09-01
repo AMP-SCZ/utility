@@ -102,7 +102,7 @@ def populate(i):
         # deal with people's state of minds
         rack_code=rack_code.strip()
         if rack_code in ['-3','-9']:
-            print('rack_code',rack_code)
+            print('Blood rack code',rack_code)
             continue
         
         for j,v in enumerate(v1.split()):
@@ -115,8 +115,13 @@ def populate(i):
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,matcode,src_subject_id,cohort,
                     sex,interview_age,'Months',subjectkey]
                 i+=1
-            
+    
 
+
+    if get_value('chrsaliva_missing',f'{event}_arm_{arm}')=='1':
+        # no data in this form
+        return i
+    
     # repeat the above for saliva
     for matcode in 'S'.split():
         v1=matcode_var[matcode]
@@ -142,6 +147,7 @@ def populate(i):
                 # deal with people's state of minds
                 rack_code=rack_code.strip()
                 if rack_code in ['-3','-9']:
+                    print('Saliva rack code',rack_code)
                     continue
 
                 if rack_code[:6].lower()=='pronet':
