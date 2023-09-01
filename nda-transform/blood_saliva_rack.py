@@ -81,6 +81,10 @@ def populate(i):
     for matcode in 'WB SE PL BC'.split():
         v1=matcode_var[matcode]
         
+        if get_value('chrblood_missing',f'{event}_arm_{arm}')=='1':
+            # no data in this form
+            continue
+            
         draw_date=get_value('chrblood_drawdate',f'{event}_arm_{arm}')
         if len(draw_date)<10:
             continue
@@ -98,6 +102,7 @@ def populate(i):
         # deal with people's state of minds
         rack_code=rack_code.strip()
         if rack_code in ['-3','-9']:
+            print('rack_code',rack_code)
             continue
         
         for j,v in enumerate(v1.split()):
