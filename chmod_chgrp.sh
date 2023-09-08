@@ -34,7 +34,7 @@ echo Not printing directory names for speed
 IFS=$'\n'
 for d in $(cat $list)
 do
-    g=`ls -ld ./PROTECTED/PronetYA/processed/YA11278/phone | cut -d ' ' -f 4`
+    g=`ls -ld $d | cut -d ' ' -f 4`
     if [[ "$g" != "$g1" ]]
     then
         chgrp $g1 $d
