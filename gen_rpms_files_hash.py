@@ -44,6 +44,7 @@ for suffix in suffixes:
             df.loc[form]
         except:
             df.loc[form]=[content_hash,1]
+            continue
 
         # changed determiner
         if df.loc[form,'content_hash']!=content_hash:
