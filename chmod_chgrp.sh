@@ -40,7 +40,7 @@ do
         chgrp $g1 $d
     fi
     
-    chmod g+s $d
+    chmod g+rws $d
 
 done
 
