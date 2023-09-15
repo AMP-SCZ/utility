@@ -30,6 +30,8 @@ with open('/data/predict1/utility/rpms_file_suffix.txt') as f:
     suffixes=f.read().split()
 
 
+FORCE=0
+
 # read files, compute and compare hashes
 for suffix in suffixes:
     form=f'{subject}_{suffix}'
@@ -49,9 +51,18 @@ for suffix in suffixes:
         # changed determiner
         if df.loc[form,'content_hash']!=content_hash:
             df.loc[form]=[content_hash,1]
+            
+            # change in these forms may affect CHR/HC designation, so upload all
+            if form in [f'{subject}_inclusionexclusion_criteria_review.csv',
+                    f'{subject}_informed_consent_run_sheet.csv']:
+                FORCE=1
+
         else:
             df.at[form,'upload']=0
 
+
+if FORCE:
+    df['upload']=[1]*df.shape[0]
 
 df.to_csv(hashfile)
 
