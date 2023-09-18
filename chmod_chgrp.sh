@@ -4,6 +4,7 @@
 if [ $# -lt 1 ] || [ $1 == '-h' ] || [ $1 == '--help' ]
 then
     echo """Script for setting g+s and changing group of directories
+It also makes files g+rw
 Usage:
 $0 /data/predict1/data_from_nda/Pronet BWH-PREDICT-G
 $0 /data/predict1/data_from_nda/Pronet
@@ -41,6 +42,12 @@ do
     fi
     
     chmod g+rws $d
+
+    # adjust file permissions also
+    for f in `find $d -maxdepth 1 -type f`
+    do
+        chmod g+rw $f
+    done
 
 done
 
