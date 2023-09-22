@@ -73,7 +73,7 @@
 0 4 * * * /data/predict/utility/rsync_eegqc.sh /data/predict/data_from_nda/ /data/eegqc/
 0 5 * * * /data/predict/utility/rsync_eegqc.sh /data/predict/kcho/flow_test/spero/ /opt/data/eegqc-mock/
 
-
+0 05 * * * /data/predict1/utility/backup_formqc.sh
 
 # === rc-predict-gen ===
 
