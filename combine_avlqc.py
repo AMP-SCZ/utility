@@ -1,11 +1,121 @@
 #!/usr/bin/env python
 
-from os.path import join as pjoin, dirname, isdir
+from os.path import isdir
 from os import makedirs
+import os
 import sys
-from glob import glob
+import glob
 import pandas as pd
 import numpy as np
+
+
+def get_master_list() -> str:
+    """
+    Returns the path of the most recent Summary_AMP-SCZ_forms file in the /data/predict1/data_from_nda/formqc directory.
+
+    Returns:
+        str: The path of the most recent Summary_AMP-SCZ_forms file.
+    """
+    master_list_path = "/data/predict1/data_from_nda/formqc"
+    master_list_glob = glob.glob(f"{master_list_path}/Summary_AMP-SCZ_forms*")
+
+    # master_list has all files with date appended
+    # pick the most recent one
+    master_list_glob.sort(key=os.path.getmtime)
+
+    master_list = master_list_glob[-1]
+
+    return master_list
+
+
+def construct_instrument_file_name(site: str, subject: str, instrument: str) -> str:
+    """
+    Constructs a file name for a given site, subject, and instrument.
+
+    Args:
+        site (str): The site name.
+        subject (str): The subject ID.
+        instrument (str): The instrument name.
+
+    Returns:
+        str: The constructed file name in the format "{site}-{subject}-{instrument}-day1to1.csv".
+    """
+    return f"{site}-{subject}-{instrument}-day1to1.csv"
+
+
+def create_file(site: str, subject: str, instrument: str, output_root: str) -> None:
+    """
+    Creates a file with the given site, subject, and instrument information in the specified output directory.
+    The file will have 1 row, with day = 1, subject_id and open_transcript_timepoints_category = 0.
+
+    Args:
+        site (str): The site name.
+        subject (str): The subject ID.
+        instrument (str): The instrument name.
+        output_root (str): The root directory where the file will be saved.
+
+    Returns:
+        None
+    """
+    filename = construct_instrument_file_name(site, subject, instrument)
+
+    required_cols = [
+        "day",
+        "ref_time",
+        "time_of_day",
+        "weekday",
+        "subject_id",
+        "open_transcript_timepoints_category",
+    ]
+    df = pd.DataFrame(columns=required_cols)
+
+    # Add 1 row, with day = 1, subject_id and open_transcript_timepoints_category = 0
+    df["day"] = [1]
+    df["subject_id"] = [subject]
+    df["open_transcript_timepoints_category"] = [0]
+
+    # save the file
+    path = os.path.join(output_root, filename)
+    df.to_csv(path, index=False)
+
+
+def create_blank_files(df: pd.DataFrame, output_root: str) -> None:
+    """
+    Creates blank files for each row in the input DataFrame that does not already exist.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame with columns "site" and "subjectid".
+        output_root (str): Root directory where the files will be created.
+
+    Returns:
+        None
+    """
+    missing = 0
+    for _, row in df.iterrows():
+        site = row["site"]
+        subject = row["subjectid"]
+        filename = construct_instrument_file_name(
+            site=site,
+            subject=subject,
+            instrument="subject_count",
+        )
+
+        # Check if file exists
+        path = os.path.join(output_root, filename)
+        if os.path.exists(path):
+            continue
+
+        # Create the file
+        missing += 1
+        create_file(
+            site=site,
+            subject=subject,
+            instrument="subject_count",
+            output_root=output_root,
+        )
+
+    print(f"Created {missing} missing files")
+
 
 def get_score(zipped_list):
 
@@ -181,18 +291,20 @@ def concat_site_csv(data_root,output_root,center_name):
 
 if __name__ == '__main__':
 
-    concat_site_csv(f'{sys.argv[1]}/Pronet', f'{sys.argv[1]}/AVL_quick_qc', 'PRONET')
-    for site in glob(f'{sys.argv[1]}/Pronet/PHOENIX/GENERAL/*'):
-        if not isdir(site):
-            continue
-            
-        concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
-    
-    concat_site_csv(f'{sys.argv[1]}/Prescient', f'{sys.argv[1]}/AVL_quick_qc', 'PRESCIENT')
-    for site in glob(f'{sys.argv[1]}/Prescient/PHOENIX/GENERAL/*'):
-        if not isdir(site):
-            continue
+    NDA_ROOT = sys.argv[1]
+    NETWORKS = ['Pronet', 'Prescient']
 
-        concat_site_csv(site, f'{sys.argv[1]}/AVL_quick_qc', site[-2:])
+    for NETWORK in NETWORKS:
+        concat_site_csv(f'{NDA_ROOT}/{NETWORK}', f'{NDA_ROOT}/AVL_quick_qc', NETWORK.upper())
+        for site in glob(f'{NDA_ROOT}/{NETWORK}/PHOENIX/GENERAL/*'):
+            if not isdir(site):
+                continue
+            concat_site_csv(site, f'{NDA_ROOT}/AVL_quick_qc', site[-2:])
 
-    
+    # Fill in missing files for subject_count instrument
+    subject_count_dir = os.path.join(NDA_ROOT, "AVL_quick_qc", "subject_count")
+    master_list_path = get_master_list()
+
+    df = pd.read_csv(master_list_path)
+
+    create_blank_files(df=df, output_root=subject_count_dir)
