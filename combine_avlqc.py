@@ -4,7 +4,7 @@ from os.path import isdir
 from os import makedirs
 import os
 import sys
-import glob
+from glob import glob
 import pandas as pd
 import numpy as np
 
@@ -17,7 +17,7 @@ def get_master_list() -> str:
         str: The path of the most recent Summary_AMP-SCZ_forms file.
     """
     master_list_path = "/data/predict1/data_from_nda/formqc"
-    master_list_glob = glob.glob(f"{master_list_path}/Summary_AMP-SCZ_forms*")
+    master_list_glob = glob(f"{master_list_path}/Summary_AMP-SCZ_forms*")
 
     # master_list has all files with date appended
     # pick the most recent one
