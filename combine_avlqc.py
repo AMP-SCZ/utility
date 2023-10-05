@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from os.path import isdir
+from os.path import join as pjoin, isdir
 from os import makedirs
 import os
 import sys
@@ -9,14 +9,17 @@ import pandas as pd
 import numpy as np
 
 
-def get_master_list() -> str:
+def get_master_list(NDA_ROOT: str) -> str:
     """
     Returns the path of the most recent Summary_AMP-SCZ_forms file in the /data/predict1/data_from_nda/formqc directory.
+
+    Args:
+        NDA_ROOT (str): The root directory of the NDA data.
 
     Returns:
         str: The path of the most recent Summary_AMP-SCZ_forms file.
     """
-    master_list_path = "/data/predict1/data_from_nda/formqc"
+    master_list_path = pjoin(NDA_ROOT, "data_from_nda", "formqc")
     master_list_glob = glob(f"{master_list_path}/Summary_AMP-SCZ_forms*")
 
     # master_list has all files with date appended
@@ -101,7 +104,7 @@ def create_blank_files(df: pd.DataFrame, output_root: str) -> None:
         )
 
         # Check if file exists
-        path = os.path.join(output_root, filename)
+        path = pjoin(output_root, filename)
         if os.path.exists(path):
             continue
 
@@ -291,6 +294,11 @@ def concat_site_csv(data_root,output_root,center_name):
 
 if __name__ == '__main__':
 
+    # Check number of arguments
+    if len(sys.argv) != 2:
+        print(f'Usage: {sys.argv[0]} <NDA_ROOT>')
+        sys.exit(1)
+
     NDA_ROOT = sys.argv[1]
     NETWORKS = ['Pronet', 'Prescient']
 
@@ -299,11 +307,12 @@ if __name__ == '__main__':
         for site in glob(f'{NDA_ROOT}/{NETWORK}/PHOENIX/GENERAL/*'):
             if not isdir(site):
                 continue
+
             concat_site_csv(site, f'{NDA_ROOT}/AVL_quick_qc', site[-2:])
 
     # Fill in missing files for subject_count instrument
     subject_count_dir = os.path.join(NDA_ROOT, "AVL_quick_qc", "subject_count")
-    master_list_path = get_master_list()
+    master_list_path = get_master_list(NDA_ROOT)
 
     df = pd.read_csv(master_list_path)
 
