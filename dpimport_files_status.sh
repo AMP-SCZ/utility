@@ -21,12 +21,13 @@ source /data/predict1/utility/.vault/.env.${2}
 echo Importing to mongodb://dpdash:MONGO_PASS@$HOST:$PORT
 echo ''
 
+: << COMMENT
 # delete old collections
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"flowcheck\",\"data_baseline\",\"data_month_2\"]" /data/predict1/utility/remove_assess.js
 
 # delete metadata
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin /data/predict1/utility/remove_metadata.js
-
+COMMENT
 
 # import new collections
 export PATH=/data/predict1/miniconda3/bin:$PATH

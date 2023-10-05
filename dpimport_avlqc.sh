@@ -19,13 +19,14 @@ fi
 
 source /data/predict1/utility/.vault/.env.${2}
 
+: << COMMENT
 # remove old data
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem \
 --tlsCertificateKeyFile $state/ssl/mongo_client.pem \
 mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin \
 --eval "assess=[\"interviewMonoAudioQC_open\",\"interviewVideoQC_open\",\"interviewRedactedTranscriptQC_open\",\"interviewMonoAudioQC_psychs\",\"interviewVideoQC_psychs\",\"interviewRedactedTranscriptQC_psychs\",\"avlqc\",\"open_count\",\"psychs_count\",\"subject_count\"]" /data/predict1/utility/remove_assess.js
 echo ''
-
+COMMENT
 
 # import new data
 export PATH=/data/predict1/miniconda3/bin/:$PATH
