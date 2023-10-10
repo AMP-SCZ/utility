@@ -19,7 +19,7 @@ def get_master_list(NDA_ROOT: str) -> str:
     Returns:
         str: The path of the most recent Summary_AMP-SCZ_forms file.
     """
-    master_list_path = pjoin(NDA_ROOT, "data_from_nda", "formqc")
+    master_list_path = pjoin(NDA_ROOT, "formqc")
     master_list_glob = glob(f"{master_list_path}/Summary_AMP-SCZ_forms*")
 
     # master_list has all files with date appended
