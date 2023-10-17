@@ -21,8 +21,8 @@
 # track /data/predict1/ size, every monday at 12 am
 0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
 
-# clear REDCap upload logs, every monday at 12 am
-0 0 * * 1 rm -f /data/predict/utility/bsub/*
+# clear REDCap upload logs, every Friday at 5 pm
+0 17 * * 5 rm -f /data/predict/utility/bsub/*
 
 # clear NDA upload logs every Monday at 12 am
 0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
