@@ -73,5 +73,5 @@ popd
 
 # subject level data
 cd $NDA_ROOT
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv"
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGquick-day1to*.csv"
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGqc-day1to*.csv" -n 8
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/eeg/??-*-EEGquick-day1to*.csv" -n 8
