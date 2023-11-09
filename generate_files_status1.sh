@@ -24,13 +24,13 @@ rm ${NDA_ROOT}/Prescient_status/*csv
 for network in Pronet Prescient
 do
 
-subject_files_status_for_dpdash1.py --network $network --timepoint baseline
-subject_files_status_for_dpdash1.py --network $network --timepoint month_2
-
+for timepoint in baseline month_2 month_6 month_12
+do
+    subject_files_status_for_dpdash2.py --network $network --timepoint $timepoint
 done
 
 
-for visit in data_baseline data_month_2
+for visit in data_baseline data_month_2 data_month_6 data_month_12
 do
 
 cd ${NDA_ROOT}/Pronet_status
