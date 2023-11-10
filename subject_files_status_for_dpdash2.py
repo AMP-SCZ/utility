@@ -19,10 +19,6 @@ def get_value(event,var):
     for d in dict1:
         if event in d['redcap_event_name']:
             try:
-                # deal with non-compliant interview_date here
-                if var.endswith('_date') and d[var] in ['-3','-9']:
-                    return ''
-                    
                 if d[var]!='':
                     return d[var]
             except KeyError:
