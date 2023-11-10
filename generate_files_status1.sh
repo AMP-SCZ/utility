@@ -34,17 +34,17 @@ for visit in data_baseline data_month_2 data_month_6 data_month_12
 # for visit in data_baseline data_month_2 data_month_6 data_month_12 data_month_24
 do
 
-cd ${NDA_ROOT}/Pronet_status
-project_files_status_for_dpdash.py PRONET ../${name}_metadata.csv *-${visit}-day1to1.csv
+    cd ${NDA_ROOT}/Pronet_status
+    project_files_status_for_dpdash.py PRONET ../${name}_metadata.csv *-${visit}-day1to1.csv
 
-cd ${NDA_ROOT}/Prescient_status
-project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-${visit}-day1to1.csv
+    cd ${NDA_ROOT}/Prescient_status
+    project_files_status_for_dpdash.py PRESCIENT ../${name}_metadata.csv *-${visit}-day1to1.csv
 
-cd ${NDA_ROOT}
-echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
-cat Pronet_status/${name}-PRONET-${visit}-day1to1.csv > ${name}-AMPSCZ-${visit}-day1to1.csv
-tail -n +2 Prescient_status/${name}-PRESCIENT-${visit}-day1to1.csv >> ${name}-AMPSCZ-${visit}-day1to1.csv
-renumber_days.py ${name}-AMPSCZ-${visit}-day1to1.csv
+    cd ${NDA_ROOT}
+    echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
+    cat Pronet_status/${name}-PRONET-${visit}-day1to1.csv > ${name}-AMPSCZ-${visit}-day1to1.csv
+    tail -n +2 Prescient_status/${name}-PRESCIENT-${visit}-day1to1.csv >> ${name}-AMPSCZ-${visit}-day1to1.csv
+    renumber_days.py ${name}-AMPSCZ-${visit}-day1to1.csv
 
 done
 
