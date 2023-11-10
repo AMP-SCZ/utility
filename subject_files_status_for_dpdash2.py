@@ -19,6 +19,10 @@ def get_value(event,var):
     for d in dict1:
         if event in d['redcap_event_name']:
             try:
+                # deal with non-compliant interview_date here
+                if var.endswith('_date') and d[var] in ['-3','-9']:
+                    return ''
+                    
                 if d[var]!='':
                     return d[var]
             except KeyError:
@@ -190,6 +194,8 @@ def get_avl_status():
     interview_date=get_value(timepoint,'chrspeech_interview_date')
     if interview_date=='':
         return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':'', 'avl_missing':''}
+    if interview_date in ['-3','-9']:
+        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'0', 'avl_date':'', 'avl_missing':''}
 
     if get_value(timepoint,'chrspeech_missing')=='1':
         missing_code=get_value(timepoint,'chrspeech_missing_spec')
