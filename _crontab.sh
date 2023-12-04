@@ -57,7 +57,7 @@
 # mongodb backup
 0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
 
-# === eris2n5 ===
+# === dn003 ===
 
 # download EEG run sheets
 # every morning at 3 am
