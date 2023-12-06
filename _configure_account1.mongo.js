@@ -17,7 +17,7 @@ _users.forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME', 'AD', '
 // 2.    provide access to configs
 
 [
-["Combined - Basline+Month 2 - Dataflow",'chief'],
+["Combined - Baseline+Month 2 - Dataflow",'chief'],
 ["Combined - Forms - Month 2",'sbouix'],
 ["Combined - EEG QC",'sbouix'],
 ["Combined - MRI QC",'sbouix'],
