@@ -3,9 +3,11 @@
 import sys
 import pandas as pd
 from glob import glob
+from os import chdir
+from os.path import isfile
 
 
-with open('bsub/rpms_records.txt') as f:
+with open('/data/predict1/utility/bsub/rpms_records.txt') as f:
     dirs= f.read().strip().split()
 
 ROOTDIR=sys.argv[1]
@@ -15,7 +17,7 @@ print('\n\n')
 for dir in dirs:
 
     print(dir)
-    chdir(dir)
+    chdir(ROOTDIR+'/'+dir)
     subjectkey= dir.split('/')[2]
 
     incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
@@ -32,11 +34,13 @@ for dir in dirs:
     else:
         continue
     
+    
+    old=None
 
     # one try-except block to handle absence of incl_excl and empty chrcrit_part
     try:
         df= pd.read_csv(incl_excl)
-        chrit_part= int(df['chrcrit_part'])
+        chrcrit_part= int(df['chrcrit_part'])
 
         if chrcrit_part!=chr_hc:
             if chrcrit_part==1:
