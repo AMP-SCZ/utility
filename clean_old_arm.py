@@ -16,7 +16,7 @@ print('\n\n')
 
 for dir in dirs:
 
-    print(dir)
+    # print(dir)
     chdir(ROOTDIR+'/'+dir)
     subjectkey= dir.split('/')[2]
 
@@ -42,23 +42,24 @@ for dir in dirs:
         df= pd.read_csv(incl_excl)
         chrcrit_part= int(df['chrcrit_part'])
 
-        if chrcrit_part!=chr_hc:
-            if chrcrit_part==1:
-                old=2
-            else:
-                old=1
-
+        if chrcrit_part==1 and chr_hc=='HealthyControl':
+            old=2
+        elif chrcrit_part==2 and chr_hc=='UHR':
+            old=1
 
     except (FileNotFoundError,ValueError):
+        # determine old arm, if any, through yp_rows
+        pass
 
-        if len(_chr_hc)>1:
-            if chr_hc=='UHR':
-                old=2
-            elif chr_hc=='HealthyControl':
-                old=1
+    if len(_chr_hc)>1:
+        if chr_hc=='UHR':
+            old=2
+        elif chr_hc=='HealthyControl':
+            old=1
         
-    
-    print(f'old arm: {old}')
+    if old:
+        print(dir)
+        print(f'old arm: {old}')
 
 
     chdir(ROOTDIR)
