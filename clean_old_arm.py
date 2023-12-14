@@ -4,11 +4,22 @@ import sys
 import pandas as pd
 from glob import glob
 from os import chdir
-from os.path import isfile
+from os.path import isfile, abspath, dirname
 import requests
 
+FILE=abspath(__file__)
 
-with open('/data/predict1/utility/bsub/rpms_records.txt') as f:
+if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+    print(f'''Usage:
+    {FILE} /path/to/PHOENIX/PROTECTED/ API_TOKEN
+
+Some PRESCIENT subjects are re-consonted between CHR & HC.
+The prior consent stays in REDCap as a duplicate record.
+This script deletes those records.''')
+    exit(0)
+
+
+with open('{}/bsub/rpms_records.txt'.format(dirname(FILE))) as f:
     dirs= f.read().strip().split()
 
 ROOTDIR=sys.argv[1]
@@ -85,6 +96,7 @@ for dir in dirs:
 
 
         # set upload=1 so it can be re-downloaded
+        # connect it with r.status_code so non existent arm is not attempted to be deleted
         if dhash.loc[subjectkey,'upload']!=1:
             dhash.loc[subjectkey,'upload']=1
             write=True
