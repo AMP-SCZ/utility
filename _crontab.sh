@@ -41,7 +41,7 @@
 
 # PRESCIENT real
 # determine if new and upload to REDCap
-0 21 * * 2 /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456
+0 21 * * 2 /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456 && /data/predict1/utility/clean_old_arm.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456
 
 # keep one day difference between upload and download so upload can complete
 
