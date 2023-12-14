@@ -90,14 +90,15 @@ for dir in dirs:
             'arm': old,
             'returnFormat': 'json'
         }
-        #r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
-        #print('HTTP Status: ' + str(r.status_code))
-        #print(r.text)
-
+        r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
+        print('\t','HTTP Status: ' + str(r.status_code))
+        if r.status_code!=200:
+            print('\t',r.text,'\n')
 
         # set upload=1 so it can be re-downloaded
-        # connect it with r.status_code so non existent arm is not attempted to be deleted
-        if dhash.loc[subjectkey,'upload']!=1:
+        # connect the setting with r.status_code so that
+        # previously cleaned records are not re-downloaded
+        if r.status_code==200 and dhash.loc[subjectkey,'upload']!=1:
             dhash.loc[subjectkey,'upload']=1
             write=True
     
