@@ -5,16 +5,23 @@ import pandas as pd
 from glob import glob
 from os import chdir
 from os.path import isfile
+import requests
 
 
 with open('/data/predict1/utility/bsub/rpms_records.txt') as f:
     dirs= f.read().strip().split()
 
 ROOTDIR=sys.argv[1]
+hashfile=f'{ROOTDIR}/date_offset.csv'
+dhash=pd.read_csv(hashfile)
+dhash.set_index('subject',inplace=True)
 
 print('\n\n')
 
+write=False
 for dir in dirs:
+
+    ## old arm detection block ##
 
     # print(dir)
     chdir(ROOTDIR+'/'+dir)
@@ -59,11 +66,37 @@ for dir in dirs:
         
     if old:
         print(dir)
-        print(f'old arm: {old}')
+        old=f'{old}'
+        print(f'old arm:',old)
+
+
+        ## old arm cleanup block ##
+        data = {
+            'token': sys.argv[2],
+            'action': 'delete',
+            'content': 'record',
+            'records[0]': subjectkey,
+            'arm': old,
+            'returnFormat': 'json'
+        }
+        #r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
+        #print('HTTP Status: ' + str(r.status_code))
+        #print(r.text)
+
+
+        # set upload=1 so it can be re-downloaded
+        if dhash.loc[subjectkey,'upload']!=1:
+            dhash.loc[subjectkey,'upload']=1
+            write=True
+    
 
 
     chdir(ROOTDIR)
 
+
+if write:
+    dhash.reset_index(inplace=True)
+    dhash.to_csv(hashfile,index=False)
 
 print('\n\n')
 
