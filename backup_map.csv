@@ -7,9 +7,9 @@ utility,predict1-software,,,,
 software,predict1-software,,,,
 miniconda3,predict1-software,,,,
 dpimport,predict1-software,,,,
-data_from_nda_dev,predict1-dev-data,7,180,,
-home,predict1-home,7,180,,
-to_nda,predict1-sub-data,7,180,,
+data_from_nda_dev,predict1-dev-data,,180,,
+home,predict1-home,,180,,
+to_nda,predict1-sub-data,,180,,
 data_from_nda/Pronet,predict1-pronet,,180,,s3 sync
 data_from_nda/Prescient,predict1-prescient,,180,,s3 sync
 data_from_nda/MRI_ROOT,predict1-mri-root,,180,,s3 sync
