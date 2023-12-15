@@ -31,6 +31,11 @@ echo -e '\033[0;31m' $subject '\033[0m' >&2
 /data/predict1/utility/_flatten_multi_records.sh $subject
 /data/predict1/utility/rename_RPMS_vars.py .
 
+
+# changed determiner
+/data/predict1/utility/gen_rpms_files_hash.py $subject
+
+
 # upload all records
 for suffix in $(cat /data/predict1/utility/rpms_file_suffix.txt)
 do

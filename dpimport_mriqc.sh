@@ -23,8 +23,10 @@ fi
 
 source /data/predict1/utility/.vault/.env.${2}
 
+: << COMMENT
 # remove old data
 mongo --tls --tlsCAFile $state/ssl/ca/cacert.pem --tlsCertificateKeyFile $state/ssl/mongo_client.pem mongodb://dpdash:$MONGO_PASS@$HOST:$PORT/dpdata?authSource=admin --eval "assess=[\"mriqc\",\"eegcount\",\"mricount\",\"mriqcval\", \"mridataflow\"]" /data/predict1/utility/remove_assess.js
+COMMENT
 
 # import new data
 export PATH=/data/predict1/miniconda3/bin:$PATH

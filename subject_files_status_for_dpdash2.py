@@ -190,6 +190,8 @@ def get_avl_status():
     interview_date=get_value(timepoint,'chrspeech_interview_date')
     if interview_date=='':
         return {'avl_score':'', 'avl_data':'', 'avl_protocol':'', 'avl_date':'', 'avl_missing':''}
+    if interview_date in ['-3','-9']:
+        return {'avl_score':'', 'avl_data':'', 'avl_protocol':'0', 'avl_date':'', 'avl_missing':''}
 
     if get_value(timepoint,'chrspeech_missing')=='1':
         missing_code=get_value(timepoint,'chrspeech_missing_spec')
@@ -350,23 +352,29 @@ if __name__=='__main__':
             'site':site,'subject_id':subject}
 
         
-        # populate MRI block
-        dict_mri=get_mri_status()
-            
-        # populate EEG block
-        dict_eeg=get_eeg_status()
+        if timepoint in 'baseline,month_2'.split(','):
+            # populate MRI block
+            dict_mri=get_mri_status()
+                
+            # populate EEG block
+            dict_eeg=get_eeg_status()
 
-        # populate A/V/L block
-        dict_avl=get_avl_status()
+            # populate A/V/L block
+            dict_avl=get_avl_status()
 
-        # populate CNB block
-        dict_cnb=get_cnb_status()
+            # populate CNB block
+            dict_cnb=get_cnb_status()
 
-        # join the dicts
-        dict_all.update(dict_mri)
-        dict_all.update(dict_eeg)
-        dict_all.update(dict_avl)
-        dict_all.update(dict_cnb)
+            # join the dicts
+            dict_all.update(dict_mri)
+            dict_all.update(dict_eeg)
+            dict_all.update(dict_avl)
+            dict_all.update(dict_cnb)
+
+        elif timepoint in 'month_6,month_12,month_24'.split(','):
+            # populate CNB block
+            dict_cnb=get_cnb_status()
+            dict_all.update(dict_cnb)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)

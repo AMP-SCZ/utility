@@ -99,23 +99,25 @@ optional: 1 is for force re-upload''')
     exit(0)
 
 
+subjectkey= sys.argv[1].split('_')[0]
 
 if sys.argv[-1]=='1':
     pass
 else:
     subject=basename(sys.argv[1]).split('_')[0]
     
-    hashfile=abspath(sys.argv[4])
+    # sys.argv[4]=date_offset.csv is no longer used in this script
+    hashfile=subjectkey+'_hashes.csv'
     if isfile(hashfile):
 
         dfshift=pd.read_csv(hashfile)
-        dfshift.set_index('subject',inplace=True)
+        dfshift.set_index('form',inplace=True)
 
         # skip unchanged CSVs
-        if subject in dfshift.index and dfshift.loc[subject,'upload']==0:
+        if sys.argv[1] not in dfshift.index or dfshift.loc[sys.argv[1],'upload']==0:
             print(sys.argv[1], 'has not been modified, skipping')
             exit()
-        # if a subject is not in dfshift.index, that got downloaded after date_offset.csv was created
+        # if a form is not in dfshift.index, that got downloaded after {subjectkey}_hashes.csv was created
         # that is a new one and we let it upload
     
     else:
@@ -135,7 +137,6 @@ forms_group= dfdict.groupby('Form Name')
 events_group= dfevent.groupby('unique_event_name')
 
 
-subjectkey= sys.argv[1].split('_')[0]
 incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
 inform_consent= subjectkey+ '_informed_consent_run_sheet.csv'
 if not isfile(inform_consent):
