@@ -90,18 +90,22 @@ for dir in dirs:
             'arm': old,
             'returnFormat': 'json'
         }
-        r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
-        print('\t','HTTP Status: ' + str(r.status_code))
-        if r.status_code!=200:
-            print('\t',r.text,'\n')
 
-        # set upload=1 so it can be re-downloaded
-        # connect the setting with r.status_code so that
-        # previously cleaned records are not re-downloaded
-        if r.status_code==200 and dhash.loc[subjectkey,'upload']!=1:
-            dhash.loc[subjectkey,'upload']=1
-            write=True
-    
+        try:
+            r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
+            print('\t','HTTP Status: ' + str(r.status_code))
+            if r.status_code!=200:
+                print('\t',r.text,'\n')
+
+            # set upload=1 so it can be re-downloaded
+            # connect the setting with r.status_code so that
+            # previously cleaned records are not re-downloaded
+            if r.status_code==200 and dhash.loc[subjectkey,'upload']!=1:
+                dhash.loc[subjectkey,'upload']=1
+                write=True
+
+        except requests.exceptions.ConnectionError:
+            print('Remote disconnected, could not clean this subject')
 
 
     chdir(ROOTDIR)
