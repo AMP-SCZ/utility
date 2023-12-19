@@ -16,7 +16,7 @@
 
 
 
-# === eris2n4 ===
+# === eris2cron ===
 
 # track /data/predict1/ size, every monday at 12 am
 0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
@@ -27,14 +27,6 @@
 # clear NDA upload logs every Monday at 12 am
 0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
 
-# import records to REDCap, once a week
-# used to be 0 */3, 15 */3, 30 */3, 45 */3 (every three hours)
-# changed to only once a week to unburden the compute nodes
-# PRESCIENT mock
-0 0 * * 0 /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda_dev/Prescient/PHOENIX/PROTECTED /data/predict1/utility/amp-scz-form 123456
-
-# ProNET mock
-0 0 * * 2 /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda_dev/Pronet/PHOENIX/PROTECTED /data/predict1/utility/redcap-ii-yale 123456
 
 
 # === dn001 ===
