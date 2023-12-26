@@ -16,19 +16,6 @@
 
 
 
-# === eris2cron ===
-
-# track /data/predict1/ size, every monday at 12 am
-0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
-
-# clear REDCap upload logs, every Friday at 5 pm
-0 17 * * 5 rm -f /data/predict1/utility/bsub/*
-
-# clear NDA upload logs every Monday at 12 am
-0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
-
-
-
 # === dn001 ===
 
 # PRESCIENT real
@@ -50,6 +37,15 @@
 0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
 
 # === dn003 ===
+
+# track /data/predict1/ size, every monday at 12 am
+0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
+
+# clear REDCap upload logs, every Friday at 5 pm
+0 17 * * 5 rm -f /data/predict1/utility/bsub/*
+
+# clear NDA upload logs every Monday at 12 am
+0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
 
 # download EEG run sheets
 # every morning at 3 am
