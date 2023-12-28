@@ -74,6 +74,9 @@
 
 # === rc-predict ===
 
+# track / size, every day at 12 am
+0 0 * * * /opt/track_briefcase_size.sh / tbillah sbouix jtbaker
+
 # generate list of DPdash users
 # run as root
 0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah sbouix ekotler
