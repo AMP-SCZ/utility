@@ -23,7 +23,7 @@ _users.forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME', 'CG', '
 ["Combined - MRI QC",'sbouix'],
 ["Combined - Fluid Biomarkers",'sbouix'],
 ["Combined - Audio/Video QC",'sbouix'],
-["Digital Biomarker: Combined Axivity+Mindlamp for QC (Yearly)",'habibrahimi']
+["Digital Biomarker: Combined Axivity+Mindlamp for QC (Yearly)",'habibrahimi'],
 ["Digital Biomarker: Axivity+Mindlamp for QC (Daily)",'habibrahimi'],
 ["Digital Biomarker: Axivity Data for QC (Monthly)",'habibrahimi'],
 ["Digital Biomarker: Mindlamp Data for QC (Monthly)",'habibrahimi'],
