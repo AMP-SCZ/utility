@@ -11,7 +11,7 @@ else {
 
 // 1.    provide access to studies
 
-_users.forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME', 'AD', 'CG', 'JE', 'CP', 'BM', 'ST', 'LS', 'GW', 'SG', 'HK', 'LA', 'OR', 'BI', 'NL', 'NC', 'SD', 'CA', 'YA', 'SF', 'PA', 'SI', 'PI', 'NN', 'IR', 'TE', 'GA', 'WU', 'HA', 'MT', 'KC', 'PV', 'MA', 'CM', 'MU', 'SH', 'SL', 'combined']}}));
+_users.forEach(u=>db.users.update({"uid":u.uid}, {$set:{"access": ['ME', 'CG', 'JE', 'CP', 'BM', 'ST', 'LS', 'GW', 'SG', 'HK', 'LA', 'OR', 'BI', 'NL', 'NC', 'SD', 'CA', 'YA', 'SF', 'PA', 'SI', 'PI', 'NN', 'IR', 'TE', 'GA', 'WU', 'HA', 'MT', 'KC', 'PV', 'MA', 'CM', 'MU', 'SH', 'SL', 'OH', 'UR', 'CU', 'combined']}}));
 
 
 // 2.    provide access to configs
