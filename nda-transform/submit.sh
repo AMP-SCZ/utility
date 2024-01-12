@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export PATH=/data/predict1/miniconda3/bin:$PATH
+export PYTHONPATH=/data/predict1/nda-tools/
 
 _help()
 {
