@@ -45,7 +45,7 @@
 0 17 * * 5 rm -f /data/predict1/utility/bsub/*
 
 # clear NDA upload logs every Monday at 12 am
-0 0 * * 1 rm -f /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
+0 0 * * 1 rm -rf /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
 
 # download EEG run sheets
 # every morning at 3 am
