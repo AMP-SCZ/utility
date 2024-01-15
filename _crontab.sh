@@ -36,10 +36,19 @@
 # mongodb backup
 0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
 
-# === dn003 ===
+
+
+# === dn018 ===
+
+# upload data tracker CSV files to Dropbox
+0 4 * * * /data/predict1/utility/data_tracker_dropbox.sh
 
 # track /data/predict1/ size, every monday at 12 am
 0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
+
+
+
+# === dn003 ===
 
 # clear REDCap upload logs, every Friday at 5 pm
 0 17 * * 5 rm -f /data/predict1/utility/bsub/*
