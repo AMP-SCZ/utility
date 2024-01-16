@@ -13,6 +13,7 @@ today=datetime.today().strftime('%Y-%m-%d')
 df_mri=pd.read_csv('/data/predict1/data_from_nda/MRI_ROOT/eeg_mri_count/mri_all_db.csv')
 df_mri.set_index('subject',inplace=True)
 
+
 def get_value(event,var):
     """Extract value from JSON"""
 
@@ -28,8 +29,22 @@ def get_value(event,var):
     return ''
 
 
+def get_value_from_dict(dict1, event, var):
+    """Extract value from JSON"""
 
-def get_mri_status():
+    for d in dict1:
+        if event in d['redcap_event_name']:
+            try:
+                if d[var] != '':
+                    return d[var]
+            except KeyError:
+                pass
+                
+    # the subject has not reached the event yet
+    return ''
+
+
+def get_mri_status(dict1, timepoint, consent_date, subject, test=False):
     """Available variables:
 
     nda_root
@@ -41,96 +56,120 @@ def get_mri_status():
     site
     subject
     """
-    
-
-    interview_date=get_value(timepoint,'chrmri_entry_date')
+    interview_date = get_value_from_dict(dict1, timepoint, 'chrmri_entry_date')
+    if test:
+        print('chrmri_entry_date', interview_date)
     if interview_date=='':
-        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':'', 'mri_missing':''}
+        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'',
+                'mri_date':'', 'mri_missing':''}
 
-    if get_value(timepoint,'chrmri_missing')=='1':
-        missing_code=get_value(timepoint,'chrmri_missing_spec')
-        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':interview_date, 'mri_missing':missing_code}
+    if get_value_from_dict(dict1, timepoint, 'chrmri_missing')=='1':
+        missing_code = get_value_from_dict(
+                dict1, timepoint, 'chrmri_missing_spec')
+        return {'mri_score':'', 'mri_data':'', 'mri_protocol':'',
+                'mri_date':interview_date, 'mri_missing':missing_code}
 
-    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    scan_minus_consent=str_date_minus_str_date(consent_date, interview_date)
     days_since_scan=str_date_minus_str_date(interview_date,today)
     
-
     try:
-        for s,row in df_mri.loc[subject].iterrows():
-            if timepoint in row['timepoint_text']:
-                break
-    
-    except (KeyError,AttributeError,TypeError):
+        # get information using subject ID and entry_date
+        df_subject = df_mri.loc[subject]
+
+        # restrict to the rows with run sheet information
+        df_subject = df_subject[~df_subject.file_loc.isnull()]
+        if len(df_subject) == 0:
+            raise KeyError
+
+        # match the row based on the interview date
+        df_subject_scan = df_subject.set_index(
+                'entry_date').loc[[interview_date]]
+        if test:
+            print(df_subject_scan)
+
+        if len(df_subject_scan) == 1:
+            row = df_subject_scan.iloc[0]
+        elif len(df_subject_scan) == 0:
+            raise AttributeError
+        else:
+            # multiple lines for the subject and scan date
+            print(f'More than one matched information for {subject} '
+                  f'{timepoint} in the mri_all_db.csv. '
+                  f'Using the first row.')
+            row = df_subject_scan.iloc[0]
+    except (KeyError, AttributeError, TypeError):
         # KeyError: subject does not exist in df_mri
         # AttributeError: only one row for the subject
         # TypeError: timepoint_text cell is NaN for the subject
-        
         try:
-            row=df_mri.loc[subject]
-        except (KeyError,TypeError):
+            row = df_mri.loc[subject]
+        except (KeyError, TypeError):
             pass
 
+    if test:
+        df_tmp = df_subject_scan.reset_index()[
+                ['entry_date', 'mri_data_exist',
+                          'file_name', 'session_num', 'network', 'file_loc']]
+        df_tmp['file_loc'] = df_tmp['file_loc'].fillna('zip')
+        print(df_tmp)
 
     try:
-        score=int(row['mriqc_int'])
-        assert score>=0 and score<=2
+        score = int(row['mriqc_int'])
+        assert score >= 0 and score <= 2
         # 0: unusable, 1: partial pass, 2: full pass
     except:
-        score=-days_since_scan
+        score = -days_since_scan
     
     try:
-        data=int(row['mri_data_exist'])
-        assert data==1
+        data = int(row['mri_data_exist'])
+        assert data == 1
     except:
-        data=-days_since_scan
+        data = -days_since_scan
         
-    
-    protocol=1
+    protocol = 1
 
-    for v in ['chrmri_consent','chrmri_metal','chrmri_physicalmetal']:
-        if get_value(timepoint,v)!='1':
-            protocol=0
+    for v in ['chrmri_consent', 'chrmri_metal', 'chrmri_physicalmetal']:
+        if get_value_from_dict(dict1, timepoint, v) != '1':
+            protocol = 0
             break
 
-    if get_value(timepoint,'chrmri_confirm')=='2':
-        protocol=0
+    if get_value_from_dict(dict1, timepoint, 'chrmri_confirm') == '2':
+        protocol = 0
 
-    if get_value(timepoint,'chrmri_dental')=='1':
-        protocol=0
+    if get_value_from_dict(dict1, timepoint, 'chrmri_dental') == '1':
+        protocol = 0
 
     for v in ['chrmri_aahscout',
-            'chrmri_calib_ge', 'chrmri_calib_ge_2', 'chrmri_calib_ge_3',
-            'chrmri_localizeraligned', 'chrmri_localizerseq',
-            'chrmri_localizerseq_ge',
-            'chrmri_dmap', 'chrmri_dmap2', 'chrmri_dmap3',
-            'chrmri_dmap_qc', 'chrmri_dmap_qc_2', 'chrmri_dmap_qc_3',
-            'chrmri_dmpa', 'chrmri_dmpa2', 'chrmri_dmpa3',
-            'chrmri_dmpa_qc', 'chrmri_dmpa_qc_2', 'chrmri_dmpa_qc_3',
-            'chrmri_t1', 'chrmri_t1_qc',
-            'chrmri_t2', 'chrmri_t2_qc', 'chrmri_t2_ge', 'chrmri_t2_qc_ge',
-            'chrmri_dmri126', 'chrmri_dmri126_qc',
-            'chrmri_dmri176', 'chrmri_dmri176_qc',
-            'chrmri_dmri_b0', 'chrmri_dmri_b0_2',
-            'chrmri_dmri_b0_qc', 'chrmri_dmri_b0_qc_2',
-            'chrmri_rfmriap', 'chrmri_rfmriap2',
-            'chrmri_rfmriap2_qc', 'chrmri_rfmriap_qc',
-            'chrmri_rfmriap_ref_num', 'chrmri_rfmriap_ref_num_2',
-            'chrmri_rfmriap_ref_qc', 'chrmri_rfmriap_ref_qc_2',
-            'chrmri_rfmripa', 'chrmri_rfmripa2',
-            'chrmri_rfmripa2_qc', 'chrmri_rfmripa_qc',
-            'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
-            'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
+              'chrmri_calib_ge', 'chrmri_calib_ge_2', 'chrmri_calib_ge_3',
+              'chrmri_localizeraligned', 'chrmri_localizerseq',
+              'chrmri_localizerseq_ge',
+              'chrmri_dmap', 'chrmri_dmap2', 'chrmri_dmap3',
+              'chrmri_dmap_qc', 'chrmri_dmap_qc_2', 'chrmri_dmap_qc_3',
+              'chrmri_dmpa', 'chrmri_dmpa2', 'chrmri_dmpa3',
+              'chrmri_dmpa_qc', 'chrmri_dmpa_qc_2', 'chrmri_dmpa_qc_3',
+              'chrmri_t1', 'chrmri_t1_qc',
+              'chrmri_t2', 'chrmri_t2_qc', 'chrmri_t2_ge', 'chrmri_t2_qc_ge',
+              'chrmri_dmri126', 'chrmri_dmri126_qc',
+              'chrmri_dmri176', 'chrmri_dmri176_qc',
+              'chrmri_dmri_b0', 'chrmri_dmri_b0_2',
+              'chrmri_dmri_b0_qc', 'chrmri_dmri_b0_qc_2',
+              'chrmri_rfmriap', 'chrmri_rfmriap2',
+              'chrmri_rfmriap2_qc', 'chrmri_rfmriap_qc',
+              'chrmri_rfmriap_ref_num', 'chrmri_rfmriap_ref_num_2',
+              'chrmri_rfmriap_ref_qc', 'chrmri_rfmriap_ref_qc_2',
+              'chrmri_rfmripa', 'chrmri_rfmripa2',
+              'chrmri_rfmripa2_qc', 'chrmri_rfmripa_qc',
+              'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
+              'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
     
-        if get_value(timepoint,v)=='3':
-            protocol=0
+        if get_value_from_dict(dict1, timepoint, v) == '3':
+            protocol = 0
             break
 
-
-    dict2={'mri_score':score, 'mri_data':data, 'mri_protocol':protocol, 'mri_date':interview_date,
-        'mri_missing':''}
+    dict2 = {'mri_score':score, 'mri_data':data, 'mri_protocol':protocol,
+             'mri_date':interview_date, 'mri_missing':''}
 
     return dict2
-
 
 
 def get_eeg_status():
@@ -354,8 +393,8 @@ if __name__=='__main__':
         
         if timepoint in 'baseline,month_2'.split(','):
             # populate MRI block
-            dict_mri=get_mri_status()
-                
+            dict_mri = get_mri_status(dict1, timepoint, consent_date, subject)
+
             # populate EEG block
             dict_eeg=get_eeg_status()
 
