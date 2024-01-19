@@ -235,7 +235,7 @@ def get_avl_status():
     # if there is a valid score, data is surely here
     if score==-days_since_scan:
 
-        if len(glob(prefix+ '*interview*_open-day*to*.csv'))<2:
+        if glob(prefix+ '*interviewMonoAudioQC_open-day*to*.csv'):
             data=-days_since_scan
         
         # following could be a stricter way to detect data availability
