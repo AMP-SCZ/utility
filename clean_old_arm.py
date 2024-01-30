@@ -27,6 +27,10 @@ hashfile=f'{ROOTDIR}/date_offset.csv'
 dhash=pd.read_csv(hashfile)
 dhash.set_index('subject',inplace=True)
 
+cleanfile=f'{ROOTDIR}/duplicate_arm.csv'
+dclean=pd.read_csv(cleanfile)
+dclean.set_index('subject',inplace=True)
+
 print('\n\n')
 
 write=False
@@ -80,6 +84,15 @@ for dir in dirs:
             old=1
         
     if old:
+
+        ## skip if it was cleaned before ##
+        try:
+            assert (dclean.loc[subjectkey]==[old,1]).all()
+            continue
+        except (KeyError,AssertionError):
+            pass
+        
+        
         print(dir)
         old=f'{old}'
         print(f'old arm:',old)
@@ -106,11 +119,13 @@ for dir in dirs:
             # previously cleaned records are not re-downloaded
             if r.status_code==200 and dhash.loc[subjectkey,'upload']!=1:
                 dhash.loc[subjectkey,'upload']=1
+                dclean.loc[subjectkey]=old,1
                 write=True
+                
 
         except requests.exceptions.ConnectionError:
             print('\033[0;31m Remote disconnected, could not clean this subject \033[0m \n')
-
+            
 
     chdir(ROOTDIR)
 
@@ -118,6 +133,9 @@ for dir in dirs:
 if write:
     dhash.reset_index(inplace=True)
     dhash.to_csv(hashfile,index=False)
+    
+    dclean.reset_index(inplace=True)
+    dclean.to_csv(cleanfile,index=False)
 
 print('\n\n')
 
