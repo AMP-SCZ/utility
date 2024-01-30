@@ -45,6 +45,10 @@ for dir in dirs:
         df= pd.read_csv(inform_consent)
         # extract Young Patient's rows only, we do not need Guardian's rows
         yp_rows= df[df['version']=='YP']
+        if len(yp_rows)==0:
+            print('\t','\033[0;31m YP\'s row absent in',inform_consent,'\033[0m \n')
+            continue
+
         _chr_hc= yp_rows['group'].unique()
         # to account for re-consent scenario, consider only the last row
         chr_hc= yp_rows.iloc[-1]['group']
@@ -105,7 +109,7 @@ for dir in dirs:
                 write=True
 
         except requests.exceptions.ConnectionError:
-            print('Remote disconnected, could not clean this subject')
+            print('\033[0;31m Remote disconnected, could not clean this subject \033[0m \n')
 
 
     chdir(ROOTDIR)
