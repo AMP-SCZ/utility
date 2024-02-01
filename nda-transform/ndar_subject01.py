@@ -54,8 +54,11 @@ def populate():
         interview_age=get_value('chrdemo_age_mos_hc','baseline_arm_2')
     
     if interview_age=='' or interview_age==None:
-         # we cannot submit a subject w/o an age
-        return
+        interview_age=get_value('chrdemo_age_mos2',f'baseline_arm_{arm}')
+        
+        # we cannot submit a subject w/o an age
+        if interview_age in ['','-3','-9']:
+            return
 
         
     sex=get_value('chrdemo_sexassigned',f'baseline_arm_{arm}')
