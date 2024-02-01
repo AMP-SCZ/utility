@@ -14,6 +14,11 @@ with open(sys.argv[1]) as f:
 
 validation=pd.read_csv(sys.argv[2],dtype=str)
 error_rows=validation['RECORD'].values
+
+if not len(error_rows):
+    print('All good with',sys.argv[1],'nothing to do')
+    exit()
+
 # add 1 to match with 0-indexed data
 LE=len(error_rows)
 for i in range(LE):
