@@ -117,7 +117,7 @@ for dir in dirs:
             # set upload=1 so it can be re-downloaded
             # connect the setting with r.status_code so that
             # previously cleaned records are not re-downloaded
-            if r.status_code==200 and dhash.loc[subjectkey,'upload']!=1:
+            if r.status_code==200 and dhash.loc[subjectkey,'upload']!=0:
                 dhash.loc[subjectkey,'upload']=1
                 dclean.loc[subjectkey]=old,1
                 write=True
