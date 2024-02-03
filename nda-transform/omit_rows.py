@@ -10,16 +10,18 @@ if sys.argv[1] in ['-h', '--help'] or len(sys.argv)<3:
     exit()
 
 with open(sys.argv[1]) as f:
-    data=f.read().split('\n')
+    data=f.read().strip().split('\n')
 
 validation=pd.read_csv(sys.argv[2],dtype=str)
-error_rows=validation['RECORD'].values
+error_rows=validation['RECORD'].unique()
 
 if not len(error_rows):
     print('All good with',sys.argv[1],'nothing to do')
     exit()
 
-# add 1 to match with 0-indexed data
+# enumerate(data) is 0-indexed
+# RECORD=i matches with line i+2 in data whose index is i+1
+# so add 1 with RECORD to match with enumerate(data) indices
 LE=len(error_rows)
 for i in range(LE):
     error_rows[i]=int(error_rows[i])+1
