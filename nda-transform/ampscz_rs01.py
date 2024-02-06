@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename, abspath
 
 
 # this function should have knowledge of dict1
