@@ -79,8 +79,8 @@ do
    ./combine_networks.sh -f $f
 done
 
-./combine_networks.sh -f gfs01 -s chrgfss
-./combine_networks.sh -f gfs01 -s chrgfrs
+./combine_networks.sh -f gfs01 -e baseline -s chrgfss
+./combine_networks.sh -f gfs01 -e baseline -s chrgfrs
 
 ./wais_iv_part101.sh /data/predict1/to_nda/nda-submissions/network_combined/wisc_v01_baseline.csv
 
