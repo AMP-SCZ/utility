@@ -19,6 +19,8 @@ if not len(error_rows):
     print('All good with',sys.argv[1],'nothing to do')
     exit()
 
+
+# RECORD is 1-indexed
 # enumerate(data) is 0-indexed
 # RECORD=i matches with line i+2 in data whose index is i+1
 # so add 1 with RECORD to match with enumerate(data) indices
