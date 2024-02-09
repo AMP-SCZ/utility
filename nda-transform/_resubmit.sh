@@ -15,14 +15,15 @@ for f in ampscz_dim01 ampscz_rs01 iec01 pds01 figs01; do ./submit.sh -f $f -u tb
 ./submit.sh -f gfs01 -s chrgfrs -e baseline -u tbillah
 
 
-for f in ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01
+for f in ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01 clinlabtestsp201 vitas01 dailyd01 scidcls01
 do
     ./submit.sh -f $f -e baseline -u tbillah
 done
 
 
-for f in ampscz_psychs01 dsm_iv_es01
+for f in ampscz_psychs01 dsm_iv_es01 medhi01
 do
-    ./combine_networks.sh -f $f -e screening
+    ./submit.sh -f $f -e screening
 done
+
 
