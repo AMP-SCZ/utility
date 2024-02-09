@@ -56,6 +56,14 @@ do
 ./_figs01.sh $n
 
 
+# structures after release-1
+./generate.sh -n $n -f medhi01 -e screening -p chrpharm
+
+./generate.sh -n $n -f clinlabtestsp201 -e baseline -p chrcbc
+./generate.sh -n $n -f vitas01 -e baseline -p chrchs
+./generate.sh -n $n -f dailyd01 -e baseline -p chrsaliva
+./generate.sh -n $n -f scidcls01 -e baseline -p chrscid
+
 done
 
 
@@ -64,12 +72,12 @@ then
 
 ### combination step ###
 
-for f in assist01 ampscz_iqa01 wasi201 wisc_v01 cgis01 ampscz_rap01 ampscz_pps01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01
+for f in assist01 ampscz_iqa01 wasi201 wisc_v01 cgis01 ampscz_rap01 ampscz_pps01 ampscz_psychs01 ampscz_nsipr01 bprs01 clgry01 cssrs01 dsm_iv_es01 oasis01 pmod01 sri01 pss01 clinlabtestsp201 vitas01 dailyd01 scidcls01
 do
     ./combine_networks.sh -f $f -e baseline
 done
 
-for f in ampscz_hcgfb01 ampscz_lapes01 scidvapd01 tbi01 dsm_iv_es01 ampscz_psychs01
+for f in ampscz_hcgfb01 ampscz_lapes01 scidvapd01 tbi01 dsm_iv_es01 ampscz_psychs01 medhi01
 do
     ./combine_networks.sh -f $f -e screening
 done
