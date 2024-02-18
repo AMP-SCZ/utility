@@ -12,11 +12,11 @@ rm -f $list && touch $list
 for s in `ls -d */PHOENIX/PROTECTED/*/`
 do
     # now go into each subject directory
-    for d in `ls -d ${s}/processed/*/`
+    for d in `ls -d ${s}/processed/???????/`
     do
         # echo $d
-        ls ${d}/eeg/*/Figures/*[!QC].png >> $list
-        ls ${d}/eeg/*/Figures/*_runSheet.* >> $list
+        ls ${d}/eeg/*/Figures/*[!QC].png >> $list 2>/dev/null
+        ls ${d}/eeg/*/Figures/*_runSheet.* >> $list 2>/dev/null
     done
 done
 # the nested for loops were required to prevent
