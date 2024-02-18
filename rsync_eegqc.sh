@@ -22,6 +22,6 @@ done
 # the nested for loops were required to prevent
 # "ls: Argument list too long" within cron job
 
-# rsync -avR --files-from=$list . rc-predict-gen.partners.org:$2
+rsync -avR --files-from=$list . rc-predict-gen.partners.org:$2
 
 
