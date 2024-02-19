@@ -54,7 +54,6 @@ for dir in dirs:
             print('\t','\033[0;31m YP\'s row absent in',inform_consent,'\033[0m \n')
             continue
 
-        _chr_hc= yp['group'].unique()
         # to account for re-consent scenario, consider only the latest row
         yp_sorted= yp.sort_values('interview_date',
             key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
@@ -80,7 +79,7 @@ for dir in dirs:
         # determine old arm, if any, through yp_rows
         pass
 
-    if len(_chr_hc)>1:
+    if yp['group'].unique().shape[0]>1:
         if chr_hc=='UHR':
             old=2
         elif chr_hc=='HealthyControl':
