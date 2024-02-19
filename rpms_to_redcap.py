@@ -171,6 +171,15 @@ def entry_status(redcap_label,rpms_visit):
         return 2
 
 
+df= pd.read_csv(inform_consent)
+# extract Young Patient's rows only, we do not need Guardian's rows
+# to account for re-consent scenario, consider only the latest row
+yp= df[df['version']=='YP']
+yp_sorted= yp.sort_values('interview_date',
+    key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+
+
+
 # one try-except block to handle absence of incl_excl and empty chrcrit_part
 try:
     df= pd.read_csv(incl_excl)
@@ -178,12 +187,6 @@ try:
     
 except (FileNotFoundError,ValueError):
 
-    df= pd.read_csv(inform_consent)
-    # extract Young Patient's rows only, we do not need Guardian's rows
-    # to account for re-consent scenario, consider only the latest row
-    yp= df[df['version']=='YP']
-    yp_sorted= yp.sort_values('interview_date',
-        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
     chr_hc= yp_sorted.iloc[-1]['group']
     if chr_hc=='UHR':
         chr_hc=1
@@ -298,6 +301,12 @@ for _,visit in data.iterrows():
 
         except KeyError:
             pass
+    
+    
+    if form=='informed_consent_run_sheet':
+        print(yp_sorted['interview_date'].values)
+        orig_consent=yp_sorted.iloc[0]['interview_date']
+        data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
     
     
     if form=='sociodemographics':
