@@ -76,10 +76,11 @@ for file in files:
             except KeyError:
                 print('\tdoes not seem to have been consented\n')
                 continue
-
-            group2= group1[group1['version']=='YP'].iloc[-1]
-
-            chr_hc= group2['group']
+            
+            yp= group1[group1['version']=='YP']
+            yp_sorted= yp.sort_values('interview_date',
+                key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+            chr_hc= yp_sorted.iloc[-1]['group']
 
 
         if chr_hc=='UHR':
