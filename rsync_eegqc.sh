@@ -8,11 +8,19 @@ cd $NDA_ROOT
 list=$NDA_ROOT/.rsync_eegqc.list
 rm -f $list && touch $list
 
-for d in `ls -d */PHOENIX/PROTECTED/*/`
+# go into each site directory
+for s in `ls -d */PHOENIX/PROTECTED/*/`
 do
-    ls ${d}/processed/*/eeg/*/Figures/*[!QC].png >> $list
-    ls ${d}/processed/*/eeg/*/Figures/*_runSheet.* >> $list
+    # now go into each subject directory
+    for d in `ls -d ${s}/processed/???????/`
+    do
+        # echo $d
+        ls ${d}/eeg/*/Figures/*[!QC].png >> $list 2>/dev/null
+        ls ${d}/eeg/*/Figures/*_runSheet.* >> $list 2>/dev/null
+    done
 done
+# the nested for loops were required to prevent
+# "ls: Argument list too long" within cron job
 
 rsync -avR --files-from=$list . rc-predict-gen.partners.org:$2
 
