@@ -91,10 +91,9 @@ def _visit_to_event(chr_hc, form, visit_num):
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
     print(f'''Usage:
-    {abspath(__file__)} ME57953.csv forms-dir API_TOKEN /path/to/date_offset.csv 1
+    {abspath(__file__)} ME57953.csv forms-dir API_TOKEN 1
 execute it within /path/to/ME57953/surveys/ directory
 forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files
-optional: date_offset.csv is the file with 1/0 upload bit
 optional: 1 is for force re-upload''')
     exit(0)
 
@@ -106,7 +105,6 @@ if sys.argv[-1]=='1':
 else:
     subject=basename(sys.argv[1]).split('_')[0]
     
-    # sys.argv[4]=date_offset.csv is no longer used in this script
     hashfile=subjectkey+'_hashes.csv'
     if isfile(hashfile):
 
@@ -182,8 +180,11 @@ except (FileNotFoundError,ValueError):
 
     df= pd.read_csv(inform_consent)
     # extract Young Patient's rows only, we do not need Guardian's rows
-    # to account for re-consent scenario, consider only the last row
-    chr_hc= df[df['version']=='YP'].iloc[-1]['group']
+    # to account for re-consent scenario, consider only the latest row
+    yp= df[df['version']=='YP']
+    yp_sorted= yp.sort_values('interview_date',
+        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+    chr_hc= yp_sorted.iloc[-1]['group']
     if chr_hc=='UHR':
         chr_hc=1
     elif chr_hc=='HealthyControl':
