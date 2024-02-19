@@ -57,6 +57,11 @@ for dir in dirs:
         # to account for re-consent scenario, consider only the latest row
         yp_sorted= yp.sort_values('interview_date',
             key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+
+        if yp['group'].unique().shape[0]==1:
+            # this subject cannot have duplicate arm
+            continue
+
         chr_hc= yp_sorted.iloc[-1]['group']
 
     else:
@@ -70,13 +75,13 @@ for dir in dirs:
         df= pd.read_csv(incl_excl)
         chrcrit_part= int(df['chrcrit_part'])
 
-        if chrcrit_part==1 and chr_hc=='HealthyControl':
+        if chrcrit_part==1:
             old=2
-        elif chrcrit_part==2 and chr_hc=='UHR':
+        elif chrcrit_part==2:
             old=1
 
     except (FileNotFoundError,ValueError):
-        # determine old arm, if any, through yp_rows
+        # determine old arm, if any, through yp_sorted
         pass
 
     if yp['group'].unique().shape[0]>1:
