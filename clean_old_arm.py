@@ -6,6 +6,7 @@ from glob import glob
 from os import chdir
 from os.path import isfile, abspath, dirname
 import requests
+from datetime import datetime
 
 FILE=abspath(__file__)
 
@@ -48,14 +49,16 @@ for dir in dirs:
     if isfile(inform_consent):
         df= pd.read_csv(inform_consent)
         # extract Young Patient's rows only, we do not need Guardian's rows
-        yp_rows= df[df['version']=='YP']
-        if len(yp_rows)==0:
+        yp= df[df['version']=='YP']
+        if len(yp)==0:
             print('\t','\033[0;31m YP\'s row absent in',inform_consent,'\033[0m \n')
             continue
 
-        _chr_hc= yp_rows['group'].unique()
-        # to account for re-consent scenario, consider only the last row
-        chr_hc= yp_rows.iloc[-1]['group']
+        _chr_hc= yp['group'].unique()
+        # to account for re-consent scenario, consider only the latest row
+        yp_sorted= yp.sort_values('interview_date',
+            key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+        chr_hc= yp_sorted.iloc[-1]['group']
 
     else:
         continue
