@@ -310,9 +310,10 @@ for _,visit in data.iterrows():
     
     
     if form=='informed_consent_run_sheet':
-        yp_sorted=sort_consent_dates(data)
-        orig_consent=yp_sorted.iloc[0]['interview_date']
-        data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
+        if data['interview_date'].unique().shape[0]>1:
+            yp_sorted=sort_consent_dates(data)
+            orig_consent=yp_sorted.iloc[0]['interview_date']
+            data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
     
     
     if form=='sociodemographics':
