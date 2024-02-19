@@ -171,12 +171,15 @@ def entry_status(redcap_label,rpms_visit):
         return 2
 
 
-df= pd.read_csv(inform_consent)
-# extract Young Patient's rows only, we do not need Guardian's rows
-# to account for re-consent scenario, consider only the latest row
-yp= df[df['version']=='YP']
-yp_sorted= yp.sort_values('interview_date',
-    key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+def sort_consent_dates(df):
+
+    # extract Young Patient's rows only, we do not need Guardian's rows
+    # to account for re-consent scenario, consider only the latest row
+    yp= df[df['version']=='YP']
+    yp_sorted= yp.sort_values('interview_date',
+        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+
+    return yp_sorted
 
 
 
@@ -186,6 +189,9 @@ try:
     chr_hc= int(df['chrcrit_part'])
     
 except (FileNotFoundError,ValueError):
+    
+    df= pd.read_csv(inform_consent)
+    yp_sorted= sort_consent_dates(df)
 
     chr_hc= yp_sorted.iloc[-1]['group']
     if chr_hc=='UHR':
@@ -304,7 +310,7 @@ for _,visit in data.iterrows():
     
     
     if form=='informed_consent_run_sheet':
-        print(yp_sorted['interview_date'].values)
+        yp_sorted=sort_consent_dates(data)
         orig_consent=yp_sorted.iloc[0]['interview_date']
         data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
     
