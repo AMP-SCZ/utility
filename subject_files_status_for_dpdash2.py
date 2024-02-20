@@ -28,8 +28,22 @@ def get_value(event,var):
     return ''
 
 
+def get_value_from_dict(dict1, event, var):
+    """Extract value from JSON"""
 
-def get_mri_status():
+    for d in dict1:
+        if event in d['redcap_event_name']:
+            try:
+                if d[var] != '':
+                    return d[var]
+            except KeyError:
+                pass
+
+    # the subject has not reached the event yet
+    return ''
+
+
+def get_mri_status(dict1, timepoint, consent_date, subject, test=False):
     """Available variables:
 
     nda_root
@@ -43,11 +57,11 @@ def get_mri_status():
     """
     
 
-    interview_date=get_value(timepoint,'chrmri_entry_date')
+    interview_date=get_value(dict1,timepoint,'chrmri_entry_date')
     if interview_date=='':
         return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':'', 'mri_missing':''}
 
-    if get_value(timepoint,'chrmri_missing')=='1':
+    if get_value(dict1,timepoint,'chrmri_missing')=='1':
         missing_code=get_value(timepoint,'chrmri_missing_spec')
         return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':interview_date, 'mri_missing':missing_code}
 
@@ -56,9 +70,30 @@ def get_mri_status():
     
 
     try:
-        for s,row in df_mri.loc[subject].iterrows():
-            if timepoint in row['timepoint_text']:
-                break
+        # get information using subject ID and entry_date
+        df_subject = df_mri.loc[subject]
+
+        # restrict to the rows with run sheet information
+        df_subject = df_subject[~df_subject.file_loc.isnull()]
+        if len(df_subject) == 0:
+            raise KeyError
+
+        # match the row based on the interview date
+        df_subject_scan = df_subject.set_index(
+                'entry_date').loc[[interview_date]]
+        if test:
+            print(df_subject_scan)
+
+        if len(df_subject_scan) == 1:
+            row = df_subject_scan.iloc[0]
+        elif len(df_subject_scan) == 0:
+            raise AttributeError
+        else:
+            # multiple lines for the subject and scan date
+            print(f'More than one matched information for {subject} '
+                  f'{timepoint} in the mri_all_db.csv. '
+                  f'Using the first row.')
+            row = df_subject_scan.iloc[0]
     
     except (KeyError,AttributeError,TypeError):
         # KeyError: subject does not exist in df_mri
@@ -70,6 +105,12 @@ def get_mri_status():
         except (KeyError,TypeError):
             pass
 
+    if test:
+        df_tmp = df_subject_scan.reset_index()[
+                ['entry_date', 'mri_data_exist',
+                          'file_name', 'session_num', 'network', 'file_loc']]
+        df_tmp['file_loc'] = df_tmp['file_loc'].fillna('zip')
+        print(df_tmp)
 
     try:
         score=int(row['mriqc_int'])
@@ -88,14 +129,14 @@ def get_mri_status():
     protocol=1
 
     for v in ['chrmri_consent','chrmri_metal','chrmri_physicalmetal']:
-        if get_value(timepoint,v)!='1':
+        if get_value(dict1,timepoint,v)!='1':
             protocol=0
             break
 
-    if get_value(timepoint,'chrmri_confirm')=='2':
+    if get_value(dict1,timepoint,'chrmri_confirm')=='2':
         protocol=0
 
-    if get_value(timepoint,'chrmri_dental')=='1':
+    if get_value(dict1,timepoint,'chrmri_dental')=='1':
         protocol=0
 
     for v in ['chrmri_aahscout',
@@ -121,7 +162,7 @@ def get_mri_status():
             'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
             'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
     
-        if get_value(timepoint,v)=='3':
+        if get_value(dict1,timepoint,v)=='3':
             protocol=0
             break
 
@@ -354,7 +395,7 @@ if __name__=='__main__':
         
         if timepoint in 'baseline,month_2'.split(','):
             # populate MRI block
-            dict_mri=get_mri_status()
+            dict_mri=get_mri_status(dict1, timepoint, consent_date, subject)
                 
             # populate EEG block
             dict_eeg=get_eeg_status()
