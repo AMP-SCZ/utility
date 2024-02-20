@@ -22,10 +22,11 @@
 # determine if new and upload to REDCap
 0 18 * * * /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456
 
-# keep one day difference between upload and download so upload can complete
+# keep six hours difference between upload and download so upload can complete
 
-# download from REDCap and shift dates
-59 23 * * * /data/predict1/miniconda3/bin/python /data/predict1/utility/clean_old_arm.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456 && umask 007 && newgrp BWH-PREDICT-G && /data/predict1/miniconda3/bin/python && /data/predict1/utility/down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456 && /data/predict1/miniconda3/bin/python /data/predict1/utility/shift_redcap_dates.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/rpms-to-yale/CloneOfYaleRealRecords_DataDictionary_2022-12-26_calc_to_text_checkbox.csv
+# clean old arms, download JSONs from REDCap and shift their dates
+59 23 * * * /data/predict1/utility/clean_down_shift.sh 123456
+
 
 # ProNET real
 # determine if new and shift dates
