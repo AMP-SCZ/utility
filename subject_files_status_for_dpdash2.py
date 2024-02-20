@@ -28,22 +28,8 @@ def get_value(event,var):
     return ''
 
 
-def get_value_from_dict(dict1, event, var):
-    """Extract value from JSON"""
 
-    for d in dict1:
-        if event in d['redcap_event_name']:
-            try:
-                if d[var] != '':
-                    return d[var]
-            except KeyError:
-                pass
-
-    # the subject has not reached the event yet
-    return ''
-
-
-def get_mri_status(dict1, timepoint, consent_date, subject, test=False):
+def get_mri_status():
     """Available variables:
 
     nda_root
@@ -383,7 +369,7 @@ if __name__=='__main__':
         
         if timepoint in 'baseline,month_2'.split(','):
             # populate MRI block
-            dict_mri=get_mri_status(dict1, timepoint, consent_date, subject)
+            dict_mri=get_mri_status()
                 
             # populate EEG block
             dict_eeg=get_eeg_status()
