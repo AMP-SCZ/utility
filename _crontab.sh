@@ -38,6 +38,9 @@
 0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
 
 
+# kill stale processes every other day
+0 14 * * */2 pkill -u tb571 python
+
 
 # === dn018 ===
 
