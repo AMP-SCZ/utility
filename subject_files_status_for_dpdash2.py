@@ -43,12 +43,12 @@ def get_mri_status():
     """
     
 
-    interview_date=get_value_from_dict(dict1,timepoint,'chrmri_entry_date')
+    interview_date=get_value(timepoint,'chrmri_entry_date')
     if interview_date=='':
         return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':'', 'mri_missing':''}
 
-    if get_value_from_dict(dict1,timepoint,'chrmri_missing')=='1':
-        missing_code=get_value_from_dict(dict1,timepoint,'chrmri_missing_spec')
+    if get_value(timepoint,'chrmri_missing')=='1':
+        missing_code=get_value(timepoint,'chrmri_missing_spec')
         return {'mri_score':'', 'mri_data':'', 'mri_protocol':'', 'mri_date':interview_date, 'mri_missing':missing_code}
 
     scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
@@ -103,14 +103,14 @@ def get_mri_status():
     protocol=1
 
     for v in ['chrmri_consent','chrmri_metal','chrmri_physicalmetal']:
-        if get_value_from_dict(dict1,timepoint,v)!='1':
+        if get_value(timepoint,v)!='1':
             protocol=0
             break
 
-    if get_value_from_dict(dict1,timepoint,'chrmri_confirm')=='2':
+    if get_value(timepoint,'chrmri_confirm')=='2':
         protocol=0
 
-    if get_value_from_dict(dict1,timepoint,'chrmri_dental')=='1':
+    if get_value(timepoint,'chrmri_dental')=='1':
         protocol=0
 
     for v in ['chrmri_aahscout',
@@ -136,7 +136,7 @@ def get_mri_status():
             'chrmri_rfmripa_ref_num', 'chrmri_rfmripa_ref_num_2',
             'chrmri_rfmripa_ref_qc', 'chrmri_rfmripa_ref_qc_2']:
     
-        if get_value_from_dict(dict1,timepoint,v)=='3':
+        if get_value(timepoint,v)=='3':
             protocol=0
             break
 
