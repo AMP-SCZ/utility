@@ -90,9 +90,6 @@ def get_mri_status(dict1, timepoint, consent_date, subject, test=False):
             raise AttributeError
         else:
             # multiple lines for the subject and scan date
-            print(f'More than one matched information for {subject} '
-                  f'{timepoint} in the mri_all_db.csv. '
-                  f'Using the first row.')
             row = df_subject_scan.iloc[0]
     
     except (KeyError,AttributeError,TypeError):
@@ -110,7 +107,6 @@ def get_mri_status(dict1, timepoint, consent_date, subject, test=False):
                 ['entry_date', 'mri_data_exist', 'file_name',
                  'session_num', 'network', 'file_loc']]
         df_tmp['file_loc'] = df_tmp['file_loc'].fillna('zip')
-        print(df_tmp)
 
     try:
         score=int(row['mriqc_int'])
