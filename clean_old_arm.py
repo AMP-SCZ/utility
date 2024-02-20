@@ -69,6 +69,7 @@ for dir in dirs:
     
     
     old=None
+    
 
     # one try-except block to handle absence of incl_excl and empty chrcrit_part
     try:
@@ -81,15 +82,19 @@ for dir in dirs:
             old=1
 
     except (FileNotFoundError,ValueError):
-        # determine old arm, if any, through yp_sorted
         pass
 
-    if yp['group'].unique().shape[0]>1:
-        if chr_hc=='UHR':
-            old=2
-        elif chr_hc=='HealthyControl':
-            old=1
+
+    # if old arm was not determined in the previous block
+    # try to determine it now from yp_sorted
+    if not old:
+        if yp['group'].unique().shape[0]>1:
+            if chr_hc=='UHR':
+                old=2
+            elif chr_hc=='HealthyControl':
+                old=1
         
+    
     if old:
 
         ## skip if it was cleaned before ##
