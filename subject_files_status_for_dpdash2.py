@@ -86,6 +86,7 @@ def get_mri_status():
         except (KeyError,TypeError):
             pass
 
+
     try:
         score=int(row['mriqc_int'])
         assert score>=0 and score<=2
