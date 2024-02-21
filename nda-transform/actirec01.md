@@ -15,19 +15,19 @@ BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,BI1234
 
 2. Modify
 
-i. Concatenate to one file:
+    i. Concatenate to one file:
 
-```
-cd /data/predict1/to_nda/nda-submissions/actirec01
-cp Pronet_Axivity_nda_20240221.csv actirec01_20240221.csv
-tail -n +2 Prescient_Axivity_nda_20240221.csv >> actirec01_20240221.csv
-```
+    ```
+    cd /data/predict1/to_nda/nda-submissions/actirec01
+    cp Pronet_Axivity_nda_20240221.csv actirec01_20240221.csv
+    tail -n +2 Prescient_Axivity_nda_20240221.csv >> actirec01_20240221.csv
+    ```
 
-ii. Introduce line break after Pronet entities in Vim.
+    ii. Introduce line break after Pronet entities in Vim.
 
-iii. Prepend three empty columns:
+    iii. Prepend three empty columns:
 
-> subjectkey,interview_age,sex,
+    > subjectkey,interview_age,sex,
 
 
 3. Generate
