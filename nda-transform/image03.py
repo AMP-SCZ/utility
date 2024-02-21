@@ -99,7 +99,7 @@ def populate():
         r['subjectkey']=subjectkey
         r['sex']=sex
         
-        # for ampscz_sp_sensors01
+        # for ampscz_sp_sensors01, actirec01
         if 'data_file1' in r.keys():
             r['data_file1']=r['data_file1'].split('/processed/')[-1]
 
@@ -188,7 +188,7 @@ if __name__=='__main__':
     remove(name)
     
     version=args.version
-    title=re.search(f'/(.+?){version}_template.csv',args.dict).group(1)
+    title=re.search(f'(.+?){version}',args.dict).group(1)
     with open(args.output,'w') as f:
         f.write(f'{title},{version}\n'+data)
     
