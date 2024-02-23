@@ -64,7 +64,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -73,10 +73,15 @@ def populate():
         metadata=data.loc[[(src_subject_id,interview_type)]].values[0]
         study,nearest_day,session=metadata
 
+        found=True
         transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{nearest_day:04}_session{session:03}_REDACTED.txt'
+        if not isfile(transcript_):
+            
+            transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{-nearest_day:04}_session{session:03}_REDACTED.txt'
+            if not isfile(transcript_):
+                print(transcript_, '\033[0;31m could not be found\033[0m')
+                found=False
         
-        assert isfile(transcript_)==True
-
     except KeyError:
         return
 
@@ -168,34 +173,8 @@ def populate():
 
     dfavl=pd.read_csv(features_file)
     
-    """
-    _days_since_consent=days_since_consent(interview_date,chric_consent_date)
-
-    # find the nearest day number among dfavl['day']
-    min_diff=9999
-    for d in dfavl['day'].values:
-        diff=abs(d-_days_since_consent)
-        if diff<min_diff:
-            min_diff=diff
-            nearest_day=d
-    
-    
-    # Example paths:
-    # PronetYA/processed/YA16945/interviews/open/transcripts/PronetYA_YA16945_interviewAudioTranscript_open_day0019_session001_REDACTED.txt
-    # PrescientME/processed/ME98165/interviews/open/transcripts/PrescientME_ME98165_interviewAudioTranscript_open_day0150_session002_REDACTED.txt
-    
-    transcript_=pjoin(_root,
-        f'transcripts/*_{src_subject_id}_interviewAudioTranscript_open_day{nearest_day:04}_session*_REDACTED.txt')
-    """
-    transcript_file=glob(transcript_)
-
-
-    # sanity check
-    if len(transcript_file)!=1:
-        print(transcript_, 'could not be found')
-
-    else:
-        df.at[row,'transcript_file']=abspath(transcript_file[0]).split('/processed/')[-1]
+    if found:
+        df.at[row,'transcript_file']=abspath(transcript_).split('/processed/')[-1]
 
 
     for i,_row in dfavl.iterrows():
@@ -235,7 +214,8 @@ def populate():
                 df.at[row,v]=value
             
             break
-            
+        else:
+            print('\033[0;31m',features_file,nearest_day,'\033[0m')
     
     # return df
 
