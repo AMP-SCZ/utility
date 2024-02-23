@@ -10,6 +10,7 @@ import pandas as pd
 from glob import glob
 from os.path import isfile,basename,abspath,join as pjoin
 import re
+from _util import printe
 
 
 # this function should have knowledge of dict1
@@ -79,7 +80,7 @@ def populate():
             
             transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{-nearest_day:04}_session{session:03}_REDACTED.txt'
             if not isfile(transcript_):
-                print(transcript_, '\033[0;31m could not be found\033[0m')
+                printe(f'{transcript_} could not be found')
                 found=False
         
     except KeyError:
@@ -215,7 +216,7 @@ def populate():
             
             break
         else:
-            print('\033[0;31m',features_file,nearest_day,'\033[0m')
+            printe(f'{features_file},{nearest_day}, could not be found')
     
     # return df
 
