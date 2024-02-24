@@ -178,8 +178,9 @@ def populate():
         df.at[row,'transcript_file']=abspath(transcript_).split('/processed/')[-1]
 
 
+    found=False
     for i,_row in dfavl.iterrows():
-        if _row['day']==nearest_day:
+        if abs(_row['day'])==nearest_day:
 
             total_words=sum(_row[t] for t in 'num_words_S1,num_words_S2,num_words_S3'.split(','))
 
@@ -213,10 +214,13 @@ def populate():
                         value=int(value)
 
                 df.at[row,v]=value
-            
+                
+                found=True
             break
-        else:
-            printe(f'{features_file},{nearest_day}, could not be found')
+
+    
+    if not found:
+        printe(f'{features_file},{nearest_day}, could not be found')
     
     # return df
 
