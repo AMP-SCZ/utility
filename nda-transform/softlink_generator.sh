@@ -71,7 +71,7 @@ do
 
     # interviews
     root=`ls -d /data/predict1/data_from_nda/*/PHOENIX/GENERAL/*/processed/$d`
-    create_link $root/interviews
+    create_link ${root}/interviews
 
 
     cd ..
