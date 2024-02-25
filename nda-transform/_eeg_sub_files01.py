@@ -29,7 +29,17 @@ for line in content:
     shift=int(dfshift.loc[src_subject_id,'days'])
     shifted_date=datetime.strptime(date,'%Y%m%d')+timedelta(days=shift)
     interview_date=shifted_date.strftime('%m/%d/%Y')
+
+
+    # shift ses folder name
+    _ses='ses-{}'.format(shifted_date.strftime('%Y%m%d'))
+    line=line.replace(ses,_ses)
+
+    # create symlink for shifted ses
+    parent=line.split(_ses)[0]
+    check_call(f'cd {parent} && if [ ! -d {_ses} ]; then ln -s {ses} {_ses}; fi', shell=True)
     
+
     f.write(f',{src_subject_id},{interview_date},,,2201,{line},\n')
 
 
