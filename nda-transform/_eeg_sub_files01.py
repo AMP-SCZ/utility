@@ -38,6 +38,8 @@ for line in content:
     # create symlink for shifted ses
     parent=line.split(_ses)[0]
     check_call(f'cd {parent} && if [ ! -d {_ses} ]; then ln -s {ses} {_ses}; fi', shell=True)
+    # remove symlink if needed
+    # check_call(f'cd {parent} && if [ -d {_ses} ]; then rm {_ses}; fi', shell=True)
     
 
     f.write(f',{src_subject_id},{interview_date},,,2201,{line},\n')
