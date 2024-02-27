@@ -94,6 +94,7 @@ do
             python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
             -u $user -t $title -d $title \
             -c $collection \
+            -l . \
             -b $data
         else
             # -t and -d are disallowed with --replace-submission
@@ -101,6 +102,7 @@ do
             -u $user \
             --replace-submission $id \
             -f \
+            -l . \
             -b $data
         fi
 
