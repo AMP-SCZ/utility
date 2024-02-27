@@ -71,8 +71,8 @@ def populate():
 
     try:
         # [] around index is required to make the resultant a DataFrame
-        metadata=data.loc[[(src_subject_id,interview_type)]].values[0]
-        study,nearest_day,session=metadata
+        metadata=data.loc[[(src_subject_id,interview_type,f'{event}_arm_{arm}')]].values[0]
+        study,nearest_day,session=metadata[:3]
 
         found=True
         transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{nearest_day:04}_session{session:03}_REDACTED.txt'
@@ -180,7 +180,7 @@ def populate():
 
     found=False
     for i,_row in dfavl.iterrows():
-        if abs(_row['day'])==nearest_day:
+        if abs(_row['day'])==nearest_day and _row['interview_number']==session:
 
             total_words=sum(_row[t] for t in 'num_words_S1,num_words_S2,num_words_S3'.split(','))
 
@@ -220,7 +220,8 @@ def populate():
 
     
     if not found:
-        printe(f'{features_file},{nearest_day}, could not be found')
+        printe(f'{features_file},{nearest_day},{session} could not be found')
+        df.drop(row,inplace=True)
     
     # return df
 
@@ -288,7 +289,7 @@ if __name__=='__main__':
     columns=columns+run_sheet_vars+avl_vars+['transcript_file','ampscz_missing','ampscz_missing_spec']
     
     data=pd.read_csv(args.data)
-    data.set_index(['subject','interview_type'],inplace=True)
+    data.set_index(['subject','interview_type','redcap_event_name'],inplace=True)
 
 
     # save the remaining template
