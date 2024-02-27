@@ -6,9 +6,9 @@ _help()
 {
     echo """Usage:
 $0 TYPE DATA_FILE_SUFFIX
-Accepted types are OPEN or PSYCHS only
+Accepted types are open or psychs only
 Keep input data files within nda-submissions/langsamp01/ folder and name them as {network}_{TYPE}_{DATA_FILE_SUFFIX}
-Example DATA_FILE_SUFFIX are: inventory.csv or inventory_no_prescreen.csv
+Example DATA_FILE_SUFFIX: inventory.csv or 20240227.csv
 """
     exit
 }
@@ -20,12 +20,14 @@ then
 fi
 
 
-if [ "$1" == OPEN ]
+if [ "$1" == open ]
 then
     prefix=chrspeech
-elif [ "$1" == PSYCHS ]
+    events="baseline month_2"
+elif [ "$1" == psychs ]
 then
     prefix=chrpsychs_av
+    events="screening baseline month_1 month_2"
 else
     _help
 fi
@@ -35,22 +37,20 @@ data_file_suffix=$2
 for n in Pronet Prescient
 do
     echo $n
-    for e in screening baseline month_1 month_2
+    for e in ${events}
     do
         echo $e
         ./generate.sh -f langsamp01 -n $n -e $e -p $prefix \
-        -o "--data /data/predict1/to_nda/nda-submissions/langsamp01/${n}_${1}_${data_file_suffix}"
+        -o "--data /data/predict1/to_nda/nda-submissions/langsamp01/AMPSCZ_${1}_${data_file_suffix}"
         echo
     done
 done
 
-
 s=`echo "$1" | tr '[:upper:]' '[:lower:]'`
-for e in screening baseline month_1 month_2
+for e in ${events}
 do
     echo $e
     ./combine_networks.sh -e $e -s $s -f langsamp01
     echo
 done
-
 
