@@ -34,6 +34,8 @@ fi
 
 data_file_suffix=$2
 
+
+# generation
 for n in Pronet Prescient
 do
     echo $n
@@ -46,11 +48,21 @@ do
     done
 done
 
+
+# combination and validation
 s=`echo "$1" | tr '[:upper:]' '[:lower:]'`
 for e in ${events}
 do
     echo $e
     ./combine_networks.sh -e $e -s $s -f langsamp01
+    echo
+done
+
+
+# submission
+for e in ${events}
+do
+    ./submit.sh -e $e -s $s -f langsamp01 -u tbillah
     echo
 done
 
