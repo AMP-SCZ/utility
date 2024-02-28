@@ -5,7 +5,7 @@
 
 > head -n 3 nda-bmissions/langsamp01/AMPSCZ_open_20240227.csv
 
-(Notice where the string `open` exists in its name)
+*(Notice where the string `open` exists in its name)*
 
 ```python
 study,subject,interview_type,day,interview_number,expected_interview_date,closest_interview_date,redcap_event_name
@@ -15,31 +15,30 @@ PrescientBM,BM34567,open,119,2,2024-01-22,2024-01-22,month_2_arm_1
 ```
 
 Criteria for populating rows in the above csv:
-    i. `|expected_interview_date-closest_interview_date|<=14`
 
-        We could choose `<=30` but that would be too loose.
+* i. `|expected_interview_date-closest_interview_date|<=14`
 
-    ii. Keep only upto a certain event worth of rows. For example, in release-2, we need
-        upto month_2 only.
-            
+We could choose `<=30` but that would be too loose.
+
+* ii. Keep only up to a certain event worth of rows. For example, in release-2, we need upto month_2 only.
+
 
 2. Use the grand script to generate, validate, and submit its data:
 
 ```
 /data/predict1/utility/nda-transform/_langsamp01.sh open 20240227.csv
 /data/predict1/utility/nda-transform/_langsamp01.sh psychs 20240227.csv
-
 ```
 
 The `langsamp01.py` filters the candidate csv provided in #1 as follows:
 
-    i. Redacted transcript with `+day` or `-day` and `interview_number` must exist in disk.
+* i. Redacted transcript with `+day` or `-day` and `interview_number` must exist in disk.
 
-    ii. A row with `+day` or `-day` and `interview_number` must exist in combined QC records.
+* ii. A row with `+day` or `-day` and `interview_number` must exist in combined QC records.
 
-    iii. Interview day in REDCap run sheet must be valid.
+* iii. Interview day in REDCap run sheet must be valid.
 
-    iv. All NDA mandatory variables must exist for that subject.
+* iv. All NDA mandatory variables must exist for that subject.
 
 If any of the above four are not met, that candidate cannot be uploaded to NDA and is omitted.
 
