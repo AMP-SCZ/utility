@@ -99,7 +99,7 @@ def populate():
         r['subjectkey']=subjectkey
         r['sex']=sex
         
-        # for ampscz_sp_sensors01, actirec01
+        # for ampscz_sp_sensors01, actirec01, eeg_sub_files01
         if 'data_file1' in r.keys():
             r['data_file1']=r['data_file1'].split('/processed/')[-1]
 
