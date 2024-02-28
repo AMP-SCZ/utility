@@ -18,7 +18,7 @@ Criteria for populating rows in the above csv:
 
 * i. `|expected_interview_date-closest_interview_date|<=14`
 
-We could choose `<=30` but that would be too loose.
+  We could choose `<=30` but that would be too loose.
 
 * ii. Keep only up to a certain event worth of rows. For example, in release-2, we need upto month_2 only.
 
@@ -32,13 +32,13 @@ We could choose `<=30` but that would be too loose.
 
 The `langsamp01.py` filters the candidate csv provided in #1 as follows:
 
-* i. Redacted transcript with `+day` or `-day` and `interview_number` must exist in disk.
+* i. [Redacted transcript](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L78-L84) with `+day` or `-day` and `interview_number` must exist in disk.
 
-* ii. A row with `+day` or `-day` and `interview_number` must exist in combined QC records.
+* ii. [A row](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L183) with `+day` or `-day` and `interview_number` must exist in combined QC records.
 
-* iii. Interview day in REDCap run sheet must be valid.
+* iii. [Interview date](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L68) in REDCap run sheet must be valid.
 
-* iv. All NDA mandatory variables must exist for that subject.
+* iv. All NDA mandated [variables](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L279) must exist for that subject.
 
 If any of the above four are not met, that candidate cannot be uploaded to NDA and is omitted.
 
