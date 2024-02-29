@@ -28,9 +28,11 @@ for i,row in df.iterrows():
         _sub=_sub.upper()
         
         row['src_subject_id']=_sub
-        df1.loc[j]=row #,'src_subject_id']=_sub
+        df1.loc[j]=row
         j+=1
 
+
+df1.drop(columns=['redcap_id','ndar_penncnb01_complete'],inplace=True)
 
 df1.to_csv(sys.argv[1].replace('.csv',f'_{datestamp}.csv'),index=False)
 
