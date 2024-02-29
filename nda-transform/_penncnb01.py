@@ -33,6 +33,6 @@ for i,row in df.iterrows():
 
 
 df1.drop(columns=['redcap_id','ndar_penncnb01_complete'],inplace=True)
-
+df1.insert(loc=0,column='subjectkey',value='')
 df1.to_csv(sys.argv[1].replace('.csv',f'_{datestamp}.csv'),index=False)
 
