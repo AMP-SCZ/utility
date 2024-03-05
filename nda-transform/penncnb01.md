@@ -10,7 +10,7 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
       -H "Accept: application/json" \
       -X POST \
       -d $DATA \
-      https://redcap.partners.org/redcap/api/ > downloaded.csv
+      https://redcap.med.upenn.edu/api/ > downloaded.csv
 ```
 
 2. Replace IDs with official AMP-SCZ IDs:
