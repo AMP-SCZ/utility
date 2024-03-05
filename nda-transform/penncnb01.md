@@ -2,9 +2,15 @@
 
 1. Make API call:
 
-```
+```bash
 cd /data/predict1/to_nda/nda-submissions/penncnb01/
-downloaded.csv
+
+DATA="token=${TOKEN}&content=report&format=json&report_id=&rawOrLabel=raw&rawOrLabelHeaders=raw&exportCheckboxLabel=false&returnFormat=csv"
+curl -H "Content-Type: application/x-www-form-urlencoded" \
+      -H "Accept: application/json" \
+      -X POST \
+      -d $DATA \
+      https://redcap.partners.org/redcap/api/ > downloaded.csv
 ```
 
 2. Replace IDs with official AMP-SCZ IDs:
