@@ -5,6 +5,7 @@
 ```bash
 cd /data/predict1/to_nda/nda-submissions/penncnb01/
 
+TOKEN=123456
 DATA="token=${TOKEN}&content=report&format=json&report_id=&rawOrLabel=raw&rawOrLabelHeaders=raw&exportCheckboxLabel=false&returnFormat=csv"
 curl -H "Content-Type: application/x-www-form-urlencoded" \
       -H "Accept: application/json" \
@@ -15,10 +16,10 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
 
 2. Replace IDs with official AMP-SCZ IDs:
 
-> /data/predict1/utility/nda-transform/_penncnb01.py /path/to/downloaded.csv replace
+> /data/predict1/utility/nda-transform/_penncnb01.py downloaded.csv replace
 
 
-3. Ask Dheshan to filter upto a certain timepoint e.g. `month_2`
+3. Ask Dheshan to filter up to a certain timepoint e.g. `month_2`
 
 
 4. Shift dates:
@@ -28,10 +29,10 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
 
 5. Prepare data for NDA:
 
-```
-cd /data/predict1/to_nda/nda-submissions/network_combined
-/data/predict1/utility/nda-transform/penncnb01.py --dict penncnb01 --root /data/predict1/data_from_nda/ -t"Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" -o penncnb01.csv --shared ndar_subject01.csv --data ../penncnb01/date_shifted_20240305.csv
-```
+> cd /data/predict1/to_nda/nda-submissions/network_combined
+> 
+> /data/predict1/utility/nda-transform/penncnb01.py --dict penncnb01 --root /data/predict1/data_from_nda/ -t"Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" -o penncnb01.csv --shared ndar_subject01.csv --data ../penncnb01/date_shifted_20240305.csv
+
 
 6. Validate:
 
