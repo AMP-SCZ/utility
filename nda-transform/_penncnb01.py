@@ -20,12 +20,10 @@ if __name__=='__main__':
 
     rootdir=dirname(sys.argv[1])
     df=pd.read_csv(sys.argv[1],dtype=str)
-    df1=pd.DataFrame(columns=df.columns)
 
-
+    rows=[]
     if sys.argv[2]=='replace':
         
-        j=0
         for i,row in df.iterrows():
             sub=row['src_subject_id']
 
@@ -42,10 +40,10 @@ if __name__=='__main__':
                 _sub=_sub.upper()
                 
                 row['src_subject_id']=_sub
-                df1.loc[j]=row
-                j+=1
+                rows.append(row)
 
 
+        df1=pd.DataFrame(rows,columns=df.columns)
         df1.drop(columns=['redcap_id','ndar_penncnb01_complete'],inplace=True)
         df1.insert(loc=0,column='subjectkey',value='')
         df1.to_csv(pjoin(rootdir,f'ampscz_ids_{datestamp}.csv'),index=False)
