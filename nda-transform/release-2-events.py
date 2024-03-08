@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pandas as pd
 
 devents=pd.read_csv('/data/predict1/to_nda/nda-submissions/release-2-events')
