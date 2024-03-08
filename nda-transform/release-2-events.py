@@ -11,14 +11,16 @@ for i,row in devents.iterrows():
     form=row['form']
     
     try:
-        short_name=redcap_nda.loc[form,'nda_short_name']
+        df=redcap_nda.loc[ [form] ]
+
+        for _,_row in df.iterrows():
+            prefix=_row['prefix']
+
+            if pd.isna(prefix):
+                print('-f',_row['nda_short_name'],'-e',event)
+            else:
+                print('-f',_row['nda_short_name'],'-e',event,'-p',_row['prefix'])
         
-        if isinstance(short_name, str):
-            print('-f',short_name,'-e',event)
-        else:
-            # multiple rows for one form
-            print('\t',form)
-            continue
     except KeyError:
         pass
 
