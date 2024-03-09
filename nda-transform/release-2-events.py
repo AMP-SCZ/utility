@@ -14,12 +14,12 @@ for i,row in devents.iterrows():
         df=redcap_nda.loc[ [form] ]
 
         for _,_row in df.iterrows():
-            prefix=_row['prefix']
+            addl_arg=_row['addl_arg']
 
-            if pd.isna(prefix):
+            if pd.isna(addl_arg):
                 print('-f',_row['nda_short_name'],'-e',event)
             else:
-                print('-f',_row['nda_short_name'],'-e',event,'-p',_row['prefix'])
+                print('-f',_row['nda_short_name'],'-e',event,'-p',addl_arg)
         
     except KeyError:
         pass
