@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 for n in Pronet
 do
@@ -12,13 +13,13 @@ do
 ./generate.sh -n $n -e screening -f tbi01            -p chrtbi
 ./generate.sh -n $n -e screening -f dsm_iv_es01      -p chrsofas
 ./generate.sh -n $n -e screening -f ampscz_psychs01  -p chrpsychs_scr
+
 ./generate.sh -n $n -e baseline  -f socdem01         -p chrdemo
 ./generate.sh -n $n -e baseline  -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
 ./generate.sh -n $n -e baseline  -f ampscz_psychs01  -p chrpsychs_fu
 ./generate.sh -n $n -e baseline  -f ampscz_iqa01     -p chriq
 ./generate.sh -n $n -e baseline  -f wasi201          -p chriq
 ./generate.sh -n $n -e baseline  -f wisc_v01         -p chriq
-./generate.sh -n $n -e baseline  -f wais_iv_part101  -p chriq
 ./generate.sh -n $n -e baseline  -f pmod01           -p chrpreiq
 ./generate.sh -n $n -e baseline  -f vitas01          -p chrchs
 ./generate.sh -n $n -e baseline  -f dailyd01         -p chrsaliva
@@ -38,6 +39,7 @@ do
 ./generate.sh -n $n -e baseline  -f cgis01
 ./generate.sh -n $n -e baseline  -f bprs01           -p chrbprs
 ./generate.sh -n $n -e baseline  -f ampscz_rap01
+
 ./generate.sh -n $n -e month_1   -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
 ./generate.sh -n $n -e month_1   -f ampscz_psychs01  -p chrpsychs_fu
 ./generate.sh -n $n -e month_1   -f pmod01           -p chrpas
@@ -49,6 +51,7 @@ do
 ./generate.sh -n $n -e month_1   -f pss01            -p chrpss
 ./generate.sh -n $n -e month_1   -f cgis01
 ./generate.sh -n $n -e month_1   -f bprs01           -p chrbprs
+
 ./generate.sh -n $n -e month_2   -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
 ./generate.sh -n $n -e month_2   -f ampscz_psychs01  -p chrpsychs_fu
 ./generate.sh -n $n -e month_2   -f vitas01          -p chrchs
