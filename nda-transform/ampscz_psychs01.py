@@ -64,8 +64,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    # Example: 2022-31-12
-    if len(interview_date)<10:
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 

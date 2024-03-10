@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename,abspath
 
 
 # this function should have knowledge of dict1
@@ -55,7 +55,7 @@ def populate():
         arm=2
 
     interview_date=get_value(f'{prefix}date',f'screening_arm_{arm}')
-    if len(interview_date)<10:
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -124,6 +124,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event",
+        help="unused argument, defined for automation only")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
@@ -200,4 +202,4 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-
+    print('Generated',abspath(args.output))

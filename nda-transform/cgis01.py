@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename,abspath
 
 
 # this function should have knowledge of dict1
@@ -59,7 +59,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -209,5 +209,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     

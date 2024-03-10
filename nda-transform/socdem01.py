@@ -57,7 +57,7 @@ def populate():
 
 
     interview_date=get_value('chrdemo_interview_date',f'baseline_arm_{arm}')
-    if interview_date in ['','-3','-9']:
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -123,6 +123,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event",
+        help="unused argument, defined for automation only")
     parser.add_argument("-p","--prefix", required=True,
         help="Variable name prefix e.g. chrnsipr, chrpgis, chrassist, etc.")
     parser.add_argument("--shared", required=True,

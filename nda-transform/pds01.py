@@ -56,8 +56,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if len(interview_date)<10 or interview_date=='1903-03-03' \
-        or interview_date=='1909-09-09':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # either no data in this form or the subject has not reached the event yet
         return
 
@@ -168,6 +167,8 @@ if __name__=='__main__':
         help="*/processed/*/surveys/*.Pronet.json")
     parser.add_argument("-o","--output", required=True,
         help="/path/to/submission_ready.csv")
+    parser.add_argument("-e","--event",
+            help="unused argument, defined for automation only")
     parser.add_argument("--shared", required=True,
         help="/path/to/ndar_subject01*.csv containing fields shared across NDA dicts")
 
