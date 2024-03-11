@@ -75,7 +75,7 @@ do
 
 done
 
-elif [ $1 == combine ]
+elif [ "$1" == combine ]
 then
 
 ./combine_networks.sh              -f ampscz_rs01      
