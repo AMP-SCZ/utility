@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pandas as pd
+import sys
 
 devents=pd.read_csv('/data/predict1/to_nda/nda-submissions/release-2-events')
 # to group same form together
@@ -19,11 +20,15 @@ for i,row in devents.iterrows():
             addl_arg=_row['addl_arg']
             short_name=_row['nda_short_name']
             
-            cmd=f'./generate.sh -n $n -e {event:9} -f {short_name:16} '
-            
-            if not pd.isna(addl_arg):
-                cmd+=f'-p {addl_arg}'
-            
+            if len(sys.argv)==1:
+                cmd=f'./generate.sh -n $n -e {event:9} -f {short_name:16} '
+                
+                if not pd.isna(addl_arg):
+                    cmd+=f'-p {addl_arg}'
+                
+            elif sys.argv[1]=='combine':
+                cmd=f'./combine_networks.sh -e {event:9} -f {short_name:16} '
+
             print(cmd)
             
     except KeyError:
