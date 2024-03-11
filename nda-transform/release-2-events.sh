@@ -17,7 +17,6 @@ do
 ./generate.sh -n $n -e screening -f figs             -p chrfigs
 ./generate.sh -n $n -e screening -f dsm_iv_es01      -p chrsofas
 ./generate.sh -n $n -e screening -f ampscz_psychs01  -p chrpsychs_scr
-./_figs01.sh     $n
 
 ./generate.sh -n $n -e baseline  -f socdem01         -p chrdemo
 ./generate.sh -n $n -e baseline  -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
