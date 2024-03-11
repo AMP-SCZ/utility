@@ -106,6 +106,11 @@ def populate():
                 if size:
                     value=value[:int(size)]
 
+                if '\n' in value:
+                    value=value.replace('\n',' ')
+                if '\r' in value:
+                    value=value.replace('\r','')
+
             elif definition.loc[v,'DataType']=='Date':
                 value=nda_date(value)
 
