@@ -81,73 +81,82 @@ def populate():
     if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
-
+    
+    dict1={}
     # get shared variables
-    df.at[row,'src_subject_id']=src_subject_id
+    dict1['src_subject_id']=src_subject_id
     for v in ['subjectkey','sex']:
-        df.at[row,v]=dfshared.loc[src_subject_id,v]
+        dict1[v]=dfshared.loc[src_subject_id,v]
 
 
     # get form specific variables
-    df.at[row,'interview_date']=nda_date(interview_date)
+    dict1['interview_date']=nda_date(interview_date)
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
-    df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
-
-    df.at[row,'chrfigs_fam']=fam_dict[args.member]
-
-    for v in columns:
-        
-        if prefix in v and v!='chrfigs_fam':
-            v1=v.replace('fam',args.member)
-            value=get_value(v1,f'{event}_arm_{arm}')
-            
-            vrange=definition.loc[v,'ValueRange']
-            if not pd.isna(vrange):
-                if '-300' in vrange or '-900' in vrange:
-                    # NDA missing: -900
-                    # NDA N/A: -300
-                    if value=='-3':
-                        value='-300'
-                    elif value=='-9':
-                        value='-900'
-
-            if definition.loc[v,'DataType']=='Integer':
-                try:
-                    value=int(value)
-                except ValueError:
-                    value=''
-
-            elif definition.loc[v,'DataType']=='String':
-                if value in ['-3','-9']:
-                    value=''
+    dict1['interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
     
-                size=definition.loc[v,'Size']
-                if size:
-                    value=value[:int(size)]
-
-            elif definition.loc[v,'DataType']=='Date':
-                value=nda_date(value)
-
-            elif definition.loc[v,'DataType']=='Float':
-                try:
-                    value=round(float(value),3)
-                except ValueError:
-                    pass
-
-            df.at[row,v]=value
-
-
     missing=get_value(f'{prefix}_missing',f'{event}_arm_{arm}')
     if missing=='':
         # not clicked
         missing='0'
-    df.at[row,'ampscz_missing']=missing
+    dict1['ampscz_missing']=missing
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+        dict1['ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
     else:
-        df.at[row,'ampscz_missing_spec']=''
+        dict1['ampscz_missing_spec']=''
+
+    
+    for member in fam_dict.keys():
+        dict2={}
+        dict2['chrfigs_fam']=fam_dict[member]
+
+        for v in columns:
+            
+            if prefix in v and v!='chrfigs_fam':
+                v1=v.replace('fam',member)
+                value=get_value(v1,f'{event}_arm_{arm}')
+                
+                vrange=definition.loc[v,'ValueRange']
+                if not pd.isna(vrange):
+                    if '-300' in vrange or '-900' in vrange:
+                        # NDA missing: -900
+                        # NDA N/A: -300
+                        if value=='-3':
+                            value='-300'
+                        elif value=='-9':
+                            value='-900'
+
+                if definition.loc[v,'DataType']=='Integer':
+                    try:
+                        value=int(value)
+                    except ValueError:
+                        value=''
+
+                elif definition.loc[v,'DataType']=='String':
+                    if value in ['-3','-9']:
+                        value=''
+        
+                    size=definition.loc[v,'Size']
+                    if size:
+                        value=value[:int(size)]
+
+                elif definition.loc[v,'DataType']=='Date':
+                    value=nda_date(value)
+
+                elif definition.loc[v,'DataType']=='Float':
+                    try:
+                        value=round(float(value),3)
+                    except ValueError:
+                        pass
+
+                dict2[v]=value
+
+
+        _row={**dict1,**dict2}
+
+        rows.append(_row)
+
 
     # return df
 
@@ -218,6 +227,7 @@ if __name__=='__main__':
     dir_bak=getcwd()
     chdir(args.root)
     
+    rows=[]
     files=glob(args.template)
     for row,file in enumerate(files):
         
@@ -228,7 +238,7 @@ if __name__=='__main__':
 
         populate()
 
-
+    df=pd.DataFrame(rows,columns=columns)
     pd.set_option("display.max_rows", None)
     pd.set_option("display.max_columns", None)
     pd.set_option("display.max_colwidth", None)
@@ -243,7 +253,6 @@ if __name__=='__main__':
     remove(name)
     
 
-    args.output=args.output.replace('.csv',f'_{args.member}.csv')
     with open(args.output,'w') as f:
         f.write(title+',01'+'\n'+data)
     
