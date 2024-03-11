@@ -85,7 +85,7 @@ def populate():
             
             vrange=definition.loc[v,'ValueRange']
             if not pd.isna(vrange):
-                if '-300' in vrange or '-900' in vrange:
+                if '88' in vrange or '-99' in vrange:
                     # NDA missing: -900
                     # NDA N/A: -300
                     if value=='-3':
