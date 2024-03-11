@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+if [ "$1" == generate ]
+then
+
 for n in Pronet Prescient
 do
 
@@ -11,6 +14,7 @@ do
 ./generate.sh -n $n -e screening -f ampscz_hcgfb01   -p chrhealth
 ./generate.sh -n $n -e screening -f scidvapd01       -p chrschizotypal
 ./generate.sh -n $n -e screening -f tbi01            -p chrtbi
+./generate.sh -n $n -e screening -f figs             -p chrfigs
 ./generate.sh -n $n -e screening -f dsm_iv_es01      -p chrsofas
 ./generate.sh -n $n -e screening -f ampscz_psychs01  -p chrpsychs_scr
 ./_figs01.sh     $n
@@ -71,3 +75,80 @@ do
 ./generate.sh -n $n -e month_2   -f bprs01           -p chrbprs
 
 done
+
+elif [ $1 == combine ]
+then
+
+./combine_networks.sh              -f ampscz_rs01      
+./combine_networks.sh -e screening -f ampscz_lapes01   
+./combine_networks.sh -e screening -f medhi01          
+./combine_networks.sh              -f iec01            
+./combine_networks.sh -e screening -f ampscz_hcgfb01   
+./combine_networks.sh -e screening -f scidvapd01       
+./combine_networks.sh -e screening -f tbi01            
+./combine_networks.sh              -f figs01           
+./combine_networks.sh -e screening -f dsm_iv_es01      
+./combine_networks.sh -e screening -f ampscz_psychs01  
+./combine_networks.sh -e screening -f ampscz_psychs01  
+
+./combine_networks.sh              -f socdem01         
+./combine_networks.sh -e baseline  -f dsm_iv_es01      
+./combine_networks.sh -e baseline  -f ampscz_psychs01  
+./combine_networks.sh -e baseline  -f ampscz_psychs01  
+./combine_networks.sh -e baseline  -f ampscz_iqa01     
+./combine_networks.sh -e baseline  -f wasi201          
+./combine_networks.sh -e baseline  -f wisc_v01         
+./wais_iv_part101.sh
+./combine_networks.sh -e baseline  -f pmod01           
+./combine_networks.sh -e baseline  -f vitas01          
+./combine_networks.sh -e baseline  -f dailyd01         
+./combine_networks.sh -e baseline  -f clinlabtestsp201 
+./combine_networks.sh -e baseline  -f ampscz_nsipr01   
+./combine_networks.sh -e baseline  -f clgry01          
+./combine_networks.sh -e baseline  -f assist01         
+./combine_networks.sh -e baseline  -f cssrs01          
+./combine_networks.sh -e baseline  -f gfs01            -s chrgfss
+./combine_networks.sh -e baseline  -f gfs01            -s chrgfrs
+./combine_networks.sh              -f ampscz_dim01     
+./combine_networks.sh              -f pds01            
+./combine_networks.sh -e baseline  -f oasis01          
+./combine_networks.sh -e baseline  -f sri01            
+./combine_networks.sh -e baseline  -f pss01            
+./combine_networks.sh -e baseline  -f ampscz_pps01     
+./combine_networks.sh -e baseline  -f cgis01           
+./combine_networks.sh -e baseline  -f bprs01           
+./combine_networks.sh -e baseline  -f ampscz_rap01     
+
+./combine_networks.sh -e month_1   -f dsm_iv_es01      
+./combine_networks.sh -e month_1   -f ampscz_psychs01  
+./combine_networks.sh -e month_1   -f ampscz_psychs01  
+./combine_networks.sh -e month_1   -f pmod01           
+./combine_networks.sh -e month_1   -f ampscz_nsipr01   
+./combine_networks.sh -e month_1   -f clgry01          
+./combine_networks.sh -e month_1   -f gfs01            -s chrgfssfu
+./combine_networks.sh -e month_1   -f gfs01            -s chrgfrsfu
+./combine_networks.sh -e month_1   -f oasis01          
+./combine_networks.sh -e month_1   -f pss01            
+./combine_networks.sh -e month_1   -f cgis01           
+./combine_networks.sh -e month_1   -f bprs01           
+
+./combine_networks.sh -e month_2   -f dsm_iv_es01      
+./combine_networks.sh -e month_2   -f ampscz_psychs01  
+./combine_networks.sh -e month_2   -f ampscz_psychs01  
+./combine_networks.sh -e month_2   -f vitas01          
+./combine_networks.sh -e month_2   -f dailyd01         
+./combine_networks.sh -e month_2   -f clinlabtestsp201 
+./combine_networks.sh -e month_2   -f ampscz_nsipr01   
+./combine_networks.sh -e month_2   -f clgry01          
+./combine_networks.sh -e month_2   -f assist01         
+./combine_networks.sh -e month_2   -f cssrs01          
+./combine_networks.sh -e month_2   -f gfs01            -s chrgfssfu
+./combine_networks.sh -e month_2   -f gfs01            -s chrgfrsfu
+./combine_networks.sh -e month_2   -f oasis01          
+./combine_networks.sh -e month_2   -f sri01            
+./combine_networks.sh -e month_2   -f pss01            
+./combine_networks.sh -e month_2   -f cgis01           
+./combine_networks.sh -e month_2   -f bprs01           
+
+fi
+
