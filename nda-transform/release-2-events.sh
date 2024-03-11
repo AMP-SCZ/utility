@@ -97,7 +97,8 @@ then
 ./combine_networks.sh -e baseline  -f ampscz_iqa01     
 ./combine_networks.sh -e baseline  -f wasi201          
 ./combine_networks.sh -e baseline  -f wisc_v01         
-./wais_iv_part101.sh
+./wais_iv_part101.sh  -e baseline  
+
 ./combine_networks.sh -e baseline  -f pmod01           
 ./combine_networks.sh -e baseline  -f vitas01          
 ./combine_networks.sh -e baseline  -f dailyd01         
