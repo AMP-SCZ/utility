@@ -93,7 +93,6 @@ then
 ./combine_networks.sh              -f socdem01         
 ./combine_networks.sh -e baseline  -f dsm_iv_es01      
 ./combine_networks.sh -e baseline  -f ampscz_psychs01  
-./combine_networks.sh -e baseline  -f ampscz_psychs01  
 ./combine_networks.sh -e baseline  -f ampscz_iqa01     
 ./combine_networks.sh -e baseline  -f wasi201          
 ./combine_networks.sh -e baseline  -f wisc_v01         
@@ -121,7 +120,6 @@ then
 
 ./combine_networks.sh -e month_1   -f dsm_iv_es01      
 ./combine_networks.sh -e month_1   -f ampscz_psychs01  
-./combine_networks.sh -e month_1   -f ampscz_psychs01  
 ./combine_networks.sh -e month_1   -f pmod01           
 ./combine_networks.sh -e month_1   -f ampscz_nsipr01   
 ./combine_networks.sh -e month_1   -f clgry01          
@@ -133,7 +131,6 @@ then
 ./combine_networks.sh -e month_1   -f bprs01           
 
 ./combine_networks.sh -e month_2   -f dsm_iv_es01      
-./combine_networks.sh -e month_2   -f ampscz_psychs01  
 ./combine_networks.sh -e month_2   -f ampscz_psychs01  
 ./combine_networks.sh -e month_2   -f vitas01          
 ./combine_networks.sh -e month_2   -f dailyd01         
