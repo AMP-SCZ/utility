@@ -17,30 +17,57 @@ dfpre=pd.read_excel('form_status_tracker_PRESCIENT.xlsx')
 def combine_psychs(dfp):
     
     # introduce a column for rawdata
-    dfp['rawdata']=[None]*dfp.shape[0]
+    # dfp['rawdata']=[None]*dfp.shape[0]
 
     dfp['psychs_screening']=['']*dfp.shape[0]
     dfp['psychs_baseline']=['']*dfp.shape[0]
+    dfp['psychs_month_1']=['']*dfp.shape[0]
+    dfp['psychs_month_2']=['']*dfp.shape[0]
 
-    # psychs_screening
+
     for i,row in dfp.iterrows():
+
+        # psychs_screening
         if pd.isna(row['psychs_p1p8_screening']) and pd.isna(row['psychs_p9ac32_screening']):
             dfp.loc[i,'psychs_screening']=None
         else:
             dfp.loc[i,'psychs_screening']='omit'
 
-    # psychs_followup
-    for i,row in dfp.iterrows():
-
+        
         if row['HC or CHR']=='chr':
-            condition=pd.isna(row['psychs_p1p8_fu_baseline']) and pd.isna(row['psychs_p9ac32_fu_baseline'])
+            FU='_fu_'
         elif row['HC or CHR']=='hc':
-            condition=pd.isna(row['psychs_p1p8_fu_hc_baseline']) and pd.isna(row['psychs_p9ac32_fu_hc_baseline'])
-
+            FU='_fu_hc_'
+        else:
+            dfp.loc[i,'psychs_baseline']='omit'
+            dfp.loc[i,'psychs_month_1']='omit'
+            dfp.loc[i,'psychs_month_2']='omit'
+        
+        
+        # psychs_baseline
+        condition=pd.isna(row[f'psychs_p1p8{FU}baseline']) and pd.isna(row[f'psychs_p9ac32{FU}baseline'])
         if pd.isna(row['psychs_screening']) and condition:
             dfp.loc[i,'psychs_baseline']=None
         else:
             dfp.loc[i,'psychs_baseline']='omit'
+
+        
+        # psychs_month_1
+        condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
+        if pd.isna(row['psychs_baseline']) and condition:
+            dfp.loc[i,'psychs_month_1']=None
+        else:
+            dfp.loc[i,'psychs_month_1']='omit'
+        
+        
+        # psychs_month_2
+        condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
+        if pd.isna(row['psychs_month_1']) and condition:
+            dfp.loc[i,'psychs_month_2']=None
+        else:
+            dfp.loc[i,'psychs_month_2']='omit'
+
+
 
     return dfp
 
@@ -80,9 +107,7 @@ for c in dfmap.index:
             print(row['src_subject_id'], 'does not exist')
             subjects.append(row['src_subject_id'])
 
-        if not pd.isna(cell) or \
-            _df.loc[ row['src_subject_id'],'current timepoint' ]=='removed' \
-            or int(row['interview_age'])<10:
+        if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
             
             
