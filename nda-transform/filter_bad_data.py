@@ -42,7 +42,7 @@ def combine_psychs(dfp):
             dfp.loc[i,'psychs_baseline']='omit'
             dfp.loc[i,'psychs_month_1']='omit'
             dfp.loc[i,'psychs_month_2']='omit'
-        
+            continue
         
         # psychs_baseline
         condition=pd.isna(row[f'psychs_p1p8{FU}baseline']) and pd.isna(row[f'psychs_p9ac32{FU}baseline'])
