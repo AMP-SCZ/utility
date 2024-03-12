@@ -15,7 +15,7 @@ def main():
     Checks if a file can be encoded using 'latin-1' encoding. If not, it will
     replace the file with a new file that uses 'latin-1' encoding.
 
-    The original file will be renamed to '.<filename>.bak'
+    The original file will be renamed to '.<filename>'
 
     Usage:
         python encode_to_latin.py <filename>
@@ -48,8 +48,8 @@ def main():
                     )
 
         if replace_file:
-            print(f"Renaming {filename} to '.{filename}.bak'")
-            filename.rename(f".{filename}.bak")
+            print(f"Renaming {filename} to '.{filename}'")
+            filename.rename(f".{filename}")
 
             print(f"Saving 'latin-1' encoded file to {filename}")
             temp_file.flush()
