@@ -87,6 +87,8 @@ def combine_psychs(dfp):
 
 dfpro=combine_psychs(dfpro)
 dfpre=combine_psychs(dfpre)
+_df=pd.concat((dfpro,dfpre))
+_df.set_index('subject',inplace=True)
 
 
 dfmap=pd.read_csv('/data/predict1/utility/nda-transform/tracker_column.csv')
@@ -100,9 +102,6 @@ for c in dfmap.index:
     column=dfmap.loc[c]['tracker_column']
     
     print(c,column)
-            
-    _df=pd.concat( (dfpre[['subject','current timepoint',column]], dfpro[['subject','current timepoint',column]]) )
-    _df.set_index('subject',inplace=True)
     
     dfdata=pd.read_csv(c,dtype=str,header=1)
     dfdata1=dfdata.copy()
@@ -110,6 +109,16 @@ for c in dfmap.index:
     # for each row in dfdata
     #   if there is a value in _df
     #       delete that row from dfdata
+
+
+    index=_df[pd.isna(_df['psychs_baseline'])].index
+    unique=dfdata['src_subject_id'].unique()
+    print('subjects that are NaN in tracker but does not exist in NDA data')
+    for c in index:
+        if c not in unique:
+            count+=1
+            print(c)
+
     
     for i,row in dfdata.iterrows():
         try:
@@ -122,8 +131,7 @@ for c in dfmap.index:
 
         if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
-            
-            
+
     _,name=mkstemp()
     dfdata1.to_csv(name,index=False)
     with open(name) as f:
@@ -142,7 +150,6 @@ for c in dfmap.index:
 
     move(c,f'original/{c}')
     with open(c,'w') as f:
-    # with open(f'filtered/{c}','w') as f:
         f.write(title+'\n'+data)
 
     
