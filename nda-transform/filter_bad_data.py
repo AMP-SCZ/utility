@@ -80,8 +80,6 @@ def combine_psychs(dfp):
                 dfp.loc[i,'psychs_month_2']='omit'
 
 
-
-
     return dfp
 
 
@@ -110,16 +108,6 @@ for c in dfmap.index:
     #   if there is a value in _df
     #       delete that row from dfdata
 
-
-    index=_df[pd.isna(_df['psychs_baseline'])].index
-    unique=dfdata['src_subject_id'].unique()
-    print('subjects that are NaN in tracker but does not exist in NDA data')
-    for c in index:
-        if c not in unique:
-            count+=1
-            print(c)
-
-    
     for i,row in dfdata.iterrows():
         try:
             cell=_df.loc[ row['src_subject_id'],column ]
