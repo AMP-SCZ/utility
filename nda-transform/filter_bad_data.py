@@ -34,9 +34,9 @@ def combine_psychs(dfp):
             dfp.loc[i,'psychs_screening']='omit'
 
         
-        if row['HC or CHR']=='chr':
+        if row['HC or CHR']=='CHR':
             FU='_fu_'
-        elif row['HC or CHR']=='hc':
+        elif row['HC or CHR']=='HC':
             FU='_fu_hc_'
         else:
             dfp.loc[i,'psychs_baseline']='omit'
@@ -51,21 +51,34 @@ def combine_psychs(dfp):
         else:
             dfp.loc[i,'psychs_baseline']='omit'
 
-        
-        # psychs_month_1
-        condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
-        if pd.isna(row['psychs_baseline']) and condition:
-            dfp.loc[i,'psychs_month_1']=None
-        else:
-            dfp.loc[i,'psychs_month_1']='omit'
-        
-        
-        # psychs_month_2
-        condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
-        if pd.isna(row['psychs_month_1']) and condition:
-            dfp.loc[i,'psychs_month_2']=None
-        else:
-            dfp.loc[i,'psychs_month_2']='omit'
+
+        if row['HC or CHR']=='CHR':
+            
+            # psychs_month_1
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
+            if pd.isna(row['psychs_baseline']) and condition:
+                dfp.loc[i,'psychs_month_1']=None
+            else:
+                dfp.loc[i,'psychs_month_1']='omit'
+            
+            # psychs_month_2
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
+            if pd.isna(row['psychs_month_1']) and condition:
+                dfp.loc[i,'psychs_month_2']=None
+            else:
+                dfp.loc[i,'psychs_month_2']='omit'
+
+
+
+        elif row['HC or CHR']=='HC':
+            
+            # psychs_month_2
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
+            if pd.isna(row['psychs_baseline']) and condition:
+                dfp.loc[i,'psychs_month_2']=None
+            else:
+                dfp.loc[i,'psychs_month_2']='omit'
+
 
 
 
