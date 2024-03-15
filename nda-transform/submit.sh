@@ -20,9 +20,11 @@ Optional:
 -n : network
 -e : event
 -s : suffix
+-c : collection
 
 nda-submission directory is globed for \${f}_\${n}_\${e}_\${s}.csv to find files to submit
 to only validate, do not provide -u
+default collection is 3705, private collection is 4366
 """
 
     exit
