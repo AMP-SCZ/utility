@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import sys
-from os.path import abspath, isfile
+from os.path import abspath, isfile, basename
 from shutil import move
 import pandas as pd
 
 if sys.argv[1] in ['-h', '--help'] or len(sys.argv)<3:
-    print(f'Usage: ./{__file__} ndar_subject01.csv validation_results_*csv')
+    print(f'Usage: {__file__} ndar_subject01.csv validation_results_*csv')
     exit()
 
 with open(sys.argv[1]) as f:
@@ -35,7 +35,7 @@ for i,row in enumerate(data):
         data2[j]=row
         j+=1
 
-move(sys.argv[1],'/tmp/'+sys.argv[1])
+move(sys.argv[1],'/tmp/'+basename(sys.argv[1]))
 with open(sys.argv[1],'w') as f:
     f.write('\n'.join(data2))
 
