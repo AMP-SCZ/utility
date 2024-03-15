@@ -13,13 +13,17 @@
 
 2. Shift dates and prepare NDA compatible file with empty mandatory columns:
 
-<details><summary>**IMPORTANT**</summary>
+<details><summary><b>IMPORTANT</b></summary>
 
-  (i) ask Spero to stop his EEG processing pipeline
+---
 
-  (ii) Stop `rsync_eegqc.sh` from HPC to rc-predict-gen
+  * (i) Ask Spero to stop his EEG processing pipeline
 
-Failure to do the above will break introduce unscored date shifted sessions in EEG QC dashboard.
+  * (ii) Stop `rsync_eegqc.sh` from HPC to rc-predict-gen
+
+Failure to do the above will introduce unscored date-shifted sessions in EEG QC dashboard.
+
+---
 
 </details>
 
