@@ -19,7 +19,7 @@ f.write('subjectkey,src_subject_id,interview_date,interview_age,sex,experiment_i
 
 
 for line in content:
-    # /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/PronetBI/processed/BI05652/eeg/ses-20230420/NDA/BI05652_eeg_visit001.zip
+    # /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/PronetBI/processed/BI12345/eeg/ses-20230420/BI12345_eeg_visit001.zip
     elements=line.split('/')
     src_subject_id=elements[9]
     ses=elements[11]
