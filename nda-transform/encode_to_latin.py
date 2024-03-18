@@ -51,10 +51,16 @@ def main():
             print(f"Renaming {filename} to '.{filename}'")
             filename.rename(f".{filename}")
 
-            print(f"Saving 'latin-1' encoded file to {filename}")
             temp_file.flush()
             temp_path = Path(temp_file.name)
-            shutil.copy(temp_path, filename)
+
+            print(f"Saving 'utf-8' -> 'latin-1' -> 'utf-8' encoded file to {filename}")
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8") as temp_file_utf8:
+                with open(temp_path, "r", encoding="latin-1") as temp_file_latin1:
+                    temp_file_utf8.write(temp_file_latin1.read())
+
+                temp_file_utf8.flush()
+                shutil.copy(temp_file_utf8.name, filename)
 
     print("Done")
     return
