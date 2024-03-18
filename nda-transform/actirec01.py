@@ -27,15 +27,27 @@ def get_value(var,event):
     
 
 def months_since_consent(interview,consent):
-    age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
+    try:
+        age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
+    except ValueError:
+        age= datetime.strptime(interview,'%m/%d/%Y')-datetime.strptime(consent,'%Y-%m-%d')
+
     return round(age.days/30)
 
 
 def nda_date(redcap_date):
+
     if redcap_date=='':
         # REDCap missing: 1909-09-09
         # REDCap N/A: 1903-03-03
         return '03/03/1903'
+
+    # check if it is already in NDA format
+    try:
+        datetime.strptime(redcap_date,'%m/%d/%Y')
+        return redcap_date
+    except ValueError:
+        pass
 
     Y=redcap_date[:4]
     m,d=redcap_date[5:].split('-')
@@ -164,11 +176,11 @@ if __name__=='__main__':
     with open(name) as f:
         data=f.read()
     remove(name)
-    
-    title=re.search('/(.+?)01_template.csv',args.dict).group(1)
+
     version='01'
+    title=re.search(f'(.+?){version}.csv',args.dict).group(1)
     with open(args.output,'w') as f:
-        f.write(title+',01''\n'+data)
+        f.write(f'{title},{version}\n'+data)
     
     print('Generated',abspath(args.output))
     

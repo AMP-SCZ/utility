@@ -60,7 +60,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 

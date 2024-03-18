@@ -60,7 +60,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -105,6 +105,11 @@ def populate():
                 size=definition.loc[v,'Size']
                 if size:
                     value=value[:int(size)]
+
+                if '\n' in value:
+                    value=value.replace('\n',' ')
+                if '\r' in value:
+                    value=value.replace('\r','')
 
             elif definition.loc[v,'DataType']=='Date':
                 value=nda_date(value)

@@ -91,31 +91,31 @@ def _visit_to_event(chr_hc, form, visit_num):
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
     print(f'''Usage:
-    {abspath(__file__)} ME57953.csv forms-dir API_TOKEN /path/to/date_offset.csv 1
+    {abspath(__file__)} ME57953.csv forms-dir API_TOKEN 1
 execute it within /path/to/ME57953/surveys/ directory
 forms-dir is the directory with *_DataDictionary_*.csv and *_InstrumentDesignations_*.csv files
-optional: date_offset.csv is the file with 1/0 upload bit
 optional: 1 is for force re-upload''')
     exit(0)
 
 
+subjectkey= sys.argv[1].split('_')[0]
 
 if sys.argv[-1]=='1':
     pass
 else:
     subject=basename(sys.argv[1]).split('_')[0]
     
-    hashfile=abspath(sys.argv[4])
+    hashfile=subjectkey+'_hashes.csv'
     if isfile(hashfile):
 
         dfshift=pd.read_csv(hashfile)
-        dfshift.set_index('subject',inplace=True)
+        dfshift.set_index('form',inplace=True)
 
         # skip unchanged CSVs
-        if subject in dfshift.index and dfshift.loc[subject,'upload']==0:
+        if sys.argv[1] not in dfshift.index or dfshift.loc[sys.argv[1],'upload']==0:
             print(sys.argv[1], 'has not been modified, skipping')
             exit()
-        # if a subject is not in dfshift.index, that got downloaded after date_offset.csv was created
+        # if a form is not in dfshift.index, that got downloaded after {subjectkey}_hashes.csv was created
         # that is a new one and we let it upload
     
     else:
@@ -135,7 +135,6 @@ forms_group= dfdict.groupby('Form Name')
 events_group= dfevent.groupby('unique_event_name')
 
 
-subjectkey= sys.argv[1].split('_')[0]
 incl_excl= subjectkey+ '_inclusionexclusion_criteria_review.csv'
 inform_consent= subjectkey+ '_informed_consent_run_sheet.csv'
 if not isfile(inform_consent):
@@ -172,17 +171,29 @@ def entry_status(redcap_label,rpms_visit):
         return 2
 
 
+def sort_consent_dates(df):
+
+    # extract Young Patient's rows only, we do not need Guardian's rows
+    # to account for re-consent scenario, consider only the latest row
+    yp= df[df['version']=='YP']
+    yp_sorted= yp.sort_values('interview_date',
+        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+
+    return yp_sorted
+
+
+
 # one try-except block to handle absence of incl_excl and empty chrcrit_part
 try:
     df= pd.read_csv(incl_excl)
     chr_hc= int(df['chrcrit_part'])
     
 except (FileNotFoundError,ValueError):
-
+    
     df= pd.read_csv(inform_consent)
-    # extract Young Patient's rows only, we do not need Guardian's rows
-    # to account for re-consent scenario, consider only the last row
-    chr_hc= df[df['version']=='YP'].iloc[-1]['group']
+    yp_sorted= sort_consent_dates(df)
+
+    chr_hc= yp_sorted.iloc[-1]['group']
     if chr_hc=='UHR':
         chr_hc=1
     elif chr_hc=='HealthyControl':
@@ -296,6 +307,13 @@ for _,visit in data.iterrows():
 
         except KeyError:
             pass
+    
+    
+    if form=='informed_consent_run_sheet':
+        if data['interview_date'].unique().shape[0]>1:
+            yp_sorted=sort_consent_dates(data)
+            orig_consent=yp_sorted.iloc[0]['interview_date']
+            data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
     
     
     if form=='sociodemographics':

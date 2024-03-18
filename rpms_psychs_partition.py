@@ -72,14 +72,15 @@ for file in files:
             # extract Young Patient's rows only, we do not need Guardian's rows
             # to account for re-consent scenario, consider only the last row
             try:
-                group1= dfconsent.loc[row['subjectkey']]
+                group1= dfconsent.loc[[row['subjectkey']]]
             except KeyError:
                 print('\tdoes not seem to have been consented\n')
                 continue
-
-            group2= group1[group1['version']!='YP'].iloc[-1]
-
-            chr_hc= group2['group']
+            
+            yp= group1[group1['version']=='YP']
+            yp_sorted= yp.sort_values('interview_date',
+                key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+            chr_hc= yp_sorted.iloc[-1]['group']
 
 
         if chr_hc=='UHR':

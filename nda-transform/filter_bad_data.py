@@ -17,36 +17,76 @@ dfpre=pd.read_excel('form_status_tracker_PRESCIENT.xlsx')
 def combine_psychs(dfp):
     
     # introduce a column for rawdata
-    dfp['rawdata']=[None]*dfp.shape[0]
+    # dfp['rawdata']=[None]*dfp.shape[0]
 
     dfp['psychs_screening']=['']*dfp.shape[0]
     dfp['psychs_baseline']=['']*dfp.shape[0]
+    dfp['psychs_month_1']=['']*dfp.shape[0]
+    dfp['psychs_month_2']=['']*dfp.shape[0]
 
-    # psychs_screening
+
     for i,row in dfp.iterrows():
+
+        # psychs_screening
         if pd.isna(row['psychs_p1p8_screening']) and pd.isna(row['psychs_p9ac32_screening']):
             dfp.loc[i,'psychs_screening']=None
         else:
             dfp.loc[i,'psychs_screening']='omit'
 
-    # psychs_followup
-    for i,row in dfp.iterrows():
-
-        if row['HC or CHR']=='chr':
-            condition=pd.isna(row['psychs_p1p8_fu_baseline']) and pd.isna(row['psychs_p9ac32_fu_baseline'])
-        elif row['HC or CHR']=='hc':
-            condition=pd.isna(row['psychs_p1p8_fu_hc_baseline']) and pd.isna(row['psychs_p9ac32_fu_hc_baseline'])
-
+        
+        if row['HC or CHR']=='CHR':
+            FU='_fu_'
+        elif row['HC or CHR']=='HC':
+            FU='_fu_hc_'
+        else:
+            dfp.loc[i,'psychs_baseline']='omit'
+            dfp.loc[i,'psychs_month_1']='omit'
+            dfp.loc[i,'psychs_month_2']='omit'
+            continue
+        
+        # psychs_baseline
+        condition=pd.isna(row[f'psychs_p1p8{FU}baseline']) and pd.isna(row[f'psychs_p9ac32{FU}baseline'])
         if pd.isna(row['psychs_screening']) and condition:
             dfp.loc[i,'psychs_baseline']=None
         else:
             dfp.loc[i,'psychs_baseline']='omit'
+
+
+        if row['HC or CHR']=='CHR':
+            
+            # psychs_month_1
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
+            if pd.isna(row['psychs_baseline']) and condition:
+                dfp.loc[i,'psychs_month_1']=None
+            else:
+                dfp.loc[i,'psychs_month_1']='omit'
+            
+            # psychs_month_2
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
+            if pd.isna(row['psychs_month_1']) and condition:
+                dfp.loc[i,'psychs_month_2']=None
+            else:
+                dfp.loc[i,'psychs_month_2']='omit'
+
+
+
+        elif row['HC or CHR']=='HC':
+            
+            # psychs_month_2
+            condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
+            if pd.isna(row['psychs_baseline']) and condition:
+                dfp.loc[i,'psychs_month_2']=None
+            else:
+                dfp.loc[i,'psychs_month_2']='omit'
+
 
     return dfp
 
 
 dfpro=combine_psychs(dfpro)
 dfpre=combine_psychs(dfpre)
+_df=pd.concat((dfpro,dfpre))
+_df.set_index('subject',inplace=True)
 
 
 dfmap=pd.read_csv('/data/predict1/utility/nda-transform/tracker_column.csv')
@@ -60,9 +100,6 @@ for c in dfmap.index:
     column=dfmap.loc[c]['tracker_column']
     
     print(c,column)
-            
-    _df=pd.concat( (dfpre[['subject','current timepoint',column]], dfpro[['subject','current timepoint',column]]) )
-    _df.set_index('subject',inplace=True)
     
     dfdata=pd.read_csv(c,dtype=str,header=1)
     dfdata1=dfdata.copy()
@@ -70,7 +107,7 @@ for c in dfmap.index:
     # for each row in dfdata
     #   if there is a value in _df
     #       delete that row from dfdata
-    
+
     for i,row in dfdata.iterrows():
         try:
             cell=_df.loc[ row['src_subject_id'],column ]
@@ -80,12 +117,9 @@ for c in dfmap.index:
             print(row['src_subject_id'], 'does not exist')
             subjects.append(row['src_subject_id'])
 
-        if not pd.isna(cell) or \
-            _df.loc[ row['src_subject_id'],'current timepoint' ]=='removed' \
-            or int(row['interview_age'])<10:
+        if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
-            
-            
+
     _,name=mkstemp()
     dfdata1.to_csv(name,index=False)
     with open(name) as f:
@@ -104,7 +138,6 @@ for c in dfmap.index:
 
     move(c,f'original/{c}')
     with open(c,'w') as f:
-    # with open(f'filtered/{c}','w') as f:
         f.write(title+'\n'+data)
 
     

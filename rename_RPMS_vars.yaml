@@ -31,6 +31,7 @@ PrescientStudy_Prescient_digital_biomarkers_axivity_checkin_:
 
 PrescientStudy_Prescient_digital_biomarkers_axivity_end_of_12month_study_pe_:
 - interview_date,chraxe_interview_date
+- chraxe_qaqc1,chraxe_qaqc1___1
 
 PrescientStudy_Prescient_digital_biomarkers_axivity_onboarding_:
 - interview_date,chrax_interview_date

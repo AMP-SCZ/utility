@@ -155,8 +155,9 @@ def get_eeg_status():
         
         dfscore=pd.read_csv(score_file)
         score=dfscore.loc[0,'Rating']
-        assert score>=1 and score<=4
+        assert score>=0 and score<=4
         # 1: poor, 2: average, 3: good, 4: excellent
+        # 0: ignore (it is actually -8 in the web app)
     
     except:
         score=-days_since_scan

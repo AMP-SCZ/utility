@@ -46,10 +46,13 @@ def nda_date(redcap_date):
 matcode_var={
     'WB': 'chrblood_wb1id chrblood_wb1pos chrblood_wb2id chrblood_wb2pos chrblood_wb3id chrblood_wb3pos',
     'SE': 'chrblood_se1id chrblood_se1pos chrblood_se2id chrblood_se2pos chrblood_se3id chrblood_se3pos',
-    'PL': 'chrblood_pl1id chrblood_pl1pos chrblood_pl2id chrblood_pl2pos chrblood_pl3id chrblood_pl3pos',
+    'PL': 'chrblood_pl1id chrblood_pl1pos chrblood_pl2id chrblood_pl2pos chrblood_pl3id chrblood_pl3pos '+ \
+          'chrblood_pl4id chrblood_pl4pos chrblood_pl5id chrblood_pl5pos chrblood_pl6id chrblood_pl6pos',
     'BC': 'chrblood_bc1id chrblood_bc1pos chrblood_bc1box',
     'S': 'chrsaliva_id1a chrsaliva_pos1a chrsaliva_box1a chrsaliva_id1b chrsaliva_pos1b chrsaliva_box1b '+ \
-         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b'
+         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b '+ \
+         'chrsaliva_id3a chrsaliva_pos3a chrsaliva_box3a chrsaliva_id3b chrsaliva_pos3b chrsaliva_box3b'
+
 }
 
 

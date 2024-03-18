@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import numpy as np
 from os import getcwd, chdir, makedirs, stat
-from os.path import dirname, basename, abspath
+from os.path import dirname, basename, abspath, isfile
 from datetime import datetime, timedelta
 import sys
 from glob import glob
@@ -30,14 +30,19 @@ dfshift=pd.read_csv('date_offset.csv')
 dfshift.set_index('subject',inplace=True)
 
 
+with open(dirname(__file__)+'/rpms_file_suffix.txt') as f:
+    suffixes=f.read().split()
+
 for dir in dirs:
     subject=re.search('/raw/(.+?)/surveys',dir).group(1)
     
     stats=[]
-    for file in glob(dir+'*.csv'):
-        curr_stat= stat(file)
-        curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
-        stats.append(curr_stat)
+    for suffix in suffixes:
+        file= f'{dir}/{subject}_{suffix}'
+        if isfile(file):
+            curr_stat= stat(file)
+            curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
+            stats.append(curr_stat)
     
     stats=','.join(stats)
     curr_hash= md5(stats.encode('utf-8')).hexdigest()

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export PATH=/data/predict1/miniconda3/bin:$PATH
+export PYTHONPATH=/data/predict1/nda-tools/
 
 _help()
 {
@@ -19,9 +20,11 @@ Optional:
 -n : network
 -e : event
 -s : suffix
+-c : collection
 
 nda-submission directory is globed for \${f}_\${n}_\${e}_\${s}.csv to find files to submit
-do not provide -u for only validation
+to only validate, do not provide -u
+default collection is 3705, private collection is 4366
 """
 
     exit
@@ -93,6 +96,7 @@ do
             python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
             -u $user -t $title -d $title \
             -c $collection \
+            -l . \
             -b $data
         else
             # -t and -d are disallowed with --replace-submission
@@ -100,6 +104,7 @@ do
             -u $user \
             --replace-submission $id \
             -f \
+            -l . \
             -b $data
         fi
 

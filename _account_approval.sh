@@ -23,7 +23,7 @@ if [ -f $1 ]
 then
     recepients=$(cat $1)
 else
-    recepients=$1
+    recepients=$@
 fi
 
 for e in $recepients
@@ -39,5 +39,7 @@ do
 
     cat account_approval.txt | mailx -s "DPdash account approved" -r tbillah@partners.org \
     -c sylvain.bouix@etsmtl.ca -c jtbaker@partners.org -c tkapur@partners.org -- $e
+
+    echo
 done
 

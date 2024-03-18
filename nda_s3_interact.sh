@@ -3,7 +3,7 @@
 if [ $# -lt 2 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
 then
     echo """Usage:
-/path/to/utility/nda_s3_interact.sh \"*/raw/*/surveys/*_psychs_*_fu*csv\" ls
+/path/to/utility/nda_s3_interact.sh \"*/raw/*/surveys/???????_psychs_*_fu*csv\" ls
 Run this script from PHOENIX/PROTECTED directory.
 Source aws-keys before running it.
 First arg is pattern, second arg is ls or rm"""

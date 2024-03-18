@@ -60,6 +60,25 @@ PrescientStudy_Prescient_inclusionexclusion_criteria_review_:
 
 PrescientStudy_Prescient_premorbid_adjustment_scale_:
 - chrpas_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+- chrpas_pmod_child1,-3,9
+- chrpas_pmod_child2,-3,9
+- chrpas_pmod_child3,-3,9
+- chrpas_pmod_child4,-3,9
+- chrpas_pmod_adol_early1,-3,9
+- chrpas_pmod_adol_early2,-3,9
+- chrpas_pmod_adol_early3,-3,9
+- chrpas_pmod_adol_early4,-3,9
+- chrpas_pmod_adol_early5,-3,9
+- chrpas_pmod_adol_late1,-3,9
+- chrpas_pmod_adol_late2,-3,9
+- chrpas_pmod_adol_late3,-3,9
+- chrpas_pmod_adol_late4,-3,9
+- chrpas_pmod_adol_late5,-3,9
+- chrpas_pmod_adult1,-3,9
+- chrpas_pmod_adult2,-3,9
+- chrpas_pmod_adult3v1,-3,9
+- chrpas_pmod_adult3v3,-3,9
+
 
 PrescientStudy_Prescient_perceived_discrimination_scale_:
 - chrdim_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
@@ -160,8 +179,8 @@ PrescientStudy_Prescient_psychosis_polyrisk_score_:
 PrescientStudy_Prescient_ra_prediction_:
 - chrpred_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
-PrescientStudy_Prescient_guid_form_:
-- chrguid_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+# PrescientStudy_Prescient_guid_form_:
+# - chrguid_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
 PrescientStudy_Prescient_missing_data_:
 - chrmiss_withdrawn_spec,1 2 3 4 5 6 7 8 9 10 11 12,W1 W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12

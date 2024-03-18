@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename
+from os.path import basename,abspath
 
 
 # this function should have knowledge of dict1
@@ -59,7 +59,7 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
@@ -103,7 +103,15 @@ def populate():
         missing='0'
     df.at[row,'ampscz_missing']=missing
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+        value=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
     else:
         df.at[row,'ampscz_missing_spec']=''
 
@@ -201,5 +209,5 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
-    print('Generated',args.output)
+    print('Generated',abspath(args.output))
     

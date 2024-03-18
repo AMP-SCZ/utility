@@ -10,6 +10,7 @@ import pandas as pd
 from glob import glob
 from os.path import isfile,basename,abspath,join as pjoin
 import re
+from _util import printe
 
 
 # this function should have knowledge of dict1
@@ -64,19 +65,24 @@ def populate():
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
-    if interview_date=='':
+    if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
 
     try:
         # [] around index is required to make the resultant a DataFrame
-        metadata=data.loc[[(src_subject_id,interview_type)]].values[0]
-        study,nearest_day,session=metadata
+        metadata=data.loc[[(src_subject_id,interview_type,f'{event}_arm_{arm}')]].values[0]
+        study,nearest_day,session=metadata[:3]
 
+        found=True
         transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{nearest_day:04}_session{session:03}_REDACTED.txt'
+        if not isfile(transcript_):
+            
+            transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{-nearest_day:04}_session{session:03}_REDACTED.txt'
+            if not isfile(transcript_):
+                printe(f'{transcript_} could not be found')
+                found=False
         
-        assert isfile(transcript_)==True
-
     except KeyError:
         return
 
@@ -168,38 +174,13 @@ def populate():
 
     dfavl=pd.read_csv(features_file)
     
-    """
-    _days_since_consent=days_since_consent(interview_date,chric_consent_date)
-
-    # find the nearest day number among dfavl['day']
-    min_diff=9999
-    for d in dfavl['day'].values:
-        diff=abs(d-_days_since_consent)
-        if diff<min_diff:
-            min_diff=diff
-            nearest_day=d
-    
-    
-    # Example paths:
-    # PronetYA/processed/YA16945/interviews/open/transcripts/PronetYA_YA16945_interviewAudioTranscript_open_day0019_session001_REDACTED.txt
-    # PrescientME/processed/ME98165/interviews/open/transcripts/PrescientME_ME98165_interviewAudioTranscript_open_day0150_session002_REDACTED.txt
-    
-    transcript_=pjoin(_root,
-        f'transcripts/*_{src_subject_id}_interviewAudioTranscript_open_day{nearest_day:04}_session*_REDACTED.txt')
-    """
-    transcript_file=glob(transcript_)
+    if found:
+        df.at[row,'transcript_file']=abspath(transcript_).split('/processed/')[-1]
 
 
-    # sanity check
-    if len(transcript_file)!=1:
-        print(transcript_, 'could not be found')
-
-    else:
-        df.at[row,'transcript_file']=abspath(transcript_file[0]).split('/processed/')[-1]
-
-
+    found=False
     for i,_row in dfavl.iterrows():
-        if _row['day']==nearest_day:
+        if abs(_row['day'])==nearest_day and _row['interview_number']==session:
 
             total_words=sum(_row[t] for t in 'num_words_S1,num_words_S2,num_words_S3'.split(','))
 
@@ -233,9 +214,14 @@ def populate():
                         value=int(value)
 
                 df.at[row,v]=value
-            
+                
+                found=True
             break
-            
+
+    
+    if not found:
+        printe(f'{features_file},{nearest_day},{session} could not be found')
+        df.drop(row,inplace=True)
     
     # return df
 
@@ -303,7 +289,7 @@ if __name__=='__main__':
     columns=columns+run_sheet_vars+avl_vars+['transcript_file','ampscz_missing','ampscz_missing_spec']
     
     data=pd.read_csv(args.data)
-    data.set_index(['subject','interview_type'],inplace=True)
+    data.set_index(['subject','interview_type','redcap_event_name'],inplace=True)
 
 
     # save the remaining template

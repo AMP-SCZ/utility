@@ -25,7 +25,7 @@ then
     for r in ${@:2}
     do
         df -HP $1 | mailx -s "$1 reaching maximum" \
-        -r tbillah@partners.org -- ${r}@partners.org
+        -- ${r}@partners.org
     done
 fi
 
