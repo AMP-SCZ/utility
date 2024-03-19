@@ -84,8 +84,7 @@ def populate():
     sex=dfshared.loc[src_subject_id,'sex']
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
 
-    # populate one row in df for each row in group
-    current_index=df.shape[0]
+    # populate one row in rows for each row in group
 
     # Pandas throw a warning if df is appended by src_subject_id
     # df should be appended by numeric index anyway, so resetting its index
@@ -108,8 +107,7 @@ def populate():
             r['data_file2']=r['data_file2'].replace('rawdata/','mri/rawdata/')
 
 
-        df.loc[current_index+i]=r
-
+        rows.append(r)
 
 
 if __name__=='__main__':
@@ -152,7 +150,7 @@ if __name__=='__main__':
     columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
 
     data=pd.read_csv(args.data,dtype=str)
-    df=pd.DataFrame(columns=data.columns)
+    columns=data.columns
     data.set_index('src_subject_id',inplace=True)
 
     if args.interview_date_var:
@@ -164,6 +162,7 @@ if __name__=='__main__':
     chdir(args.root)
     
     files=glob(args.template)
+    rows=[]
     for row,file in enumerate(files):
         
         print('Processing',file)
@@ -173,7 +172,7 @@ if __name__=='__main__':
 
         populate()
 
-
+    df=pd.DataFrame(rows,columns=columns)
     pd.set_option("display.max_rows", None)
     pd.set_option("display.max_columns", None)
     pd.set_option("display.max_colwidth", None)
