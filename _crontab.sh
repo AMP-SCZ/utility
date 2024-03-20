@@ -135,3 +135,15 @@ MAILTO=xyz@bwh.harvard.edu
 0 02 * * * /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
 0 03 * * * /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
 0 06 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/ rc-predict
+
+
+
+# === dn021 ===
+# disk usage tracker for /data/pnl, pnlx, predict1
+
+00 00 * * * /data/predict1/diskusage-logging/logdf
+
+10 00 * * 5 /data/predict1/diskusage-logging/_manual_finger.sh
+
+00 18 * * 5 /data/predict1/diskusage-logging/weekly.sh
+
