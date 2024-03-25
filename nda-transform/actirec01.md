@@ -34,7 +34,7 @@ BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,BI1234
 
 ```
 cd /data/predict1/to_nda/nda-submissions/network_combined/
-python -m pdb /data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o actirec01.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../actirec01/actirec01_20240221.csv --dict actirec01
+/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o actirec01.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../actirec01/actirec01_20240221.csv --dict actirec01
 ```
 
 4. Validate
