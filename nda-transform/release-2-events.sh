@@ -88,7 +88,6 @@ then
 ./combine_networks.sh              -f figs01           
 ./combine_networks.sh -e screening -f dsm_iv_es01      
 ./combine_networks.sh -e screening -f ampscz_psychs01  
-./combine_networks.sh -e screening -f ampscz_psychs01  
 
 ./combine_networks.sh              -f socdem01         
 ./combine_networks.sh -e baseline  -f dsm_iv_es01      
