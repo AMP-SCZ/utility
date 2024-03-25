@@ -7,9 +7,10 @@
 
 Softlink it in proper place:
 
-> cd nda-submissions/image03
-> ln -s ../../nda-mri-test/*_upload/AMPSCZ_submission.csv
-
+```
+cd nda-submissions/image03
+ln -s ../../nda-mri-test/*_upload/AMPSCZ_submission.csv
+```
 
 2. Populate the mandatory columns using `image03.py`:
 
