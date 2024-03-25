@@ -17,7 +17,7 @@ def main():
 
     The original file will be renamed to '.<filename>'
 
-    Provide relative path to the target file.
+    Provide relative path to the original file.
 
     Usage:
         python encode_to_latin.py <filename>
