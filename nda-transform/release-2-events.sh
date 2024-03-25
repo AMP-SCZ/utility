@@ -14,7 +14,7 @@ do
 ./generate.sh -n $n -e screening -f ampscz_hcgfb01   -p chrhealth
 ./generate.sh -n $n -e screening -f scidvapd01       -p chrschizotypal
 ./generate.sh -n $n -e screening -f tbi01            -p chrtbi
-./generate.sh -n $n -e screening -f figs             -p chrfigs
+./generate.sh -n $n -e screening -f figs01           -p chrfigs
 ./generate.sh -n $n -e screening -f dsm_iv_es01      -p chrsofas
 ./generate.sh -n $n -e screening -f ampscz_psychs01  -p chrpsychs_scr
 
