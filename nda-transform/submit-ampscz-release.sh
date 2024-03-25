@@ -13,7 +13,7 @@ langsamp01_baseline_open.csv image03_baseline.csv ampscz_sp_survey01.csv assist0
 
 # private collection
 python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py -d ampscz-release-1.0 -t ampscz-release-1.0 -c 4366 -u tbillah -f \
-ndar_subject01.csv ampscz_sp_sensors01_4366.csv -b
+ndar_subject01.csv ampscz_sp_sensors01_4366.csv -b -l .
 
 popd
 
