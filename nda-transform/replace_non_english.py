@@ -15,7 +15,9 @@ def main():
     Checks if a file can be encoded using 'latin-1' encoding. If not, it will
     replace the file with a new file that uses 'latin-1' encoding.
 
-    The original file will be renamed to '.<filename>'
+    Execute this script within the directory of original file. Provide relative path of the original file.
+
+    Provide relative path to the original file.
 
     Usage:
         python encode_to_latin.py <filename>
