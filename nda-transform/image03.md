@@ -24,5 +24,5 @@ cd /data/predict1/to_nda/nda-submissions/network_combined/
 
 4. Kevin has multiple columns where `rawdata/` needs to be replaced by `mri/rawdata/`. It is best done via `vim` instead of writing a block in `image03.py` for every column. So open `image03.csv` and perform the repalcement as `%s+,rawdata/+,mri/rawdata/+g`.
 
-The purpose of `,` and `/` is to make the pattern very restrictive to avoid unwarranted replacement.
+    The purpose of `,` and `/` is to make the pattern very restrictive to avoid unwarranted replacement.
 
