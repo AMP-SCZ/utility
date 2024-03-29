@@ -17,6 +17,8 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
 
 # download pronet dictionary
 pronet=pronet/pronet_dict_${datestamp}.csv
+cp /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
+
 : << CMT
 DATA="token=${2}&content=metadata&format=csv&returnFormat=json"
 $CURL -H "Content-Type: application/x-www-form-urlencoded" \
@@ -24,10 +26,9 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
       -X POST \
       -d $DATA \
       https://redcap.partners.org/redcap/api/ > $pronet
-CMT
-cp /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
 
 
+: << CMT
 # download prescient dictionary
 prescient=prescient/prescient_dict_${datestamp}.csv
 DATA="token=${3}&content=metadata&format=csv&returnFormat=json"
@@ -55,7 +56,7 @@ do
 
     done
 done
-
+CMT
 
 # backup the ampscz and pronet dictionaries
 source /data/pnl/soft/pnlpipe3/duply_backup/env.sh
