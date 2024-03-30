@@ -21,7 +21,18 @@ for file in files:
     df = pd.read_csv(file)
     
     submission_folder = df.loc[0]["SUBMISSION_FOLDER_NAME"]
-    
+
+
+    # check a file only if at least one file_columns exist
+    exist=0
+    for c in file_columns:
+        if c in df.columns:
+            exist=1
+            break
+    if not exist:
+        continue
+
+
     for idx, row in df.iterrows():
         
         for c in file_columns:
