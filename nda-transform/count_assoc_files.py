@@ -24,6 +24,7 @@ else:
 file_columns='data_file1 data_file2 image_file bvalfile bvecfile transcript_file'.split()
 
 count=0
+unique_file={}
 for file in files:
     print("Checking", file)
 
@@ -59,7 +60,8 @@ for file in files:
                     if not data_file_path.exists():
                         print(f"File does not exist: {data_file_path}")
                     else:
+                        unique_file[data_file_path]=1
                         count+=1
 
 print('Total files', count)
-
+print('Total unique files', len(unique_file))
