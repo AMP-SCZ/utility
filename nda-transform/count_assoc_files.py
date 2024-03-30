@@ -21,7 +21,7 @@ else:
     source_path = Path(f"/volumes/prod-ampscz/collaboration-space/{collection}")
     files = source_path.glob(f"*/csv/{id}/part-*csv")
 
-file_columns='data_file1 data_file2 image_file bvalfile bvecfile'.split()
+file_columns='data_file1 data_file2 image_file bvalfile bvecfile transcript_file'.split()
 
 count=0
 for file in files:
