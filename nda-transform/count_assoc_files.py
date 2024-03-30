@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import pandas as pd
+import sys
 
 nda_submissions_path = Path("/volumes/prod-ampscz/nda-submissions")
 id = sys.argv[1]
@@ -15,6 +16,8 @@ file_columns='data_file1 data_file2 image_file bvalfile bvecfile'.split()
 
 count=0
 for file in files:
+    print("Checking", file)
+
     df = pd.read_csv(file)
     
     submission_folder = df.loc[0]["SUBMISSION_FOLDER_NAME"]
@@ -24,7 +27,7 @@ for file in files:
         for c in file_columns:
         
             if c in df.columns:
-                if pd.isna(row[c]):
+                if not pd.isna(row[c]):
                     data_file = row[c]
 
                     data_file_path: Path = nda_submissions_path / submission_folder / data_file
