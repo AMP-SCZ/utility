@@ -97,8 +97,8 @@ collection id:
     submission_id = args.id
     collection_id = args.collection
 
-    print(f"Submission id: {submission_id}")
-    print(f"Collection id: {collection_id}")
+    print(f"submission id: {submission_id}")
+    print(f"collection id: {collection_id}")
 
     if submission_id == "0" or collection_id == "0":
         # ERIS
