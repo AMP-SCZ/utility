@@ -11,6 +11,7 @@ import pandas as pd
 
 
 def count_files(
+    project_path: Path,
     source_path: Path,
     files: List[Path],
     context: Literal["aws", "eris"],
@@ -33,7 +34,7 @@ def count_files(
             _data_file_path = source_path
             df = pd.read_csv(file, header=1)
         else:
-            nda_submissions_path = Path("/volumes/prod-ampscz/nda-submissions")
+            nda_submissions_path = project_path / "nda-submissions"
             df = pd.read_csv(file)
             _data_file_path = nda_submissions_path / df.loc[0]["SUBMISSION_FOLDER_NAME"]
 
@@ -114,13 +115,11 @@ collection id:
         # AWS
         CONTEXT = "aws"
         if collection_id == "3705":
-            source_path = Path(
-                f"/volumes/prod-ampscz/collaboration-space/{collection_id}"
-            )
+            project_path = Path("/volumes/prod-ampscz")
+            source_path = project_path / "collaboration-space" / collection_id
         elif collection_id == "4366":
-            source_path = Path(
-                f"/volumes/prod-ampscz-pii/collaboration-space/{collection_id}"
-            )
+            project_path = Path("/volumes/prod-ampscz-pii")
+            source_path = project_path / "collaboration-space" / collection_id
         else:
             raise ValueError(f"Unknown collection id: {collection_id}")
         files = source_path.glob(f"*/csv/{submission_id}/part-*csv")
@@ -129,7 +128,13 @@ collection id:
     file_paths = sorted(file_paths)
 
     print(f"Context: {CONTEXT}")
+    print(f"Project path: {project_path}")
     print(f"Source path: {source_path}")
     print(f"Total files: {len(file_paths)}")
 
-    count_files(source_path, file_paths, CONTEXT)
+    count_files(
+        project_path=project_path,
+        source_path=source_path,
+        files=file_paths,
+        context=CONTEXT,
+    )
