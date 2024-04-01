@@ -127,7 +127,6 @@ collection id:
     file_paths = sorted(file_paths)
 
     print(f"Context: {CONTEXT}")
-    print(f"Project path: {project_path}")
     print(f"Source path: {source_path}")
     print(f"Total files: {len(file_paths)}")
 
