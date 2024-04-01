@@ -27,7 +27,7 @@ def count_files(
     )
 
     for file in files:
-        print(f"Checking {file}")
+        print(f"Checking {file}", end="")
 
         if context == "eris":
             _data_file_path = source_path
@@ -45,8 +45,10 @@ def count_files(
                 break
 
         if not check_file:
-            print("Expected columns not found in the file. Skipping.")
+            print(": Expected columns not found in the file. Skipping.")
             continue
+        else:
+            print()
 
         for _, row in df.iterrows():
             for c in file_columns:
