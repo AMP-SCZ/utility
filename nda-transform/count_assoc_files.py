@@ -28,7 +28,7 @@ def count_files(
     )
 
     for file in files:
-        print(f"Checking {file}", end="")
+        print(f"Checking {file}")
 
         if context == "eris":
             _data_file_path = source_path
@@ -46,10 +46,7 @@ def count_files(
                 break
 
         if not check_file:
-            print(": Expected columns not found in the file. Skipping.")
             continue
-        else:
-            print()
 
         for _, row in df.iterrows():
             for c in file_columns:
@@ -79,26 +76,18 @@ def count_files(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Count unique and duplicate files")
-    parser.add_argument("--id", type=str, help="submission id", default="0")
-    parser.add_argument(
-        "--collection",
-        type=str,
-        help="""
-collection id:
-3705: prod-ampscz
-4366: prod-ampscz-pii
-0: eris
-""",
-        choices=["3705", "4366", "0"],
-        default="0",
+    parser.add_argument("-i", "--id", type=str, help="Submission id", default="0")
+    parser.add_argument("-c", "--collection", type=str, help="""Collection id:
+3705: prod-ampscz, 4366: prod-ampscz-pii, 0: eris
+""", choices=["3705", "4366", "0"], default="0"
     )
     args = parser.parse_args()
 
     submission_id = args.id
     collection_id = args.collection
 
-    print(f"submission id: {submission_id}")
-    print(f"collection id: {collection_id}")
+    print(f"Submission id: {submission_id}")
+    print(f"Collection id: {collection_id}")
 
     if submission_id == "0" or collection_id == "0":
         # ERIS
