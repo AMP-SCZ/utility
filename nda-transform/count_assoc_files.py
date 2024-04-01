@@ -79,10 +79,9 @@ def count_files(
 
 # Usage:
 # at AWS workspace:
-# __file__ 65021 3705
+# __file__  -id 65021 -collection 3705
 # at ERIS cluster:
-# __file__ 0 0
-
+# __file__ -id 0 -collection 0
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Count unique and duplicate files")
     parser.add_argument("-id", type=str, help="submission id", default="0")
