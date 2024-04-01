@@ -5,13 +5,13 @@ Counts unique and duplicate files for NDA submissions
 
 import argparse
 from pathlib import Path
-from typing import Dict, List, Literal, Set
+from typing import Dict, List, Literal, Set, Optional
 
 import pandas as pd
 
 
 def count_files(
-    project_path: Path,
+    project_path: Optional[Path],
     source_path: Path,
     files: List[Path],
     context: Literal["aws", "eris"],
@@ -108,6 +108,7 @@ collection id:
     if submission_id == "0" or collection_id == "0":
         # ERIS
         CONTEXT = "eris"
+        project_path = None
         source_path = Path("/data/predict1/to_nda/nda-submissions/network_combined")
         files = source_path.glob("*csv")
     else:
