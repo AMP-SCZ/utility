@@ -108,20 +108,19 @@ collection id:
     if submission_id == "0" or collection_id == "0":
         # ERIS
         CONTEXT = "eris"
-        project_path = None
+        PROJECT_PATH = None
         source_path = Path("/data/predict1/to_nda/nda-submissions/network_combined")
         files = source_path.glob("*csv")
     else:
         # AWS
         CONTEXT = "aws"
         if collection_id == "3705":
-            project_path = Path("/volumes/prod-ampscz")
-            source_path = project_path / "collaboration-space" / collection_id
+            PROJECT_PATH = Path("/volumes/prod-ampscz")
         elif collection_id == "4366":
-            project_path = Path("/volumes/prod-ampscz-pii")
-            source_path = project_path / "collaboration-space" / collection_id
+            PROJECT_PATH = Path("/volumes/prod-ampscz-pii")
         else:
             raise ValueError(f"Unknown collection id: {collection_id}")
+        source_path = PROJECT_PATH / "collaboration-space" / collection_id
         files = source_path.glob(f"*/csv/{submission_id}/part-*csv")
 
     file_paths = list(files)
@@ -132,7 +131,7 @@ collection id:
     print(f"Total files: {len(file_paths)}")
 
     count_files(
-        project_path=project_path,
+        project_path=PROJECT_PATH,
         source_path=source_path,
         files=file_paths,
         context=CONTEXT,
