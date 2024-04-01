@@ -5,7 +5,7 @@ Counts unique and duplicate files for NDA submissions
 
 import argparse
 from pathlib import Path
-from typing import Dict, List, Literal, Set, Optional
+from typing import Dict, List, Literal, Optional, Set
 
 import pandas as pd
 
@@ -77,11 +77,6 @@ def count_files(
     print(f"Duplicates: {duplicate_files_count}")
 
 
-# Usage:
-# at AWS workspace:
-# __file__  -id 65021 -collection 3705
-# at ERIS cluster:
-# __file__ --id 0 --collection 0
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Count unique and duplicate files")
     parser.add_argument("--id", type=str, help="submission id", default="0")
