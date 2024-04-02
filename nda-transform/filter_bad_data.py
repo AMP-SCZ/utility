@@ -34,9 +34,9 @@ def combine_psychs(dfp):
             dfp.loc[i,'psychs_screening']='omit'
 
         
-        if row['HC or CHR']=='CHR':
+        if row['cohort']=='CHR':
             FU='_fu_'
-        elif row['HC or CHR']=='HC':
+        elif row['cohort']=='HC':
             FU='_fu_hc_'
         else:
             dfp.loc[i,'psychs_baseline']='omit'
@@ -52,7 +52,7 @@ def combine_psychs(dfp):
             dfp.loc[i,'psychs_baseline']='omit'
 
 
-        if row['HC or CHR']=='CHR':
+        if row['cohort']=='CHR':
             
             # psychs_month_1
             condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
@@ -70,7 +70,7 @@ def combine_psychs(dfp):
 
 
 
-        elif row['HC or CHR']=='HC':
+        elif row['cohort']=='HC':
             
             # psychs_month_2
             condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
