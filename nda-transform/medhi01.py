@@ -74,7 +74,6 @@ def populate(row):
     if missing=='':
         # not clicked
         missing='0'
-    df.at[row,'ampscz_missing']=missing
     if missing=='1':
         missing_spec=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
     else:
@@ -83,6 +82,10 @@ def populate(row):
 
 
     for j in range(1,61):
+
+        med=get_value(f'chrpharm_med{j}_name_past',f'{event}_arm_{arm}')
+        if med=='':
+            continue
 
         # get shared variables
         df.at[row,'src_subject_id']=src_subject_id
