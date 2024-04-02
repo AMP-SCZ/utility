@@ -13,8 +13,8 @@ for line in lines:
     else:
         dict1[line]=1
 
-print('Frequency <space> Line')
-for line in lines:
+print(' # : Line')
+for line in dict1:
     if dict1[line]>1:
-        print('{:2} {}'.format(dict1[line], line))
+        print('{:2} : {}'.format(dict1[line], line))
         
