@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 """
-Removes subjects from holdout_list file, from another CSV file
+Removes subjects present in holdout.txt from another CSV file
 
-Expects holdout_list to be a file withe a subject_id in each
-row / line to be removed:
+Expects the holdout.txt to have a subject_id in each line:
 
 Sample holdout.txt:
+
 AB12345
 CD67890
 ...
 
-Expects the CSV file to dual line headers and the subject_id as its
+Expects the CSV file to have two header lines and the subject_id as its
 second column:
 
 Sample CSV file:
-col_1,subject_id,col_3
+
+ndar_subject,01
+subjectkey,src_subject_id,interview_date,...
 val_1,AB12345,val_3
 val_4,CD67890,val_6
 ...
 
-Overwrites the target CSV file with the subjects removed, and backs up
-the original file with a <filename.ext>.orig extension
+Overwrites the original CSV file with the subjects removed, and backs it up
+as <filename>.orig
 """
 
 import argparse
@@ -37,13 +39,13 @@ def get_subjects_to_remove(holdout_list: Path) -> Set[str]:
         for line in f:
             subjects.add(line.strip())
 
-    print(f"Fount {len(subjects)} subjects to remove")
+    print(f"Found {len(subjects)} subjects to remove")
     return subjects
 
 
 def remove_subjects(holdout_list: Path, target_file: Path):
     """
-    Remove subjects from the target CSV file
+    Remove subjects from the input CSV file
     """
     subjects_to_remove = get_subjects_to_remove(holdout_list)
 
@@ -72,15 +74,15 @@ def remove_subjects(holdout_list: Path, target_file: Path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Removes subjects from CSV file")
     parser.add_argument(
-        "-hl", "--holdout_list", type=str, help="Holdout list file", required=True
+        "-l", "--holdout", type=str, help="Holdout list file", required=True
     )
     parser.add_argument(
-        "-tf", "--target_file", type=str, help="Target CSV file", required=True
+        "-i", "--input", type=str, help="Input CSV file", required=True
     )
     args = parser.parse_args()
 
-    holdout_list = Path(args.holdout_list)
-    target_file = Path(args.target_file)
+    holdout_list = Path(args.holdout)
+    target_file = Path(args.input)
 
     print(f"Removing subjects from {target_file}")
     print(f"Using holdout list: {holdout_list}")
