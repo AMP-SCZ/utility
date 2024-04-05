@@ -39,7 +39,6 @@ def get_subjects_to_remove(holdout_list: Path) -> Set[str]:
         for line in f:
             subjects.add(line.strip())
 
-    print(f"Found {len(subjects)} subjects to remove")
     return subjects
 
 
@@ -68,7 +67,6 @@ def remove_subjects(holdout_list: Path, target_file: Path):
                 t.write(line)
 
     print(f"Removed {removed_counter} subjects")
-    print(f"Removed subjects from {target_file}")
 
 
 if __name__ == "__main__":
@@ -84,7 +82,7 @@ if __name__ == "__main__":
     holdout_list = Path(args.holdout)
     target_file = Path(args.input)
 
-    print(f"Removing subjects from {target_file}")
+    print(f"Removing subjects from: {target_file}")
     print(f"Using holdout list: {holdout_list}")
 
     remove_subjects(holdout_list, target_file)
