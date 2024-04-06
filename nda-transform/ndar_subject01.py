@@ -18,6 +18,10 @@ def get_value(var,event):
             return d[var]
 
 
+def months_since_consent(interview,consent):
+    age= datetime.strptime(interview,'%Y-%m-%d')-datetime.strptime(consent,'%Y-%m-%d')
+    return round(age.days/30)
+
 
 def populate():
 
@@ -60,7 +64,15 @@ def populate():
         if interview_age in ['',None,'-3','-9']:
             return
 
+
+    interview_date=get_value('chric_consent_date',f'screening_arm_{arm}')
+    if file.endswith('.Prescient.json'):
+        chrdemo_interview_date=get_value('chrdemo_interview_date',f'baseline_arm_{arm}')
+        months=months_since_consent(chrdemo_interview_date,interview_date)
+        interview_age=int(interview_age)-months
         
+    interview_date=datetime.strptime(interview_date,'%Y-%m-%d').strftime('%m/%d/%Y')
+    
     sex=get_value('chrdemo_sexassigned',f'baseline_arm_{arm}')
     sex='M' if sex=='1' else 'F'
 
@@ -89,9 +101,6 @@ def populate():
     else:
         race=_races[0]
 
-
-    interview_date=get_value('chric_consent_date',f'screening_arm_{arm}')
-    interview_date=datetime.strptime(interview_date,'%Y-%m-%d').strftime('%m/%d/%Y')
     
     for c in df.columns:
         df.at[row,c]=eval(c)
