@@ -29,10 +29,10 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
 
 5. Prepare data for NDA:
 
-> cd /data/predict1/to_nda/nda-submissions/network_combined
-> 
-> /data/predict1/utility/nda-transform/penncnb01.py --dict penncnb01 --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" -o penncnb01.csv --shared ndar_subject01.csv --data ../penncnb01/date_shifted_20240305.csv
-
+```
+cd /data/predict1/to_nda/nda-submissions/network_combined
+/data/predict1/utility/nda-transform/penncnb01.py --dict penncnb01 --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" -o penncnb01.csv --shared ndar_subject01.csv --data ../penncnb01/date_shifted_20240305.csv
+```
 
 6. Validate:
 
