@@ -26,11 +26,33 @@ elif 'Field Type' in df.columns:
     VALIDATION='Text Validation Type OR Show Slider Number'
 
 
+### remove dateerror variables, calculations, and branching logics
+_df=[]
+for i,row in df.iterrows():
+    if row[FIELD_TYPE]=='descriptive' and 'dateerror' in row[FIELD_NAME]:
+        continue
+    
+    if not pd.isna(row[BRANCHING]):
+        row[BRANCHING]=''
+    
+    if row[FIELD_TYPE]=='calc':
+        row[CHOICE_CALC]=''
+        row[FIELD_TYPE]='text'
+        
+    _df.append(row)
+    
+df1=pd.DataFrame(_df,columns=df.columns)
+
+outfile= infile.replace('.csv','_calc_logic.csv')
+df1.to_csv(outfile,index=False)
+
+
+
 ### append ___ or ____ to checkbox variables
-type_groups= df.groupby(FIELD_TYPE)
+type_groups= df1.groupby(FIELD_TYPE)
 checkbox_group= type_groups.get_group('checkbox')
 
-df1= df.copy()
+df2= df1.copy()
 for _,row in checkbox_group.iterrows():
     sep=" | "
     if sep not in row[CHOICE_CALC]:
@@ -51,31 +73,15 @@ for _,row in checkbox_group.iterrows():
         else:
             row1[FIELD_NAME]= f'{var}____{abs(num)}'
 
-        df1= df1.append(row1, ignore_index=True)
+        df2= pd.concat((df2,pd.DataFrame([row1])), ignore_index=True)
     
     # date variables cannot be converted to integers, deal with them differently
     if row1[VALIDATION]=='date_ymd':
         for num in ['1909_09_09','1903_03_03','1901_01_01']:
             row1[FIELD_NAME]= f'{var}___{num}'
-            df1= df1.append(row1, ignore_index=True)
+            df2= pd.concat((df2,pd.dataFrame([row1])), ignore_index=True)
 
+outfile= infile.replace('.csv','_calc_logic_checkbox.csv')
+df2.to_csv(outfile,index=False)
 
-
-
-### remove dateerror variables, calculations, and branching logics
-_df2=[]
-for i,row in df1.iterrows():
-    if row[FIELD_TYPE]=='descriptive' and 'dateerror' in row[FIELD_NAME]:
-        continue
-    
-    if not pd.isna(row[BRANCHING]):
-        row[BRANCHING]=''
-    
-    if row[FIELD_TYPE]=='calc':
-        row[CHOICE_CALC]=''
-        
-    _df2.append(row)
-    
-df2=pd.DataFrame(_df2,columns=df.columns)
-df2.to_csv(infile+'.modified',index=False)
 
