@@ -9,8 +9,9 @@ if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
     exit(0)
 
 infile= abspath(sys.argv[1])
+df= pd.read_csv(infile, encoding='ISO-8859-1', dtype=str)
 
-df= pd.read_csv(infile, encoding='ISO-8859-1')
+### append ___ or ____ to checkbox variables
 type_groups= df.groupby('Field Type')
 checkbox_group= type_groups.get_group('checkbox')
 
@@ -43,6 +44,23 @@ for _,row in checkbox_group.iterrows():
             row1['Variable / Field Name']= f'{var}___{num}'
             df1= df1.append(row1, ignore_index=True)
 
-outfile= infile.split('.csv')[0]+'_checkbox'+'.csv'
-df1.to_csv(outfile, index=False)
+
+
+
+### remove dateerror variables, calculations, and branching logics
+_df2=[]
+for i,row in df1.iterrows():
+    if row['Field Type']=='descriptive' and 'dateerror' in row['Variable / Field Name']:
+        continue
+    
+    if not pd.isna(row['Branching Logic (Show field only if...)']):
+        row['Branching Logic (Show field only if...)']=''
+    
+    if row['Field Type']=='calc':
+        row['Choices, Calculations, OR Slider Labels']=''
+        
+    _df2.append(row)
+    
+df2=pd.DataFrame(_df2,columns=df.columns)
+df2.to_csv(infile+'.modified',index=False)
 
