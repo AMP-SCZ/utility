@@ -31,7 +31,7 @@
 # ProNET real
 # determine if new and shift dates
 # determine if new and upload to REDCap
-00 22 * * * umask 0007 && /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2023-09-04_checkbox.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
+00 22 * * * umask 0007 && /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 
 # mongodb backup
