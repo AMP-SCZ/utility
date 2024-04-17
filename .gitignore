@@ -3,4 +3,12 @@ __pycache__/
 redcap_config.py
 .vault/
 bsub/
-bak/
+archive/
+compare_redcap_rpms/
+dpconfigs/
+redcap-ii-yale/
+rpms-to-yale/
+yale-real/
+dict_diff/
+dpdash_ci_cd/
+*log*
