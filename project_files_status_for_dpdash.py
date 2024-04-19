@@ -82,6 +82,8 @@ if isfile(metadata):
 else:
     dfmeta= pd.DataFrame(columns=['Subject ID','Active','Consent','Study'])
 
+sites=dfmeta['Subject ID'].values
+write=0
 
 i= dfmeta.shape[0]
 for site,dfsite in dfnew.groupby('site'):
@@ -100,13 +102,17 @@ for site,dfsite in dfnew.groupby('site'):
     dfsite.to_csv(outfile, index=False)
 
     # generate metadata
-    dfmeta.loc[i]=[site,1,'-',COMBINED_STUDY]
-    i+=1
+    if site not in sites:
+        dfmeta.loc[i]=[site,1,'-',COMBINED_STUDY]
+        i+=1
+        write=1
 
 
 
 # append combined row
-dfmeta.loc[i]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
+if COMBINED_SUBJECT not in sites:
+    dfmeta.loc[i]=[COMBINED_SUBJECT,1,'-',COMBINED_STUDY]
 
-dfmeta.to_csv(metadata, index=False)
+if write:
+    dfmeta.to_csv(metadata, index=False)
 
