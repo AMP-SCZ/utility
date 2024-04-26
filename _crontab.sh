@@ -20,18 +20,18 @@
 
 # PRESCIENT real
 # determine if new and upload to REDCap
-0 18 * * * /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456
+0 18 * * 0,2,4 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456
 
 # keep six hours difference between upload and download so upload can complete
 
 # clean old arms, download JSONs from REDCap and shift their dates
-59 23 * * * /data/predict1/utility/clean_down_shift.sh 123456
+0 2 * * 0,2,4 /data/predict1/utility/clean_down_shift.sh 123456
 
 
 # ProNET real
 # determine if new and shift dates
 # determine if new and upload to REDCap
-00 22 * * * /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
+0 18 * * 1,3,5 /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 
 # mongodb backup
@@ -39,7 +39,7 @@
 
 
 # kill stale processes every other day
-0 14 * * */2 pkill -u tb571 python
+0 17 * * 6 pkill -u tb571 python
 
 
 # === dn018 ===
