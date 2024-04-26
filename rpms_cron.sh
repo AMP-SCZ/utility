@@ -1,6 +1,7 @@
 #!/bin/bash
 
 datestamp=$(date +"%d.%m.%Y")
+mkdir -p /mnt/prescient/one_day_backup/
 rm /mnt/prescient/one_day_backup/*
 cp /mnt/prescient/RPMS_incoming/*_${datestamp}.csv /mnt/prescient/one_day_backup/
 
