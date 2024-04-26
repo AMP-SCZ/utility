@@ -38,5 +38,23 @@ N=`cat $redcap_records | wc -l`
 source /etc/profile
 # prevent getting thousand emails
 export LSB_JOB_REPORT_MAIL=N
-bsub -J "redcap-import[1-$N]%12" < /data/predict1/utility/rpms_to_redcap.lsf
+
+batch=200
+duration=3600
+for (( i=1; i<=N; i+=$batch ))
+do
+
+    if [[ $(( i+$batch )) -lt $N ]]
+    then
+        max=$(( i+$batch-1 ))
+    else
+        max=$N
+    fi
+
+    echo [$i-$max]
+    bsub -J "redcap-import[$i-$max]%12" < /data/predict1/utility/rpms_to_redcap.lsf
+    # wait between consecutive batch of jobs so the previous one can complete
+    sleep $duration
+
+done
 
