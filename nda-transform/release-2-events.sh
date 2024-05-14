@@ -146,5 +146,76 @@ then
 ./combine_networks.sh -e month_2   -f cgis01           
 ./combine_networks.sh -e month_2   -f bprs01           
 
+elif [ "$1" == submit ]
+then
+
+./submit.sh -u tbillah              -f ampscz_rs01      
+./submit.sh -u tbillah -e screening -f ampscz_lapes01   
+./submit.sh -u tbillah -e screening -f medhi01          
+./submit.sh -u tbillah              -f iec01            
+./submit.sh -u tbillah -e screening -f ampscz_hcgfb01   
+./submit.sh -u tbillah -e screening -f scidvapd01       
+./submit.sh -u tbillah -e screening -f tbi01            
+./submit.sh -u tbillah              -f figs01           
+./submit.sh -u tbillah -e screening -f dsm_iv_es01      
+./submit.sh -u tbillah -e screening -f ampscz_psychs01  
+
+./submit.sh -u tbillah              -f socdem01         
+./submit.sh -u tbillah -e baseline  -f dsm_iv_es01      
+./submit.sh -u tbillah -e baseline  -f ampscz_psychs01  
+./submit.sh -u tbillah -e baseline  -f ampscz_iqa01     
+./submit.sh -u tbillah -e baseline  -f wasi201          
+./submit.sh -u tbillah -e baseline  -f wisc_v01         
+./submit.sh -u tbillah -e baseline  -f wais_iv_part101  
+
+./submit.sh -u tbillah -e baseline  -f pmod01           
+./submit.sh -u tbillah -e baseline  -f vitas01          
+./submit.sh -u tbillah -e baseline  -f dailyd01         
+./submit.sh -u tbillah -e baseline  -f clinlabtestsp201 
+./submit.sh -u tbillah -e baseline  -f ampscz_nsipr01   
+./submit.sh -u tbillah -e baseline  -f clgry01          
+./submit.sh -u tbillah -e baseline  -f assist01         
+./submit.sh -u tbillah -e baseline  -f cssrs01          
+./submit.sh -u tbillah -e baseline  -f gfs01            -s chrgfss
+./submit.sh -u tbillah -e baseline  -f gfs01            -s chrgfrs
+./submit.sh -u tbillah              -f ampscz_dim01     
+./submit.sh -u tbillah              -f pds01            
+./submit.sh -u tbillah -e baseline  -f oasis01          
+./submit.sh -u tbillah -e baseline  -f sri01            
+./submit.sh -u tbillah -e baseline  -f pss01            
+./submit.sh -u tbillah -e baseline  -f ampscz_pps01     
+./submit.sh -u tbillah -e baseline  -f cgis01           
+./submit.sh -u tbillah -e baseline  -f bprs01           
+./submit.sh -u tbillah -e baseline  -f ampscz_rap01     
+
+./submit.sh -u tbillah -e month_1   -f dsm_iv_es01      
+./submit.sh -u tbillah -e month_1   -f ampscz_psychs01  
+./submit.sh -u tbillah -e month_1   -f pmod01           
+./submit.sh -u tbillah -e month_1   -f ampscz_nsipr01   
+./submit.sh -u tbillah -e month_1   -f clgry01          
+./submit.sh -u tbillah -e month_1   -f gfs01            -s chrgfssfu
+./submit.sh -u tbillah -e month_1   -f gfs01            -s chrgfrsfu
+./submit.sh -u tbillah -e month_1   -f oasis01          
+./submit.sh -u tbillah -e month_1   -f pss01            
+./submit.sh -u tbillah -e month_1   -f cgis01           
+./submit.sh -u tbillah -e month_1   -f bprs01           
+
+./submit.sh -u tbillah -e month_2   -f dsm_iv_es01      
+./submit.sh -u tbillah -e month_2   -f ampscz_psychs01  
+./submit.sh -u tbillah -e month_2   -f vitas01          
+./submit.sh -u tbillah -e month_2   -f dailyd01         
+./submit.sh -u tbillah -e month_2   -f clinlabtestsp201 
+./submit.sh -u tbillah -e month_2   -f ampscz_nsipr01   
+./submit.sh -u tbillah -e month_2   -f clgry01          
+./submit.sh -u tbillah -e month_2   -f assist01         
+./submit.sh -u tbillah -e month_2   -f cssrs01          
+./submit.sh -u tbillah -e month_2   -f gfs01            -s chrgfssfu
+./submit.sh -u tbillah -e month_2   -f gfs01            -s chrgfrsfu
+./submit.sh -u tbillah -e month_2   -f oasis01          
+./submit.sh -u tbillah -e month_2   -f sri01            
+./submit.sh -u tbillah -e month_2   -f pss01            
+./submit.sh -u tbillah -e month_2   -f cgis01           
+./submit.sh -u tbillah -e month_2   -f bprs01           
+
 fi
 
