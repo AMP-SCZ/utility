@@ -16,7 +16,7 @@ for file in files:
     
     for c in df.columns:
         
-        if c in 'subjectkey src_subject_id sex interview_date interview_age':
+        if c in 'subjectkey src_subject_id sex interview_date interview_age ampscz_missing ampscz_missing_spec':
             continue
     
         if c not in vars:
@@ -41,6 +41,8 @@ DICT=${OUT//txt/csv}
 rm $DICT
 for v in $(cat $OUT)
 do
-    grep -h $v *_definitions.csv >> $DICT
+    echo $v
+    grep -h -w "\"${v}\"," *_definitions.csv >> $DICT
+    grep -h -w "${v}," *_definitions.csv >> $DICT
 done
 
