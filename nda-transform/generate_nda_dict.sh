@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TO_NDA=/data/predict1/to_nda/
+TO_NDA=/data/predict1/to_nda
 cd ${TO_NDA}/nda-submissions/network_combined
 
 echo """
@@ -32,12 +32,15 @@ with open(sys.argv[1],'w') as f:
 """ > /tmp/generate_nda_dict.py
 
 
-python /tmp/generate_nda_dict.py ${TO_NDA}/nda_vars.txt
+OUT=${TO_NDA}/nda_vars.txt
+python /tmp/generate_nda_dict.py $OUT
 
 
-cd ${TO_NDA}/nda-templates/    
-for v in $(cat ${TO_NDA}/nda_vars.txt)
+cd ${TO_NDA}/nda-templates/
+DICT=${OUT//txt/csv}
+rm $DICT
+for v in $(cat $OUT)
 do
-    grep $v *csv >> ${TO_NDA}/nda_dict.csv
+    grep -h $v *_definitions.csv >> $DICT
 done
 
