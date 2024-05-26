@@ -24,5 +24,5 @@ umask 007 && newgrp BWH-PREDICT-G
 down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ $TOKEN
 
 # shift their dates
-shift_redcap_dates.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/rpms-to-yale/CloneOfYaleRealRecords_DataDictionary_2023-03-21_calc_to_text_checkbox.csv
+shift_redcap_dates.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv
 
