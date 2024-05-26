@@ -9,6 +9,7 @@ from glob import glob
 from multiprocessing import Pool
 import signal
 import requests
+import re
 
 
 # Download PRESCIENT records from MGB REDCap
@@ -29,12 +30,22 @@ chdir(sys.argv[1])
 
 try:
     df=pd.read_csv('date_offset.csv')
-    subjects=df['subject'].values
     df.set_index('subject',inplace=True)
     force=0
 except:
-    subjects= [p.split('/')[-1] for p in glob("*/raw/*")]
     force=1
+
+
+try:
+    # provide a way to selectively download JSONs
+    with open('rpms_records.txt') as f:
+        _subjects=f.read().strip().split()
+        subjects=[re.search('raw/(.+?)/surveys',s).group(1) for s in _subjects]
+except:
+    try:
+        subjects=df.subjects.values
+    except:
+        subjects=[p.split('/')[-1] for p in glob("*/raw/*")]
 
 
 # helpful for force re-download
