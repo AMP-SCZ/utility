@@ -72,7 +72,7 @@ It will use `rpms_records.txt`.
 
 > clean_old_arm.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED 123456
 
-4. Download the JSONs. `rpms_recods.txt` will be used to select JSONs.
+4. Download the JSONs. `rpms_recods.txt` will be used to download selectively.
 
 > down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ 123456 1 1
 
