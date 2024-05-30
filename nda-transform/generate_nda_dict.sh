@@ -72,7 +72,7 @@ for v in tqdm(vars):
                 found=1
                 break
             
-            elif v in row['Aliases']:
+            elif not pd.isna(row['Aliases']) and v in row['Aliases']:
                 # write row out
                 found=1
                 break
