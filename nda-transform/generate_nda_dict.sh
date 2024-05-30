@@ -3,6 +3,8 @@
 TO_NDA=/data/predict1/to_nda
 cd ${TO_NDA}/nda-submissions/network_combined
 
+echo Gathering list of variables uploaded to NDA
+
 echo """
 import pandas as pd
 from glob import glob
@@ -31,14 +33,17 @@ with open(sys.argv[1],'w') as f:
 
 """ > /tmp/generate_nda_list.py
 
-
 OUT=${TO_NDA}/nda_vars.txt
 python /tmp/generate_nda_list.py $OUT
 
-"""
+
+echo Generating combined dictionary of the above list
+
+echo """
 import pandas as pd
 from glob import glob
 import sys
+from tqdm import tqdm
 
 files=glob('*_definitions.csv')
 
@@ -57,7 +62,7 @@ for file in files:
 
 # now search for variables
 rows=[]
-for v in vars:
+for v in tqdm(vars):
     for name in dfall:
 
         found=0
@@ -67,7 +72,7 @@ for v in vars:
                 found=1
                 break
             
-            elif v in ['Aliases']:
+            elif v in row['Aliases']:
                 # write row out
                 found=1
                 break
@@ -83,6 +88,5 @@ dfdict.to_csv(sys.argv[1].replace('.txt','.csv'),index=False)
 
 cd ${TO_NDA}/nda-templates/
 python /tmp/generate_nda_dict.py $OUT
-
 
 
