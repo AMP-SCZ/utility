@@ -50,29 +50,34 @@ with open(sys.argv[1]) as f:
 # create list of definitions
 dfall={}
 for file in files:
-    df=pd.read_csv(file,header=1)
+    df=pd.read_csv(file)
     name=file.split('_definitions.csv')[0]
     dfall[name]=df
     
 
 # now search for variables
+rows=[]
 for v in vars:
-    for df in dfall:
+    for name in dfall:
 
         found=0
-        for i,row in df.iterrows():
-            if row['Variable Name']==v:
-                # write it out
+        for i,row in dfall[name].iterrows():
+            if row['ElementName']==v:
+                # write row out
                 found=1
                 break
             
             elif v in ['Aliases']:
-                # write it out
+                # write row out
                 found=1
                 break
         
         if found:
+            rows.append(row)
             break
+
+dfdict=pd.DataFrame(rows,columns=df.columns)
+dfdict.to_csv(sys.argv[1].replace('.txt','.csv'),index=False)
 
 """ > /tmp/generate_nda_dict.py
 
@@ -80,16 +85,4 @@ cd ${TO_NDA}/nda-templates/
 python /tmp/generate_nda_dict.py $OUT
 
 
-: << COMMENT
-
-DICT=${OUT//txt/csv}
-rm $DICT
-for v in $(cat $OUT)
-do
-    echo $v
-    grep -h -w "\"${v}\"," *_definitions.csv >> $DICT
-    grep -h -w "${v}," *_definitions.csv >> $DICT
-done
-
-COMMENT
 
