@@ -67,28 +67,29 @@ for file in files:
 
 # now search for variables
 rows=[]
-for v in tqdm(vars):
-    for name in dfall:
-
-        found=0
-        for i,row in dfall[name].iterrows():
-            if row['ElementName']==v:
-                # write row out
-                found=1
-                break
-            
-            elif not pd.isna(row['Aliases']) and v in row['Aliases']:
-                # write row out
-                found=1
-                break
-        
-        if found:
-            d=row['ElementDescription']
-            if not pd.isna(d) and '\n' in d:
-                row['ElementDescription']=d.replace('\n',' ')
-
-            rows.append(row)
+for _v in tqdm(vars):
+    name,v=_v.split('&')
+    
+    found=0
+    for i,row in dfall[name].iterrows():
+        if row['ElementName']==v:
+            # write row out
+            found=1
             break
+    
+        elif not pd.isna(row['Aliases']) and v in row['Aliases']:
+            # write row out
+            found=1
+            break
+    
+    if found:
+        d=row['ElementDescription']
+        if not pd.isna(d) and '\n' in d:
+            row['ElementDescription']=d.replace('\n',' ')
+
+        rows.append(row)
+    else:
+        print('Not found:',v)
 
 dfdict=pd.DataFrame(rows,columns=df.columns)
 dfdict.to_csv(sys.argv[1].replace('.txt','.csv'),index=False)
