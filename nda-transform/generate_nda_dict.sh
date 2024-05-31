@@ -83,9 +83,13 @@ for _v in tqdm(vars):
             break
     
     if found:
+        # remove unwarranted line breaks
         d=row['ElementDescription']
         if not pd.isna(d) and '\n' in d:
             row['ElementDescription']=d.replace('\n',' ')
+
+        # have uploaded variable names in the first column
+        row['ElementName']=v
 
         rows.append(row)
     else:
