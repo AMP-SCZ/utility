@@ -107,3 +107,16 @@ cd ${TO_NDA}/nda-templates/
 python /tmp/generate_nda_dict.py $OUT
 
 
+# these variables are common across all data structures
+: << COMMENT
+COMMON,"ElementName","DataType","Size","Required","ElementDescription","ValueRange","Notes","Aliases"
+COMMON,"subjectkey","GUID","","Required","The NDAR Global Unique Identifier (GUID) for research subject","NDAR*","",""
+COMMON,"src_subject_id","String","20","Required","Subject ID how it's defined in lab/project","","",""
+COMMON,"interview_date","Date","","Required","Date on which the interview/genetic test/sampling/imaging/biospecimen was completed. MM/DD/YYYY","","",""
+COMMON,"interview_age","Integer","","Required","Age in months at the time of the interview/test/sampling/imaging.","0::1440","Age is rounded to chronological month. If the research participant is 15-days-old at time of interview, the appropriate value would be 0 months. If the participant is 16-days-old, the value would be 1 month.",""
+COMMON,"sex","String","20","Required","Sex of subject at birth","M;F; O; NR","M = Male; F = Female; O=Other; NR = Not reported",""
+COMMON,"ampscz_missing","Integer","","Recommended","Please click if this form is missing all of its data","0;1","0 = Not clicked; 1 = Clicked",
+COMMON,"ampscz_missing_spec","Integer","","Recommended","Please specify the reason for missing data on this form","0::6","0 = Evaluation not necessary because the screening visit was less than 21 days from baseline visit; 1 = Measure refusal (no reason provided); 2 = No show; 3 = Research assistant forgot; 4 = Uncontrollable circumstance; 5 = Participant dropped out; 6 = Evaluation not necessary because the screening visit was less than 21 days from baseline visit",
+COMMENT
+
+
