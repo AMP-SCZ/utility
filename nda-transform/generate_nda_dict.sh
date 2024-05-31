@@ -41,7 +41,7 @@ with open(sys.argv[1],'w') as f:
 OUT=${TO_NDA}/nda_vars.txt
 python /tmp/generate_nda_list.py $OUT
 
-
+echo
 echo Generating combined dictionary of the above list
 
 echo """
@@ -93,6 +93,8 @@ for _v in tqdm(vars):
 
 dfdict=pd.DataFrame(rows,columns=df.columns)
 dfdict.to_csv(sys.argv[1].replace('.txt','.csv'),index=False)
+
+print('Total variables in dictionary:',dfdict.shape[0])
 
 """ > /tmp/generate_nda_dict.py
 
