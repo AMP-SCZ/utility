@@ -78,6 +78,10 @@ for v in tqdm(vars):
                 break
         
         if found:
+            d=row['ElementDescription']
+            if not pd.isna(d) and '\n' in d:
+                row['ElementDescription']=d.replace('\n',' ')
+
             rows.append(row)
             break
 
