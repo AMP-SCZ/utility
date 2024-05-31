@@ -90,12 +90,13 @@ for _v in tqdm(vars):
 
         # have uploaded variable names in the first column
         row['ElementName']=v
+        row['nda_short_name']=name
 
         rows.append(row)
     else:
         print('Not found:',v)
 
-dfdict=pd.DataFrame(rows,columns=df.columns)
+dfdict=pd.DataFrame(rows,columns=['nda_short_name']+list(df.columns))
 dfdict.to_csv(sys.argv[1].replace('.txt','.csv'),index=False)
 
 print('Total variables in dictionary:',dfdict.shape[0])
