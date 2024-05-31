@@ -16,13 +16,18 @@ vars={}
 for file in files:
     df=pd.read_csv(file,header=1)
     
+    with open(file) as f:
+        _name=f.read().split('\n')[0]
+        _name=_name.replace('\"','')
+        _name=_name.replace(',','')
+    
     for c in df.columns:
         
         if c in 'subjectkey src_subject_id sex interview_date interview_age ampscz_missing ampscz_missing_spec':
             continue
     
         if c not in vars:
-            vars[c]=''
+            vars[_name+'&'+c]=''
         
 print('Total variables found:', len(vars))
 
