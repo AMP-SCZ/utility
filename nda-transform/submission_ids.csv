@@ -64,8 +64,8 @@ scidcls01,baseline,60124
 penncnb01,,64550
 dsm_iv_es01,month_1,65776
 ampscz_psychs01,month_1,65777
-gfs01,month_1,chrgfssfu,65778
-gfs01,month_1,chrgfrsfu,65779
+gfs01,month_1_chrgfssfu,65778
+gfs01,month_1_chrgfrsfu,65779
 pss01,month_1,65780
 cgis01,month_1,65781
 dsm_iv_es01,month_2,65782
@@ -76,8 +76,8 @@ clinlabtestsp201,month_2,65786
 ampscz_nsipr01,month_2,65787
 clgry01,month_2,65788
 assist01,month_2,65789
-gfs01,month_2,chrgfssfu,65790
-gfs01,month_2,chrgfrsfu,65791
+gfs01,month_2_chrgfssfu,65790
+gfs01,month_2_chrgfrsfu,65791
 oasis01,month_2,65792
 sri01,month_2,65793
 pss01,month_2,65794
