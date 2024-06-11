@@ -87,7 +87,7 @@ def populate():
             if arm==1:
                 v1=v
             else:
-                v1=v.replace('chrpsychs_','hcpsychs_')
+                v1=v.replace('chrpsychs_fu_','hcpsychs_fu_')
 
             value=get_value(v1,f'{event}_arm_{arm}')
             
