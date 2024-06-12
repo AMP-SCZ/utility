@@ -7,7 +7,7 @@
 # fresh import happens over Tuesday night - Wednesday morning
 0 18 * * 2 /data/predict1/utility/dpimport_files_status.sh /data/predict1/data_from_nda/ rc-predict 1
 0 19 * * 2 /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict 1 > /data/predict1/utility/dpimport_avlqc.log.txt 2>&1
-0 20 * * 2 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict 1 > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
+0 21 * * 2 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict 1 > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
 0 23 * * 2 /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict 1
 0 01 * * 3 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict 1
 0 03 * * 3 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict 1
@@ -18,7 +18,7 @@
 # incremental import happens on Friday and Sunday
 0 18 * * 5,0 /data/predict1/utility/dpimport_files_status.sh /data/predict1/data_from_nda/ rc-predict
 0 19 * * 5,0 /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_avlqc.log.txt 2>&1
-0 20 * * 5,0 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
+0 21 * * 5,0 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
 0 23 * * 6,1 /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict
 0 01 * * 6,1 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
 0 03 * * 6,1 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
