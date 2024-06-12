@@ -1,9 +1,6 @@
 # generate files status every day
 0 17 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/
 
-# kill all stale import.py every day
-0 17 * * * pkill --signal 9 import.py
-
 # import all data to production DPdash in succession
 
 # the goal of a fresh import is to make sure that DPdash counts are accurate by Wednesday 6 am
@@ -14,6 +11,9 @@
 0 23 * * 2 /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict 1
 0 01 * * 3 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict 1
 0 03 * * 3 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict 1
+
+# kill all stale import.py every day
+0 17 * * * pkill --signal 9 import.py
 
 # incremental import happens on Friday and Sunday
 0 18 * * 5,0 /data/predict1/utility/dpimport_files_status.sh /data/predict1/data_from_nda/ rc-predict
