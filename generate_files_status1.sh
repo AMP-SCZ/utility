@@ -3,12 +3,7 @@
 export PATH=/data/predict1/utility/:/data/predict1/miniconda3/bin/:$PATH
 if [ -z $1 ] || [ ! -d $1 ]
 then
-    echo """./generate_file_status.sh /path/to/nda_root/ VM
-Provide /path/to/nda_root/ and VM
-VM name examples:
-    dpstage for dpstage.dipr.partners.org
-    rc-predict for rc-predict.bwh.harvard.edu
-    It is the first part of the server name."""
+    echo """$0 /path/to/nda_root/"""
     exit
 else
     export NDA_ROOT=$1
@@ -49,6 +44,4 @@ done
 
 echo AMPSCZ,1,'-',${name} >> ${name}_metadata.csv
 
-# export the above csv files to remote MongoDB server
-dpimport_files_status.sh $NDA_ROOT $2
 
