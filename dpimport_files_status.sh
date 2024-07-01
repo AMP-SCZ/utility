@@ -48,5 +48,5 @@ import.py -c $CONFIG "combined-AMPSCZ-data_*-day1to1.csv"
 import.py -c $CONFIG "*_status/combined-*-data_*-day1to1.csv"
 
 # subject level files status
-import.py -c $CONFIG "*_status/??-*-data_*-day1to1.csv"
+import.py -c $CONFIG "*_status/??-*-data_*-day1to1.csv" -n 8
 
