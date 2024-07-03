@@ -92,7 +92,7 @@
 
 # generate list of DPdash users
 # run as root
-0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah sbouix ekotler
+0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah kchin11 aasgaritarghi tkapur
 
 
 
