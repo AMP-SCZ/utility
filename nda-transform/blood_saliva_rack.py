@@ -116,7 +116,7 @@ def populate(i):
                 pos_on_rack=value
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    src_subject_id,cohort,sex,interview_age,'Months',subjectkey,'']
+                    src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
                 i+=1
     
 
@@ -158,7 +158,7 @@ def populate(i):
 
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    src_subject_id,cohort,sex,interview_age,'Months',subjectkey,'']
+                    src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
                 i+=1
 
 
@@ -198,7 +198,7 @@ if __name__=='__main__':
     
     
     _columns='Plate #,position,collection date,inventory code,,Matcode,N/A,'+ \
-             'subject code,Pedigree,Genetic Gender,Age,Age Unit,GUID,Form ID'
+             'subject code,GUID,Visit ID,Pedigree,Genetic Gender,Age,Age Unit,Form ID'
     df=pd.DataFrame(columns=_columns.split(','))
     i=0
 
