@@ -118,7 +118,7 @@ def populate(i):
             else:
                 pos_on_rack=value
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
+                df.loc[i]=[rack_code,pos_on_rack,nda_date(draw_date),inventory_code,'',matcode,'N/A',
                     _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
     
@@ -162,7 +162,7 @@ def populate(i):
                     rack_code='ProNET-'+rack_code.strip()[-4:]
 
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
+                df.loc[i]=[rack_code,pos_on_rack,nda_date(draw_date),inventory_code,'',matcode,'N/A',
                     _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
 
