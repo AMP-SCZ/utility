@@ -43,6 +43,8 @@ def nda_date(redcap_date):
     return new_date
 
 
+nimh_code={'YA':'914'}
+
 matcode_var={
     'WB': 'chrblood_wb1id chrblood_wb1pos chrblood_wb2id chrblood_wb2pos chrblood_wb3id chrblood_wb3pos',
     'EPSE': 'chrblood_se1id chrblood_se1pos chrblood_se2id chrblood_se2pos chrblood_se3id chrblood_se3pos',
@@ -76,7 +78,7 @@ def populate(i):
     # get shared variables
     subjectkey=dfshared.loc[src_subject_id,'subjectkey']
     sex='Male' if dfshared.loc[src_subject_id,'sex']=='M' else 'Female'
-
+    _src_subject_id=nimh_code[src_subject_id[:2]] + '-' + src_subject_id
 
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
 
@@ -116,7 +118,7 @@ def populate(i):
                 pos_on_rack=value
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
                 i+=1
     
 
@@ -158,7 +160,7 @@ def populate(i):
 
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
                 i+=1
 
 
