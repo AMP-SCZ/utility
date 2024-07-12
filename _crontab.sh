@@ -92,7 +92,7 @@
 
 # generate list of DPdash users
 # run as root
-0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah sbouix ekotler
+0 8 * * * /opt/dpdash/dpdash/get_dpdash_accounts.sh tbillah kchin11 aasgaritarghi tkapur
 
 
 
@@ -106,6 +106,7 @@ MAILTO=xyz@bwh.harvard.edu
 
 
 
+# this block was planned but never materialized
 # /data/predict1/ backups
 # directory,server,frequency (days)
 
@@ -126,18 +127,6 @@ MAILTO=xyz@bwh.harvard.edu
 
 
 
-# all dpimport are run by tb571 in dn020
-# TODO run by sf284
-# import all data to production DPdash in succession
-0 19 * * * /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict
-0 20 * * * /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
-0 00 * * * /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict
-0 02 * * * /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
-0 03 * * * /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
-0 06 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/ rc-predict
-
-
-
 # === dna007 ===
 # disk usage tracker for /data/pnl, pnlx, predict1
 
@@ -146,4 +135,37 @@ MAILTO=xyz@bwh.harvard.edu
 10 00 * * 5 /data/predict1/diskusage-logging/_manual_finger.sh
 
 00 18 * * 5 /data/predict1/diskusage-logging/weekly.sh
+
+
+
+# === dn020 ===
+# all dpimport are run by tb571
+# TODO run by sf284
+
+# generate files status every day
+0 17 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/
+
+# import all data to production DPdash in succession
+
+# the goal of a fresh import is to make sure that DPdash counts are accurate by Wednesday 6 am
+# fresh import happens over Tuesday night - Wednesday morning
+0 18 * * 2 /data/predict1/utility/dpimport_files_status.sh /data/predict1/data_from_nda/ rc-predict 1
+0 19 * * 2 /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict 1 > /data/predict1/utility/dpimport_avlqc.log.txt 2>&1
+0 21 * * 2 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict 1 > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
+0 23 * * 2 /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict 1
+0 01 * * 3 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict 1
+0 03 * * 3 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict 1
+
+# kill all stale import.py every day
+0 17 * * * pkill --signal 9 import.py
+
+# incremental import happens on Friday and Sunday
+0 18 * * 5,0 /data/predict1/utility/dpimport_files_status.sh /data/predict1/data_from_nda/ rc-predict
+0 19 * * 5,0 /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_avlqc.log.txt 2>&1
+0 21 * * 5,0 /data/predict1/utility/dpimport_formqc.sh /data/predict1/data_from_nda/ rc-predict > /data/predict1/utility/dpimport_formqc.log.txt 2>&1
+0 23 * * 6,1 /data/predict1/utility/dpimport_digital.sh /data/predict1/data_from_nda/ rc-predict
+0 01 * * 6,1 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
+0 03 * * 6,1 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
+
+# recess is on Tuesday, Thursday, Monday
 

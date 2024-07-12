@@ -1,14 +1,20 @@
 #!/bin/bash
 
-# It is run within VM as root
-# Usage:
-# ./_account_approval.sh abc123@partners.org
-# ./_account_approval.sh abc123@partners.org def456@gmail.com
-# ./_account_approval.sh list.txt
-# Where list.txt contains:
-# abc123@partners.org
-# def456@gmail.org
-# ...
+if [ -z $1 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
+then
+    echo """
+It is run within VM as root
+Usage:
+$0 abc123@partners.org
+$0 abc123@partners.org def456@gmail.com
+$0 list.txt
+Where list.txt contains:
+abc123@partners.org
+def456@gmail.org
+...
+"""
+    exit
+fi
 
 source /opt/dpdash/dpdash/singularity/.env
 
@@ -38,7 +44,8 @@ do
     /opt/dpdash/dpdash/_configure_account1.mongo.js
 
     cat account_approval.txt | mailx -s "DPdash account approved" -r tbillah@partners.org \
-    -c sylvain.bouix@etsmtl.ca -c jtbaker@partners.org -c tkapur@partners.org -- $e
+    -c sylvain.bouix@etsmtl.ca -c jtbaker@partners.org -c tkapur@partners.org \
+    -c aasgari@partners.org -- $e
 
     echo
 done

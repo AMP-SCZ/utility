@@ -24,7 +24,7 @@ check_null users/$prefix.csv
 
 for to in $@
 do
-    echo '' | mailx -s $prefix -a users/$prefix.txt -r tbillah@partners.org -- $to@partners.org
+    echo '' | mailx -s $prefix -a users/$prefix.txt -r tbillah@partners.org -- $to@mgb.org
 done
 
 
@@ -50,7 +50,7 @@ then
     do
         # sed -n ${ind},${current_number}p $current_list
 
-        sed -n ${ind},${current_number}p $current_list | mailx -s "New DPdash registrants: verify their NDA DUC" -r tbillah@partners.org -- $to@partners.org
+        sed -n ${ind},${current_number}p $current_list | mailx -s "New DPdash registrants: verify their NDA DUC" -r tbillah@partners.org -- $to@mgb.org
 
     done
 fi
