@@ -36,7 +36,7 @@ fi
 # import new data
 export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${NDA_ROOT}
-import.py -c $CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv"
+import.py -c $CONFIG "*/PHOENIX/GENERAL/*/processed/*/interviews/*/??-*-interview*day*.csv" -n 4
 
 
 cd AVL_quick_qc
