@@ -55,11 +55,11 @@ cd ${NDA_ROOT}
 # import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/actigraphy/*/??-*.csv"
 
 # selective phone data import
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*phone_month_view*.csv"
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*phone_accel_availability24h_daily*.csv"
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*actigraphy_month_view*.csv"
-import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*dpgvail*.csv"
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*phone_month_view*.csv" -n 2
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*phone_accel_availability24h_daily*.csv" -n 2
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*actigraphy_month_view*.csv" -n 2
+import.py -c $CONFIG "*/PHOENIX/PROTECTED/*/processed/*/phone/*/??-*dpgvail*.csv" -n 2
 
-import.py -c $CONFIG "digitalqc/??-*.csv"
+import.py -c $CONFIG "digitalqc/??-*.csv" -n 2
 import.py -c $CONFIG "digitalqc/combined-*.csv"
 
