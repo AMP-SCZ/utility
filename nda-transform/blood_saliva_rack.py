@@ -67,15 +67,15 @@ def populate(i):
 
     if dfshared.loc[src_subject_id,'phenotype']=='CHR':
         arm=1
-        cohort='CHR'
+        cohort='Proband'
     else:
         arm=2
-        cohort='HC'
+        cohort='Control'
 
 
     # get shared variables
     subjectkey=dfshared.loc[src_subject_id,'subjectkey']
-    sex=dfshared.loc[src_subject_id,'sex']
+    sex='Male' if dfshared.loc[src_subject_id,'sex']=='M' else 'Female'
 
 
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
