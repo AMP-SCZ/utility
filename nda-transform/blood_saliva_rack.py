@@ -81,7 +81,7 @@ def populate(i):
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
 
 
-    for matcode in 'WB SE PL BC'.split():
+    for matcode in 'WB EPSE EPPL EPBC'.split():
         v1=matcode_var[matcode]
         
         if get_value('chrblood_missing',f'{event}_arm_{arm}')=='1':
@@ -115,8 +115,8 @@ def populate(i):
             else:
                 pos_on_rack=value
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,matcode,src_subject_id,cohort,
-                    sex,interview_age,'Months',subjectkey]
+                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
+                    src_subject_id,cohort,sex,interview_age,'Months',subjectkey,'']
                 i+=1
     
 
@@ -157,8 +157,8 @@ def populate(i):
                     rack_code='ProNET-'+rack_code.strip()[-4:]
 
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,matcode,src_subject_id,cohort,
-                    sex,interview_age,'Months',subjectkey]
+                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
+                    src_subject_id,cohort,sex,interview_age,'Months',subjectkey,'']
                 i+=1
 
 
@@ -197,8 +197,8 @@ if __name__=='__main__':
         dfshared.set_index('src_subject_id',inplace=True)
     
     
-    _columns='Rack Code,Position on Rack,Draw Date,Inventory Code,Matcode,'+ \
-             'AMPSCZ_ID,Cohort,Sex,Age on Draw Date,Age Unit,GUID'
+    _columns='Plate #,position,collection date,inventory code,,Matcode,N/A,'+ \
+             'subject code,Pedigree,Genetic Gender,Age,Age Unit,GUID,Form ID'
     df=pd.DataFrame(columns=_columns.split(','))
     i=0
 
