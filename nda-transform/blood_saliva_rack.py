@@ -51,9 +51,9 @@ matcode_var={
     'EPPL': 'chrblood_pl1id chrblood_pl1pos chrblood_pl2id chrblood_pl2pos chrblood_pl3id chrblood_pl3pos '+ \
           'chrblood_pl4id chrblood_pl4pos chrblood_pl5id chrblood_pl5pos chrblood_pl6id chrblood_pl6pos',
     'EPBC': 'chrblood_bc1id chrblood_bc1pos chrblood_bc1box',
-    'S': 'chrsaliva_id1a chrsaliva_pos1a chrsaliva_box1a chrsaliva_id1b chrsaliva_pos1b chrsaliva_box1b '+ \
-         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b '+ \
-         'chrsaliva_id3a chrsaliva_pos3a chrsaliva_box3a chrsaliva_id3b chrsaliva_pos3b chrsaliva_box3b'
+    'S': 'chrsaliva_id1a chrsaliva_pos1a chrsaliva_box1a chrsaliva_time1 chrsaliva_id1b chrsaliva_pos1b chrsaliva_box1b chrsaliva_time1 '+ \
+         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_time2 chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b chrsaliva_time2 '+ \
+         'chrsaliva_id3a chrsaliva_pos3a chrsaliva_box3a chrsaliva_time3 chrsaliva_id3b chrsaliva_pos3b chrsaliva_box3b chrsaliva_time3'
 
 }
 
@@ -94,6 +94,7 @@ def populate(i):
         if len(draw_date)<10:
             continue
         else:
+            draw_time=draw_date[11:]
             draw_date=draw_date[:10]
 
         # calculate age on draw_date
@@ -118,7 +119,7 @@ def populate(i):
                 pos_on_rack=value
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
     
 
@@ -142,12 +143,14 @@ def populate(i):
         
         for j,v in enumerate(v1.split()):
             value=get_value(v,f'{event}_arm_{arm}')
-            if j%3==0:
+            if j%4==0:
                 inventory_code=value
-            elif j%3==1:
+            elif j%4==1:
                 pos_on_rack=value
-            elif j%3==2:
+            elif j%4==2:
                 rack_code=value
+            elif j%4==3:
+                draw_time=value
 
                 # deal with people's state of minds
                 rack_code=rack_code.strip()
@@ -160,7 +163,7 @@ def populate(i):
 
                 
                 df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,'',matcode,'N/A',
-                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','']
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
 
 
@@ -200,7 +203,7 @@ if __name__=='__main__':
     
     
     _columns='Plate #,position,collection date,inventory code,,Matcode,N/A,'+ \
-             'subject code,GUID,Visit ID,Pedigree,Genetic Gender,Age,Age Unit,Form ID'
+             'subject code,GUID,Visit ID,Pedigree,Genetic Gender,Age,Age Unit,Form ID,collection time'
     df=pd.DataFrame(columns=_columns.split(','))
     i=0
 
