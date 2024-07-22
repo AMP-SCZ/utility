@@ -43,15 +43,45 @@ def nda_date(redcap_date):
     return new_date
 
 
+nimh_code={
+    'YA' : '914',
+    'LA' : '1032',
+    'OR' : '1033',
+    'BI' : '1034',
+    'NL' : '1035',
+    'NC' : '1036',
+    'SD' : '1042',
+    'CA' : '1037',
+    'SF' : '1038',
+    'PA' : '1039',
+    'SI' : '1040',
+    'PI' : '1041',
+    'NN' : '1043',
+    'IR' : '1044',
+    'TE' : '1045',
+    'GA' : '1046',
+    'WU' : '1047',
+    'HA' : '1048',
+    'MT' : '1049',
+    'KC' : '1050',
+    'PV' : '1051',
+    'MA' : '1052',
+    'CM' : '1053',
+    'MU' : '1054',
+    'SL' : '1055',
+    'UR' : '1056',
+    'OH' : '1057'
+}
+
 matcode_var={
     'WB': 'chrblood_wb1id chrblood_wb1pos chrblood_wb2id chrblood_wb2pos chrblood_wb3id chrblood_wb3pos',
-    'SE': 'chrblood_se1id chrblood_se1pos chrblood_se2id chrblood_se2pos chrblood_se3id chrblood_se3pos',
-    'PL': 'chrblood_pl1id chrblood_pl1pos chrblood_pl2id chrblood_pl2pos chrblood_pl3id chrblood_pl3pos '+ \
+    'EPSE': 'chrblood_se1id chrblood_se1pos chrblood_se2id chrblood_se2pos chrblood_se3id chrblood_se3pos',
+    'EPPL': 'chrblood_pl1id chrblood_pl1pos chrblood_pl2id chrblood_pl2pos chrblood_pl3id chrblood_pl3pos '+ \
           'chrblood_pl4id chrblood_pl4pos chrblood_pl5id chrblood_pl5pos chrblood_pl6id chrblood_pl6pos',
-    'BC': 'chrblood_bc1id chrblood_bc1pos chrblood_bc1box',
-    'S': 'chrsaliva_id1a chrsaliva_pos1a chrsaliva_box1a chrsaliva_id1b chrsaliva_pos1b chrsaliva_box1b '+ \
-         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b '+ \
-         'chrsaliva_id3a chrsaliva_pos3a chrsaliva_box3a chrsaliva_id3b chrsaliva_pos3b chrsaliva_box3b'
+    'EPBC': 'chrblood_bc1id chrblood_bc1pos chrblood_bc1box',
+    'S': 'chrsaliva_id1a chrsaliva_pos1a chrsaliva_box1a chrsaliva_time1 chrsaliva_id1b chrsaliva_pos1b chrsaliva_box1b chrsaliva_time1 '+ \
+         'chrsaliva_id2a chrsaliva_pos2a chrsaliva_box2a chrsaliva_time2 chrsaliva_id2b chrsaliva_pos2b chrsaliva_box2b chrsaliva_time2 '+ \
+         'chrsaliva_id3a chrsaliva_pos3a chrsaliva_box3a chrsaliva_time3 chrsaliva_id3b chrsaliva_pos3b chrsaliva_box3b chrsaliva_time3'
 
 }
 
@@ -67,21 +97,21 @@ def populate(i):
 
     if dfshared.loc[src_subject_id,'phenotype']=='CHR':
         arm=1
-        cohort='CHR'
+        cohort='Proband'
     else:
         arm=2
-        cohort='HC'
+        cohort='Control'
 
 
     # get shared variables
     subjectkey=dfshared.loc[src_subject_id,'subjectkey']
-    sex=dfshared.loc[src_subject_id,'sex']
-
+    sex='Male' if dfshared.loc[src_subject_id,'sex']=='M' else 'Female'
+    _src_subject_id=nimh_code[src_subject_id[:2]] + '-' + src_subject_id
 
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
 
 
-    for matcode in 'WB SE PL BC'.split():
+    for matcode in 'WB EPSE EPPL EPBC'.split():
         v1=matcode_var[matcode]
         
         if get_value('chrblood_missing',f'{event}_arm_{arm}')=='1':
@@ -92,6 +122,7 @@ def populate(i):
         if len(draw_date)<10:
             continue
         else:
+            draw_time=draw_date[11:]
             draw_date=draw_date[:10]
 
         # calculate age on draw_date
@@ -99,7 +130,7 @@ def populate(i):
         interview_age=dfshared.loc[src_subject_id,'interview_age']+months
         
         rack_code=get_value('chrblood_rack_barcode',f'{event}_arm_{arm}')
-        if matcode=='BC':
+        if matcode=='EPBC':
             rack_code=get_value('chrblood_bc1box',f'{event}_arm_{arm}')
 
         # deal with people's state of minds
@@ -115,8 +146,8 @@ def populate(i):
             else:
                 pos_on_rack=value
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,matcode,src_subject_id,cohort,
-                    sex,interview_age,'Months',subjectkey]
+                df.loc[i]=[rack_code,pos_on_rack,nda_date(draw_date),inventory_code,'',matcode,'N/A',
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
     
 
@@ -140,12 +171,14 @@ def populate(i):
         
         for j,v in enumerate(v1.split()):
             value=get_value(v,f'{event}_arm_{arm}')
-            if j%3==0:
+            if j%4==0:
                 inventory_code=value
-            elif j%3==1:
+            elif j%4==1:
                 pos_on_rack=value
-            elif j%3==2:
+            elif j%4==2:
                 rack_code=value
+            elif j%4==3:
+                draw_time=value
 
                 # deal with people's state of minds
                 rack_code=rack_code.strip()
@@ -157,8 +190,8 @@ def populate(i):
                     rack_code='ProNET-'+rack_code.strip()[-4:]
 
                 
-                df.loc[i]=[rack_code,pos_on_rack,draw_date,inventory_code,matcode,src_subject_id,cohort,
-                    sex,interview_age,'Months',subjectkey]
+                df.loc[i]=[rack_code,pos_on_rack,nda_date(draw_date),inventory_code,'',matcode,'N/A',
+                    _src_subject_id,subjectkey,event,cohort,sex,interview_age,'Months','',draw_time]
                 i+=1
 
 
@@ -197,8 +230,8 @@ if __name__=='__main__':
         dfshared.set_index('src_subject_id',inplace=True)
     
     
-    _columns='Rack Code,Position on Rack,Draw Date,Inventory Code,Matcode,'+ \
-             'AMPSCZ_ID,Cohort,Sex,Age on Draw Date,Age Unit,GUID'
+    _columns='Plate #,position,collection date,inventory code,,Matcode,N/A,'+ \
+             'subject code,GUID,Visit ID,Pedigree,Genetic Gender,Age,Age Unit,Form ID,collection time'
     df=pd.DataFrame(columns=_columns.split(','))
     i=0
 
