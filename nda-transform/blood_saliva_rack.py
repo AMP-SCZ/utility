@@ -43,7 +43,35 @@ def nda_date(redcap_date):
     return new_date
 
 
-nimh_code={'YA':'914'}
+nimh_code={
+    'YA' : '914',
+    'LA' : '1032',
+    'OR' : '1033',
+    'BI' : '1034',
+    'NL' : '1035',
+    'NC' : '1036',
+    'SD' : '1042',
+    'CA' : '1037',
+    'SF' : '1038',
+    'PA' : '1039',
+    'SI' : '1040',
+    'PI' : '1041',
+    'NN' : '1043',
+    'IR' : '1044',
+    'TE' : '1045',
+    'GA' : '1046',
+    'WU' : '1047',
+    'HA' : '1048',
+    'MT' : '1049',
+    'KC' : '1050',
+    'PV' : '1051',
+    'MA' : '1052',
+    'CM' : '1053',
+    'MU' : '1054',
+    'SL' : '1055',
+    'UR' : '1056',
+    'OH' : '1057'
+}
 
 matcode_var={
     'WB': 'chrblood_wb1id chrblood_wb1pos chrblood_wb2id chrblood_wb2pos chrblood_wb3id chrblood_wb3pos',
