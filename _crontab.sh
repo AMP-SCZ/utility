@@ -71,8 +71,10 @@
 # === dn020 ===
 
 # copy EEG QC images over to web app VM
-0 4 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ /data/eegqc/
+0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ /data/eegqc/
 0 5 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/kcho/flow_test/spero/ /opt/data/eegqc-mock/
+
+10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ /data/eegqc/
 
 0 05 * * * /data/predict1/utility/backup_formqc.sh
 
