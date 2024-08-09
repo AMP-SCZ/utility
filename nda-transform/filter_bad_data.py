@@ -46,7 +46,7 @@ def combine_psychs(dfp):
         
         # psychs_baseline
         condition=pd.isna(row[f'psychs_p1p8{FU}baseline']) and pd.isna(row[f'psychs_p9ac32{FU}baseline'])
-        if pd.isna(row['psychs_screening']) and condition:
+        if pd.isna(dfp.loc[i,'psychs_screening']) and condition:
             dfp.loc[i,'psychs_baseline']=None
         else:
             dfp.loc[i,'psychs_baseline']='omit'
@@ -56,14 +56,14 @@ def combine_psychs(dfp):
             
             # psychs_month_1
             condition=pd.isna(row[f'psychs_p1p8{FU}month_1']) and pd.isna(row[f'psychs_p9ac32{FU}month_1'])
-            if pd.isna(row['psychs_baseline']) and condition:
+            if pd.isna(dfp.loc[i,'psychs_baseline']) and condition:
                 dfp.loc[i,'psychs_month_1']=None
             else:
                 dfp.loc[i,'psychs_month_1']='omit'
             
             # psychs_month_2
             condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
-            if pd.isna(row['psychs_month_1']) and condition:
+            if pd.isna(dfp.loc[i,'psychs_month_1']) and condition:
                 dfp.loc[i,'psychs_month_2']=None
             else:
                 dfp.loc[i,'psychs_month_2']='omit'
@@ -74,7 +74,7 @@ def combine_psychs(dfp):
             
             # psychs_month_2
             condition=pd.isna(row[f'psychs_p1p8{FU}month_2']) and pd.isna(row[f'psychs_p9ac32{FU}month_2'])
-            if pd.isna(row['psychs_baseline']) and condition:
+            if pd.isna(dfp.loc[i,'psychs_baseline']) and condition:
                 dfp.loc[i,'psychs_month_2']=None
             else:
                 dfp.loc[i,'psychs_month_2']='omit'
