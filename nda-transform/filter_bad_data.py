@@ -120,6 +120,12 @@ for c in dfmap.index:
         if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
 
+    print(dfdata.shape[0], dfdata1.shape[0])
+    print('')
+
+    # activate this continue to not save anything
+    # continue
+
     _,name=mkstemp()
     dfdata1.to_csv(name,index=False)
     with open(name) as f:
@@ -141,9 +147,6 @@ for c in dfmap.index:
         f.write(title+'\n'+data)
 
     
-    print(dfdata.shape[0], dfdata1.shape[0])
-    print('')
-
 
 # print nonexistent subjects
 for s in set(subjects):
