@@ -14,7 +14,6 @@ $0 123456 ProNET-1234"""
 fi
 
 cd /data/predict1/to_nda/nda-submissions/
-header="Rack Code,Position on Rack,Draw Date,Inventory Code,Matcode,AMPSCZ_ID,Cohort,Sex,Age on Draw Date,Age Unit,GUID"
 
 
 for n in Pronet
@@ -24,15 +23,16 @@ do
 
         echo $n $e
         /data/predict1/utility/nda-transform/blood_saliva_rack.py \
-        --root /data/predict1/data_from_nda/${n}/PHOENIX/PROTECTED/ \
+        --root /data/predict1/data_from_nda/${n}/PHOENIX/GENERAL/ \
         -o blood_saliva_rack_${n}_${e}.csv --shared ndar_subject01_${n}.csv \
-        --template "*/raw/*/surveys/*.${n}.json" -e $e
+        --template "*/processed/*/surveys/*.${n}.json" -e $e
         echo
 
     done
 
 
     combined=blood_saliva_rack_${n}.csv
+    header=`head -n 1 blood_saliva_rack_${n}_${e}.csv`
     echo $header > $combined
     for f in blood_saliva_rack_${n}_baseline.csv blood_saliva_rack_${n}_month_2.csv
     do
@@ -61,4 +61,26 @@ then
 
 fi
 
+
+cd fluid_shipment/
+
+# count check
+echo " Blood racks should have 96 entries"
+echo "Saliva racks should have 48 entries"
+echo
+for i in *csv; do echo $i : `tail -n+2 $i | wc -l`; done
+
+# combined manifest generation
+datestamp=$(date +"%Y%m%d")
+manifest=blood_saliva_rack_${datestamp}.csv
+echo $header > $manifest
+for i in *csv
+do
+    tail -n +2 $i >> $manifest
+done
+
+# create zip file for uploading to Dropbox
+cd ..
+echo
+zip -r fluid_shipment_${datestamp}.zip fluid_shipment/
 
