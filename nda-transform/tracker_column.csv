@@ -7,10 +7,10 @@ ampscz_nsipr01_baseline.csv,nsipr_baseline
 ampscz_nsipr01_month_1.csv,nsipr_month_1
 ampscz_nsipr01_month_2.csv,nsipr_month_2
 ampscz_pps01_baseline.csv,psychosis_polyrisk_score_baseline
+ampscz_psychs01_screening.csv,psychs_screening
 ampscz_psychs01_baseline.csv,psychs_baseline
 ampscz_psychs01_month_1.csv,psychs_month_1
 ampscz_psychs01_month_2.csv,psychs_month_2
-ampscz_psychs01_screening.csv,psychs_screening
 ampscz_rap01_baseline.csv,ra_prediction_baseline
 ampscz_rs01.csv,recruitment_source_screening
 assist01_baseline.csv,assist_baseline
