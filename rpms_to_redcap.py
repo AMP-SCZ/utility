@@ -203,6 +203,14 @@ except (FileNotFoundError,ValueError):
 
 form= re.search(f'{subjectkey}_(.+?).csv', sys.argv[1]).group(1)
 
+if chr_hc==1:
+    if sys.argv[1].endswith('_psychs_p1p8_fu_hc.csv') or sys.argv[1].endswith('_psychs_p9ac32_fu_hc.csv'):
+        exit(0)
+        
+elif chr_hc==2:
+    if sys.argv[1].endswith('_psychs_p1p8_fu.csv') or sys.argv[1].endswith('_psychs_p9ac32_fu.csv'):
+        exit(0)
+
 data= pd.read_csv(sys.argv[1], dtype=str)
 
 
