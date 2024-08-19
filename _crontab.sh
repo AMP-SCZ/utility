@@ -147,6 +147,9 @@ MAILTO=xyz@bwh.harvard.edu
 # generate files status every day
 0 17 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/
 
+# transfer combined files status to VM for missing data tracker app
+0 18 * * * /data/predict1/utility/rsync_files_status.sh
+
 # import all data to production DPdash in succession
 
 # the goal of a fresh import is to make sure that DPdash counts are accurate by Wednesday 6 am
