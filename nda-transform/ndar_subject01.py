@@ -33,6 +33,7 @@ def populate():
         chrcrit_part=get_value('chrcrit_part','screening_arm_2')
         
         if not chrcrit_part:
+            print('\t No chrcrit_part')
             return
             
         arm=2
@@ -46,8 +47,11 @@ def populate():
     
     subjectkey=get_value('chrguid_guid',f'screening_arm_{arm}')
     if not subjectkey.startswith('NDAR'):
-        # we cannot submit a subject w/o a valid GUID
-        return
+        subjectkey=get_value('chrguid_guid_pseudo',f'screening_arm_{arm}')
+        if not subjectkey.startswith('NDAR'):
+            # we cannot submit a subject w/o a valid GUID
+            print('\t Invalid GUID')
+            return
 
     src_subject_id=get_value('chric_record_id',f'screening_arm_{arm}')
 
@@ -62,12 +66,18 @@ def populate():
         
         # we cannot submit a subject w/o an age
         if interview_age in ['',None,'-3','-9']:
+            print('\t No chrdemo_age_mos*')
             return
 
 
     interview_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     if file.endswith('.Prescient.json'):
+        if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
+            print('\t Invalid consent_date:',interview_date)
+            return
+
         chrdemo_interview_date=get_value('chrdemo_interview_date',f'baseline_arm_{arm}')
+
         months=months_since_consent(chrdemo_interview_date,interview_date)
         interview_age=int(interview_age)-months
         
