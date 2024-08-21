@@ -58,3 +58,8 @@ do
 
 done
 
+_bsub=prescient-$(date +%Y%m%d)
+mkdir $_bsub
+mv /data/predict1/utility/bsub/* $_bsub/
+mv $_bsub /data/predict1/utility/bsub/
+
