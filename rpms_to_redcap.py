@@ -217,8 +217,8 @@ data= pd.read_csv(sys.argv[1], dtype=str)
 for _,visit in data.iterrows():
     data2= []
     
-    # skip Parent/Guardian consent if any
-    if 'version' in visit and visit['version']=='Parent/Guardian':
+    # skip Parent/Guardian consent if YP consent is present
+    if 'version' in visit and visit['version']=='Parent/Guardian' and 'YP' in data['version'].unique():
         continue
     
     redcap_event_name= _visit_to_event(chr_hc, form, visit['visit'])
@@ -257,9 +257,10 @@ for _,visit in data.iterrows():
                     # if any validation is set, reject not applicable
                     continue
 
-            elif visit[v] in ['-3','-9','1903-03-03','1909-09-09'] and annotation!='@NOMISSING':
+            elif visit[v] in ['-3','-9','1903-03-03','1909-09-09'] and annotation=='@NOMISSING':
                 continue
-            elif visit[v]=='-99' and ftype in ['dropdown','yesno','radio']:
+            elif visit[v] in ['-3','-9','-99'] and ftype in ['dropdown','yesno','radio','checkbox']:
+                # these codes do not fit these field types
                 continue
                 
             # leave checkbox variables out of consideration
@@ -280,6 +281,9 @@ for _,visit in data.iterrows():
                 if residue:
                     # float
                     value= _value
+                    if dtype=='integer':
+                        value=round(_value)
+
                 else:
                     # int
                     value= int(_value)
@@ -288,7 +292,7 @@ for _,visit in data.iterrows():
                     # but REDCap only accepts '' for such
                     # e.g. _missing variables
                     # REDCap coded as 1 or '', RPMS coded as 1 or 0
-                    if value==0 and row['Field Type']=='radio' and \
+                    if value==0 and ftype=='radio' and \
                         len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
                         value=''
                         
