@@ -25,7 +25,7 @@
 # keep six hours difference between upload and download so upload can complete
 
 # clean old arms, download JSONs from REDCap and shift their dates
-0 2 * * 0,2,4 /data/predict1/utility/clean_down_shift.sh 123456
+0 2 * * 1,3,5 /data/predict1/utility/clean_down_shift.sh 123456
 
 
 # ProNET real
