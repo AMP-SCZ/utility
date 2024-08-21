@@ -10,5 +10,5 @@ JSON=$2
 cd /data/predict1/utility/
 ./set_date_shifts.py $PHOENIX_PROTECTED $JSON
 ./shift_redcap_dates.py $PHOENIX_PROTECTED $JSON $3
-chgrp BWH-PREDICT-G /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/Pronet??/processed/*/surveys/???????.Pronet.json
+chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Pronet??/processed/*/surveys/???????.Pronet.json
 
