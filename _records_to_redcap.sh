@@ -53,8 +53,10 @@ done
 
 
 # move bsub logs to a named folder
-_bsub=pronet-$(date +%Y%m%d)
+_bsub=prescient-$(date +%Y%m%d)
+cd /data/predict1/utility/bsub/
 mkdir $_bsub
-mv /data/predict1/utility/bsub/* $_bsub/
-mv $_bsub /data/predict1/utility/bsub/
+mv *err $_bsub/
+mv *out $_bsub/
+mv *txt $_bsub/
 
