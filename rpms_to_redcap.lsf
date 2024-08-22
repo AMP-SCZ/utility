@@ -24,8 +24,6 @@ then
     exit 1
 fi
 
-# this echo is for knowing which subject a .err file corresponds to
-echo -e '\033[0;31m' $subject '\033[0m' >&2
 
 # flatten multi-records
 /data/predict1/utility/_flatten_multi_records.sh $subject
