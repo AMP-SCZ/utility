@@ -27,6 +27,7 @@ from glob import glob
 import re
 import numpy as np
 from datetime import datetime
+from time import sleep
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -387,7 +388,13 @@ for _,visit in data.iterrows():
         'returnFormat': 'json'
     }
 
-    r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+    try:
+        r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+    except requests.exceptions.ConnectionError:
+        # wait 180 seconds before retrying
+        sleep(180)
+        r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+
     print('\t','HTTP Status: ' + str(r.status_code))
     print('\t',r.json())
 
