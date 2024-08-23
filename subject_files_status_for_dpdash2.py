@@ -297,14 +297,14 @@ def get_cnb_status():
     # load .UPENN.json
     # check if interview_date exists twice among all session_date
     data=-days_since_scan
-    upenn=s.replace(f'.{network}.json','.UPENN.json')
+    upenn=s.replace(f'.{network}.json','.UPENN_nda.json')
     if isfile(upenn):
         with open(upenn) as f:
             dict1=json.load(f)
 
         count=0
         for d in dict1:
-            if abs(str_date_minus_str_date(d['session_date'],interview_date))<=30:
+            if abs(str_date_minus_str_date(d['interview_date'],interview_date))<=30:
                 count+=1
         
         # NOTE some subjects may have just one session
