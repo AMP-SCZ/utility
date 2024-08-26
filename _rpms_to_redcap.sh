@@ -40,7 +40,7 @@ source /etc/profile
 export LSB_JOB_REPORT_MAIL=N
 
 batch=200
-duration=3600
+duration=2700
 for (( i=1; i<=N; i+=$batch ))
 do
 
