@@ -1,5 +1,6 @@
 This documentation is created by Tashrif Billah for referring AMP-SCZ collaborators about how to make an NDA-format dictionary definition. The latter has to be sent to ndahelp@mail.nih.gov to create the actual data dictionary. Copy the [nda_data_structure_template.csv](nda_data_structure_template.csv) and start editing it according to the following instructions:
 
+---
 
 #### ElementName:
       Must be less than 30 characters. It could be identical to REDCap variable name. If a REDCap variable does not exist, make up a proper name.
