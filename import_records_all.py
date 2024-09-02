@@ -41,6 +41,7 @@ from os.path import isfile, abspath, basename, dirname, join as pjoin
 from numpy import save, load
 from hashlib import md5
 from glob import glob
+from time import sleep
 
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
@@ -183,7 +184,9 @@ for visit in data:
         try:
             r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
         except requests.exceptions.ConnectionError:
-            print('Failed due to ConnectionResetError')
+            # wait 180 seconds before retrying
+            sleep(180)
+            r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
 
         print('\t HTTP Status: ' + str(r.status_code))
         print('\t',r.json())
