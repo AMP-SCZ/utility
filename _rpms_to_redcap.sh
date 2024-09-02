@@ -66,5 +66,4 @@ cd /data/predict1/utility/bsub/
 mkdir $_bsub
 mv *err $_bsub/
 mv *out $_bsub/
-mv *txt $_bsub/
 
