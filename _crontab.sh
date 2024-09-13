@@ -49,7 +49,7 @@
 # === dn003 ===
 
 # clear REDCap upload logs, every Friday at 5 pm
-0 17 * * 5 rm -f /data/predict1/utility/bsub/*
+0 17 * * 5 rm -rf /data/predict1/utility/bsub/*
 
 # clear NDA upload logs every Monday at 12 am
 0 0 * * 1 rm -rf /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
