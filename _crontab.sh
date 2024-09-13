@@ -5,12 +5,6 @@
 
 # === hna002 ===
 
-# generate lochness datalake's files status at 6 am and 9pm for dpdash
-30 6,21 * * * * /data/predict1/utility/generate_files_status.sh /data/predict1/data_from_nda_dev/ dpstage
-
-# import AVL QC data, daily at 10 pm
-45 22 * * * /data/predict1/utility/dpimport_avlqc.sh /data/predict1/data_from_nda_dev/ dpstage
-
 # generate difference between AMP-SCZ and network data dictionaries
 0 6 * * * /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix gjacobs1
 
