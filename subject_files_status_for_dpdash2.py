@@ -308,8 +308,8 @@ def get_cnb_status():
                 count+=1
         
         # NOTE some subjects may have just one session
-        if count==2:
-            data=1
+        if count>0:
+            data=count
 
     # populate Protocol Followed row
     protocol=1
