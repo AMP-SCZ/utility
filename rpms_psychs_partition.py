@@ -56,7 +56,7 @@ for file in files:
         except KeyError:
             continue
         
-        print(row['subjectkey'])
+        s=row['subjectkey']
 
         try:
             chr_hc= int(row['chrcrit_part'])
@@ -67,7 +67,8 @@ for file in files:
 
         except ValueError:
             # chrcrit_part is empty for this subject
-            print('attempt to infer chrcrit_part from group column in informed_consent_run_sheet')
+            print(s)
+            print('\tattempt to infer chrcrit_part from group column in informed_consent_run_sheet')
 
             # extract Young Patient's rows only, we do not need Guardian's rows
             # to account for re-consent scenario, consider only the last row
