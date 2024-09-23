@@ -13,6 +13,12 @@ $0 123456 ProNET-1234"""
 
 fi
 
+if [ -z $SITE ]
+then
+    echo Define the env var SITE and try again
+    exit
+fi
+
 cd /data/predict1/to_nda/nda-submissions/
 
 
@@ -47,6 +53,8 @@ done
 # filter the above by a rack code
 if [ ! -z  $1 ]
 then
+    mv fluid_shipment fluid_shipment.$(date +"%Y%m%d-%H%M")
+    mkdir fluid_shipment
     for code in "$@"
         do
             
@@ -69,6 +77,17 @@ echo " Blood racks should have 96 entries"
 echo "Saliva racks should have 48 entries"
 echo
 for i in *csv; do echo $i : `tail -n+2 $i | wc -l`; done
+
+
+# upload to Dropbox
+for i in *csv
+do
+    name=${SITE}_${i}
+    mv $i $name
+    dbxcli put $name blood_saliva_manifests/$name
+done
+
+exit
 
 # combined manifest generation
 datestamp=$(date +"%Y%m%d")
