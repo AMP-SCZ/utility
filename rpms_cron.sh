@@ -14,6 +14,8 @@ do
     then
         sleep 120
     else
+        echo
+        echo Processing started at $(date +%H:%M)
         break
     fi
 done
@@ -25,4 +27,8 @@ cp ${INCOMING}/*_${datestamp}.csv ${BACKUP}/
 rename_RPMS_vars.py $INCOMING && \
 replace_RPMS_values.py $INCOMING && \
 rpms_psychs_partition.py $INCOMING
+
+echo
+echo Processing ended at $(date +%H:%M)
+
 
