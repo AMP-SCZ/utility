@@ -32,9 +32,9 @@ dfshift.set_index('subject',inplace=True)
 for file in files:
     subject=basename(file).split('.')[0]
     
-    curr_stat= stat(file)
-    curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
-    curr_hash= md5(curr_stat.encode('utf-8')).hexdigest()
+    with open(file) as f:
+        content= f.read()
+    curr_hash= md5(content.encode('utf-8')).hexdigest()
 
     try:
         dfshift.loc[subject]
