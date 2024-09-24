@@ -47,22 +47,18 @@ for dir in dirs:
     inform_consent= subjectkey+ '_informed_consent_run_sheet.csv'
 
     if isfile(inform_consent):
-        df= pd.read_csv(inform_consent)
-        # extract Young Patient's rows only, we do not need Guardian's rows
-        yp= df[df['version']=='YP']
-        
-        if len(yp)==0:
-            print('\t','\033[0;31m YP\'s row absent in',inform_consent,'\033[0m \n')
-            continue
-
-        if yp['group'].unique().shape[0]==1:
-            # this subject cannot have duplicate arm
-            continue
+        yp= pd.read_csv(inform_consent)
+        # yp can contain Young Patient's and/or Guardian's rows
 
         # to account for re-consent scenario, consider only the latest row
         yp_sorted= yp.sort_values('interview_date',
             key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
         chr_hc= yp_sorted.iloc[-1]['group']
+
+        if yp['group'].unique().shape[0]==1:
+            if (datetime.today()-datetime.strptime(yp_sorted.iloc[-1]['interview_date'],'%m/%d/%Y')).days>21:
+                # this subject cannot have duplicate arm
+                continue
 
     else:
         continue
@@ -129,7 +125,7 @@ for dir in dirs:
             # set upload=1 so it can be re-downloaded
             # connect the setting with r.status_code so that
             # previously cleaned records are not re-downloaded
-            if r.status_code==200 and dhash.loc[subjectkey,'upload']!=0:
+            if r.status_code==200 and dhash.loc[subjectkey,'upload']==0:
                 dhash.loc[subjectkey,'upload']=1
                 dclean.loc[subjectkey]=old,1
                 write=True
