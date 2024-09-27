@@ -4,6 +4,23 @@ import pandas as pd
 import json
 
 
+def get_consent(arg):
+    
+    if isinstance(arg,pd.DataFrame):
+        df=arg
+    else:
+        df=pd.read_csv(arg, dtype=str)
+    # df can contain Young Patient's and/or Guardian's rows
+    
+    # sort in ascending order
+    df_sorted= df.sort_values('interview_date',
+        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
+    
+    chr_hc= df_sorted.iloc[-1]['group']
+
+    return df_sorted, chr_hc
+
+
 def get_study(ampscz_id: str,
               data_from_nda_path: str = '/data/predict1/data_from_nda/') -> str:
     '''Get name of the study based on the AMP-SCZ ID

@@ -28,6 +28,7 @@ import re
 import numpy as np
 from datetime import datetime
 from time import sleep
+from util import get_consent
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -172,17 +173,6 @@ def entry_status(redcap_label,rpms_visit):
         return 2
 
 
-def sort_consent_dates(df):
-
-    # extract Young Patient's rows only, we do not need Guardian's rows
-    # to account for re-consent scenario, consider only the latest row
-    yp= df[df['version']=='YP']
-    yp_sorted= yp.sort_values('interview_date',
-        key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
-
-    return yp_sorted
-
-
 
 # one try-except block to handle absence of incl_excl and empty chrcrit_part
 try:
@@ -191,10 +181,8 @@ try:
     
 except (FileNotFoundError,ValueError):
     
-    df= pd.read_csv(inform_consent)
-    yp_sorted= sort_consent_dates(df)
-
-    chr_hc= yp_sorted.iloc[-1]['group']
+    _,chr_hc=get_consent(inform_consent)
+    
     if chr_hc=='UHR':
         chr_hc=1
     elif chr_hc=='HealthyControl':
@@ -324,8 +312,8 @@ for _,visit in data.iterrows():
     
     if form=='informed_consent_run_sheet':
         if data['interview_date'].unique().shape[0]>1:
-            yp_sorted=sort_consent_dates(data)
-            orig_consent=yp_sorted.iloc[0]['interview_date']
+            consent_sorted,_=get_consent(data)
+            orig_consent=consent_sorted.iloc[0]['interview_date']
             data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
     
     

@@ -7,6 +7,7 @@ from os import chdir
 from os.path import isfile, abspath, dirname
 import requests
 from datetime import datetime
+from util import get_consent
 
 FILE=abspath(__file__)
 
@@ -47,16 +48,10 @@ for dir in dirs:
     inform_consent= subjectkey+ '_informed_consent_run_sheet.csv'
 
     if isfile(inform_consent):
-        yp= pd.read_csv(inform_consent)
-        # yp can contain Young Patient's and/or Guardian's rows
+        consent_sorted, chr_hc= get_consent(inform_consent)
 
-        # to account for re-consent scenario, consider only the latest row
-        yp_sorted= yp.sort_values('interview_date',
-            key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
-        chr_hc= yp_sorted.iloc[-1]['group']
-
-        if yp_sorted['group'].unique().shape[0]==1:
-            if (datetime.today()-datetime.strptime(yp_sorted.iloc[-1]['interview_date'],'%m/%d/%Y')).days>21:
+        if consent_sorted['group'].unique().shape[0]==1:
+            if (datetime.today()-datetime.strptime(consent_sorted.iloc[-1]['interview_date'],'%m/%d/%Y')).days>21:
                 # this subject cannot have duplicate arm
                 continue
 
@@ -82,9 +77,9 @@ for dir in dirs:
 
 
     # if old arm was not determined in the previous block
-    # try to determine it now from yp_sorted
+    # try to determine it now from consent_sorted
     if not old:
-        if yp['group'].unique().shape[0]>1:
+        if consent_sorted['group'].unique().shape[0]>1:
             if chr_hc=='UHR':
                 old=2
             elif chr_hc=='HealthyControl':
