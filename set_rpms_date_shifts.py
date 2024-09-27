@@ -40,8 +40,9 @@ for dir in dirs:
     for suffix in suffixes:
         file= f'{dir}/{subject}_{suffix}'
         if isfile(file):
-            curr_stat= stat(file)
-            curr_stat= '_'.join(str(s) for s in [curr_stat.st_uid,curr_stat.st_size,curr_stat.st_mtime])
+            with open(file) as f:
+                content= f.read()
+            curr_stat= md5(content.encode('utf-8')).hexdigest()
             stats.append(curr_stat)
     
     stats=','.join(stats)
