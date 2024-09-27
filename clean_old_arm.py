@@ -55,7 +55,7 @@ for dir in dirs:
             key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
         chr_hc= yp_sorted.iloc[-1]['group']
 
-        if yp['group'].unique().shape[0]==1:
+        if yp_sorted['group'].unique().shape[0]==1:
             if (datetime.today()-datetime.strptime(yp_sorted.iloc[-1]['interview_date'],'%m/%d/%Y')).days>21:
                 # this subject cannot have duplicate arm
                 continue
