@@ -47,7 +47,7 @@ def populate():
     
     subjectkey=get_value('chrguid_guid',f'screening_arm_{arm}')
     if not subjectkey.startswith('NDAR'):
-        subjectkey=get_value('chrguid_guid_pseudo',f'screening_arm_{arm}')
+        subjectkey=get_value('chrguid_pseudoguid',f'screening_arm_{arm}')
         if not subjectkey.startswith('NDAR'):
             # we cannot submit a subject w/o a valid GUID
             print('\t Invalid GUID')
