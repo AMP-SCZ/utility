@@ -48,7 +48,7 @@ do
     
 done
 
-
+exit
 
 # filter the above by a rack code
 if [ ! -z  $1 ]
