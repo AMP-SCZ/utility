@@ -26,8 +26,12 @@ except:
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-files=[glob(p)[0] for p in [f'PrescientStudy_Prescient_psychs_p1p8_fu_{suffix}',
-    f'PrescientStudy_Prescient_psychs_p9ac32_fu_{suffix}']]
+try:
+    files=[glob(p)[0] for p in [f'PrescientStudy_Prescient_psychs_p1p8_fu_{suffix}',
+        f'PrescientStudy_Prescient_psychs_p9ac32_fu_{suffix}']]
+except IndexError:
+    print('No PSYCHS follow up forms could be found')
+    exit()
 
 for file in files:
     print(file)
@@ -41,8 +45,6 @@ for file in files:
     dfhc.set_index('subjectkey',inplace=True)
 
     dfincl=pd.read_csv(glob('PrescientStudy_Prescient_inclusionexclusion_criteria_review_*.csv')[0])
-    dfconsent=pd.read_csv(glob('PrescientStudy_Prescient_informed_consent_run_sheet_*.csv')[0])
-    dfconsent.set_index('subjectkey',inplace=True)
 
     for i,row in dfincl.iterrows():
         
@@ -66,22 +68,8 @@ for file in files:
                 chr_hc='HealthyControl'
 
         except ValueError:
-            # chrcrit_part is empty for this subject
-            print(s)
-            print('\tattempt to infer chrcrit_part from group column in informed_consent_run_sheet')
-
-            # extract Young Patient's rows only, we do not need Guardian's rows
-            # to account for re-consent scenario, consider only the last row
-            try:
-                group1= dfconsent.loc[[row['subjectkey']]]
-            except KeyError:
-                print('\tdoes not seem to have been consented\n')
-                continue
-            
-            yp= group1[group1['version']=='YP']
-            yp_sorted= yp.sort_values('interview_date',
-                key=lambda dates: [datetime.strptime(x,'%m/%d/%Y') for x in dates])
-            chr_hc= yp_sorted.iloc[-1]['group']
+            print('chrcrit_part is empty for', s)
+            continue
 
 
         if chr_hc=='UHR':
