@@ -13,11 +13,6 @@ $0 123456 ProNET-1234"""
 
 fi
 
-if [ -z $SITE ]
-then
-    echo Define the env var SITE and try again
-    exit
-fi
 
 cd /data/predict1/to_nda/nda-submissions/
 
@@ -49,6 +44,8 @@ do
 done
 
 exit
+
+# The rest of the script will be removed soon ==============================
 
 # filter the above by a rack code
 if [ ! -z  $1 ]
