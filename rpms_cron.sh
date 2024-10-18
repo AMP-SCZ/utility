@@ -26,7 +26,9 @@ cp ${INCOMING}/*_${datestamp}.csv ${BACKUP}/
 
 rename_RPMS_vars.py $INCOMING && \
 replace_RPMS_values.py $INCOMING && \
-rpms_psychs_partition.py $INCOMING
+rpms_psychs_partition.py $INCOMING && \
+rm $INCOMING/.complete_* && \
+touch $INCOMING/.complete_${datestamp}
 
 echo
 echo Processing ended at $(date +%H:%M)
