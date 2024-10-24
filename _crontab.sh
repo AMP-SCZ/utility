@@ -166,5 +166,5 @@ MAILTO=xyz@bwh.harvard.edu
 0 01 * * 6,1 /data/predict1/utility/dpimport_mriqc.sh /data/predict1/data_from_nda/ rc-predict
 0 03 * * 6,1 /data/predict1/utility/dpimport_eegqc.sh /data/predict1/data_from_nda/ rc-predict
 
-# recess is on Tuesday, Thursday, Monday
+# recess is on Wednesday, Thursday, Monday
 
