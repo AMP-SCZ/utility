@@ -114,7 +114,7 @@ else:
         dfshift.set_index('form',inplace=True)
 
         # skip unchanged CSVs
-        if sys.argv[1] not in dfshift.index or dfshift.loc[sys.argv[1],'upload']==0:
+        if sys.argv[1] in dfshift.index and dfshift.loc[sys.argv[1],'upload']==0:
             print(sys.argv[1], 'has not been modified, skipping')
             exit()
         # if a form is not in dfshift.index, that got downloaded after {subjectkey}_hashes.csv was created
