@@ -10,7 +10,7 @@ import sys
 from glob import glob
 from multiprocessing import Pool
 import signal
-from hashlib import md5
+from hashlib import md5, sha256
 import re
 
 # Shift REDCap dates by one of [-14,-7,7,14] randomly chosen days
@@ -30,7 +30,7 @@ dfshift=pd.read_csv('date_offset.csv')
 dfshift.set_index('subject',inplace=True)
 
 
-with open(dirname(__file__)+'/rpms_file_suffix.txt') as f:
+with open(dirname(__file__)+'/rpms_file_suffix.raw') as f:
     suffixes=f.read().split()
 
 for dir in dirs:
@@ -41,8 +41,8 @@ for dir in dirs:
         file= f'{dir}/{subject}_{suffix}'
         if isfile(file):
             with open(file) as f:
-                content= f.read()
-            curr_stat= md5(content.encode('utf-8')).hexdigest()
+                content= f.read().strip()
+            curr_stat= sha256(content.encode('utf-8')).hexdigest()
             stats.append(curr_stat)
     
     stats=','.join(stats)
