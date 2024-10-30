@@ -34,23 +34,11 @@ fi
 
 # import new data
 export PATH=/data/predict1/miniconda3/bin/:$PATH
-cd ${NDA_ROOT}/formqc
 
-# subject level data
-# import.py -c $CONFIG "??-*-form_*-day1to*.csv" -n 8
-import.py -c $CONFIG "??-*-form_informed_consent_run_sheet-day1to*.csv" -n 8
-import.py -c $CONFIG "??-*-form_inclusionexclusion_criteria_review-day1to*.csv" -n 8
-import.py -c $CONFIG "??-*-form_sociodemographics-day1to*.csv" -n 8
-import.py -c $CONFIG "??-*-form_dpdash_charts-day1to*.csv" -n 8
+cd ${NDA_ROOT}
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_informed_consent_run_sheet-day1to*.csv" -n 8
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_inclusionexclusion_criteria_review-day1to*.csv" -n 8
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_sociodemographics-day1to*.csv" -n 8
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_dpdash_charts-day1to*.csv" -n 8
 
-# project level data
-# do it in multiple steps to circumvent unknown mongo timeout
-# import.py -c $CONFIG "combined-??-form_*-day1to*.csv" -n 4
-# import.py -c $CONFIG "combined-PRONET-form_*-day1to*.csv"
-# import.py -c $CONFIG "combined-PRESCIENT-form_*-day1to*.csv"
-# import.py -c $CONFIG "combined-AMPSCZ-form_*-day1to*.csv"
-# import.py -c $CONFIG "combined-PR*-form_screening-day1to*.csv" -n 2
-# import.py -c $CONFIG "combined-PR*-form_baseline-day1to*.csv" -n 2
-# import.py -c $CONFIG "combined-PR*-form_conversion-day1to*.csv" -n 2
-# import.py -c $CONFIG "combined-PR*-form_floating-day1to*.csv" -n 2
 
