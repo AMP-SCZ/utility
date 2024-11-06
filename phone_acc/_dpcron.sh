@@ -45,13 +45,6 @@ then
 fi
 
 
-source ~/.bashrc
-module load MATLAB/2019b
-source /data/sbdp/dphtool/gps/bin/activate
-export BEIWE_STUDY_PASSCODE='addle shindy winded subnormal'
-# cd outerr
-
-
 CONSENT_DIR=/data/predict1/data_from_nda/${network}/PHOENIX/PROTECTED
 sitelist=${CONSENT_DIR}/dpcron-sites.txt
 rm $sitelist
@@ -66,63 +59,22 @@ else
     done
 fi
 
+N=`cat $sitelist | wc -l`
 
-#BSUB dpcron[1-38]%4
-#BSUB -q pri_pnl
-#BSUB -o /data/predict1/utility/bsub/dpcron/dpcron-%J-%I.out
-#BSUB -e /data/predict1/utility/bsub/dpcron/dpcron-%J-%I.err
-#BSUB -R "span[hosts=1] order[!slots]"
-#BSUB -n 2
+source /etc/profile
+# prevent getting thousand emails
+export LSB_JOB_REPORT_MAIL=N
 
-if [ -z ${LSB_JOBINDEX} ]
-then
-    # must be a single case
-    LSB_JOBINDEX=1
-fi
-p=`head -${LSB_JOBINDEX} ${sitelist} | tail -1`
+export network modules
 
+bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_acc/dpcron.lsf
 
-if [ -z $modules ]
-then
+exit
 
-    # get module list from file
-    modules=""
-    for line in $(tail -n +2 exec-dtype.csv)
-    do
-        IFS=, read -a var <<< "$line"
-        module=${var[0]}
-        module=${module/.py/}
-        module=`basename $module`
-        modules="$modules $module"
-    done
-
-fi
-
-
-for i in $modules
-do
-
-    # construct absolute path of the module
-    for line in $(tail -n +2 exec-dtype.csv)
-    do
-        if [[ $line == *"$i"* ]]
-        then
-            IFS=, read -a var <<< "$line"
-            exec=${var[0]}
-            dtype=${var[1]}
-            break
-        fi
-    done
-
-    ls -la /data/sbdp/dphtool/$exec
-    ls -ld `dirname $CONSENT_DIR`
-    ls -ld `dirname /data/sbdp/dphtool/$exec`
-    echo $dtype
-    echo $i
-    #/data/sbdp/dphtool/$exec --phoenix-dir `dirname $CONSENT_DIR` --consent-dir $CONSENT_DIR \
-    #--matlab-dir `dirname /data/sbdp/dphtool/$exec` --study $p  --data-type $dtype --pipeline $i --include all \
-    #--data-dir PROTECTED
-done
-
-rm $sitelist
+# move bsub logs to a named folder
+_bsub=dpcron-$(date +%Y%m%d)
+cd /data/predict1/utility/bsub/dpcron
+mkdir $_bsub
+mv *err $_bsub/
+mv *out $_bsub
 
