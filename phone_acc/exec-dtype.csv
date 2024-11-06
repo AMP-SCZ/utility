@@ -1,0 +1,12 @@
+exec,dtype
+dplocatemg/phone_accel/phone_accel.py,phone
+dplocatemg/phone_power/phone_power.py,phone
+dplocatemg/phone_survey/phone_survey.py,phone
+dplocatemg/phone_survey_nda/phone_survey_nda.py,phone
+dplocatemg/data_availmg/data_availmg.py,phone
+dpsleepx/extract_ax/geneactiv_extract_ax.py,actigraphy
+dplocatemg/dplocate/dplocate0-read/parse_gps_mc.py,phone
+dplocatemg/dplocate/dplocate1-preprocess/preprocess_gps_mc.py,phone
+dplocatemg/dplocate/dplocate2-process/process_gps_mc.py,phone
+dplocatemg/dplocate/dplocate3-aggregate/aggregate_gps_mc.py,phone
+dplocatemg/dplocate/dplocate4-plot/phone_gps_mc.py,phone
