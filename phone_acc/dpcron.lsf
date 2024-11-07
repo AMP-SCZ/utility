@@ -43,7 +43,7 @@ do
     # construct absolute path of the module
     for line in $(tail -n +2 exec-dtype.csv)
     do
-        if [[ $line == *"$i"* ]]
+        if [[ $line == *"/$i"* ]]
         then
             IFS=, read -a var <<< "$line"
             exec=${var[0]}
@@ -52,14 +52,10 @@ do
         fi
     done
 
-    ls -la /data/sbdp/dphtool/$exec
-    ls -ld `dirname $CONSENT_DIR`
-    ls -ld `dirname /data/sbdp/dphtool/$exec`
-    echo $dtype
-    echo $i
-    #/data/sbdp/dphtool/$exec --phoenix-dir `dirname $CONSENT_DIR` --consent-dir $CONSENT_DIR \
-    #--matlab-dir `dirname /data/sbdp/dphtool/$exec` --study $p  --data-type $dtype --pipeline $i --include all \
-    #--data-dir PROTECTED
+    cmd="/data/sbdp/dphtool/$exec --phoenix-dir `dirname $CONSENT_DIR` --consent-dir $CONSENT_DIR \
+        --matlab-dir `dirname /data/sbdp/dphtool/$exec` --study $p  --data-type $dtype --pipeline $i --include all \
+        --data-dir PROTECTED"
+    echo $cmd
 done
 
 
