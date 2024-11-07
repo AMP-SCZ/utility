@@ -56,6 +56,9 @@ do
         --matlab-dir `dirname /data/sbdp/dphtool/$exec` --study $p  --data-type $dtype --pipeline $i --include all \
         --data-dir PROTECTED"
     echo $cmd
+    echo
+    $cmd
+    
 done
 
 
