@@ -8,12 +8,11 @@ $0 -n Pronet -m phone_accel -s PronetLA
 $0 -n Pronet -m "phone_accel phone_power" -s "PronetLA PronetCA"
 
 Mandatory:
--m : module name 
+-m : module name(s)
 -n : network
--s : site name
+-s : site name(s)
 
 
-modules are:
 * If only -n is provided, site names are obtained automatically.
 * Known modules are:
   phone:      "phone_accel phone_power phone_survey phone_survey_nda data_availmg"
@@ -67,7 +66,7 @@ export LSB_JOB_REPORT_MAIL=N
 
 export network modules
 
-bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_acc/dpcron.lsf
+bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_acc/_dpcron.lsf
 
 exit
 
