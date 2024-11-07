@@ -49,11 +49,11 @@ CONSENT_DIR=/data/predict1/data_from_nda/${network}/PHOENIX/PROTECTED
 sitelist=${CONSENT_DIR}/dpcron-sites.txt
 rm $sitelist
 
-if [ -z $sites ]
+if [ -z "$sites" ]
 then
     (cd $CONSENT_DIR && ls -d ${network}?? > $sitelist)
 else
-    for s in $(sites)
+    for s in $sites
     do
         echo $s >> $sitelist
     done
