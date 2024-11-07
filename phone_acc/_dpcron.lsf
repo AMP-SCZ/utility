@@ -20,12 +20,14 @@ sitelist=${CONSENT_DIR}/dpcron-sites.txt
 p=`head -${LSB_JOBINDEX} ${sitelist} | tail -1`
 
 
+EXEC=/data/predict1/utility/phone_acc/exec-dtype.csv
+
 if [ -z $modules ]
 then
 
     # get module list from file
     modules=""
-    for line in $(tail -n +2 exec-dtype.csv)
+    for line in $(tail -n +2 $EXEC)
     do
         IFS=, read -a var <<< "$line"
         module=${var[0]}
@@ -41,7 +43,7 @@ for i in $modules
 do
 
     # construct absolute path of the module
-    for line in $(tail -n +2 exec-dtype.csv)
+    for line in $(tail -n +2 $EXEC)
     do
         if [[ $line == *"/$i"* ]]
         then
