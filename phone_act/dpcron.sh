@@ -66,16 +66,26 @@ export LSB_JOB_REPORT_MAIL=N
 
 export network modules
 
-mkdir -p /data/predict1/utility/bsub/dpcron/
+LOGDIR=/data/predict1/utility/bsub/dpcron/
+mkdir -p $LOGDIR
 
 bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_act/_dpcron.lsf
 
-exit
 
 # move bsub logs to a named folder
-_bsub=dpcron-$(date +%Y%m%d)
-cd /data/predict1/utility/bsub/dpcron
+_bsub=dpcron-${network}-$(date +%Y%m%d)
+cd $LOGDIR
 mkdir $_bsub
-mv *err $_bsub/
-mv *out $_bsub
+while [ 1 ]
+do
+    count=`ls *out | wc -l`
+    if [ $count -lt $N ]
+    then
+        sleep 60
+    else
+        mv *err $_bsub/
+        mv *out $_bsub
+        break
+    fi
+done
 
