@@ -20,7 +20,7 @@ sitelist=${CONSENT_DIR}/dpcron-sites.txt
 p=`head -${LSB_JOBINDEX} ${sitelist} | tail -1`
 
 
-EXEC=/data/predict1/utility/phone_acc/exec-dtype.csv
+EXEC=/data/predict1/utility/phone_act/exec-dtype.csv
 
 if [ -z $modules ]
 then
