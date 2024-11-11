@@ -17,7 +17,7 @@ Mandatory:
 * Known modules are:
   phone:      "phone_accel phone_power phone_survey phone_survey_nda data_availmg"
   actigraphy: "geneactiv_extract_ax"
-  gps:        "parse_gps_mc.py preprocess_gps_mc process_gps_mc aggregate_gps_mc phone_gps_mc"
+  gps:        "parse_gps_mc preprocess_gps_mc process_gps_mc aggregate_gps_mc phone_gps_mc"
 
 
 """
