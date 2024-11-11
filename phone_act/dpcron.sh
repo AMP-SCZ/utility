@@ -66,7 +66,7 @@ export LSB_JOB_REPORT_MAIL=N
 
 export network modules
 
-bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_acc/_dpcron.lsf
+bsub -J "dpcron[1-$N]%4" < /data/predict1/utility/phone_act/_dpcron.lsf
 
 exit
 
