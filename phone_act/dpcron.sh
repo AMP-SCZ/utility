@@ -5,7 +5,7 @@ _help()
 {
     echo """Usage:
 $0 -n Pronet -m phone_accel -s PronetLA
-$0 -n Pronet -m "phone_accel phone_power" -s "PronetLA PronetCA"
+$0 -n Pronet -m \"phone_accel phone_power\" -s \"PronetLA PronetCA\"
 
 Mandatory:
 -m : module name(s)
@@ -15,9 +15,9 @@ Mandatory:
 
 * If only -n is provided, site names are obtained automatically.
 * Known modules are:
-  phone:      "phone_accel phone_power phone_survey phone_survey_nda data_availmg"
-  actigraphy: "geneactiv_extract_ax"
-  gps:        "parse_gps_mc preprocess_gps_mc process_gps_mc aggregate_gps_mc phone_gps_mc"
+  phone:      \"phone_accel phone_power phone_survey phone_survey_nda data_availmg\"
+  actigraphy: \"geneactiv_extract_ax geneactiv_freq geneactiv_act geneactiv_sync_mc geneactiv_qcact geneactiv_upact\"
+  gps:        \"parse_gps_mc preprocess_gps_mc process_gps_mc aggregate_gps_mc phone_gps_mc\"
 
 
 """
