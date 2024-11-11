@@ -1,21 +1,21 @@
 #!/bin/bash
 
-source ~/.bashrc
-module load MATLAB/2019b
-source /data/sbdp/dphtool/gps/bin/activate
-export BEIWE_STUDY_PASSCODE='addle shindy winded subnormal'
-# cd outerr
-
-
-CONSENT_DIR=/data/predict1/data_from_nda/${network}/PHOENIX/PROTECTED
-sitelist=${CONSENT_DIR}/dpcron-sites.txt
-
-
 #BSUB -q pri_pnl
 #BSUB -o /data/predict1/utility/bsub/dpcron/dpcron-%J-%I.out
 #BSUB -e /data/predict1/utility/bsub/dpcron/dpcron-%J-%I.err
 #BSUB -R "span[hosts=1] order[!slots]"
 #BSUB -n 2
+
+
+source ~/.bashrc
+module load MATLAB/2019b
+source /data/sbdp/dphtool/gps/bin/activate
+export BEIWE_STUDY_PASSCODE='addle shindy winded subnormal'
+
+
+CONSENT_DIR=/data/predict1/data_from_nda/${network}/PHOENIX/PROTECTED
+sitelist=${CONSENT_DIR}/dpcron-sites.txt
+
 
 p=`head -${LSB_JOBINDEX} ${sitelist} | tail -1`
 
@@ -62,5 +62,4 @@ do
     $cmd
     
 done
-
 
