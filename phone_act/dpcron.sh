@@ -8,8 +8,10 @@ $0 -n Pronet -m phone_accel -s PronetLA
 $0 -n Pronet -m \"phone_accel phone_power\" -s \"PronetLA PronetCA\"
 
 Mandatory:
--m : module name(s)
 -n : network
+
+Optional:
+-m : module name(s)
 -s : site name(s)
 
 
