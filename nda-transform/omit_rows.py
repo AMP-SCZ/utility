@@ -37,6 +37,6 @@ for i,row in enumerate(data):
 
 move(sys.argv[1],'/tmp/'+basename(sys.argv[1]))
 with open(sys.argv[1],'w') as f:
-    f.write('\n'.join(data2))
+    f.write('\n'.join(data2)+'\n')
 
     
