@@ -371,7 +371,7 @@ for _,visit in data.iterrows():
         'format': 'json',
         'type': 'flat',
         'data': data2,
-        'overwriteBehavior': 'normal',
+        'overwriteBehavior': 'overwrite',
         'returnContent': 'count',
         'returnFormat': 'json'
     }
