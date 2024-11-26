@@ -176,7 +176,7 @@ for visit in data:
             'format': 'json',
             'type': 'flat',
             'data': data2,
-            'overwriteBehavior': 'normal',
+            'overwriteBehavior': 'overwrite',
             'returnContent': 'count',
             'returnFormat': 'json'
         }
