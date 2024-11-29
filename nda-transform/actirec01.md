@@ -8,8 +8,8 @@ in the following format:
 ```python
 $ head -n 5 Pronet_Axivity_nda_20240221.csv
 src_subject_id,interview_date,model,start_date,act_start_time,end_date,end_time,time_zone,data_file1_type,data_file1
-BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,BI12345/actigraphy/mtl_nda/BI-BI12345-actigraphy_Axivity_79925_2023-3-31-17:9-to-2023-4-25-10:59.parquet
-BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,BI12345/actigraphy/mtl_nda/BI-BI12345-actigraphy_Axivity_79925_2023-3-31-17:9-to-2023-4-25-10:59.parquet
+BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,/data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/PronetBI/processed/BI12345/actigraphy/mtl_nda/BI-BI12345-actigraphy_Axivity_79925_2023-3-31-17:9-to-2023-4-25-10:59.parquet
+BI12345,3/31/2023,Axivity Ax3,3/31/2023,17:09,4/25/2023,10:59,EST,parquet,/data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/PronetBI/processed/BI12345/actigraphy/mtl_nda/BI-BI12345-actigraphy_Axivity_79925_2023-3-31-17:9-to-2023-4-25-10:59.parquet
 ```
 
 
