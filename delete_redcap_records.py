@@ -50,8 +50,8 @@ cases= [basename(d) for d in dirs]
 
 if len(sys.argv)==3:
     # serial removal
-    for i,c in enumerate(cases):
-        data['records[0]']= c
+    for c in cases:
+        data= construct([c])
         POST(data)
 
 elif len(sys.argv)==4 and sys.argv[3]=='1':
