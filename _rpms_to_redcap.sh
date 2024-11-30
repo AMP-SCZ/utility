@@ -63,7 +63,7 @@ done
 # move bsub logs to a named folder
 _bsub=prescient-$(date +%Y%m%d)
 cd /data/predict1/utility/bsub/
-mkdir $_bsub
+mkdir -p $_bsub
 mv *err $_bsub/
 mv *out $_bsub/
 
