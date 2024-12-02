@@ -19,27 +19,8 @@ $CURL -H "Content-Type: application/x-www-form-urlencoded" \
 pronet=pronet/pronet_dict_${datestamp}.csv
 cp /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/redcap_metadata.csv $pronet
 
-: << CMT
-DATA="token=${2}&content=metadata&format=csv&returnFormat=json"
-$CURL -H "Content-Type: application/x-www-form-urlencoded" \
-      -H "Accept: application/json" \
-      -X POST \
-      -d $DATA \
-      https://redcap.partners.org/redcap/api/ > $pronet
 
-
-: << CMT
-# download prescient dictionary
-prescient=prescient/prescient_dict_${datestamp}.csv
-DATA="token=${3}&content=metadata&format=csv&returnFormat=json"
-$CURL -H "Content-Type: application/x-www-form-urlencoded" \
-      -H "Accept: application/json" \
-      -X POST \
-      -d $DATA \
-      https://redcap.partners.org/redcap/api/ > $prescient
-
-
-for net in pronet prescient
+for net in pronet
 do
     /data/predict1/utility/gen_dict_diff.py $ampscz ${net}/${net}_dict_${datestamp}.csv $net
     suffix=${net}_${datestamp}
@@ -56,7 +37,7 @@ do
 
     done
 done
-CMT
+
 
 # backup the ampscz and pronet dictionaries
 source /data/pnl/soft/pnlpipe3/duply_backup/env.sh
