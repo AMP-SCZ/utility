@@ -33,7 +33,7 @@ do
         -a ampscz_vars_absent_in_${suffix}.csv \
         -a branch_logic_diff_ampscz_${suffix}.csv \
         -a calc_diff_ampscz_${suffix}.csv \
-        -- ${p}@partners.org
+        -- ${p}@mgb.org
 
     done
 done
