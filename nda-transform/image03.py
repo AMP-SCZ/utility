@@ -143,7 +143,6 @@ if __name__=='__main__':
         remove(name)
         dfshared.set_index('src_subject_id',inplace=True)
     
-    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
 
     data=pd.read_csv(args.data,dtype=str)
     columns=data.columns
@@ -163,9 +162,6 @@ if __name__=='__main__':
         
         print('Processing',file)
         
-        with open(file) as f:
-            dict1=json.load(f)
-
         populate()
 
     df=pd.DataFrame(rows,columns=columns)
