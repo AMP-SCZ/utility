@@ -15,6 +15,7 @@ NDA Release 3:
 5 and 6 can be simplified to:
     Inconsistecy between the SIPS/CAARMS group and the participant's cohort
 """
+import argparse
 import json
 import logging
 from pathlib import Path
@@ -28,8 +29,6 @@ logargs = {
     "format": "%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s",
 }
 logging.basicConfig(**logargs)
-
-DEST_CSV_PATH = "/data/predict1/home/dm1447/data/nda/ndar_subject01_selected_v2.csv"
 
 
 def get_ndar_subject01_df() -> pd.DataFrame:
@@ -50,7 +49,7 @@ def get_ndar_subject01_df() -> pd.DataFrame:
 
     for ndar_csv in ndar_csvs:
         # Reak skipping the first row
-        temp_df = pd.read_csv(ndar_csv, skiprows=1)
+        temp_df = pd.read_csv(ndar_csv, skiprows=1, dtype=str)
         ndar_df = pd.concat([ndar_df, temp_df])
 
     ndar_df.reset_index(drop=True, inplace=True)
@@ -303,13 +302,26 @@ def print_summary(
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        prog="nda_caselist_filter",
+        description="Filters ndar_subject01 based on selection criteria for NDA Release 3",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        help="Path to save the new ndar_subject01.csv",
+        required=True,
+    )
+    args = parser.parse_args()
+    new_ndar_csv_path = Path(args.output).resolve()
+
     logger.info("Filtering ndar_subject01 based on selection criteria...")
     selected_subjects, skipped_subjects, new_ndar_df = select_subjects()
 
     logger.info(f"Selected {len(selected_subjects)} subjects")
     logger.info(f"Skipped {len(skipped_subjects)} subjects")
 
-    new_ndar_csv_path = Path(DEST_CSV_PATH)
     new_ndar_df.to_csv(new_ndar_csv_path, index=False)
     logger.info(f"Saved new ndar_subject01 to {new_ndar_csv_path}")
     fix_ndar_csv(new_ndar_csv_path)
