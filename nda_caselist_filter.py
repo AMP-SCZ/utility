@@ -25,9 +25,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 logargs = {
     "level": logging.DEBUG,
-    # "format": "%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s",
-    "format": "%(asctime)s - %(process)d - %(name)s - %(filename)s:%(lineno)d - %(levelname)s - "
-    "%(message)s",
+    "format": "%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s",
 }
 logging.basicConfig(**logargs)
 
