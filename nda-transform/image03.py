@@ -161,6 +161,9 @@ if __name__=='__main__':
     for row,file in enumerate(files):
         
         print('Processing',file)
+
+        with open(file) as f:
+            dict1=json.load(f)
         
         populate()
 
