@@ -24,5 +24,8 @@ chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED}/Prescient??/raw/*/surveys/???????.Presc
 
 # shift their dates
 shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv
-chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Prescient??/processed/*/surveys/???????.Prescient.json
+
+# explicit permission change
+chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Prescient??/processed/*/surveys/
 chmod g+w ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Prescient??/processed/*/surveys/
+chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Prescient??/processed/*/surveys/???????.Prescient.json
