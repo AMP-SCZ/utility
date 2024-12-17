@@ -350,6 +350,8 @@ if __name__ == "__main__":
     if reject_reason_path is not None:
         reject_reason_df = pd.DataFrame(skipped_subjects)
         reject_reason_df.sort_values("subject_id", inplace=True)
+        # rename subject_id to subject to be compatible with other pipelines
+        reject_reason_df.rename(columns={"subject_id": "subject"}, inplace=True)
         reject_reason_df.to_csv(reject_reason_path, index=False)
         logger.info(f"Saved rejected subjects and reasons to {reject_reason_path}")
 
