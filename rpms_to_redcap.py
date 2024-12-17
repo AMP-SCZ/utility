@@ -67,7 +67,6 @@ def _date(time_value):
         # all other forms e.g. 1/05/2022 12:00:00 AM
         int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
         
-    
     return int_value
 
 
@@ -200,7 +199,7 @@ elif chr_hc==2:
     if sys.argv[1].endswith('_psychs_p1p8_fu.csv') or sys.argv[1].endswith('_psychs_p9ac32_fu.csv'):
         exit(0)
 
-data= pd.read_csv(sys.argv[1], dtype=str)
+data= pd.read_csv(sys.argv[1], dtype=str, keep_default_na=False)
 
 
 for _,visit in data.iterrows():
@@ -235,7 +234,7 @@ for _,visit in data.iterrows():
         # also for bypassing empty forms
         try:
             # consider non-empty only
-            if pd.isna(visit[v]):
+            if visit[v]=='':
                 continue
                 
             elif visit[v].lower() in ['-','none','not applicable', 'n/a','na']:
