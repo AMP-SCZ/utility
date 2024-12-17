@@ -71,7 +71,8 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
-    
+    df.at[row,'visit']=event
+
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
@@ -173,7 +174,7 @@ if __name__=='__main__':
         alias=True
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit',
             'chrbprs_bprs_somc','chrbprs_bprs_anxi','chrbprs_bprs_depr','chrbprs_bprs_guil','chrbprs_bprs_host','chrbprs_bprs_susp','chrbprs_bprs_unus','chrbprs_bprs_gran','chrbprs_bprs_hall','chrbprs_bprs_diso','chrbprs_bprs_conc','chrbprs_bprs_exci','chrbprs_bprs_motr','chrbprs_bprs_blun','chrbprs_bprs_tens','chrbprs_bprs_mann','chrbprs_bprs_unco','chrbprs_bprs_emot','chrbprs_bprs_suic','chrbprs_bprs_self','chrbprs_bprs_bizb','chrbprs_bprs_elat','chrbprs_bprs_mohy','chrbprs_bprs_distr','chrbprs_bprs_total',
             'ampscz_missing','ampscz_missing_spec']
         

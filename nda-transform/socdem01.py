@@ -69,7 +69,8 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
-    
+    df.at[row,'visit']=event
+
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months

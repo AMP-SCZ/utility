@@ -71,6 +71,7 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
+    df.at[row,'visit']=event
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
@@ -102,10 +103,12 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
+    df.at[row,'ampscz_missing_spec']=''
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
-    else:
-        df.at[row,'ampscz_missing_spec']=''
+        ampscz_missing_spec=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+        # networks have a tendency to not provide missing_spec when a form is missing
+        if ampscz_missing_spec!='':
+            df.at[row,'ampscz_missing_spec']=ampscz_missing_spec[1]
 
     # return df
 
@@ -151,11 +154,11 @@ if __name__=='__main__':
         prefix=args.prefix
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex',
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit',
             'chroasis_oasis_1','chroasis_oasis_2','chroasis_oasis_3',
             'chroasis_oasis_4','chroasis_oasis_5',
             'chroasis_oasis_total10']
-        columns.append(f'ampscz_missing')
+        columns=columns+['ampscz_missing','ampscz_missing_spec']
         
         # save the remaining template
         _,name=mkstemp()

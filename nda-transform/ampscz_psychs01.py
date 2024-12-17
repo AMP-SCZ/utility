@@ -76,7 +76,8 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
-    
+    df.at[row,'visit']=event
+
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
     df.at[row,'interview_age']=dfshared.loc[src_subject_id,'interview_age']+months
@@ -210,7 +211,7 @@ if __name__=='__main__':
     prefix=args.prefix
     event=args.event
     
-    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit']
     psychs_columns=[]
     for c in definition.index:
         if c in columns or c.startswith('ampscz_'):
