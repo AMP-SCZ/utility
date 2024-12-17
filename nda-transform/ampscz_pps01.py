@@ -105,7 +105,8 @@ def populate():
     
                 size=definition.loc[v,'Size']
                 if size:
-                    value=value[:int(size)]
+                    # NDA definition of size is based on utf-8 encoding
+                    value=value.encode('utf-8')[:int(size)].decode('utf-8','ignore')
 
                 if '\n' in value:
                     value=value.replace('\n',' ')
