@@ -71,7 +71,7 @@ export network modules
 LOGDIR=/data/predict1/utility/bsub/dpcron/
 mkdir -p $LOGDIR
 
-bsub -J "dpcron[1-$N]%8" < /data/predict1/utility/phone_act/_dpcron.lsf
+bsub -J "dpcron[1-$N]%6" < /data/predict1/utility/phone_act/_dpcron.lsf
 
 
 # move bsub logs to a named folder
