@@ -12,7 +12,14 @@ cd /data/predict1/utility/
 ./shift_redcap_dates.py $PHOENIX_PROTECTED $JSON $3
 
 # explicit permission change
-chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Pronet??/processed/*/surveys/
-chmod g+w ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Pronet??/processed/*/surveys/
-chgrp BWH-PREDICT-G ${PHOENIX_PROTECTED/PROTECTED/GENERAL}/Pronet??/processed/*/surveys/???????.Pronet.json
+n=Pronet
+GENERAL=${PHOENIX_PROTECTED/PROTECTED/GENERAL}
+for E in ${GENERAL}/${n}??/processed/ \
+    ${GENERAL}/${n}??/processed/* \
+    ${GENERAL}/${n}??/processed/*/surveys/ \
+    ${GENERAL}/${n}??/processed/*/surveys/???????.${n}.json
+do
+    chgrp BWH-PREDICT-G $E
+    chmod g+w $E
+done
 
