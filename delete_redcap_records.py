@@ -51,6 +51,7 @@ cases= [basename(d) for d in dirs]
 if len(sys.argv)==3:
     # serial removal
     for c in cases:
+        print('Delete',c)
         data= construct([c])
         POST(data)
 

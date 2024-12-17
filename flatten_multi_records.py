@@ -77,7 +77,7 @@ def flatten_group(df,form,cols):
 
 def flatten_one_new(filename):
 
-    dfmulti= pd.read_csv(filename)
+    dfmulti= pd.read_csv(filename,dtype=str,keep_default_na=False)
 
     subjectkey= filename.split('_')[0]
     form= re.search(f'{subjectkey}_(.+?).csv', filename).group(1)
@@ -117,7 +117,7 @@ def flatten_many_new():
 
     filename=sys.argv[1]
 
-    dfunique= pd.read_csv(filename)
+    dfunique= pd.read_csv(filename,dtype=str,keep_default_na=False)
     subjectkey= filename.split('_')[0]
 
     # default_cols= ['LastModifiedDate','subjectkey','interview_date','interview_age','gender','visit']
@@ -143,7 +143,7 @@ def flatten_many_new():
             if not isfile(filename):
                 continue
 
-            dfmulti=pd.read_csv(filename)
+            dfmulti=pd.read_csv(filename,dtype=str,keep_default_na=False)
             groups= dfmulti.groupby('visit')
             dfvisit= groups.get_group(timepoint).reset_index()
 
