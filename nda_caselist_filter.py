@@ -30,6 +30,8 @@ logargs = {
 }
 logging.basicConfig(**logargs)
 
+QC_TRACKER_AUTHOR = "Owen Borders"
+
 
 def get_ndar_subject01_df() -> pd.DataFrame:
     """
@@ -178,64 +180,7 @@ def select_subjects() -> Tuple[List[str], List[Dict[str, Any]], pd.DataFrame]:
             skip_subject = True
             continue
 
-        # tracker checks
-        tracker_row = qc_tracker_df[qc_tracker_df["subject"] == subject_id]
-        if tracker_row.empty:
-            skipped_subjects.append(
-                {"subject_id": subject_id, "reason": "tracker_row empty"}
-            )
-            skip_subject = True
-            # print(f"Skipping {subject_id} because tracker_row is empty")
-            continue
-        # inclusionexclusion_criteria_review_screening check
-        inclusionexclusion_criteria_review_screening = tracker_row[
-            "inclusionexclusion_criteria_review_screening"
-        ].values[0]
-
-        if not pd.isna(inclusionexclusion_criteria_review_screening):
-            skipped_subjects.append(
-                {
-                    "subject_id": subject_id,
-                    "reason": "inclusionexclusion_criteria_review_screening is"
-                    f"{inclusionexclusion_criteria_review_screening}",
-                }
-            )
-            skip_subject = True
-            # print(f"Skipping {subject_id} because inclusionexclusion_criteria_review_screening"
-            # f"is {inclusionexclusion_criteria_review_screening}")
-            continue
-
-        # psychs_p1p8_screening check
-        psychs_p1p8_screening = tracker_row["psychs_p1p8_screening"].values[0]
-
-        if not pd.isna(psychs_p1p8_screening):
-            skipped_subjects.append(
-                {
-                    "subject_id": subject_id,
-                    "reason": f"psychs_p1p8_screening is {psychs_p1p8_screening}",
-                }
-            )
-            skip_subject = True
-            # print(f"Skipping {subject_id} because psychs_p1p8_screening is"
-            # f"{psychs_p1p8_screening}")
-            continue
-
-        # psychs_p9ac32_screening check
-        psychs_p9ac32_screening = tracker_row["psychs_p9ac32_screening"].values[0]
-
-        if not pd.isna(psychs_p9ac32_screening):
-            skipped_subjects.append(
-                {
-                    "subject_id": subject_id,
-                    "reason": f"psychs_p9ac32_screening is {psychs_p9ac32_screening}",
-                }
-            )
-            skip_subject = True
-            # print(f"Skipping {subject_id} because psychs_p9ac32_screening is "
-            # f"{psychs_p9ac32_screening}")
-            continue
-
-        # subject_is_included
+        # Criteria #2 subject_is_included
         chrcrit_included = get_variable_value(
             json_file=subject_json,
             redcap_event_name="screening",
@@ -247,11 +192,75 @@ def select_subjects() -> Tuple[List[str], List[Dict[str, Any]], pd.DataFrame]:
             skipped_subjects.append(
                 {
                     "subject_id": subject_id,
-                    "reason": f"chrcrit_included is {chrcrit_included}",
+                    "reason": f"chrcrit_included is '{chrcrit_included}'",
                 }
             )
             skip_subject = True
             # print(f"Skipping {subject_id} because subject_is_included is False")
+            continue
+
+        # tracker checks - Criteria #3, #4, #5, #6
+        tracker_row = qc_tracker_df[qc_tracker_df["subject"] == subject_id]
+        if tracker_row.empty:
+            skipped_subjects.append(
+                {
+                    "subject_id": subject_id,
+                    "reason": f"[{QC_TRACKER_AUTHOR}] qc_tracker contains "
+                    "no information on subject",
+                }
+            )
+            skip_subject = True
+            # print(f"Skipping {subject_id} because tracker_row is empty")
+            continue
+        # inclusionexclusion_criteria_review_screening check
+        inclusionexclusion_criteria_review_screening = tracker_row[
+            "inclusionexclusion_criteria_review_screening"
+        ].values[0]
+
+        # Criteria #3, #4, #5
+        if not pd.isna(inclusionexclusion_criteria_review_screening):
+            skipped_subjects.append(
+                {
+                    "subject_id": subject_id,
+                    "reason": f"[{QC_TRACKER_AUTHOR}] inclusionexclusion_criteria_review_screening - "
+                    f"{inclusionexclusion_criteria_review_screening}",
+                }
+            )
+            skip_subject = True
+            # print(f"Skipping {subject_id} because inclusionexclusion_criteria_review_screening"
+            # f"is {inclusionexclusion_criteria_review_screening}")
+            continue
+
+        # Criteria #6.1
+        # psychs_p1p8_screening check
+        psychs_p1p8_screening = tracker_row["psychs_p1p8_screening"].values[0]
+
+        if not pd.isna(psychs_p1p8_screening):
+            skipped_subjects.append(
+                {
+                    "subject_id": subject_id,
+                    "reason": f"[{QC_TRACKER_AUTHOR}] psychs_p1p8_screening - {psychs_p1p8_screening}",
+                }
+            )
+            skip_subject = True
+            # print(f"Skipping {subject_id} because psychs_p1p8_screening is"
+            # f"{psychs_p1p8_screening}")
+            continue
+
+        # Criteria #6.2
+        # psychs_p9ac32_screening check
+        psychs_p9ac32_screening = tracker_row["psychs_p9ac32_screening"].values[0]
+
+        if not pd.isna(psychs_p9ac32_screening):
+            skipped_subjects.append(
+                {
+                    "subject_id": subject_id,
+                    "reason": f"[{QC_TRACKER_AUTHOR}] psychs_p9ac32_screening - {psychs_p9ac32_screening}",
+                }
+            )
+            skip_subject = True
+            # print(f"Skipping {subject_id} because psychs_p9ac32_screening is "
+            # f"{psychs_p9ac32_screening}")
             continue
 
         if not skip_subject:
@@ -313,8 +322,19 @@ if __name__ == "__main__":
         help="Path to save the new ndar_subject01.csv",
         required=True,
     )
+    parser.add_argument(
+        "-r",
+        "--reject-reason-path",
+        type=str,
+        help="Path to save the rejected subjects and reasons in CSV format",
+        required=False,
+    )
     args = parser.parse_args()
     new_ndar_csv_path = Path(args.output).resolve()
+    if args.reject_reason_path:
+        reject_reason_path = Path(args.reject_reason_path).resolve()
+    else:
+        reject_reason_path = None
 
     logger.info("Filtering ndar_subject01 based on selection criteria...")
     selected_subjects, skipped_subjects, new_ndar_df = select_subjects()
@@ -327,5 +347,10 @@ if __name__ == "__main__":
     fix_ndar_csv(new_ndar_csv_path)
 
     print_summary(selected_subjects, skipped_subjects)
+    if reject_reason_path is not None:
+        reject_reason_df = pd.DataFrame(skipped_subjects)
+        reject_reason_df.sort_values("subject_id", inplace=True)
+        reject_reason_df.to_csv(reject_reason_path, index=False)
+        logger.info(f"Saved rejected subjects and reasons to {reject_reason_path}")
 
     logger.info("Done")
