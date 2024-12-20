@@ -13,9 +13,12 @@ df1=df.copy()
 df1.drop(['day','redcap_event_name'],axis=1,inplace=True)
 df1['visit']= list(map(lambda x: x.split('_arm_')[0],df['redcap_event_name']))
 
+
+# transcripts are located at:
+# {network}/PHOENIX/GENERAL/{site}/processed/{subject}/interviews/{type}/transcripts/*_REDACTED.txt
 t=[None]*df.shape[0]
 for i,row in df.iterrows():
-    t[i]='{}/interviews/{}/{}'.format(row['src_subject_id'],row['interview_type'],row['transcript_file'])
+    t[i]='{}/interviews/{}/transcripts/{}'.format(row['src_subject_id'],row['interview_type'],row['transcript_file'])
 
 df1['transcript_file']=t
 df1['subjectkey']=''
