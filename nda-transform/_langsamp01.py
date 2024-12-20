@@ -29,6 +29,7 @@ for i,row in df.iterrows():
 
 df1['interview_date']=d
 df1['transcript_file']=t
+df1['interview_type']= list(map(lambda x: 1 if x=='open' else 2,df['interview_type']))
 
 for x in 'subjectkey interview_age sex'.split():
     df1[x]=''
