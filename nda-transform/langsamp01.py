@@ -214,7 +214,7 @@ if __name__=='__main__':
     columns=columns+run_sheet_vars+['ampscz_missing','ampscz_missing_spec']
     
     data=pd.read_csv(args.data)
-    data.set_index(['subject','interview_type','redcap_event_name'],inplace=True)
+    data.set_index(['src_subject_id','interview_type','redcap_event_name'],inplace=True)
 
 
     # save the remaining template
