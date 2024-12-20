@@ -8,7 +8,7 @@ pro=pd.read_csv('/data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/date_offs
 pre=pd.read_csv('/data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/date_offset.csv')
 dfshift=pd.concat((pro,pre)).set_index('subject')
 
-df=pd.read_csv(sys.argv[1])
+df=pd.read_csv(sys.argv[1],dtype=str)
 df1=df.copy()
 
 df1.drop(['day','redcap_event_name'],axis=1,inplace=True)
@@ -29,8 +29,14 @@ for i,row in df.iterrows():
 
 df1['interview_date']=d
 df1['transcript_file']=t
-df1['subjectkey']=''
-df1['sex']=''
+
+for x in 'subjectkey interview_age sex'.split():
+    df1[x]=''
+
+# reorder columns
+begin='subjectkey src_subject_id interview_date interview_age sex visit'.split()
+end=[c for c in df1.columns if c not in begin]
+df1=df1.reindex(labels=begin+end, axis=1)
 
 df1.to_csv(sys.argv[1].replace('.csv','_nda.csv'),index=False)
 
