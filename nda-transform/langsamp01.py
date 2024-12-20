@@ -74,15 +74,6 @@ def populate():
         metadata=data.loc[[(src_subject_id,interview_type,f'{event}_arm_{arm}')]].values[0]
         study,nearest_day,session=metadata[:3]
 
-        found=True
-        transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{nearest_day:04}_session{session:03}_REDACTED.txt'
-        if not isfile(transcript_):
-            
-            transcript_=f'{study}/processed/{src_subject_id}/interviews/{interview_type}/transcripts/{study}_{src_subject_id}_interviewAudioTranscript_{interview_type}_day{-nearest_day:04}_session{session:03}_REDACTED.txt'
-            if not isfile(transcript_):
-                printe(f'{transcript_} could not be found')
-                found=False
-        
     except KeyError:
         return
 
@@ -159,70 +150,6 @@ def populate():
     else:
         df.at[row,'ampscz_missing_spec']=''
 
-
-    # Example paths:
-    # PronetOR/processed/OR10684/interviews/open/OR10684_open_combinedQCRecords.csv
-    # PrescientSG/processed/SG99731/interviews/psychs/SG99731_psychs_combinedQCRecords.csv
-
-    _root=pjoin(file.split('surveys')[0], 'interviews', interview_type)
-    features_file=pjoin(_root, f'{src_subject_id}_{interview_type}_combinedQCRecords.csv')
-
-    if not isfile(features_file):
-        return
-
-    
-    print('\tProcessing',features_file)
-
-    dfavl=pd.read_csv(features_file)
-    
-    if found:
-        df.at[row,'transcript_file']=abspath(transcript_).split('/processed/')[-1]
-
-
-    found=False
-    for i,_row in dfavl.iterrows():
-        if abs(_row['day'])==nearest_day and _row['interview_number']==session:
-
-            total_words=sum(_row[t] for t in 'num_words_S1,num_words_S2,num_words_S3'.split(','))
-
-            for v in avl_vars:
-                if v=='num_turns_total':
-                    value=sum(_row[t] for t in 'num_turns_S1,num_turns_S2,num_turns_S3'.split(','))
-                
-                elif v=='num_words_s1':
-                    value=_row['num_words_S1']
-
-                elif v=='num_words_s2':
-                    value=_row['num_words_S2']
-
-                elif v=='num_words_s3':
-                    value=_row['num_words_S3']
-                
-                elif v=='interview_type':
-                    if _row[v]=='open':
-                        value=1
-                    elif _row[v]=='psychs':
-                        value=2
-
-                elif v in 'num_inaudible,num_redacted':
-                    value=round(_row[v]/total_words*100,3)
-
-                else:
-                    value=_row[v]
-                
-                if definition.loc[v,'DataType']=='Integer':
-                    if not pd.isna(value):
-                        value=int(value)
-
-                df.at[row,v]=value
-                
-                found=True
-            break
-
-    
-    if not found:
-        printe(f'{features_file},{nearest_day},{session} could not be found')
-        df.drop(row,inplace=True)
     
     # return df
 
@@ -284,10 +211,7 @@ if __name__=='__main__':
         if prefix in c:
             run_sheet_vars.append(c.strip())
     
-    # audio/video/transcript vars
-    avl_vars='interview_type,interview_number,length_minutes,final_timestamp_minutes,overall_db,num_redacted,num_inaudible,num_subjects,num_words_s1,num_words_s2,num_words_s3,num_turns_total'.split(',')
-
-    columns=columns+run_sheet_vars+avl_vars+['transcript_file','ampscz_missing','ampscz_missing_spec']
+    columns=columns+run_sheet_vars+['ampscz_missing','ampscz_missing_spec']
     
     data=pd.read_csv(args.data)
     data.set_index(['subject','interview_type','redcap_event_name'],inplace=True)
@@ -317,10 +241,6 @@ if __name__=='__main__':
 
         populate()
 
-
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.max_columns", None)
-    pd.set_option("display.max_colwidth", None)
 
     chdir(dir_bak)
     
