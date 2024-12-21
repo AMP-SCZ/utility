@@ -69,10 +69,10 @@ def populate():
         # no data in this form
         return
 
+    # check if there is a row for this subject in features file
     try:
         # [] around index is required to make the resultant a DataFrame
-        metadata=data.loc[[(src_subject_id,interview_type,f'{event}_arm_{arm}')]].values[0]
-        study,nearest_day,session=metadata[:3]
+        metadata=data.loc[[(src_subject_id,interview_type,f'{event}_arm_{arm}')]]
 
     except KeyError:
         return
