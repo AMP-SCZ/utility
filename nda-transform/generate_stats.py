@@ -6,7 +6,7 @@ import pandas as pd
 from os import getcwd
 import sys
 
-if 'network_combined' not in getcwd() or sys.argv[1]=='-h':
+if 'network_combined' not in getcwd() or (len(sys.argv)>1 and sys.argv[1]=='-h'):
     print(f'''Usage:
 {__file__}
 Execute it within network_combined folder''')
@@ -26,14 +26,14 @@ for i,file in enumerate(files):
     print('Processing', file)
 
     df=pd.read_csv(file, header=1, dtype=str)
+    groups=df.groupby('src_subject_id')
 
     count={}
     for e in 'ProNET PRESCIENT CHR HC'.split():
         count[e]=0
 
 
-    for j,row in df.iterrows():
-        s=row['src_subject_id']
+    for s in groups.groups.keys():
 
         for obj in sites:
             if obj['id']==s[:2]:
