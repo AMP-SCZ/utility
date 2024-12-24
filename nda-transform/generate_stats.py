@@ -3,16 +3,17 @@
 from glob import glob
 from json import load
 import pandas as pd
-from os.path import basename, dirname, abspath, join as pjoin
+from os import getcwd
+import sys
 
-# cd /data/predict1/to_nda/nda-submissions/network_combined
-
+if 'network_combined' not in getcwd() or sys.argv[1]=='-h':
+    print(f'''Usage:
+{__file__}
+Execute it within network_combined folder''')
+    exit(1)
 
 
 files=sorted(glob('*csv'))
-# if len(files)<30:
-#     print('Execute it within network_combined folder')
-#     exit(1)
 
 common=pd.read_csv('ndar_subject01.csv', header=1, dtype=str).set_index('src_subject_id')
 
