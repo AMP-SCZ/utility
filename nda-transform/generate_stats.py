@@ -48,5 +48,9 @@ for i,file in enumerate(files):
 
     stat.loc[i]=[file]+list(count.values())
 
+
+pd.set_option("display.max_rows", None)
+print(stat)
+
 stat.to_csv('stats_by_file.txt',index=False)
 
