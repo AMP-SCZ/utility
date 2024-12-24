@@ -7,9 +7,7 @@ from os.path import basename, dirname, abspath, join as pjoin
 
 # cd /data/predict1/to_nda/nda-submissions/network_combined
 
-count={}
-for e in 'ProNET PRESCIENT CHR HC'.split():
-    count[e]=0
+
 
 files=sorted(glob('*csv'))
 # if len(files)<30:
@@ -27,6 +25,11 @@ for i,file in enumerate(files):
     print('Processing', file)
 
     df=pd.read_csv(file, header=1, dtype=str)
+
+    count={}
+    for e in 'ProNET PRESCIENT CHR HC'.split():
+        count[e]=0
+
 
     for j,row in df.iterrows():
         s=row['src_subject_id']
