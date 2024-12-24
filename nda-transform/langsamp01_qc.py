@@ -38,7 +38,12 @@ print(absent)
 
 
 print('check if each REDCap features row has a row in derived features')
+ngroups=derived.groupby(['src_subject_id', 'interview_type','visit']).ngroups
 derived.set_index(['src_subject_id', 'interview_type','visit'], inplace=True)
+
+# sort_index() to avoid
+# PerformanceWarning: indexing past lexsort depth may impact performance.
+derived.sort_index(inplace=True)
 for i,f in enumerate(files):
 
     df=pd.read_csv(f,dtype=str,header=1)
@@ -62,5 +67,10 @@ for i,row in df1.iterrows():
 print()
 print(len(absent))
 print(absent)
+print()
+
+# some statistics
+print('Total rows in REDCap features:', df1.shape[0])
+print('Total unique sessions in derived features:', ngroups)
 
 
