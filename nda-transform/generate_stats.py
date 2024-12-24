@@ -13,7 +13,10 @@ Execute it within network_combined folder''')
     exit(1)
 
 
-files=sorted(glob('*csv'))
+files=['ndar_subject01.csv']
+_files=sorted(glob('*csv'))
+_files.remove('ndar_subject01.csv')
+files+=[x for x in _files]
 
 common=pd.read_csv('ndar_subject01.csv', header=1, dtype=str).set_index('src_subject_id')
 
