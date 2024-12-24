@@ -46,7 +46,7 @@ for i,file in enumerate(files):
         count[common.loc[s,'phenotype']]+=1
 
 
-    stat.loc[i]=[file]+list(count.values())
+    stat.loc[i]=[file.replace('.csv','')]+list(count.values())
 
 
 pd.set_option("display.max_rows", None)
