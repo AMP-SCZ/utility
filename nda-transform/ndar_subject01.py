@@ -8,6 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
+import re
 
 
 # this function should have knowledge of dict1
@@ -25,6 +26,8 @@ def months_since_consent(interview,consent):
 
 def populate():
 
+    src_subject_id= re.search('([A-Z][A-Z]\d{5})',file).group()
+
     chrcrit_part=get_value('chrcrit_part','screening_arm_1')
     arm=1
     phenotype='CHR'
@@ -33,7 +36,7 @@ def populate():
         chrcrit_part=get_value('chrcrit_part','screening_arm_2')
         
         if not chrcrit_part:
-            print('\t No chrcrit_part')
+            rejected.append(f'{src_subject_id},No chrcrit_part')
             return
             
         arm=2
@@ -50,10 +53,8 @@ def populate():
         subjectkey=get_value('chrguid_pseudoguid',f'screening_arm_{arm}')
         if not subjectkey.startswith('NDAR'):
             # we cannot submit a subject w/o a valid GUID
-            print('\t Invalid GUID')
+            rejected.append(f'{src_subject_id},Invalid GUID')
             return
-
-    src_subject_id=get_value('chric_record_id',f'screening_arm_{arm}')
 
 
     if arm==1:
@@ -66,7 +67,7 @@ def populate():
         
         # we cannot submit a subject w/o an age
         if interview_age in ['',None,'-3','-9']:
-            print('\t No chrdemo_age_mos*')
+            rejected.append(f'{src_subject_id},No chrdemo_age_mos*')
             return
 
 
@@ -150,6 +151,9 @@ if __name__=='__main__':
     dir_bak=getcwd()
     chdir(args.root)
     
+    # record reason for rejection
+    rejected=[]
+
     files=glob(args.template)
     for row,file in enumerate(files):
        
@@ -160,10 +164,8 @@ if __name__=='__main__':
     
         populate()
 
+    f.close()
 
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.max_columns", None)
-    pd.set_option("display.max_colwidth", None)
     print(df[["subjectkey","src_subject_id","interview_date","interview_age","sex","race","phenotype"]])
 
     chdir(dir_bak)
@@ -178,4 +180,7 @@ if __name__=='__main__':
     with open(args.output,'w') as f:
         f.write(title+'\n'+data)
     
+    with open(args.output.replace('.csv','_rejected.txt'),'w') as f:
+        f.write('subject,reason\n')
+        f.write('\n'.join(rejected)+'\n')
 

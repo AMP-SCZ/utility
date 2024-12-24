@@ -92,8 +92,11 @@ def populate():
             elif definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
-                elif len(value)>50:
-                    value=value[:50]
+
+                size=definition.loc[v,'Size']
+                if size:
+                    # NDA definition of size is based on utf-8 encoding
+                    value=value.encode('utf-8')[:int(size)].decode()
 
             df.at[row,v]=value
 
