@@ -74,6 +74,7 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
+    df.at[row,'visit']=event
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
@@ -105,7 +106,8 @@ def populate():
     
                 size=definition.loc[v,'Size']
                 if size:
-                    value=value[:int(size)]
+                    # NDA definition of size is based on utf-8 encoding
+                    value=value.encode('utf-8')[:int(size)].decode()
 
                 if '\n' in value:
                     value=value.replace('\n',' ')
@@ -129,10 +131,12 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
+    df.at[row,'ampscz_missing_spec']=''
     if missing=='1':
-        df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
-    else:
-        df.at[row,'ampscz_missing_spec']=''
+        ampscz_missing_spec=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+        # networks have a tendency to not provide missing_spec when a form is missing
+        if ampscz_missing_spec!='':
+            df.at[row,'ampscz_missing_spec']=ampscz_missing_spec[1]
 
     # return df
 
@@ -180,7 +184,7 @@ if __name__=='__main__':
     prefix=args.prefix
     event=args.event
 
-    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit']
     for c in definition.index:
         if prefix in c:
             columns.append(c.strip())

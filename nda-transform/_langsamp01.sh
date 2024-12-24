@@ -5,10 +5,12 @@ export PATH=/data/predict1/miniconda3/bin/:$PATH
 _help()
 {
     echo """Usage:
-$0 TYPE DATA_FILE_SUFFIX
+$0 TYPE DATA_FILE
+$0 TYPE DATA_FILE submit
+
 Accepted types are open or psychs only
-Keep input data files within nda-submissions/langsamp01/ folder and name them as {network}_{TYPE}_{DATA_FILE_SUFFIX}
-Example DATA_FILE_SUFFIX: inventory.csv or 20240227.csv
+Keep input data file within nda-submissions/langsamp01/ folder and provide basename
+The keyword 'submit' is for submitting combined data to NDA
 """
     exit
 }
@@ -43,7 +45,7 @@ do
     do
         echo $e
         ./generate.sh -f langsamp01 -n $n -e $e -p $prefix \
-        -o "--data /data/predict1/to_nda/nda-submissions/langsamp01/AMPSCZ_${1}_${data_file_suffix}"
+        -o "--data /data/predict1/to_nda/nda-submissions/langsamp01/${data_file_suffix}"
         echo
     done
 done
@@ -59,10 +61,12 @@ do
 done
 
 
-# submission
-for e in ${events}
-do
-    ./submit.sh -e $e -s $s -f langsamp01 -u tbillah
-    echo
-done
-
+if [ $# -eq 3 ] && [ "$2" == submit ]
+then
+    # submission
+    for e in ${events}
+    do
+        ./submit.sh -e $e -s $s -f langsamp01 -u tbillah
+        echo
+    done
+fi

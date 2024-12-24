@@ -54,8 +54,11 @@ def populate():
     if dfshared.loc[src_subject_id,'phenotype']=='CHR':
         arm=1
     else:
-        # no assignment of premorbid_adjustment_scale to HC
-        return
+        if prefix=='chrpas':
+            # no assignment of premorbid_adjustment_scale to HC
+            return
+        else:
+            arm=2
 
 
     interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
@@ -71,6 +74,7 @@ def populate():
 
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
+    df.at[row,'visit']=event
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
@@ -172,7 +176,7 @@ if __name__=='__main__':
         prefix=args.prefix
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit']
 
         pas_columns=['chrpas_pmod_child1','chrpas_pmod_child2','chrpas_pmod_child3','chrpas_pmod_child4',
            'chrpas_pmod_adol_early1','chrpas_pmod_adol_early2','chrpas_pmod_adol_early3',

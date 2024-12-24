@@ -96,6 +96,7 @@ def populate(row):
         df.at[row,'interview_age']=interview_age
         df.at[row,'ampscz_missing']=missing
         df.at[row,'ampscz_missing_spec']=missing_spec
+        df.at[row,'visit']=event
 
         # get form specific variables
         for v in columns:
@@ -190,7 +191,7 @@ if __name__=='__main__':
     prefix=args.prefix
     event=args.event
 
-    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+    columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit']
     for c in definition.index:
         if prefix in c:
             columns.append(c.strip())

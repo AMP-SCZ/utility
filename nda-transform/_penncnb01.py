@@ -44,7 +44,28 @@ if __name__=='__main__':
 
 
         df1=pd.DataFrame(rows,columns=df.columns)
-        df1.drop(columns=['redcap_id','ndar_penncnb01_complete'],inplace=True)
+        df1.drop(columns='''session_system_status
+                            cnb_mpract_system_status
+                            cnb_spcptn90_system_status
+                            cnb_er40_system_status
+                            cnb_sfnb2_system_status
+                            cnb_digsym_system_status
+                            cnb_volt_system_status
+                            cnb_sctap_system_status
+                            cnb_pllt_system_status
+                            cnb_mpract_status
+                            cnb_spcptn90_status
+                            cnb_er40_status
+                            cnb_sfnb2_status
+                            cnb_digsym_status
+                            cnb_volt_status
+                            cnb_sctap_status
+                            cnb_pllt_status
+                            siteid
+                            visitid
+                            redcap_id
+                            ndar_penncnb01_complete
+                            webcnp_complete'''.split(),inplace=True)
         df1.insert(loc=0,column='subjectkey',value='')
         df1.to_csv(pjoin(rootdir,f'ampscz_ids_{datestamp}.csv'),index=False)
 
