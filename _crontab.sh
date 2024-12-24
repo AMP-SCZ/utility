@@ -6,7 +6,7 @@
 # === hna002 ===
 
 # generate difference between AMP-SCZ and network data dictionaries
-0 6 * * * /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix gjacobs1
+0 6 * * * /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix dmohandass oborders
 
 
 
