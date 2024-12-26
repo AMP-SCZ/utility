@@ -94,7 +94,7 @@ dfmap.set_index('nda_data_file',inplace=True)
 
 subjects=[]
 
-print('\n(computer shape,human shape)\n')
+count= pd.DataFrame(columns='computer_shape,human_shape,%_discarded'.split(','),index=dfmap.index)
 for c in dfmap.index:
  
     column=dfmap.loc[c]['tracker_column']
@@ -120,7 +120,8 @@ for c in dfmap.index:
         if not pd.isna(cell):
             dfdata1.drop(i,inplace=True)
 
-    print(dfdata.shape[0], dfdata1.shape[0])
+    discard= round((1-dfdata1.shape[0]/dfdata.shape[0])*100,1)
+    count.loc[c]= [dfdata.shape[0], dfdata1.shape[0], discard]
 
     # activate this continue to not save anything
     # continue
@@ -148,11 +149,14 @@ for c in dfmap.index:
 
     
 
-print('nonexistent subjects in QC spreadsheets:')
+print('\nnonexistent subjects in QC spreadsheets:')
 for s in set(subjects):
     print(s)
 
 
 chdir(dir_bak)
 
-    
+pd.set_option("display.max_rows", None)
+print(count)
+count.to_csv('discard_by_file.txt')
+
