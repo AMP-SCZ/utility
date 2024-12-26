@@ -121,7 +121,6 @@ for c in dfmap.index:
             dfdata1.drop(i,inplace=True)
 
     print(dfdata.shape[0], dfdata1.shape[0])
-    print('')
 
     # activate this continue to not save anything
     # continue
@@ -140,6 +139,7 @@ for c in dfmap.index:
         version='03'
     title=parts[0]+','+version
     print(title)
+    print('')
 
 
     move(c,f'original/{c}')
@@ -148,7 +148,7 @@ for c in dfmap.index:
 
     
 
-# print nonexistent subjects
+print('nonexistent subjects in QC spreadsheets:')
 for s in set(subjects):
     print(s)
 
