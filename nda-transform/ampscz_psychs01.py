@@ -217,11 +217,10 @@ if __name__=='__main__':
         if c in columns or c.startswith('ampscz_'):
             continue
 
-        elif 'chr' in c:
-            if c.startswith(prefix):
-                psychs_columns.append(c)
+        elif c.startswith(prefix):
+            psychs_columns.append(c)
 
-        elif 'chr' not in c:
+        elif 'chrpsychs_' not in c:
             psychs_columns.append(c)
 
     columns=columns+psychs_columns+['ampscz_missing','ampscz_missing_spec']
