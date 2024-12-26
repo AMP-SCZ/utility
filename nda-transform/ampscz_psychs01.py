@@ -57,13 +57,16 @@ def populate():
         return
 
 
+    interview_date_var=f'{prefix}_interview_date'
     if dfshared.loc[src_subject_id,'phenotype']=='CHR':
         arm=1
     else:
         arm=2
+        if prefix=='chrpsychs_fu':
+            interview_date_var='hcpsychs_fu_interview_date'
 
 
-    interview_date=get_value(f'{prefix}_interview_date',f'{event}_arm_{arm}')
+    interview_date=get_value(interview_date_var,f'{event}_arm_{arm}')
     if interview_date in ['','-3','1903-03-03','-9','1909-09-09']:
         # no data in this form
         return
