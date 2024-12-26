@@ -23,7 +23,7 @@ common=pd.read_csv('ndar_subject01.csv', header=1, dtype=str).set_index('src_sub
 with open('/data/predict1/utility/subject-id-gen/sites.json') as f:
     sites=load(f)
 
-stat=pd.DataFrame(columns='File ProNET PRESCIENT CHR HC'.split())
+stat=pd.DataFrame(columns='File ProNET PRESCIENT CHR HC CHR%:HC%'.split())
 for i,file in enumerate(files):
 
     print('Processing', file)
@@ -46,7 +46,10 @@ for i,file in enumerate(files):
         count[common.loc[s,'phenotype']]+=1
 
 
-    stat.loc[i]=[file.replace('.csv','')]+list(count.values())
+    _chr=round(count['CHR']/(count['CHR']+count['HC'])*100)
+    _hc=100-_chr
+    ratio=f'{_chr}:{_hc}'
+    stat.loc[i]=[file.replace('.csv','')]+list(count.values())+[ratio]
 
 
 pd.set_option("display.max_rows", None)
