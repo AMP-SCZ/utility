@@ -131,7 +131,10 @@ def populate():
     # return df
 
 
-    features_file=pjoin(dirname(file),'cssrs_baseline.csv')
+    if prefix=='chrcssrsb':
+        features_file=pjoin(dirname(file),'cssrs_baseline.csv')
+    elif prefix=='chrcssrsfu':
+        features_file=pjoin(dirname(file),'cssrs_followup.csv')
 
     if not isfile(features_file):
         return
@@ -145,7 +148,9 @@ def populate():
             if v.startswith('chrcssrs_'):
                 df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
 
-
+    elif prefix=='chrcssrsfu':
+        v='chrcssrsfu_int_since_past'
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
 
 if __name__=='__main__':
 
