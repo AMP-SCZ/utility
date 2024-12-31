@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename,abspath
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 
 
 # this function should have knowledge of dict1
@@ -106,11 +106,32 @@ def populate():
         # not clicked
         missing='0'
     df.at[row,'ampscz_missing']=missing
-    # if ampscz_missing=0, then ampscz_missing_spec is N/A
-    # but NDA does not have a code of missing_spec=N/A
-    # df.at[row,'ampscz_missing_spec']=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')[1]
+    if missing=='1':
+        value=get_value(f'{prefix}_missing_spec',f'{event}_arm_{arm}')
+    
+        if len(value)>1:
+            # two letter missing codes: W1,W2,W3,... M1,M2,M3,...
+            df.at[row,'ampscz_missing_spec']=value[1]
+        else:
+            # single number missing code: 1,2,3,...
+            df.at[row,'ampscz_missing_spec']=value
+
+    else:
+        df.at[row,'ampscz_missing_spec']=''
 
     # return df
+
+    features_file=pjoin(dirname(file),'perceived_discrimination_scale.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+    for v in derived_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 
 if __name__=='__main__':
@@ -156,6 +177,8 @@ if __name__=='__main__':
         for c in df.split(','):
             if prefix in c:
                 columns.append(c.strip())        
+
+        derived_columns=['chrdim_perceived_discrim_total']
 
         columns.append(f'ampscz_missing')
         
