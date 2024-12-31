@@ -8,7 +8,7 @@ import json
 from tempfile import mkstemp
 import pandas as pd
 from glob import glob
-from os.path import basename,abspath
+from os.path import isfile,basename,abspath,dirname,join as pjoin
 import re
 
 
@@ -90,9 +90,9 @@ def populate():
                     # NDA missing: -900
                     # NDA N/A: -300
                     if value=='-3':
-                        value='-300'
+                        value='-99'
                     elif value=='-9':
-                        value='-900'
+                        value='88'
 
             if definition.loc[v,'DataType']=='Integer':
                 try:
@@ -139,6 +139,19 @@ def populate():
         df.at[row,'ampscz_missing_spec']=''
 
     # return df
+
+
+    features_file=pjoin(dirname(file),'perceived_stress_scale.csv')
+
+    if not isfile(features_file):
+        return
+
+    df1=pd.read_csv(features_file,dtype=str)
+    df1.set_index(['variable', 'redcap_event_name'],inplace=True)
+
+    for v in derived_columns:
+        df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 
 if __name__=='__main__':
@@ -188,6 +201,8 @@ if __name__=='__main__':
     for c in definition.index:
         if prefix in c:
             columns.append(c.strip())
+    
+    derived_columns=['chrpss_perceived_stress_scale_total']
 
     columns+=['ampscz_missing','ampscz_missing_spec']
     
