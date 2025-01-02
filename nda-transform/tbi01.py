@@ -44,6 +44,20 @@ def nda_date(redcap_date):
     return new_date
 
 
+units={'chrcbc_rbc_unit':'10^12/L=10^6/uL',
+    'chrcbc_hgb_unit':'g/L',
+    'chrcbc_hct_unit':'%',
+    'chrcbc_mcv_unit':'fL (femtoliter)',
+    'chrcbc_mch_unit':'pg (picogram)',
+    'chrcbc_mchc_unit':'g/L',
+    'chrcbc_platelets_unit':'10^9/L=10^3/uL',
+    'chrcbc_wbc_unit':'10^9/L=10^3/uL',
+    'chrcbc_lymph_unit':'10^9/L=10^3/uL',
+    'chrcbc_monos_unit':'10^9/L=10^3/uL',
+    'chrcbc_eos_unit':'10^9/L=10^3/uL',
+    'chrcbc_baso_unit':'10^9/L=10^3/uL'}
+
+
 def populate():
 
     src_subject_id=basename(file).split('.')[0]
@@ -124,6 +138,10 @@ def populate():
                     pass
 
             df.at[row,v]=value
+
+            if prefix=='chrcbc':
+                for k,v in units.items():
+                    df.at[row,k]=v
 
 
     missing=get_value(f'{prefix}_missing',f'{event}_arm_{arm}')
