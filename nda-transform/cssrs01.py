@@ -133,7 +133,10 @@ def populate():
 
     if prefix=='chrcssrsb':
         features_file=pjoin(dirname(file),'cssrs_baseline.csv')
+        derived_columns=['chrcssrsb_intensity_lifetime','chrcssrsb_intensity_pastmonth']
+        
     elif prefix=='chrcssrsfu':
+        derived_columns=['chrcssrsfu_int_since_past']
         features_file=pjoin(dirname(file),'cssrs_followup.csv')
 
     if not isfile(features_file):
@@ -142,15 +145,9 @@ def populate():
     df1=pd.read_csv(features_file,dtype=str)
     df1.set_index(['variable', 'redcap_event_name'],inplace=True)
 
-
-    if prefix=='chrcssrsb':
-        for v in columns:
-            if v.startswith('chrcssrs_'):
-                df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
-
-    elif prefix=='chrcssrsfu':
-        v='chrcssrsfu_int_since_past'
+    for v in derived_columns:
         df.at[row,v]=df1.loc[v,f'{event}_arm_{arm}']['value']
+
 
 if __name__=='__main__':
 
@@ -200,7 +197,6 @@ if __name__=='__main__':
         if prefix in c:
             columns.append(c.strip())
 
-    columns+=['chrcssrs_intensity_lifetime','chrcssrs_intensity_pastmonth']
     columns+=['ampscz_missing','ampscz_missing_spec']
     
     # save the remaining template
