@@ -199,7 +199,7 @@ if __name__=='__main__':
             columns.append(c.strip())
     
     csv_columns='chrpps_sum1,chrpps_sum2,chrpps_sum7,chrpps_sum8,chrpps_sum9,chrpps_sum10,chrpps_sum11,chrpps_sum12,chrpps_sum13,chrpps_sum14,\
-        chrpps_sum6'.split(',')
+chrpps_sum6,chrpps_total,chrpps_pa_sum,chrpps_sa_sum,chrpps_ea_sum,chrpps_en_sum,chrpps_pn_sum'.split(',')
 
     columns+=['ampscz_missing','ampscz_missing_spec']
     
