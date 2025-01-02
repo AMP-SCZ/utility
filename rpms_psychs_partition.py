@@ -36,7 +36,7 @@ except IndexError:
 for file in files:
     print(file)
 
-    dfpsychs=pd.read_csv(file,dtype=str)
+    dfpsychs=pd.read_csv(file,dtype=str,keep_default_na=False)
     dfchr=pd.DataFrame(columns=dfpsychs.columns)
     dfhc=pd.DataFrame(columns=[c.replace('chrpsychs','hcpsychs') for c in dfpsychs.columns])
 

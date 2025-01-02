@@ -55,7 +55,7 @@ for pattern in dict1.keys():
 
     
     print('Processing',file)
-    data=pd.read_csv(file,dtype=str)
+    data=pd.read_csv(file,dtype=str,keep_default_na=False)
     datanew=data.copy()
     replaced=False
     
