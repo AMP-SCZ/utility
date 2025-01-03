@@ -21,12 +21,12 @@ df1=df.copy()
 
 for c in 'chrcbc_hct chrcbc_hct_high chrcbc_hct_low'.split():
     print(c)
-    df1[c]=df[c].apply(lambda x: round(100*float(x),2))
+    df1[c]=df[c].apply(lambda x: round(100*float(x),2) if float(x)>0 else x)
 
 for c in 'chrcbc_hgb chrcbc_hgb_high chrcbc_hgb_low \
 chrcbc_mchc chrcbc_mchc_high chrcbc_mchc_low'.split():
     print(c)
-    df1[c]=df[c].apply(lambda x: round(1/10*float(x),2))
+    df1[c]=df[c].apply(lambda x: round(1/10*float(x),2) if float(x)>0 else x)
 
 
 df1.to_csv(file,index=False)
