@@ -22,7 +22,7 @@ p=`head -${LSB_JOBINDEX} ${sitelist} | tail -1`
 
 EXEC=/data/predict1/utility/phone_act/exec-dtype.csv
 
-if [ -z $modules ]
+if [ -z "$modules" ]
 then
 
     # get module list from file
