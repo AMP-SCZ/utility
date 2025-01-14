@@ -1,33 +1,34 @@
 #!/usr/bin/env python
 """
-Removes subjects present in holdout.txt from another CSV file
+Removes subjects present in holdout.txt from input CSV file
 
 Expects the holdout.txt to have a subject_id in each line:
-
-Sample holdout.txt:
 
 AB12345
 CD67890
 ...
+
+===
+
+Or, includes CHR subjects assigned as `in` in inclusion.csv, together with all HC subjects.
 
 Sample inclusion.csv:
 
 ID,sips_pos_tot,assignment
 AB12345,7,in
 CD67890,17,out
+...
 
 Expects the CSV file to have two header lines and the subject_id as its
 second column:
 
-Sample CSV file:
-
 ndar_subject,01
-subjectkey,src_subject_id,interview_date,...
-val_1,AB12345,val_3
-val_4,CD67890,val_6
+subjectkey,src_subject_id,interview_date,...,phenotype,...
+val_1,AB12345,val_3,...,CHR,...
+val_4,CD67890,val_6,...,HC,...
 ...
 
-Overwrites the original CSV file with the subjects removed, and backs it up
+Overwrites the original CSV file after removing the holdout subjects, and backs it up
 as <filename>.orig
 """
 
@@ -132,7 +133,8 @@ def include_subjects(include_list: Path, target_file: Path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Removes subjects from CSV file")
     parser.add_argument("-l", "--holdout", type=str, help="Holdout list file")
-    parser.add_argument("-c", "--include", type=str, help="Inclusion files CSV")
+    parser.add_argument("-c", "--include", type=str, help="Inclusion file with an \
+        assignment column having values in/out")
     parser.add_argument("-i", "--input", type=str, help="Input CSV file", required=True)
     args = parser.parse_args()
 
