@@ -99,11 +99,11 @@ def get_subjects_to_include(include_list: Path, input_file: Path) -> Set[str]:
     return subjects
 
 
-def include_subjects(include_list: Path, input_file: Path, target_file: Path):
+def include_subjects(include_list: Path, target_file: Path):
     """
     Include subjects from the include_list CSV file
     """
-    subjects_to_include = get_subjects_to_include(include_list, input_file)
+    subjects_to_include = get_subjects_to_include(include_list, target_file)
 
     target_file_orig = target_file.with_suffix(target_file.suffix + ".orig")
     target_file.rename(target_file_orig)
@@ -153,10 +153,8 @@ if __name__ == "__main__":
         remove_subjects(holdout_list, target_file)
     if args.include:
         include_list = Path(args.include)
-        input_file = Path(args.input)
         target_file = Path(args.input)
 
         print(f"Including subjects from: {include_list}")
-        print(f"Using input file: {input_file}")
 
-        include_subjects(include_list, input_file, target_file)
+        include_subjects(include_list, target_file)
