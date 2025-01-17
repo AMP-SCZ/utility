@@ -26,6 +26,8 @@ subjectkey,src_subject_id,sex,interview_date,interview_age,time_zone,UTC_offset,
 
 2. Generate NDA compatible data:
 
+* ampscz_sp_sensors01
+
 ```bash
 cd /data/predict1/to_nda/nda-submissions/network_combined
 
@@ -37,12 +39,19 @@ cd /data/predict1/to_nda/nda-submissions/network_combined
 
 ```
 
+* device01
+
+```
+/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o ampscz_sp_sensors01_derived.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../mindlamp/*-derived_sensors-20241113.csv --dict device01
+```
 
 3. Validate as:
 
 > python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/ampscz_sp_sensors01.csv
 
 > python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/ampscz_sp_survey01.csv
+
+> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/ampscz_sp_sensors01_derived.csv
 
 
 4. Submit as:
@@ -53,4 +62,3 @@ cd /data/predict1/utility/nda-transform/
 ./submit.sh -f ampscz_sp_sensors01 -e 4366 -c 4366 -u tbillah
 ./submit.sh -f ampscz_sp_survey01 -u tbillah
 ```
-
