@@ -41,6 +41,8 @@ subjectkey,src_subject_id,interview_date,interview_age,sex,experiment_id,data_fi
 
 3. Populate the mandatory columns using `eeg_sub_files01.py` per visit:
 
+* `eeg_sub_files01`
+
 ```bash
 cd /data/predict1/to_nda/nda-submissions/network_combined/
 for e in baseline month_2
@@ -56,4 +58,21 @@ do
 done
 ```
 
+* `ampscz_eeg_featurestask01` , `ampscz_eeg_featuresrest01`
 
+```
+for d in eeg_featurestask01 eeg_featuresrest01
+do
+    for e in baseline month_2
+    do
+        # generate
+        /data/predict1/utility/nda-transform/eeg_sub_files01.py --dict $d --shared ndar_subject01.csv \
+        --root /data/predict1/data_from_nda/ \
+        --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" -e $e -o ampscz_${d}_${e}.csv \
+        --data ../eeg_sub_files01/*{d}_${e}*.csv
+    done
+done
+
+# validate
+vtcmd *eeg_features*01*csv
+```
