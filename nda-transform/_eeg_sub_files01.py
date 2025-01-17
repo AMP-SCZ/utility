@@ -14,7 +14,7 @@ with open(data_file) as f:
 f=open(data_file.replace('.txt','.csv'),'w')
 f.write('subjectkey,src_subject_id,interview_date,interview_age,sex,visit,experiment_id,data_file1,data_file1_type\n')
 
-visit='baseline' if 'baseline' in visit else 'month_2'
+visit='baseline' if 'baseline' in data_file else 'month_2'
 
 for line in content:
     # /data/predict1/data_from_nda/Pronet/PHOENIX/GENERAL/PronetBI/processed/BI12345/eeg/ses-20230420/BI12345_eeg_visit001.zip
