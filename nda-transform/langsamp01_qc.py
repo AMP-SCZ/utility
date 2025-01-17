@@ -15,6 +15,7 @@ for f in files:
     surveys[f]=pd.read_csv(f,dtype=str,header=1).set_index('src_subject_id')
 
 
+print('\tabsents:')
 absent=set()
 for i,row in derived.iterrows():
     s=row['src_subject_id']
@@ -53,6 +54,7 @@ for i,f in enumerate(files):
         df1=pd.concat((df1,df),ignore_index=True)
 
 
+print('\tabsents:')
 absent=[]
 for i,row in df1.iterrows():
     s=row['src_subject_id']
