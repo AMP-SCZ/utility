@@ -31,9 +31,9 @@ subjectkey,src_subject_id,sex,interview_date,interview_age,time_zone,UTC_offset,
 ```bash
 cd /data/predict1/to_nda/nda-submissions/network_combined
 
-/data/predict1/utility/nda-transform/ampscz_sp_survey01.py -o ampscz_sp_survey01.csv --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --shared ndar_subject01.csv --dict ampscz_sp_survey01 --data ../ampscz_sp_survey01/*-phone_survey-20240308.csv --interview_date_var start_date
+/data/predict1/utility/nda-transform/ampscz_sp_survey01.py -o ampscz_sp_survey01.csv --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --shared ndar_subject01.csv --dict ampscz_sp_survey01 --data ../mindlamp/*-phone_survey-20240308.csv --interview_date_var start_date
 
-/data/predict1/utility/nda-transform/ampscz_sp_sensors01.py -o ampscz_sp_sensors01.csv --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --shared ndar_subject01.csv --dict ampscz_sp_sensors01 --data ../ampscz_sp_sensors01/*-phone_sensors-20240308.csv --interview_date_var start_date
+/data/predict1/utility/nda-transform/ampscz_sp_sensors01.py -o ampscz_sp_sensors01.csv --root /data/predict1/data_from_nda/ -t "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --shared ndar_subject01.csv --dict ampscz_sp_sensors01 --data ../mindlamp/*-phone_sensors-20240308.csv --interview_date_var start_date
 
 /data/predict1/utility/nda-transform/_ampscz_sp_sensors01.sh ampscz_sp_sensors01.csv
 
