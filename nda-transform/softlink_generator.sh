@@ -59,10 +59,6 @@ do
     # TODO the * can be made definite
     root=`ls -d /data/predict1/data_from_nda/*/PHOENIX/PROTECTED/*/processed/$d`
 
-
-    # eeg
-    create_link ${root}/eeg .
-
     # actigraphy
     create_link ${root}/actigraphy .
 
@@ -72,6 +68,9 @@ do
     # interviews
     root=`ls -d /data/predict1/data_from_nda/*/PHOENIX/GENERAL/*/processed/$d`
     create_link ${root}/interviews
+
+    # eeg
+    create_link ${root}/eeg .
 
 
     cd ..
