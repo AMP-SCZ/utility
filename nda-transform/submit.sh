@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export PATH=/data/predict1/miniconda3/bin:$PATH
-export PYTHONPATH=/data/predict1/nda-tools/
 
 _help()
 {
@@ -84,7 +83,7 @@ do
     if [ -z $user ]
     then
         # validate only
-        python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+        vtcmd \
         $data
 
     else
@@ -93,14 +92,14 @@ do
 
         if [ -z $id ]
         then
-            python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+            vtcmd \
             -u $user -t $title -d $title \
             -c $collection \
             -l . \
             -b $data
         else
             # -t and -d are disallowed with --replace-submission
-            python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+            vtcmd \
             -u $user \
             --replace-submission $id \
             -f \
