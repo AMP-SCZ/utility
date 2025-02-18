@@ -60,7 +60,7 @@ done
 
 * `ampscz_eeg_featurestask01` , `ampscz_eeg_featuresrest01`
 
-```
+```bash
 for d in eeg_featurestask01 eeg_featuresrest01
 do
     for e in baseline month_2
