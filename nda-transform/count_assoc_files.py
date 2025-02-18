@@ -24,7 +24,7 @@ def count_files(
     duplicate_files_count: Dict[str, int] = {}
 
     file_columns = (
-        "data_file1 data_file2 image_file bvalfile bvecfile transcript_file".split()
+        "data_file1 data_file2 image_file image_manifest bvalfile bvecfile transcript_file".split()
     )
 
     for file in files:
