@@ -43,6 +43,7 @@ do
 ./generate.sh -n $n -e baseline  -f cgis01
 ./generate.sh -n $n -e baseline  -f bprs01           -p chrbprs
 ./generate.sh -n $n -e baseline  -f ampscz_rap01
+./generate.sh -n $n -e baseline  -f scidcls01        -p chrscid
 
 ./generate.sh -n $n -e month_1   -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
 ./generate.sh -n $n -e month_1   -f ampscz_psychs01  -p chrpsychs_fu
@@ -116,6 +117,7 @@ then
 ./combine_networks.sh -e baseline  -f cgis01           
 ./combine_networks.sh -e baseline  -f bprs01           
 ./combine_networks.sh -e baseline  -f ampscz_rap01     
+./combine_networks.sh -e baseline  -f scidcls01
 
 ./combine_networks.sh -e month_1   -f dsm_iv_es01      
 ./combine_networks.sh -e month_1   -f ampscz_psychs01  
