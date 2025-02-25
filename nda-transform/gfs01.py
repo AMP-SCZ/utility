@@ -68,9 +68,10 @@ def populate():
     for v in ['subjectkey','sex']:
         df.at[row,v]=dfshared.loc[src_subject_id,v]
 
-
+    
     # get form specific variables
     df.at[row,'interview_date']=nda_date(interview_date)
+    df.at[row,'visit']=event
     
     chric_consent_date=get_value('chric_consent_date',f'screening_arm_{arm}')
     months=months_since_consent(interview_date,chric_consent_date)
@@ -197,7 +198,7 @@ if __name__=='__main__':
         prefix=args.prefix
         event=args.event
 
-        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex']
+        columns=['subjectkey','src_subject_id','interview_date','interview_age','sex','visit']
 
         form_columns={'chrgfrs':'chrgfr_gf_primaryrole,chrgfr_gf_role_high,chrgfr_gf_role_low,chrgfr_gf_role_scole,chrgfrs_global_role_decline',
             'chrgfrsfu':'chrgfrfu_gf_primaryrole,chrgfrfu_gf_role_scole',
