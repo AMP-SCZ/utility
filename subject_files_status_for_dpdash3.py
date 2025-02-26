@@ -150,11 +150,8 @@ def get_mri_status():
 
 
 def get_act_status():
-
-    if timepoint=='baseline':
-        pre='chrax'
-    else:
-        pre='chraxci'
+    
+    pre='chraxci'
         
     interview_date=get_value(timepoint,f'{pre}_interview_date')
 
@@ -180,8 +177,9 @@ def get_act_status():
     try: 
         dfscore=pd.read_csv(score_file[0])
         dfscore.set_index('interview_session',inplace=True)
-        timepoint_to_session= {'baseline':0,'month_2':2}
-        _row=dfscore.loc[timepoint_to_session[timepoint]]
+
+        session=int(timepoint.split('_')[1])-1
+        _row=dfscore.loc[session]
     except:
         data=-days_since_scan
         score=-days_since_scan
@@ -210,8 +208,8 @@ def get_act_status():
 
     # populate Protocol Followed row
     try:
-        assert exist==1 and score>0
-        protocol=1
+        protocol=get_value(timepoint,f'{pre}_add_date')
+        assert protocol=='1'
     except:
         protocol=0
 
@@ -441,34 +439,53 @@ if __name__=='__main__':
         dict_all={'day':[1],'reftime':'','timeofday':'','weekday':'',
             'site':site,'subject_id':subject}
 
-        
-        if timepoint in 'baseline,month_2'.split(','):
-            # populate MRI block
-            #dict_mri=get_mri_status()
-                
-            # populate EEG block
-            #dict_eeg=get_eeg_status()
+        timepoint_type={'baseline':'mri eeg avl cnb',
+            'month_1':'act',
+            'month_2':'act',
+            # 'month_2':'mri eeg avl cnb act',
+            'month_3':'act',
+            'month_4':'act',
+            'month_5':'act',
+            'month_6':'cnb act',
+            'month_7':'act',
+            'month_8':'act',
+            'month_9':'act',
+            'month_10':'act',
+            'month_11':'act',
+            'month_12':'cnb',
+            'month_24':'cnb'}
 
-            # populate A/V/L block
-            #dict_avl=get_avl_status()
+        for modality in timepoint_type[timepoint].split():
+            mdict=eval(f'get_{modality}_status()')
+            dict_all.update(mdict)
 
-            # populate Actigraphy block
-            dict_act=get_act_status()
+        # if timepoint in 'baseline,month_2'.split(','):
+        #     # populate MRI block
+        #     #dict_mri=get_mri_status()
+        #         
+        #     # populate EEG block
+        #     #dict_eeg=get_eeg_status()
 
-            # populate CNB block
-            #dict_cnb=get_cnb_status()
+        #     # populate A/V/L block
+        #     #dict_avl=get_avl_status()
 
-            # join the dicts
-            #dict_all.update(dict_mri)
-            #dict_all.update(dict_eeg)
-            #dict_all.update(dict_avl)
-            dict_all.update(dict_act)
-            #dict_all.update(dict_cnb)
+        #     # populate Actigraphy block
+        #     dict_act=get_act_status()
 
-        elif timepoint in 'month_6,month_12,month_24'.split(','):
-            # populate CNB block
-            dict_cnb=get_cnb_status()
-            dict_all.update(dict_cnb)
+        #     # populate CNB block
+        #     #dict_cnb=get_cnb_status()
+
+        #     # join the dicts
+        #     #dict_all.update(dict_mri)
+        #     #dict_all.update(dict_eeg)
+        #     #dict_all.update(dict_avl)
+        #     dict_all.update(dict_act)
+        #     #dict_all.update(dict_cnb)
+
+        # elif timepoint in 'month_6,month_12,month_24'.split(','):
+        #     # populate CNB block
+        #     dict_cnb=get_cnb_status()
+        #     dict_all.update(dict_cnb)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
