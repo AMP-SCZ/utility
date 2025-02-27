@@ -221,6 +221,81 @@ def get_act_status():
 
 
 
+def get_sen_status():
+    
+    pre='chrdig'
+    
+    interview_date=get_value(timepoint,f'{pre}_interview_date')
+
+    if len(interview_date)<10:
+        return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':'', 'sen_missing':''}
+
+    if get_value(timepoint,f'{pre}_missing')=='1':
+        missing_code=get_value(timepoint,f'{pre}_missing_spec')
+        return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':interview_date, 'sen_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    days_since_scan=str_date_minus_str_date(interview_date,today)
+    
+
+    # populate Data Transferred row
+    # search for {site}-{subject}-actigraphy_month_view-day1to* file
+    _file=pjoin(nda_root,network,
+        f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/phone/availability/{site}-{subject}-phone_month_view-day1to*.csv')
+    score_file=glob(_file)
+
+    # populate QC Score row
+    try:
+        dfscore=pd.read_csv(score_file[0])
+        dfscore.set_index('interview_session',inplace=True)
+
+        session=int(timepoint.split('_')[1])
+        _row=dfscore.loc[session]
+    except:
+        data=-days_since_scan
+        score=-days_since_scan
+        protocol=0
+        
+        return {'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
+            'sen_missing':''}
+
+    
+    v1=_row['Use_days_percentage']
+    v2=_row['GPS_days_percentage']
+    
+    if pd.isna(v1):
+        v1=0
+    if pd.isna(v2):
+        v2=0
+    
+    if v1+v2>0:
+        data=1
+        score=int(max(v1,v2))
+    else:
+        data=-days_since_scan
+        score=-days_since_scan
+
+
+    # populate Protocol Followed row
+    try:
+        perm=get_value(timepoint,f'{pre}_permission_on___1')
+        still=get_value(timepoint,f'{pre}_still_study')
+        if perm=='1' or still=='1':
+            protocol=1
+        assert protocol==1
+    except:
+        protocol=0
+
+
+    dict2={'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
+        'sen_missing':''}
+
+    return dict2
+
+
+
+
 def get_eeg_status():
 
     interview_date=get_value(timepoint,'chreeg_interview_date')
@@ -441,8 +516,7 @@ if __name__=='__main__':
 
         timepoint_type={'baseline':'mri eeg avl cnb',
             'month_1':'act sen',
-            'month_2':'act sen',
-            # 'month_2':'mri eeg avl cnb act sen',
+            'month_2':'mri eeg avl cnb act sen',
             'month_3':'act sen',
             'month_4':'act sen',
             'month_5':'act sen',
