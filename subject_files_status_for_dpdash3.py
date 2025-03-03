@@ -166,6 +166,13 @@ def get_act_status():
     scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
     days_since_scan=str_date_minus_str_date(interview_date,today)
     
+    # populate Protocol Followed row
+    try:
+        protocol=get_value(timepoint,f'{pre}_add_date')
+        assert protocol=='1'
+    except:
+        protocol=0
+
 
     # populate Data Transferred row 
     # search for {site}-{subject}-actigraphy_month_view-day1to* file
@@ -183,7 +190,6 @@ def get_act_status():
     except:
         data=-days_since_scan
         score=-days_since_scan
-        protocol=0
         
         return {'act_score':score, 'act_data':data, 'act_protocol':protocol, 'act_date':interview_date,
             'act_missing':''}
@@ -204,14 +210,6 @@ def get_act_status():
         else:
             data=-days_since_scan
             score=-days_since_scan
-
-
-    # populate Protocol Followed row
-    try:
-        protocol=get_value(timepoint,f'{pre}_add_date')
-        assert protocol=='1'
-    except:
-        protocol=0
 
 
     dict2={'act_score':score, 'act_data':data, 'act_protocol':protocol, 'act_date':interview_date,
@@ -237,7 +235,18 @@ def get_sen_status():
 
     scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
     days_since_scan=str_date_minus_str_date(interview_date,today)
-    
+
+
+    # populate Protocol Followed row
+    try:
+        perm=get_value(timepoint,f'{pre}_permission_on___1')
+        still=get_value(timepoint,f'{pre}_still_study')
+        if perm=='1' or still=='1':
+            protocol=1
+        assert protocol==1
+    except:
+        protocol=0
+
 
     # populate Data Transferred row
     # search for {site}-{subject}-actigraphy_month_view-day1to* file
@@ -255,37 +264,28 @@ def get_sen_status():
     except:
         data=-days_since_scan
         score=-days_since_scan
-        protocol=0
         
         return {'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
             'sen_missing':''}
 
     
-    v1=_row['Use_days_percentage']
-    v2=_row['GPS_days_percentage']
+    v1=_row['Accel_days_percentage']
+    v2=_row['Use_days_percentage']
+    v3=_row['GPS_days_percentage']
     
     if pd.isna(v1):
         v1=0
     if pd.isna(v2):
         v2=0
+    if pd.isna(v3):
+        v3=0
     
-    if v1+v2>0:
+    if v1+v2+v3>0:
         data=1
-        score=int(max(v1,v2))
+        score=int(max(v1,v2,v3))
     else:
         data=-days_since_scan
         score=-days_since_scan
-
-
-    # populate Protocol Followed row
-    try:
-        perm=get_value(timepoint,f'{pre}_permission_on___1')
-        still=get_value(timepoint,f'{pre}_still_study')
-        if perm=='1' or still=='1':
-            protocol=1
-        assert protocol==1
-    except:
-        protocol=0
 
 
     dict2={'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
