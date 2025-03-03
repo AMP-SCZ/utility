@@ -228,7 +228,7 @@ def get_sen_status():
     if len(interview_date)<10:
         return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':'', 'sen_missing':''}
 
-    if get_value(timepoint,f'{pre}_missing')=='1':
+    if get_value(timepoint,f'{pre}_missing___1')=='1' or get_value(timepoint,f'{pre}_missing___2')=='1':
         missing_code=get_value(timepoint,f'{pre}_missing_spec')
         return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':interview_date, 'sen_missing':missing_code}
 
