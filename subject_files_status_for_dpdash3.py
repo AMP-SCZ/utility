@@ -515,17 +515,17 @@ if __name__=='__main__':
             'site':site,'subject_id':subject}
 
         timepoint_type={'baseline':'mri eeg avl cnb',
-            'month_1':'act sen',
-            'month_2':'mri eeg avl cnb act sen',
-            'month_3':'act sen',
-            'month_4':'act sen',
-            'month_5':'act sen',
-            'month_6':'cnb act sen',
-            'month_7':'act sen',
-            'month_8':'act sen',
-            'month_9':'act sen',
-            'month_10':'act sen',
-            'month_11':'act sen',
+            'month_1':'act sen ema',
+            'month_2':'mri eeg avl cnb act sen ema',
+            'month_3':'act sen ema',
+            'month_4':'act sen ema',
+            'month_5':'act sen ema',
+            'month_6':'cnb act sen ema',
+            'month_7':'act sen ema',
+            'month_8':'act sen ema',
+            'month_9':'act sen ema',
+            'month_10':'act sen ema',
+            'month_11':'act sen ema',
             'month_12':'cnb',
             'month_24':'cnb'}
 
