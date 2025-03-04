@@ -533,33 +533,6 @@ if __name__=='__main__':
             mdict=eval(f'get_{modality}_status()')
             dict_all.update(mdict)
 
-        # if timepoint in 'baseline,month_2'.split(','):
-        #     # populate MRI block
-        #     #dict_mri=get_mri_status()
-        #         
-        #     # populate EEG block
-        #     #dict_eeg=get_eeg_status()
-
-        #     # populate A/V/L block
-        #     #dict_avl=get_avl_status()
-
-        #     # populate Actigraphy block
-        #     dict_act=get_act_status()
-
-        #     # populate CNB block
-        #     #dict_cnb=get_cnb_status()
-
-        #     # join the dicts
-        #     #dict_all.update(dict_mri)
-        #     #dict_all.update(dict_eeg)
-        #     #dict_all.update(dict_avl)
-        #     dict_all.update(dict_act)
-        #     #dict_all.update(dict_cnb)
-
-        # elif timepoint in 'month_6,month_12,month_24'.split(','):
-        #     # populate CNB block
-        #     dict_cnb=get_cnb_status()
-        #     dict_all.update(dict_cnb)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
