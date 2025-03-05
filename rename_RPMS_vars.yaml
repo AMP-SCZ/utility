@@ -28,6 +28,7 @@ PrescientStudy_Prescient_daily_activity_and_saliva_sample_collection_:
 
 PrescientStudy_Prescient_digital_biomarkers_axivity_checkin_:
 - interview_date,chraxci_interview_date
+- actigraphy_rec_mediaflux,chraxci_box_upload
 
 PrescientStudy_Prescient_digital_biomarkers_axivity_end_of_12month_study_pe_:
 - interview_date,chraxe_interview_date
