@@ -228,7 +228,7 @@ def get_sen_status():
     if len(interview_date)<10:
         return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':'', 'sen_missing':''}
 
-    if get_value(timepoint,f'{pre}_missing___1')=='1' or get_value(timepoint,f'{pre}_missing___2')=='1':
+    if get_value(timepoint,f'{pre}_missing_all')=='1':
         missing_code=get_value(timepoint,f'{pre}_missing_spec')
         return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':interview_date, 'sen_missing':missing_code}
 
@@ -241,9 +241,15 @@ def get_sen_status():
     try:
         perm=get_value(timepoint,f'{pre}_permission_on___1')
         still=get_value(timepoint,f'{pre}_still_study')
-        if perm=='1' or still=='1':
+        many_miss=get_value(timepoint,f'{pre}_missing___2')
+
+        if many_miss=='1':
+            protocol=0
+        elif perm=='1' or still=='1':
             protocol=1
-        assert protocol==1
+        else:
+            protocol=0
+            
     except:
         protocol=0
 
@@ -293,6 +299,81 @@ def get_sen_status():
 
     return dict2
 
+
+
+def get_ema_status():
+    
+    pre='chrdig'
+    
+    interview_date=get_value(timepoint,f'{pre}_interview_date')
+
+    if len(interview_date)<10:
+        return {'ema_score':'', 'ema_data':'', 'ema_protocol':'', 'ema_date':'', 'ema_missing':''}
+
+    if get_value(timepoint,f'{pre}_missing_all')=='1':
+        missing_code=get_value(timepoint,f'{pre}_missing_spec')
+        return {'ema_score':'', 'ema_data':'', 'ema_protocol':'', 'ema_date':interview_date, 'ema_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    days_since_scan=str_date_minus_str_date(interview_date,today)
+
+
+    # populate Protocol Followed row
+    try:
+        perm=get_value(timepoint,f'{pre}_permission_on___1')
+        still=get_value(timepoint,f'{pre}_still_study')
+        many_miss=get_value(timepoint,f'{pre}_missing___2')
+
+        if many_miss=='1':
+            protocol=0
+        elif perm=='1' or still=='1':
+            protocol=1
+        else:
+            protocol=0
+
+    except:
+        protocol=0
+
+
+    # populate Data Transferred row
+    # search for {site}-{subject}-actigraphy_month_view-day1to* file
+    _file=pjoin(nda_root,network,
+        f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/phone/availability/{site}-{subject}-phone_month_view-day1to*.csv')
+    score_file=glob(_file)
+
+    # populate QC Score row
+    try:
+        dfscore=pd.read_csv(score_file[0])
+        dfscore.set_index('interview_session',inplace=True)
+
+        session=int(timepoint.split('_')[1])
+        _row=dfscore.loc[session]
+    except:
+        data=-days_since_scan
+        score=-days_since_scan
+        
+        return {'ema_score':score, 'ema_data':data, 'ema_protocol':protocol, 'ema_date':interview_date,
+            'ema_missing':''}
+
+    
+    v1=_row['EMA_days_percentage']
+    
+    if pd.isna(v1):
+        v1=0
+    
+    if v1>0:
+        data=1
+        score=v1
+    else:
+        data=-days_since_scan
+        score=-days_since_scan
+
+
+    dict2={'ema_score':score, 'ema_data':data, 'ema_protocol':protocol, 'ema_date':interview_date,
+        'ema_missing':''}
+
+    return dict2
 
 
 
@@ -503,7 +584,8 @@ if __name__=='__main__':
         # extract and join CHR and HC arms
         dict2=[]
         for d in dict1:
-            if timepoint in d['redcap_event_name']:
+            # w/o the trailing _, month_1 will match with all of month_1, month_10, month_11, etc.
+            if f'{timepoint}_' in d['redcap_event_name']:
                 dict2.append(d)
         dict1=dict2
 
