@@ -218,6 +218,26 @@ def get_act_status():
     return dict2
 
 
+def mindlamp_protocol(timepoint):
+
+    # populate Protocol Followed row
+    try:
+        perm=get_value(timepoint,f'chrdig_permission_on___1')
+        still=get_value(timepoint,f'chrdig_still_study')
+        many_miss=get_value(timepoint,f'chrdig_missing___2')
+
+        if many_miss=='1':
+            protocol=0
+        elif perm=='1' or still=='1':
+            protocol=1
+        else:
+            protocol=0
+            
+    except:
+        protocol=0
+
+    return protocol
+
 
 def get_sen_status():
     
@@ -238,20 +258,7 @@ def get_sen_status():
 
 
     # populate Protocol Followed row
-    try:
-        perm=get_value(timepoint,f'{pre}_permission_on___1')
-        still=get_value(timepoint,f'{pre}_still_study')
-        many_miss=get_value(timepoint,f'{pre}_missing___2')
-
-        if many_miss=='1':
-            protocol=0
-        elif perm=='1' or still=='1':
-            protocol=1
-        else:
-            protocol=0
-            
-    except:
-        protocol=0
+    protocol= mindlamp_protocol(timepoint)
 
 
     # populate Data Transferred row
@@ -320,20 +327,7 @@ def get_ema_status():
 
 
     # populate Protocol Followed row
-    try:
-        perm=get_value(timepoint,f'{pre}_permission_on___1')
-        still=get_value(timepoint,f'{pre}_still_study')
-        many_miss=get_value(timepoint,f'{pre}_missing___2')
-
-        if many_miss=='1':
-            protocol=0
-        elif perm=='1' or still=='1':
-            protocol=1
-        else:
-            protocol=0
-
-    except:
-        protocol=0
+    protocol= mindlamp_protocol(timepoint)
 
 
     # populate Data Transferred row
