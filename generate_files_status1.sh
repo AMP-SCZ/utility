@@ -15,19 +15,17 @@ rm ${NDA_ROOT}/${name}_metadata.csv
 rm ${NDA_ROOT}/Pronet_status/*csv
 rm ${NDA_ROOT}/Prescient_status/*csv
 
-
 for network in Pronet Prescient
 do
-    for timepoint in baseline month_2 month_6 month_12
-    # for timepoint in baseline month_2 month_6 month_12 month_24
+    for timepoint in baseline month_1 month_2 month_3 month_4 month_5 month_6 # month_7 month_8 month_9 month_10 month_11 month_12 month_24
     do
         subject_files_status_for_dpdash2.py --network $network --timepoint $timepoint
     done
 done
 
-for visit in data_baseline data_month_2 data_month_6 data_month_12
-# for visit in data_baseline data_month_2 data_month_6 data_month_12 data_month_24
+for timepoint in baseline month_1 month_2 month_3 month_4 month_5 month_6 # month_7 month_8 month_9 month_10 month_11 month_12 month_24
 do
+    visit=data_${timepoint}
 
     cd ${NDA_ROOT}/Pronet_status
     project_files_status_for_dpdash.py PRONET ../${name}_metadata.csv *-${visit}-day1to1.csv

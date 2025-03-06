@@ -149,6 +149,231 @@ def get_mri_status():
 
 
 
+def get_act_status():
+    
+    pre='chraxci'
+        
+    interview_date=get_value(timepoint,f'{pre}_interview_date')
+
+    if len(interview_date)<10:
+        return {'act_score':'', 'act_data':'', 'act_protocol':'', 'act_date':'', 'act_missing':''}
+
+    if get_value(timepoint,f'{pre}_missing')=='1':
+        missing_code=get_value(timepoint,f'{pre}_missing_spec')
+        return {'act_score':'', 'act_data':'', 'act_protocol':'', 'act_date':interview_date, 'act_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    days_since_scan=str_date_minus_str_date(interview_date,today)
+    
+    # populate Protocol Followed row
+    try:
+        add_date=get_value(timepoint,f'{pre}_add_date')
+        upload=get_value(timepoint,f'{pre}_box_upload')
+        if add_date=='1' and upload=='1':
+            protocol=1
+        assert protocol==1
+    except:
+        protocol=0
+
+
+    # populate Data Transferred row 
+    # search for {site}-{subject}-actigraphy_month_view-day1to* file
+    _file=pjoin(nda_root,network,
+        f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/phone/availability/{site}-{subject}-actigraphy_month_view-day1to*.csv')
+    score_file=glob(_file)
+
+    # populate QC Score row
+    try: 
+        dfscore=pd.read_csv(score_file[0])
+        dfscore.set_index('interview_session',inplace=True)
+
+        session=int(timepoint.split('_')[1])-1
+        _row=dfscore.loc[session]
+    except:
+        data=-days_since_scan
+        score=-days_since_scan
+        
+        return {'act_score':score, 'act_data':data, 'act_protocol':protocol, 'act_date':interview_date,
+            'act_missing':''}
+
+    
+    score= _row['watch_days_percentage']
+    exist= _row['file_exist']
+
+    if pd.isna(_row['device_number']):
+        return {'act_score':'', 'act_data':'', 'act_protocol':'', 'act_date':interview_date, 'act_missing':''}
+    else:
+        if exist==1 or score>0:
+            data=1
+            try:
+                score=int(score)
+            except ValueError:
+                score=-days_since_scan
+        else:
+            data=-days_since_scan
+            score=-days_since_scan
+
+
+    dict2={'act_score':score, 'act_data':data, 'act_protocol':protocol, 'act_date':interview_date,
+        'act_missing':''}
+
+    return dict2
+
+
+def mindlamp_protocol(timepoint):
+
+    # populate Protocol Followed row
+    try:
+        perm=get_value(timepoint,f'chrdig_permission_on___1')
+        still=get_value(timepoint,f'chrdig_still_study')
+        many_miss=get_value(timepoint,f'chrdig_missing___2')
+
+        if many_miss=='1':
+            protocol=0
+        elif perm=='1' or still=='1':
+            protocol=1
+        else:
+            protocol=0
+            
+    except:
+        protocol=0
+
+    return protocol
+
+
+def get_sen_status():
+    
+    pre='chrdig'
+    
+    interview_date=get_value(timepoint,f'{pre}_interview_date')
+
+    if len(interview_date)<10:
+        return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':'', 'sen_missing':''}
+
+    if get_value(timepoint,f'{pre}_missing_all')=='1':
+        missing_code=get_value(timepoint,f'{pre}_missing_spec')
+        return {'sen_score':'', 'sen_data':'', 'sen_protocol':'', 'sen_date':interview_date, 'sen_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    days_since_scan=str_date_minus_str_date(interview_date,today)
+
+
+    # populate Protocol Followed row
+    protocol= mindlamp_protocol(timepoint)
+
+
+    # populate Data Transferred row
+    # search for {site}-{subject}-actigraphy_month_view-day1to* file
+    _file=pjoin(nda_root,network,
+        f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/phone/availability/{site}-{subject}-phone_month_view-day1to*.csv')
+    score_file=glob(_file)
+
+    # populate QC Score row
+    try:
+        dfscore=pd.read_csv(score_file[0])
+        dfscore.set_index('interview_session',inplace=True)
+
+        session=int(timepoint.split('_')[1])
+        _row=dfscore.loc[session]
+    except:
+        data=-days_since_scan
+        score=-days_since_scan
+        
+        return {'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
+            'sen_missing':''}
+
+    
+    v1=_row['Accel_days_percentage']
+    v2=_row['Use_days_percentage']
+    v3=_row['GPS_days_percentage']
+    
+    if pd.isna(v1):
+        v1=0
+    if pd.isna(v2):
+        v2=0
+    if pd.isna(v3):
+        v3=0
+    
+    if v1+v2+v3>0:
+        data=1
+        score=int(max(v1,v2,v3))
+    else:
+        data=-days_since_scan
+        score=-days_since_scan
+
+
+    dict2={'sen_score':score, 'sen_data':data, 'sen_protocol':protocol, 'sen_date':interview_date,
+        'sen_missing':''}
+
+    return dict2
+
+
+
+def get_ema_status():
+    
+    pre='chrdig'
+    
+    interview_date=get_value(timepoint,f'{pre}_interview_date')
+
+    if len(interview_date)<10:
+        return {'ema_score':'', 'ema_data':'', 'ema_protocol':'', 'ema_date':'', 'ema_missing':''}
+
+    if get_value(timepoint,f'{pre}_missing_all')=='1':
+        missing_code=get_value(timepoint,f'{pre}_missing_spec')
+        return {'ema_score':'', 'ema_data':'', 'ema_protocol':'', 'ema_date':interview_date, 'ema_missing':missing_code}
+
+
+    scan_minus_consent=str_date_minus_str_date(consent_date,interview_date)
+    days_since_scan=str_date_minus_str_date(interview_date,today)
+
+
+    # populate Protocol Followed row
+    protocol= mindlamp_protocol(timepoint)
+
+
+    # populate Data Transferred row
+    # search for {site}-{subject}-actigraphy_month_view-day1to* file
+    _file=pjoin(nda_root,network,
+        f'PHOENIX/PROTECTED/{network}{site}/processed/{subject}/phone/availability/{site}-{subject}-phone_month_view-day1to*.csv')
+    score_file=glob(_file)
+
+    # populate QC Score row
+    try:
+        dfscore=pd.read_csv(score_file[0])
+        dfscore.set_index('interview_session',inplace=True)
+
+        session=int(timepoint.split('_')[1])
+        _row=dfscore.loc[session]
+    except:
+        data=-days_since_scan
+        score=-days_since_scan
+        
+        return {'ema_score':score, 'ema_data':data, 'ema_protocol':protocol, 'ema_date':interview_date,
+            'ema_missing':''}
+
+    
+    v1=_row['EMA_days_percentage']
+    
+    if pd.isna(v1):
+        v1=0
+    
+    if v1>0:
+        data=1
+        score=v1
+    else:
+        data=-days_since_scan
+        score=-days_since_scan
+
+
+    dict2={'ema_score':score, 'ema_data':data, 'ema_protocol':protocol, 'ema_date':interview_date,
+        'ema_missing':''}
+
+    return dict2
+
+
+
 def get_eeg_status():
 
     interview_date=get_value(timepoint,'chreeg_interview_date')
@@ -356,7 +581,8 @@ if __name__=='__main__':
         # extract and join CHR and HC arms
         dict2=[]
         for d in dict1:
-            if timepoint in d['redcap_event_name']:
+            # w/o the trailing _, month_1 will match with all of month_1, month_10, month_11, etc.
+            if f'{timepoint}_' in d['redcap_event_name']:
                 dict2.append(d)
         dict1=dict2
 
@@ -367,30 +593,25 @@ if __name__=='__main__':
         dict_all={'day':[1],'reftime':'','timeofday':'','weekday':'',
             'site':site,'subject_id':subject}
 
-        
-        if timepoint in 'baseline,month_2'.split(','):
-            # populate MRI block
-            dict_mri=get_mri_status()
-                
-            # populate EEG block
-            dict_eeg=get_eeg_status()
+        timepoint_type={'baseline':'mri eeg avl cnb',
+            'month_1':'act sen ema',
+            'month_2':'mri eeg avl cnb act sen ema',
+            'month_3':'act sen ema',
+            'month_4':'act sen ema',
+            'month_5':'act sen ema',
+            'month_6':'cnb act sen ema',
+            'month_7':'act sen ema',
+            'month_8':'act sen ema',
+            'month_9':'act sen ema',
+            'month_10':'act sen ema',
+            'month_11':'act sen ema',
+            'month_12':'cnb',
+            'month_24':'cnb'}
 
-            # populate A/V/L block
-            dict_avl=get_avl_status()
+        for modality in timepoint_type[timepoint].split():
+            mdict=eval(f'get_{modality}_status()')
+            dict_all.update(mdict)
 
-            # populate CNB block
-            dict_cnb=get_cnb_status()
-
-            # join the dicts
-            dict_all.update(dict_mri)
-            dict_all.update(dict_eeg)
-            dict_all.update(dict_avl)
-            dict_all.update(dict_cnb)
-
-        elif timepoint in 'month_6,month_12,month_24'.split(','):
-            # populate CNB block
-            dict_cnb=get_cnb_status()
-            dict_all.update(dict_cnb)
 
         # transform to DataFrame
         df=pd.DataFrame(dict_all)
