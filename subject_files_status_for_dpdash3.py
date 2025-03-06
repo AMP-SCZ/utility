@@ -168,8 +168,11 @@ def get_act_status():
     
     # populate Protocol Followed row
     try:
-        protocol=get_value(timepoint,f'{pre}_add_date')
-        assert protocol=='1'
+        add_date=get_value(timepoint,f'{pre}_add_date')
+        upload=get_value(timepoint,f'{pre}_box_upload')
+        if add_date=='1' and upload=='1':
+            protocol=1
+        assert protocol==1
     except:
         protocol=0
 
