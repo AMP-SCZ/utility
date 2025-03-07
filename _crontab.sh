@@ -70,7 +70,7 @@
 
 10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ /data/eegqc/
 
-0 05 * * * /data/predict1/utility/backup_formqc.sh
+
 
 # === rc-predict-gen ===
 
