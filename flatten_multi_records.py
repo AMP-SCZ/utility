@@ -69,7 +69,8 @@ def flatten_group(df,form,cols):
     # for n repeats, there are n-1 *_add vars, so delete the nth *_add var
     for v in multi_records[form]['vars']:
         if '_add' in v:
-            del dict1[v.replace('?',str(df.shape[0]))]
+            last= df.loc[df.shape[0]-1,'Row#']
+            del dict1[v.replace('?',last)]
             break
 
     return dict1
