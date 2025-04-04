@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# This semi-automated script serves as a script and a documentation for generating blood_saliva manifests.
+# This semi-automated script serves both as a script and a documentation for generating blood_saliva manifests.
 
 export PATH=/data/predict1/miniconda3/bin/:$PATH
+
 
 # Step-1 (optional)
 # shift all raw data for confidence
