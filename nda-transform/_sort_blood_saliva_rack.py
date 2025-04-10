@@ -28,6 +28,11 @@ n_site=0
 n_rack=0
 while i<len(lines):
     site=lines[i].strip()
+
+    # Rachel prepends * for repeated sites
+    if site[0]=='*':
+        site=site[1:]
+
     codes=lines[i+1].strip()
     print(f'./sort_blood_saliva_rack.sh -n Pronet -s {site} -c \"{codes}\" && sleep 60')
     i+=3
