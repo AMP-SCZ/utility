@@ -30,3 +30,14 @@ cd /data/predict1/utility/nda-transform/
 # Step-5
 # ./sort_blood_saliva_rack.sh ...
 
+: << NOTE
+
+* New manifests are stored in `/data/predict1/to_nda/nda-submissions/fluid_shipment`
+while previous manifests are backed up in `fluid_shipment.${datestamp}` folder.
+
+* Go to `https://www.dropbox.com/home/Tashrif%20Billah/blood_saliva_manifests` and confirm
+availability of the new manifests. If a manifest has not changed since last time it was
+uploaded, it will not be re-uploaded. You can observe this subtlety by checking the
+`Modified` column.
+
+NOTE
