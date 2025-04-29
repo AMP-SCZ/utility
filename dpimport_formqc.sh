@@ -33,21 +33,21 @@ echo ''
 fi
 
 # kill any prior stuck imports
-pkill --signal 9 import.py
+# pkill --signal 9 import.py
 
 # import new data
 export PATH=/data/predict1/miniconda3/bin/:$PATH
 
 cd ${NDA_ROOT}
-import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_informed_consent_run_sheet-day1to*.csv" -n 4
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_informed_consent_run_sheet-day1to*.csv" -n 1
 sleep 120
 echo
-import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_inclusionexclusion_criteria_review-day1to*.csv" -n 4
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_inclusionexclusion_criteria_review-day1to*.csv" -n 1
 sleep 120
 echo
-import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_sociodemographics-day1to*.csv" -n 4
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_sociodemographics-day1to*.csv" -n 1
 sleep 120
 echo
-import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_dpdash_charts-day1to*.csv" -n 4
+import.py -c $CONFIG "Pr*/PHOENIX/PROTECTED/Pr*/processed/*/surveys/??-*-form_dpdash_charts-day1to*.csv" -n 1
 
 
