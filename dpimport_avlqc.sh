@@ -49,6 +49,6 @@ cat ${name}-PRONET-${assess}-day1to1.csv > ${name}-AMPSCZ-avlqc-day1to1.csv
 tail -n +2 ${name}-PRESCIENT-${assess}-day1to1.csv >> ${name}-AMPSCZ-${assess}-day1to1.csv
 /data/predict1/utility/renumber_days.py ${name}-AMPSCZ-${assess}-day1to1.csv
 
-import.py -c $CONFIG "combined-*-avlqc-day1to1.csv"
+# import.py -c $CONFIG "combined-*-avlqc-day1to1.csv"
 import.py -c $CONFIG "*_count/??-*-*_count-day1to*csv"
 
