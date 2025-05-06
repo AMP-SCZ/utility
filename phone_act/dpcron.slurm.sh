@@ -77,7 +77,7 @@ sbatch -a 1-$N%6 < /data/predict1/utility/phone_act/_dpcron.slurm
 # move bsub logs to a named folder
 _bsub=dpcron-${network}-$(date +%Y%m%d)
 cd $LOGDIR
-mkdir $_bsub
+mkdir -p $_bsub
 while [ 1 ]
 do
     count=`ls *out | wc -l`
