@@ -40,7 +40,7 @@ do
     fi
     
     echo [$i-$max]
-    sbatch -a 1-24%12 < /data/predict1/utility/records_to_redcap.lsf
+    sbatch -a $i-$max%12 < /data/predict1/utility/records_to_redcap.lsf
     # wait between consecutive batch of jobs so the previous one can complete
     sleep $duration
     
