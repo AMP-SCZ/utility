@@ -10,7 +10,7 @@ then
     exit 1
 fi
 
-redcap_records=/data/predict1/utility/bsub/redcap_records.txt
+redcap_records=/data/predict1/utility/slurm/redcap_records.txt
 redcap_phoenix=$1
 redcap_dict=$2
 API_TOKEN=$3
@@ -27,10 +27,6 @@ cd $redcap_phoenix
 ls */raw/*/surveys/*.Pronet.json > $redcap_records
 N=`cat $redcap_records | wc -l`
 
-source /etc/profile
-# prevent getting thousand emails
-export LSB_JOB_REPORT_MAIL=N
-
 batch=200
 duration=3600
 for (( i=1; i<=N; i+=$batch ))
@@ -44,7 +40,7 @@ do
     fi
     
     echo [$i-$max]
-    bsub -J "redcap-import[$i-$max]%12" < /data/predict1/utility/records_to_redcap.lsf
+    sbatch -a 1-24%12 < /data/predict1/utility/records_to_redcap.lsf
     # wait between consecutive batch of jobs so the previous one can complete
     sleep $duration
     
@@ -52,9 +48,9 @@ done
 
 
 
-# move bsub logs to a named folder
+# move slurm logs to a named folder
 _bsub=pronet-$(date +%Y%m%d)
-cd /data/predict1/utility/bsub/
+cd /data/predict1/utility/slurm/
 mkdir $_bsub
 mv *err $_bsub/
 mv *out $_bsub/
