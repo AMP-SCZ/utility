@@ -1,15 +1,17 @@
 #!/bin/bash
 
+#SBATCH -J redcap-import
+#SBATCH -p pri_pnl
+#SBATCH -o /data/predict1/utility/slurm/redcap-import-%j-%a.out
+#SBATCH -e /data/predict1/utility/slurm/redcap-import-%j-%a.err
+#SBATCH -c 4
+#SBATCH --mem 2000
+#SBATCH -t 0-3:00
+
 export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${redcap_phoenix}
 
-#BSUB -q pri_pnl
-#BSUB -o /data/predict1/utility/bsub/redcap-import-%J-%I.out
-#BSUB -e /data/predict1/utility/bsub/redcap-import-%J-%I.err
-#BSUB -n 4
-#BSUB -R "span[hosts=1] order[!slots]"
-
-i=`head -${LSB_JOBINDEX} ${redcap_records} | tail -1`
+i=`head -${SLURM_ARRAY_TASK_ID} ${redcap_records} | tail -1`
 
 ls -ld $i
 
