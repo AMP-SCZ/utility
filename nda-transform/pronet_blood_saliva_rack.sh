@@ -9,6 +9,7 @@ export PATH=/data/predict1/miniconda3/bin/:$PATH
 # shift all raw data for confidence
 # uncomment the shifter as needed
 cd /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED
+# /data/predict1/utility/set_date_shifts.py . "*/raw/*/surveys/*.Pronet.json"
 # /data/predict1/utility/shift_redcap_dates.py . "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2025-02-24.csv 8 1
 
 
