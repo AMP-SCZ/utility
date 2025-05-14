@@ -14,7 +14,7 @@
 
 # PRESCIENT real
 # determine if new and upload to REDCap
-0 18 * * 0,2,4 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/rpms-to-yale 123456
+0 18 * * 0,2,4 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 # keep six hours difference between upload and download so upload can complete
 
@@ -99,27 +99,6 @@ HOSTNAME=1200941-Prescient.orygen.org.au
 
 MAILTO=xyz@bwh.harvard.edu
 03 20 * * * /mnt/prescient/utility/rpms_cron.sh
-
-
-
-# this block was planned but never materialized
-# /data/predict1/ backups
-# directory,server,frequency (days)
-
-# *,dn025,90
-0 19 * */3 THU /data/predict1/utility/backup_predict1.sh predict1-software
-
-# data_from_nda,dn025,7
-0 19 * * */FRI /data/predict1/utility/backup_predict1.sh predict1-prod-data
-
-# data_from_nda_dev,dn026,7
-0 19 * * */TUE /data/predict1/utility/backup_predict1.sh predict1-dev-data
-
-# home,dn027,7
-0 19 * * */WED /data/predict1/utility/backup_predict1.sh predict1-home
-
-# to_nda,dn025,7
-0 19 * * */THU /data/predict1/utility/backup_predict1.sh predict1-sub-data
 
 
 
