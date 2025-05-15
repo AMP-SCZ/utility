@@ -46,7 +46,7 @@
 
 
 
-# === dn003 ===
+# === dna007 ===
 
 # clear REDCap upload logs, every Friday at 5 pm
 0 17 * * 5 rm -rf /data/predict1/utility/bsub/*
