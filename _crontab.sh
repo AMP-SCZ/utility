@@ -44,23 +44,6 @@
 
 
 
-# === dna007 ===
-
-# clear REDCap upload logs, every Friday at 5 pm
-0 17 * * 5 rm -rf /data/predict1/utility/bsub/*
-0 17 * * 5 rm -rf /data/predict1/utility/slurm/*
-
-# clear NDA upload logs every Monday at 12 am
-0 0 * * 1 rm -rf /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
-
-# download EEG run sheets
-# every morning at 3 am
-0 3 * * * /data/predict1/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict1/data_from_nda/Pronet
-# every morning at 4 am
-0 4 * * * /data/predict1/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict1/data_from_nda/Prescient
-
-
-
 # === dn020 ===
 
 # copy EEG QC images over to web app VM
@@ -109,6 +92,19 @@ MAILTO=xyz@bwh.harvard.edu
 10 00 * * 5 /data/predict1/diskusage-logging/_manual_finger.sh
 
 00 18 * * 5 /data/predict1/diskusage-logging/weekly.sh
+
+# clear REDCap upload logs, every Friday at 5 pm
+0 17 * * 5 rm -rf /data/predict1/utility/bsub/*
+0 17 * * 5 rm -rf /data/predict1/utility/slurm/*
+
+# clear NDA upload logs every Monday at 12 am
+0 0 * * 1 rm -rf /PHShome/tb571/NDA/nda-tools/vtcmd/*/*
+
+# download EEG run sheets
+# every morning at 3 am
+0 3 * * * /data/predict1/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict1/data_from_nda/Pronet
+# every morning at 4 am
+0 4 * * * /data/predict1/eeg-qc-dash/down_eeg_pdf_rsheet.sh 123456 /data/predict1/data_from_nda/Prescient
 
 
 
