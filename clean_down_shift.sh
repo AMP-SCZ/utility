@@ -22,7 +22,7 @@ clean_old_arm.py $PHOENIX_PROTECTED $TOKEN
 down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ $TOKEN
 
 # shift their dates
-shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/CloneOfYaleRealRecords_DataDictionary_2024-04-16.csv
+shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv
 
 # explicit permission change
 n=Prescient
