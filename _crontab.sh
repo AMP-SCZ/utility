@@ -36,8 +36,6 @@
 0 17 * * 6 pkill -u tb571 python
 
 
-# === dn018 ===
-
 # upload data tracker CSV files to Dropbox
 0 4 * * * /data/predict1/utility/data_tracker_dropbox.sh
 
