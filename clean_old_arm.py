@@ -21,7 +21,7 @@ This script deletes those records.''')
     exit(0)
 
 
-with open('{}/bsub/rpms_records.txt'.format(dirname(FILE))) as f:
+with open('{}/slurm/rpms_records.txt'.format(dirname(FILE))) as f:
     dirs= f.read().strip().split()
 
 ROOTDIR=sys.argv[1]
