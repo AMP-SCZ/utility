@@ -1,4 +1,4 @@
-### Steps to prepare data from NDA
+### Steps to prepare data for NDA
 
 1. Ask Sylvain to download all Penn CNB records from their REDCap in a CSV file.
 
