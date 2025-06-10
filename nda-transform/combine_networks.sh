@@ -85,7 +85,7 @@ echo Processing $data
 if [ -z $user ]
 then
     # validate only
-    python $root/nda-tools/NDATools/clientscripts/vtcmd.py \
+    vtcmd \
     $data
 
 else
