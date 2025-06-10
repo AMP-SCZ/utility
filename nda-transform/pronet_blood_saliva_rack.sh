@@ -25,10 +25,12 @@ cd /data/predict1/utility/nda-transform/
 
 
 # Step-4 (optional)
+# generate the commands for Step-5 from email body
 # ./_sort_blood_saliva_rack.py ...
 
 
 # Step-5
+# generate the actual manifests and upload to Dropbox
 # ./sort_blood_saliva_rack.sh ...
 
 : << NOTE
