@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export HOSTNAME=1200941-Prescient.orygen.org.au
+
 datestamp=$(date +"%d.%m.%Y")
 INCOMING=/var/lib/prescient/RPMS_incoming
 BACKUP=/var/lib/prescient/one_day_backup
