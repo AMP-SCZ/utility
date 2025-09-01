@@ -13,6 +13,9 @@ PrescientStudy_Prescient_sociodemographics_:
 PrescientStudy_Prescient_health_conditions_genetics_fluid_biomarkers_:
 - chrhealth_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
+PrescientStudy_Prescient_scid5_psychosis_mood_substance_abuse_:
+- chrscid_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
+
 PrescientStudy_Prescient_scid5_schizotypal_personality_sciddpq_:
 - chrschizotypal_missing_spec,1 2 3 4 5,M1 M2 M3 M4 M5
 
