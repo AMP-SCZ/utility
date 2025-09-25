@@ -74,13 +74,13 @@
 
 
 
-# === 1200941-Prescient.orygen.org.au ===
+# === mindlamp-loch-ness.novalocal ===
 
 SHELL=/bin/bash
 HOSTNAME=1200941-Prescient.orygen.org.au
 
 MAILTO=xyz@bwh.harvard.edu
-03 20 * * * /mnt/prescient/utility/rpms_cron.sh
+00 20 * * * /var/lib/prescient/utility/rpms_cron.sh > /var/lib/prescient/utility/rpms_cron.log 2>&1
 
 
 
