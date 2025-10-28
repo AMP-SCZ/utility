@@ -11,7 +11,8 @@ export PATH=~/Downloads/mongodb-database-tools-rhel93-x86_64-100.13.0/bin/:$PATH
 # provides import.py
 export PATH=~/Downloads/dpimport/scripts:$PATH
 
-# data for configuration
+# data for initial configuration
+# https://www.dropbox.com/scl/fo/vpgqohu7xijxc2fu73f1g/AJnc0t7K0YilXf-NkZpT4n0?rlkey=w9bph3ay8jt4alojgtv3euio2&st=x85z0tj5&dl=0
 mongoimport --uri="mongodb://zhpysch18.mgb.org:27017/dpdmongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8" --collection=charts charts_20250815.json
 mongoimport --uri="mongodb://zhpysch18.mgb.org:27017/dpdmongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8" --collection=users users_20250815.json
 mongoimport --uri="mongodb://zhpysch18.mgb.org:27017/dpdmongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.8" --collection=configs configs_20250815.json
