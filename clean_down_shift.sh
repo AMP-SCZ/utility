@@ -19,7 +19,7 @@ PHOENIX_PROTECTED=/data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED
 clean_old_arm.py $PHOENIX_PROTECTED $TOKEN
 
 # download REDCap JSONs
-down_mgb_redcap_records.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ $TOKEN
+down_mgb_redcap_records.py $PHOENIX_PROTECTED $TOKEN
 
 # shift their dates
 shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv
