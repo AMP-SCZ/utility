@@ -29,7 +29,7 @@ N=`cat $redcap_records | wc -l`
 
 batch=200
 duration=3600
-for (( i=1; i<=N; i+=$batch ))
+for (( i=1; i<=$N; i+=$batch ))
 do
 
     if [[ $(( i+$batch )) -lt $N ]]
