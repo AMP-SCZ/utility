@@ -1,5 +1,7 @@
 #!/bin/bash
 
+exec 1> /data/predict1/utility/slurm/redcap-import-${SLURM_ARRAY_TASK_ID}.out 2> /data/predict1/utility/slurm/redcap-import-${SLURM_ARRAY_TASK_ID}.err
+
 #SBATCH -J redcap-import
 #SBATCH -p pri_pnl
 #SBATCH -o /data/predict1/utility/slurm/redcap-import-%j-%a.out
