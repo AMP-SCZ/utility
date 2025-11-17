@@ -35,9 +35,9 @@ fi
 
 N=`cat $redcap_records | wc -l`
 
-batch=200
-duration=2700
-for (( i=1; i<=N; i+=$batch ))
+batch=12
+duration=300
+for (( i=1; i<=$N; i+=$batch ))
 do
 
     if [[ $(( i+$batch )) -lt $N ]]
@@ -48,7 +48,9 @@ do
     fi
 
     echo [$i-$max]
-    sbatch -a $i-$max%12 < /data/predict1/utility/rpms_to_redcap.lsf
+    # sbatch -a $i-$max%12 < /data/predict1/utility/rpms_to_redcap.lsf
+    export SLURM_ARRAY_TASK_ID=$i
+    bash /data/predict1/utility/rpms_to_redcap.lsf &
     # wait between consecutive batch of jobs so the previous one can complete
     sleep $duration
 
