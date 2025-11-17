@@ -46,7 +46,16 @@ do
     # wait between consecutive batch of jobs so the previous one can complete
     if [ $(( $i % $batch )) -eq 0 ] || [ $i -eq $N ]
     then
-        sleep $duration
+        while [ 1 ]
+        do
+            active=`ps aux | grep "[/]data/predict1/utility/rpms_to_redcap.lsf"`
+            if [ ! -z "$active" ]
+            then
+                sleep 60
+            else
+                break
+            fi
+        done
     fi
 
 done
