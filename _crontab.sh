@@ -14,18 +14,18 @@
 
 # PRESCIENT real
 # determine if new and upload to REDCap
-0 18 * * 0,2,4 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
+0 18 * * 0,4 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/*/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 # keep six hours difference between upload and download so upload can complete
 
 # clean old arms, download JSONs from REDCap and shift their dates
-0 2 * * 1,3,5 /data/predict1/utility/clean_down_shift.sh 123456
+0 2 * * 1,5 /data/predict1/utility/clean_down_shift.sh 123456
 
 
 # ProNET real
 # determine if new and shift dates
 # determine if new and upload to REDCap
-0 18 * * 1,3,5 /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
+0 18 * * 1,5 /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 
 # mongodb backup
@@ -38,6 +38,7 @@
 
 # upload data tracker CSV files to Dropbox
 0 4 * * * /data/predict1/utility/data_tracker_dropbox.sh
+
 
 # track /data/predict1/ size, every monday at 12 am
 0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
