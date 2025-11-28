@@ -44,7 +44,76 @@ if __name__=='__main__':
 
 
         df1=pd.DataFrame(rows,columns=df.columns)
-        df1.drop(columns='''session_system_status
+        df1.drop(columns='''cnb_digsym_dsmcrrtv2
+                            cnb_pllt_plltclothingcor1
+                            cnb_pllt_plltinsectcor1
+                            cnb_pllt_plltearthformationcor1
+                            cnb_pllt_plltflowercor1
+                            cnb_pllt_plltclothingcor2
+                            cnb_pllt_plltinsectcor2
+                            cnb_pllt_plltearthformationcor2
+                            cnb_pllt_plltflowercor2
+                            cnb_pllt_plltclothingcor3
+                            cnb_pllt_plltinsectcor3
+                            cnb_pllt_plltearthformationcor3
+                            cnb_pllt_plltflowercor3
+                            cnb_pllt_plltseme1
+                            cnb_pllt_plltsema1
+                            cnb_pllt_plltsere1
+                            cnb_pllt_plltsera1
+                            cnb_pllt_plltseme2
+                            cnb_pllt_plltsema2
+                            cnb_pllt_plltsere2
+                            cnb_pllt_plltsera2
+                            cnb_pllt_plltseme3
+                            cnb_pllt_plltsema3
+                            cnb_pllt_plltsere3
+                            cnb_pllt_plltsera3
+                            cnb_pllt_plltbirdcor1
+                            cnb_pllt_plltmetalcor1
+                            cnb_pllt_pllttoolcor1
+                            cnb_pllt_plltsportcor1
+                            cnb_pllt_plltbirdcor2
+                            cnb_pllt_plltmetalcor2
+                            cnb_pllt_pllttoolcor2
+                            cnb_pllt_plltsportcor2
+                            cnb_pllt_plltbirdcor3
+                            cnb_pllt_plltmetalcor3
+                            cnb_pllt_pllttoolcor3
+                            cnb_pllt_plltsportcor3
+                            cnb_pllt_plltanimalcor1
+                            cnb_pllt_plltjewelcor1
+                            cnb_pllt_plltsheltercor1
+                            cnb_pllt_plltjobcor1
+                            cnb_pllt_plltanimalcor2
+                            cnb_pllt_plltjewelcor2
+                            cnb_pllt_plltsheltercor2
+                            cnb_pllt_plltjobcor2
+                            cnb_pllt_plltanimalcor3
+                            cnb_pllt_plltjewelcor3
+                            cnb_pllt_plltsheltercor3
+                            cnb_pllt_plltjobcor3
+                            cnb_pllt_plltinstrumentcor1
+                            cnb_pllt_plltspicecor1
+                            cnb_pllt_plltfuelcor1
+                            cnb_pllt_plltvegetablecor1
+                            cnb_pllt_plltinstrumentcor2
+                            cnb_pllt_plltspicecor2
+                            cnb_pllt_plltfuelcor2
+                            cnb_pllt_plltvegetablecor2
+                            cnb_pllt_plltinstrumentcor3
+                            cnb_pllt_plltspicecor3
+                            cnb_pllt_plltfuelcor3
+                            cnb_pllt_plltvegetablecor3
+                            cnb_mpract_comment
+                            cnb_spcptn90_comment
+                            cnb_er40_comment
+                            cnb_sfnb2_comment
+                            cnb_digsym_comment
+                            cnb_volt_comment
+                            cnb_sctap_comment
+                            cnb_pllt_comment
+                            session_system_status
                             cnb_mpract_system_status
                             cnb_spcptn90_system_status
                             cnb_er40_system_status
