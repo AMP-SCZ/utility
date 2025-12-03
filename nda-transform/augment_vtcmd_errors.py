@@ -4,8 +4,8 @@ import pandas as pd
 import sys
 
 
-if sys.argv[1] in ['-h', '--help'] or len(sys.argv)<2:
-    print(f'Usage: {__file__} validation_results_*csv')
+if sys.argv[1] in ['-h', '--help'] or len(sys.argv)<3:
+    print(f'Usage: {__file__} /path/to/nda_file01.csv validation_results_*csv')
     exit()
 
 
