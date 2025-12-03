@@ -17,8 +17,12 @@ df=pd.read_csv(FILE,header=1,dtype=str)
 dferror1=dferror.copy()
 dferror1['src_subject_id']=''
 
+# RECORD is 1-indexed
+# df is 0-indexed
+# RECORD=i matches with df.loc[i-2]
+# it is not df.loc[i-1] because df actually has two headers
 for i,row in dferror.iterrows():
-    ind=row['RECORD']-1
+    ind=row['RECORD']-2
     dferror1.loc[i,'src_subject_id']= df.loc[ind,'src_subject_id']
 
 dferror1.drop('FILE ID STATUS EXPIRATION_DATE'.split(),axis=1,inplace=True)
