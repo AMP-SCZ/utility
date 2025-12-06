@@ -16,4 +16,4 @@ cd /data/predict1/to_nda/nda-submissions/network_combined/
 
 # validate
 
-> vtcmd *eeg*csv
+> vtcmd \*eeg*csv
