@@ -44,3 +44,5 @@ missing_data,ampscz_missingdata01,
 past_pharmaceutical_treatment,medhi01,chrpharm
 scid5_psychosis_mood_substance_abuse,scidcls01,chrscid
 psychosis_polyrisk_score,ampscz_pps01,chrpps
+psychosocial_treatment_form,psycho_treat01,chrpsychsoc
+resource_use_log,resource_use01,chrrul
