@@ -22,7 +22,19 @@ subjectkey,src_subject_id,sex,interview_date,interview_age,site_time_zone,UTC_of
 ```
 
 
-2. Generate
+2. Modify
+
+If `data_file1` is given with absolute path, open the csv in `vim` and run these character replacements:
+
+```
+%s+/data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED/Pronet../processed/++g
+%s+/data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/Prescient../processed/++g
+```
+
+Now you will have relative path. The latter is necessary for organization in collaboration space.
+
+
+3. Generate
 
 * actirec01
 
@@ -37,7 +49,7 @@ cd /data/predict1/to_nda/nda-submissions/network_combined/
 /data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o actirec01_derived.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../actirec01/AMPSCZ_actigraphy_derived_nda.csv --dict device01
 ```
 
-3. Validate
+4. Validate
 
 > python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/actirec01.csv
 > python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/actirec01_derived.csv
