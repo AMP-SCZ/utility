@@ -82,13 +82,14 @@ def populate():
             value=get_value(v,f'{event}_arm_{arm}')
 
             vrange=definition.loc[v,'ValueRange']
-            if not pd.isna(vrange) and '-300' in vrange:
-                # NDA missing: -300
-                # NDA N/A: -900
-                if value in ['-3','-9']:
-                    value+='00'
+            if not pd.isna(vrange):
+                if '-300' in vrange or '-900' in vrange:
+                    # NDA missing: -300
+                    # NDA N/A: -900
+                    if value in ['-3','-9']:
+                        value+='00'
 
-            elif definition.loc[v,'DataType']=='String':
+            if definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
                     value=''
                 
@@ -99,9 +100,10 @@ def populate():
             elif definition.loc[v,'DataType']=='Date':
                 value=nda_date(value)
 
-            if definition.loc[v,'DataType']=='Float':
+            elif definition.loc[v,'DataType']=='Float':
                 try:
-                    value=round(float(value),3)
+                    if value not in ['-300','-900']:
+                        value=round(float(value),3)
                 except ValueError:
                     pass
 
