@@ -133,7 +133,8 @@ def populate():
 
             elif definition.loc[v,'DataType']=='Float':
                 try:
-                    value=round(float(value),3)
+                    if value not in ['-300','-900']:
+                        value=round(float(value),3)
                 except ValueError:
                     pass
 
