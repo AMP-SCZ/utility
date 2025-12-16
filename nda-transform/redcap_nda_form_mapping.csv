@@ -22,7 +22,7 @@ cssrs_baseline,cssrs01,chrcssrsb
 cssrs_followup,cssrs01,chrcssrsfu
 sofas_screening,dsm_iv_es01,chrsofas
 sofas_followup,dsm_iv_es01,chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
-family_interview_for_genetic_studies_figs,figs01,
+family_interview_for_genetic_studies_figs,figs01,chrfigs
 global_functioning_role_scale,gfs01,chrgfrs
 global_functioning_role_scale_followup,gfs01,chrgfrsfu
 global_functioning_social_scale,gfs01,chrgfss
