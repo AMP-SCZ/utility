@@ -265,12 +265,10 @@ for _,visit in data.iterrows():
                     _value=0
 
                 _value=float(_value)
-                residue= int(_value)-_value
+                residue=int(_value)-_value
                 if residue:
                     # float
                     value= _value
-                    if dtype=='integer':
-                        value=round(_value)
 
                 else:
                     # int
