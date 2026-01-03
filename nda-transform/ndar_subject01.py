@@ -85,7 +85,14 @@ def populate():
     interview_date=datetime.strptime(interview_date,'%Y-%m-%d').strftime('%m/%d/%Y')
     
     sex=get_value('chrdemo_sexassigned',f'baseline_arm_{arm}')
-    sex='M' if sex=='1' else 'F'
+    if sex=='1':
+        sex='M'
+    elif sex=='2':
+        sex='F'
+    else:
+        # we cannot submit a subject w/o a sex
+        rejected.append(f'{src_subject_id},Invalid sex')
+        return
 
     race_to_nda={
         1:'American Indian/Alaska Native',
