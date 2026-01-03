@@ -66,6 +66,9 @@ def _date(time_value):
     elif len(time_value)>10:
         # all other forms e.g. 1/05/2022 12:00:00 AM
         int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
+
+    else:
+        int_value= ''
         
     return int_value
 
@@ -233,11 +236,10 @@ for _,visit in data.iterrows():
         # try/except block for bypassing nonexistent vars in CSV
         # also for bypassing empty forms
         try:
-            # consider non-empty only
-            if visit[v]=='':
-                continue
-                
-            elif visit[v].lower() in ['-','none','not applicable', 'n/a','na']:
+            # string
+            value=visit[v]
+
+            if visit[v].lower() in ['-','none','not applicable', 'n/a','na']:
                 if ftype=='calc':
                     # always reject not applicable
                     continue
@@ -245,11 +247,11 @@ for _,visit in data.iterrows():
                     # if any validation is set, reject not applicable
                     continue
 
-            elif visit[v] in ['-3','-9','1903-03-03','1909-09-09'] and annotation=='@NOMISSING':
-                continue
-            elif visit[v] in ['-3','-9','-99'] and ftype in ['dropdown','yesno','radio','checkbox']:
+            if visit[v] in ['-3','-9','1903-03-03','1909-09-09'] and annotation!='@NOMISSING':
+                value=''
+            if visit[v]=='-99' and ftype in ['dropdown','yesno','radio']:
                 # these codes do not fit these field types
-                continue
+                value=''
                 
             # leave checkbox variables out of consideration
             # to decide whether a form is empty
@@ -257,36 +259,29 @@ for _,visit in data.iterrows():
                 empty=False
 
             # number
-            try:
-                _value=visit[v]
-                if _value=='True':
-                    _value=1
-                elif _value=='False':
-                    _value=0
+            if visit[v]=='True':
+                value='1'
+            elif visit[v]=='False':
+                value='0'
+            
+            if dtype=='integer':
+                try:
+                    value=str(int(visit[v]))
+                except:
+                    value=''
+            
 
-                _value=float(_value)
-                residue=int(_value)-_value
-                if residue:
-                    # float
-                    value= _value
-
-                else:
-                    # int
-                    value= int(_value)
-
-                    # RPMS yields 0 for unchecked-single-choice radio variables
-                    # but REDCap only accepts '' for such
-                    # e.g. _missing variables
-                    # REDCap coded as 1 or '', RPMS coded as 1 or 0
-                    if value==0 and ftype=='radio' and \
-                        len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
-                        value=''
+            # RPMS yields 0 for unchecked-single-choice radio variables
+            # but REDCap only accepts '' for such
+            # e.g. _missing variables
+            # REDCap coded as 1 or '', RPMS coded as 1 or 0
+            if value=='0' and ftype=='radio' and \
+                len(row['Choices, Calculations, OR Slider Labels'].split('|'))==1:
+                value=''
                         
-                value= str(value)
 
-            # date, string
-            except ValueError:
-
+            try:
+                # date
                 if dtype=='date_ymd':
                     _string=_date(visit[v])
                     value=_string.strftime('%Y-%m-%d')
@@ -297,9 +292,9 @@ for _,visit in data.iterrows():
                     
                 elif dtype=='time':
                     value= visit[v][:5]
-                else:
-                    # string
-                    value= visit[v]
+            except AttributeError:
+                # empty date
+                pass
 
             data_form[v]= value
 
