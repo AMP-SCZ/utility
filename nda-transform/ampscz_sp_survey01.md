@@ -42,7 +42,7 @@ cd /data/predict1/to_nda/nda-submissions/network_combined
 * device01
 
 ```
-/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o ampscz_sp_sensors01_derived.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../mindlamp/*-derived_sensors-20241113.csv --dict device01
+/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o device01_ampscz_sp_sensors01.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../mindlamp/*-derived_sensors-20241113.csv --dict device01
 ```
 
 3. Validate as:
@@ -51,7 +51,7 @@ cd /data/predict1/to_nda/nda-submissions/network_combined
 
 > python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/ampscz_sp_survey01.csv
 
-> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/ampscz_sp_sensors01_derived.csv
+> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/device01_ampscz_sp_sensors01.csv
 
 
 4. Submit as:
