@@ -51,7 +51,8 @@ cd /data/predict1/to_nda/nda-submissions/network_combined/
 
 4. Validate
 
-> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/actirec01.csv
-> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/device01_actirec01.csv
-
+```
+vtcmd /data/predict1/to_nda/nda-submissions/network_combined/actirec01.csv
+vtcmd /data/predict1/to_nda/nda-submissions/network_combined/device01_actirec01.csv
+```
 
