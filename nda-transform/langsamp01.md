@@ -3,7 +3,7 @@
 
 1. Obtain network and event combined `.csv` file from Phil and Dheshan per `interview_type`:
 
-> head -n 3 nda-bmissions/langsamp01/AMPSCZ_open_20240227.csv
+> head -n 3 nda-submissions/langsamp01/AMPSCZ_open_20240227.csv
 
 *(Notice where the string `open` exists in its name)*
 
