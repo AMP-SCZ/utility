@@ -29,7 +29,7 @@ then
 elif [ "$1" == psychs ]
 then
     prefix=chrpsychs_av
-    events="screening baseline month_1 month_2"
+    events="screening baseline month_1 month_2 month_3"
 else
     _help
 fi
