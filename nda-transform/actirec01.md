@@ -46,12 +46,13 @@ cd /data/predict1/to_nda/nda-submissions/network_combined/
 * device01
 
 ```
-/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o actirec01_derived.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../actirec01/AMPSCZ_actigraphy_derived_nda.csv --dict device01
+/data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o device01_actirec01.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data ../actirec01/AMPSCZ_actigraphy_derived_nda.csv --dict device01
 ```
 
 4. Validate
 
-> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/actirec01.csv
-> python /data/predict1/nda-tools/NDATools/clientscripts/vtcmd.py /data/predict1/to_nda/nda-submissions/network_combined/actirec01_derived.csv
-
+```
+vtcmd /data/predict1/to_nda/nda-submissions/network_combined/actirec01.csv
+vtcmd /data/predict1/to_nda/nda-submissions/network_combined/device01_actirec01.csv
+```
 
