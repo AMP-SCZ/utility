@@ -3,15 +3,12 @@
 import pandas as pd
 
 _df=pd.read_csv('NDA_RELEASE_4_ALL_sample_types.csv',dtype=str)
-# df=pd.DataFrame(columns=_df.columns)
 
 # skip the negative days
-#j=0
 filtered=[]
 for i,row in _df.iterrows():
     if 'day-' not in row['day']:
         filtered.append(_df.loc[i])
-        #j+=1
 
 df=pd.DataFrame(filtered,columns=_df.columns)
 
