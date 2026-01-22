@@ -2,8 +2,18 @@
 
 import pandas as pd
 
-df=pd.read_csv('NDA_RELEASE_4_ALL_sample_types.csv',dtype=str)
-groups=df.groupby(['src_subject_id', 'interview_type', 'day'])
+_df=pd.read_csv('NDA_RELEASE_4_ALL_sample_types.csv',dtype=str)
+# df=pd.DataFrame(columns=_df.columns)
+
+# skip the negative days
+#j=0
+filtered=[]
+for i,row in _df.iterrows():
+    if 'day-' not in row['day']:
+        filtered.append(_df.loc[i])
+        #j+=1
+
+df=pd.DataFrame(filtered,columns=_df.columns)
 
 events={'open': ['baseline','month_2'],
     'psychs': ['screening',
@@ -20,18 +30,33 @@ events={'open': ['baseline','month_2'],
 
 f= open('trust_based_events.csv', 'w')
 
-for g in groups.groups.keys():
-    if 'diary' in g:
-        continue 
-    num_sessions=len(groups.groups[g])
-    if 'open' in g and num_sessions>2:
-        print(g,groups.groups[g])
-        continue 
-    elif 'psychs' in g and num_sessions>10:
-        print(g,groups.groups[g])
-        continue 
-    for i in range(num_sessions):
-        f.write(f'{g},{events[g[1]][i]}\n')
+
+def print_group(_g):
+
+    for k in _g.groups:
+        print(_g.get_group(k))
+
+groups1= df.groupby(['src_subject_id', 'interview_type'])
+for g1 in groups1.groups:
+    if 'diary' in g1:
+        continue
+
+    group1= groups1.get_group(g1)
+
+    groups2= group1.groupby('day')
+
+    if ('open' in g1 and len(groups2)>2) or \
+        ('psychs' in g1 and len(groups2)>10):
+        # print_group(groups2)
+        print(g1,[k for k in groups2.groups])
+        continue
+        
+    for i,g2 in enumerate(groups2.groups):
+
+        num_sessions=len(groups2.groups[g2])
+        
+        for j in range(num_sessions):
+            f.write(f'{g1},{g2},{events[g1[1]][i]}\n')
 
 f.close()
 
