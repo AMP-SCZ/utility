@@ -30,7 +30,7 @@ then
     # instead of all records under $redcap_phoenix
     redcap_records=${redcap_phoenix}/rpms_records.txt
 else
-    ls -d Prescient??/raw/*/surveys > $redcap_records
+    ls -d Prescient??/raw/???????/surveys > $redcap_records
 fi
 
 N=`cat $redcap_records | wc -l`
