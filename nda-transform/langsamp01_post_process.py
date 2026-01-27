@@ -8,7 +8,7 @@ df1= df.copy()
 import re
 
 # rename columns
-df1.rename(columns={'file_name.txt':'transcript_file'}, inplace=True)
+df1.rename(columns={'redcap_event_name':'visit','file_name.txt':'transcript_file'}, inplace=True)
 
 # drop non-existent columns
 df1.drop(['n_words','n_disfluencies_per_word'], axis=1, inplace=True)
