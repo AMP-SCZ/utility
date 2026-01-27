@@ -9,7 +9,7 @@ $0 TYPE DATA_FILE
 $0 TYPE DATA_FILE submit
 
 Accepted types are open or psychs only
-Keep input data file within nda-submissions/langsamp01/ folder and provide basename
+DATA_FILE contains at least three columns: src_subject_id,interview_type,redcap_event_name
 The keyword 'submit' is for submitting combined data to NDA
 """
     exit
@@ -34,7 +34,7 @@ else
     _help
 fi
 
-data_file_suffix=$2
+data_file=$2
 
 
 # generation
@@ -45,7 +45,7 @@ do
     do
         echo $e
         ./generate.sh -f langsamp01 -n $n -e $e -p $prefix \
-        -o "--data /data/predict1/to_nda/nda-submissions/langsamp01/${data_file_suffix}"
+        -o "--data ${data_file}"
         echo
     done
 done
