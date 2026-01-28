@@ -1,44 +1,54 @@
 ### Steps to prepare data for NDA
 
 
-1. Obtain network and event combined `.csv` file from Phil and Dheshan per `interview_type`:
+1. Obtain a network and event combined `features.csv` file from Phil:
 
-> head -n 3 nda-submissions/langsamp01/AMPSCZ_open_20240227.csv
-
-*(Notice where the string `open` exists in its name)*
+> head -n 3 /path/to/features.csv
 
 ```python
-study,subject,interview_type,day,interview_number,expected_interview_date,closest_interview_date,redcap_event_name
-PrescientBM,BM12345,open,20,1,2023-10-31,2023-10-31,baseline_arm_2
-PrescientBM,BM23456,open,50,1,2023-11-14,2023-11-14,baseline_arm_1
-PrescientBM,BM34567,open,119,2,2024-01-22,2024-01-22,month_2_arm_1
+...,src_subject_id,interview_type,redcap_event_name,...
+...,BM12345,open,baseline_arm_2,...
+...,BM23456,open,baseline_arm_1,...
+...,BM34567,open,month_2_arm_1,...
 ```
 
-Criteria for populating rows in the above csv:
 
-* i. `|expected_interview_date-closest_interview_date|<=14`
+2. Dheshan filters the above according to following Criteria:
+
+* i. [Interview date](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L68) in REDCap run sheet must be valid.
+
+* ii. `|expected_interview_date-redcap_interview_date|<=14`
 
   We could choose `<=30` but that would be too loose.
 
-* ii. Keep only up to a certain event worth of rows. For example, in release-2, we need upto month_2 only.
+* iii. Keep only up to a certain event worth of rows. For example, in release-2, we need upto month_2 only.
 
 
-2. Use the grand script to generate, validate, and submit its data:
+
+3. Use a grand script to generate, validate, and submit REDCap data:
 
 ```
-/data/predict1/utility/nda-transform/_langsamp01.sh open 20240227.csv
-/data/predict1/utility/nda-transform/_langsamp01.sh psychs 20240227.csv
+/data/predict1/utility/nda-transform/_langsamp01.sh open /path/to/features.csv
+/data/predict1/utility/nda-transform/_langsamp01.sh psychs /path/to/features.csv
 ```
 
-The `langsamp01.py` filters the candidate csv provided in #1 as follows:
 
-* i. [Redacted transcript](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L78-L84) with `+day` or `-day` and `interview_number` must exist in disk.
+4. Prepare features data separately:
 
-* ii. [A row](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L183) with `+day` or `-day` and `interview_number` must exist in combined QC records.
 
-* iii. [Interview date](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L68) in REDCap run sheet must be valid.
+#### Post-processing
 
-* iv. All NDA mandated [variables](https://github.com/AMP-SCZ/utility/blob/5b530838ca4542e62dca42a784e41e6b11812961/nda-transform/langsamp01.py#L279) must exist for that subject.
+```
+for i in `filtered_features_{open,psychs,diary}.csv.dm1447`; do /data/predict1/utility/nda-transform/langsamp01_post_process.py $i; done
+```
 
-If any of the above four are not met, that candidate cannot be uploaded to NDA and is omitted.
+
+#### Preparation
+
+```
+for t in open psychs diary
+do
+    /data/predict1/utility/nda-transform/image03.py --shared ndar_subject01.csv -o langsamp01_features_${t}.csv --root /data/predict1/data_from_nda/ --template "Pr*/PHOENIX/GENERAL/*/processed/*/surveys/*.Pr*.json" --data /data/predict1/data_from_nda/Language_NDA/scripts/filtered*${t}*.csv --dict langsamp01
+done
+```
 
