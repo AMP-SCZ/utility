@@ -3,14 +3,7 @@
 
 
 
-# === dn020 ===
-
-# generate difference between AMP-SCZ and network data dictionaries
-0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix dmohandass oborders skelly28
-
-
-
-# === dn018 ===
+# hna005
 
 # PRESCIENT real
 # determine if new and upload to REDCap
@@ -21,6 +14,7 @@
 # clean old arms, download JSONs from REDCap and shift their dates
 0 2 * * 1,5 /data/predict1/utility/clean_down_shift.sh 123456
 
+# === dn018 ===
 
 # ProNET real
 # determine if new and shift dates
@@ -45,21 +39,11 @@
 
 
 
-# === dn020 ===
-
-# copy EEG QC images over to web app VM
-0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ /data/eegqc/
-0 5 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/kcho/flow_test/spero/ /opt/data/eegqc-mock/
-
-10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ /data/eegqc/
-
-
 
 # === rc-predict-gen ===
 
 # back up EEG QC web app scores
 # run as service account
-0 3 * * * /opt/eeg-qc-dash/backup_scores.cron /data/eegqc/ /opt/data/eegqc-mock/
 0 0 * * * rsync -a /data/eegqc/.scores.pkl eris2n4.research.partners.org:/data/predict1/data_from_nda/
 
 
@@ -110,8 +94,15 @@ MAILTO=xyz@bwh.harvard.edu
 
 
 # === dn020 ===
-# all dpimport are run by tb571
-# TODO run by sf284
+
+# copy EEG QC images over to web app VM
+0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ /data/eegqc/
+10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ /data/eegqc/
+
+
+# generate difference between AMP-SCZ and network data dictionaries
+0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix dmohandass oborders skelly28
+
 
 # generate files status every day
 0 17 * * * /data/predict1/utility/generate_files_status1.sh /data/predict1/data_from_nda/
@@ -119,6 +110,8 @@ MAILTO=xyz@bwh.harvard.edu
 # transfer combined files status to VM for missing data tracker app
 0 18 * * * /data/predict1/utility/rsync_files_status.sh
 
+
+# NOTE all DPdash jobs have been paused
 # import all data to production DPdash in succession
 
 # the goal of a fresh import is to make sure that DPdash counts are accurate by Wednesday 6 am
