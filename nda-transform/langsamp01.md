@@ -35,13 +35,14 @@
 
 4. Prepare features data separately:
 
-
 #### Post-processing
 
 ```
-for i in `filtered_features_{open,psychs,diary}.csv.dm1447`; do /data/predict1/utility/nda-transform/langsamp01_post_process.py $i; done
+for i in `filtered_features_{open,psychs,diary}.csv.dm1447`
+do
+    /data/predict1/utility/nda-transform/langsamp01_post_process.py $i
+done
 ```
-
 
 #### Preparation
 
