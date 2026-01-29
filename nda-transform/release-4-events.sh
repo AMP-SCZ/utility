@@ -44,7 +44,7 @@ do
     ./generate.sh -n $n -e baseline       -f ampscz_rap01     
     ./generate.sh -n $n -e month_1        -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
     ./generate.sh -n $n -e month_1        -f ampscz_psychs01  -p chrpsychs_fu
-#    ./generate.sh -n $n -e month_1        -f pmod01           -p chrpas(has problem)
+    ./generate.sh -n $n -e month_1        -f pmod01           -p chrpas
     ./generate.sh -n $n -e month_1        -f ampscz_nsipr01   
     ./generate.sh -n $n -e month_1        -f clgry01          -p chrcdss
     ./generate.sh -n $n -e month_1        -f gfs01            -p chrgfssfu
