@@ -3,7 +3,7 @@
 import requests, sys
 from glob import glob
 from os import getenv
-from os.path import abspath, basename, join as pjoin
+from os.path import abspath, basename, join as pjoin, split as psplit
 import re
 from time import sleep
 
@@ -11,10 +11,24 @@ if len(sys.argv)==1 or sys.argv[1] in ['-h','--help']:
     print(f'''Usage:
 {__file__} /path/to/PHOENIX/PROTECTED API_TOKEN
 {__file__} /path/to/PHOENIX/PROTECTED API_TOKEN 1
+{__file__} /path/to/PHOENIX/PROTECTED/PresientBM/raw/BM12345 API_TOKEN
+{__file__} /path/to/PHOENIX/PROTECTED/PresientBM/raw/BM12345/surveys API_TOKEN
+{__file__} /path/to/PHOENIX/PROTECTED/PresientBM/raw/BM12345/surveys/BM12345.Prescient.json API_TOKEN
 The trailing 1 is for bulk removal of all records in the project.''')
     exit(0)
 
-dirs= glob(pjoin(abspath(sys.argv[1]),'*/raw/*'))
+if sys.argv[1].rstrip('/').endswith('PROTECTED'):
+    # multiple records
+    dirs= glob(pjoin(abspath(sys.argv[1]),'*/raw/*'))
+    cases= [basename(d) for d in dirs]
+
+else:
+    # single record
+    s= re.search('[A-Z]{2}[0-9]{5}',sys.argv[1])
+    if not s:
+        print('No record ID could be extracted from', sys.argv[1])
+        exit()
+    cases= [s.group()]
 
 
 def construct(_cases):
@@ -45,8 +59,6 @@ def POST(_data):
 
     return r
 
-
-cases= [basename(d) for d in dirs]
 
 if len(sys.argv)==3:
     # serial removal
