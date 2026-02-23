@@ -12,7 +12,7 @@ if len(sys.argv)<3 or sys.argv[1] in ['-h','--help']:
     exit()
 
 # load FIGS REDCap's CSV export
-df= pd.read_csv(sys.argv[1], dtype=str)
+df= pd.read_csv(sys.argv[1], dtype=str, keep_default_na=False)
 
 # load data dictionary
 ddict= pd.read_csv(sys.argv[2], dtype=str)
@@ -22,7 +22,11 @@ vars=[]
 for i,row in ddict.iterrows():
     if row['form_name']=='family_interview_for_genetic_studies_figs':
         if row['field_type']=='calc':
-            vars.append(row['field_name'])
+            v= row['field_name']
+            if v in df.columns:
+                vars.append(row['field_name'])
+            else:
+                print(v)
 
 
 for i,row in df.iterrows():
