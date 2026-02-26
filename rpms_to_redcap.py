@@ -90,7 +90,8 @@ def _visit_to_event(chr_hc, form, visit_num):
     try:
         return redcap_event_name
     except UnboundLocalError:
-        raise UnboundLocalError(f'{chr_hc}, {form}, {visit_num}')
+        print(f'UnboundLocalError({chr_hc}, {form}, {visit_num})', file=sys.stderr)
+        return None
 
 
 if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
@@ -213,6 +214,8 @@ for _,visit in data.iterrows():
         continue
     
     redcap_event_name= _visit_to_event(chr_hc, form, visit['visit'])
+    if not redcap_event_name:
+        continue
     
     data1={
         'chric_record_id': visit['subjectkey'],
