@@ -88,10 +88,14 @@ def populate():
                     or '77' in vrange:
                     # NDA missing: -900
                     # NDA N/A: -300
-                    if value=='-3':
-                        value='-300'
-                    elif value=='-9':
-                        value='-900'
+                    try:
+                        _value=float(value)
+                        if _value==-3.0:
+                            value='-300'
+                        elif _value==-9.0:
+                            value='-900'
+                    except:
+                        pass
 
             if definition.loc[v,'DataType']=='Integer':
                 try:

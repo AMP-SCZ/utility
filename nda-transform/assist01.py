@@ -86,8 +86,14 @@ def populate():
                 if '-300' in vrange or '-900' in vrange:
                     # NDA missing: -900
                     # NDA N/A: -300
-                    if value in ['-3','-9']:
-                        value+='00'
+                    try:
+                        _value=float(value)
+                        if _value==-3.0:
+                            value='-300'
+                        elif _value==-9.0:
+                            value='-900'
+                    except:
+                        pass
 
             if definition.loc[v,'DataType']=='String':
                 if value in ['-3','-9']:
