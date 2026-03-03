@@ -12,6 +12,8 @@
 ...,BM34567,open,month_2_arm_1,...
 ```
 
+It can also be two files: `features_open.csv` and `features_psychs.csv`.
+
 
 2. Dheshan filters the above according to following Criteria:
 
@@ -28,8 +30,8 @@
 3. Use a grand script to generate, validate, and submit REDCap data:
 
 ```
-/data/predict1/utility/nda-transform/_langsamp01.sh open /path/to/features.csv
-/data/predict1/utility/nda-transform/_langsamp01.sh psychs /path/to/features.csv
+/data/predict1/utility/nda-transform/_langsamp01.sh open /path/to/features.csv (or features_open.csv)
+/data/predict1/utility/nda-transform/_langsamp01.sh psychs /path/to/features.csv (or features_psychs.csv)
 ```
 
 
