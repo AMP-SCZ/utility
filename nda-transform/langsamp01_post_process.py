@@ -44,9 +44,10 @@ df1.interview_number= df.interview_number.apply(lambda x: int(x[-3:]) if 'sessio
 # use relative path for transcript_file
 
 files=[]
+facial_files=[]
 for i,row in df.iterrows():
-    file= row['file_name.txt']
 
+    file= row['file_name.txt']
     if not pd.isna(file):
         if 'Journal' in file:
             _file= '{}/phone/audio_journals/transcripts/{}'.format(
@@ -62,8 +63,19 @@ for i,row in df.iterrows():
     else:
         files.append('')
 
-df1['transcript_file']=files
 
+    file= row['facial_basic_features_file']
+    if not pd.isna(file):
+        _file= '{}/interviews/{}/openface/{}/{}'.format(
+            row['src_subject_id'],row['interview_type'],file.strip('.csv'),file)
+    else:
+        _file=''
+
+    facial_files.append(_file)
+
+
+df1['transcript_file']=files
+df1['facial_basic_features_file']=facial_files
 
 # change column order
 begin='subjectkey,src_subject_id,interview_date,interview_age,sex,visit'.split(',')
