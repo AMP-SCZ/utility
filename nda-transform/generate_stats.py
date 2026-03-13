@@ -43,7 +43,9 @@ for i,file in enumerate(files):
                 count[obj['network']]+=1
                 break
 
-        count[common.loc[s,'phenotype']]+=1
+        phenotype= common.loc[s,'phenotype']
+        phenotype= phenotype.replace('HHR','HC')
+        count[phenotype]+=1
 
 
     _chr=round(count['CHR']/(count['CHR']+count['HC'])*100)
