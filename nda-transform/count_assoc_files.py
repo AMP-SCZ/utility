@@ -32,7 +32,7 @@ def count_files(
 
         if context == "eris":
             _data_file_path = source_path
-            df = pd.read_csv(file, header=1)
+            df = pd.read_csv(file, header=1, dtype=str)
         else:
             nda_submissions_path = project_path / "nda-submissions"
             df = pd.read_csv(file)
