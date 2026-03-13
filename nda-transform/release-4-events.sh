@@ -18,6 +18,7 @@ do
     ./generate.sh -n $n -e screening      -f dsm_iv_es01      -p chrsofas
     ./generate.sh -n $n -e screening      -f ampscz_psychs01  -p chrpsychs_scr
     ./generate.sh -n $n -e baseline       -f socdem01         -p chrdemo
+    ./generate.sh -n $n -e baseline       -f scidcls01        -p chrscid
     ./generate.sh -n $n -e baseline       -f dsm_iv_es01      -p chrsofas -o "--interview_date_var chrsofas_interview_date_fu --follow"
     ./generate.sh -n $n -e baseline       -f ampscz_psychs01  -p chrpsychs_fu
     ./generate.sh -n $n -e baseline       -f ampscz_iqa01     -p chriq
@@ -88,7 +89,85 @@ done
 
 elif [ "$1" == combine ]
 then
-    echo
+    ./combine_networks.sh -e screening      -f ampscz_rs01      
+	./combine_networks.sh -e screening      -f ampscz_lapes01   
+	./combine_networks.sh -e screening      -f medhi01          
+	./combine_networks.sh -e screening      -f iec01            
+	./combine_networks.sh -e screening      -f ampscz_hcgfb01   
+	./combine_networks.sh -e screening      -f scidvapd01       
+	./combine_networks.sh -e screening      -f tbi01            
+	./combine_networks.sh -e screening      -f figs01           
+	./combine_networks.sh -e screening      -f dsm_iv_es01      
+	./combine_networks.sh -e screening      -f ampscz_psychs01  
+	./combine_networks.sh -e baseline       -f socdem01         
+    ./combine_networks.sh -e baseline       -f scidcls01        
+	./combine_networks.sh -e baseline       -f dsm_iv_es01      
+	./combine_networks.sh -e baseline       -f ampscz_psychs01  
+	./combine_networks.sh -e baseline       -f ampscz_iqa01     
+	./combine_networks.sh -e baseline       -f wasi201          
+	./combine_networks.sh -e baseline       -f wisc_v01         
+	./wais_iv_part101.sh  -e baseline
+	./combine_networks.sh -e baseline       -f pmod01           
+	./combine_networks.sh -e baseline       -f vitas01          
+	./combine_networks.sh -e baseline       -f dailyd01         
+	./combine_networks.sh -e baseline       -f clinlabtestsp201 
+	./combine_networks.sh -e baseline       -f ampscz_nsipr01   
+	./combine_networks.sh -e baseline       -f clgry01          
+	./combine_networks.sh -e baseline       -f assist01         
+	./combine_networks.sh -e baseline       -f cssrs01          
+	./combine_networks.sh -e baseline       -f gfs01            -s chrgfss
+	./combine_networks.sh -e baseline       -f gfs01            -s chrgfrs
+	./combine_networks.sh -e baseline       -f ampscz_dim01     
+	./combine_networks.sh -e baseline       -f pds01            
+	./combine_networks.sh -e baseline       -f oasis01          
+	./combine_networks.sh -e baseline       -f sri01            
+	./combine_networks.sh -e baseline       -f pss01            
+	./combine_networks.sh -e baseline       -f ampscz_pps01     
+	./combine_networks.sh -e baseline       -f cgis01           
+	./combine_networks.sh -e baseline       -f bprs01           
+	./combine_networks.sh -e baseline       -f ampscz_rap01     
+	./combine_networks.sh -e month_1        -f dsm_iv_es01      
+	./combine_networks.sh -e month_1        -f ampscz_psychs01  
+	./combine_networks.sh -e month_1        -f pmod01           
+	./combine_networks.sh -e month_1        -f ampscz_nsipr01   
+	./combine_networks.sh -e month_1        -f clgry01          
+	./combine_networks.sh -e month_1        -f gfs01            -s chrgfssfu
+	./combine_networks.sh -e month_1        -f gfs01            -s chrgfrsfu
+	./combine_networks.sh -e month_1        -f oasis01          
+	./combine_networks.sh -e month_1        -f pss01            
+	./combine_networks.sh -e month_1        -f cgis01           
+	./combine_networks.sh -e month_1        -f bprs01           
+	./combine_networks.sh -e month_2        -f dsm_iv_es01      
+	./combine_networks.sh -e month_2        -f ampscz_psychs01  
+	./combine_networks.sh -e month_2        -f vitas01          
+	./combine_networks.sh -e month_2        -f dailyd01         
+	./combine_networks.sh -e month_2        -f clinlabtestsp201 
+	./combine_networks.sh -e month_2        -f ampscz_nsipr01   
+	./combine_networks.sh -e month_2        -f clgry01          
+	./combine_networks.sh -e month_2        -f assist01         
+	./combine_networks.sh -e month_2        -f cssrs01          
+	./combine_networks.sh -e month_2        -f gfs01            -s chrgfssfu
+	./combine_networks.sh -e month_2        -f gfs01            -s chrgfrsfu
+	./combine_networks.sh -e month_2        -f oasis01          
+	./combine_networks.sh -e month_2        -f sri01            
+	./combine_networks.sh -e month_2        -f pss01            
+	./combine_networks.sh -e month_2        -f cgis01           
+	./combine_networks.sh -e month_2        -f bprs01           
+	./combine_networks.sh -e floating_forms -f psycho_treat01   
+	./combine_networks.sh -e floating_forms -f resource_use01   
+	./combine_networks.sh -e month_3        -f dsm_iv_es01      
+	./combine_networks.sh -e month_3        -f ampscz_psychs01  
+	./combine_networks.sh -e month_3        -f ampscz_nsipr01   
+	./combine_networks.sh -e month_3        -f clgry01          
+	./combine_networks.sh -e month_3        -f gfs01            -s chrgfssfu
+	./combine_networks.sh -e month_3        -f gfs01            -s chrgfrsfu
+	./combine_networks.sh -e month_3        -f oasis01          
+	./combine_networks.sh -e month_3        -f pss01            
+	./combine_networks.sh -e month_3        -f cgis01           
+	./combine_networks.sh -e month_3        -f bprs01           
+	./combine_networks.sh -e month_4        -f bprs01           
+	./combine_networks.sh -e month_5        -f bprs01           
+
 
 elif [ "$1" == submit ]
 then
