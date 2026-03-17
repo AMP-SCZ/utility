@@ -45,6 +45,7 @@
 # back up EEG QC web app scores
 # run as service account
 0 0 * * * rsync -a /data/eegqc/.scores.pkl eris2n4.research.partners.org:/data/predict1/data_from_nda/
+0 0 * * * rsync -a /data/eegqc/.scores.pkl eris2n4.research.partners.org:/data/predict2/ProCAN/compound_1/
 
 
 
@@ -96,8 +97,11 @@ MAILTO=xyz@bwh.harvard.edu
 # === dn020 ===
 
 # copy EEG QC images over to web app VM
-0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ /data/eegqc/
-10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ /data/eegqc/
+0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ rc-predict-gen.partners.org:/data/eegqc/
+10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ rc-predict-gen.partners.org:/data/eegqc/
+
+15 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict2/ProCAN/compound_1/ zn-eeg.mgb.org:/data/eegqc/
+30 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict2/ProCAN/compound_1/ zn-eeg.mgb.org:/data/eegqc/
 
 
 # generate difference between AMP-SCZ and network data dictionaries
