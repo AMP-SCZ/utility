@@ -104,8 +104,8 @@ if __name__ == "__main__":
             PROJECT_PATH = Path("/volumes/prod-ampscz-pii")
         else:
             raise ValueError(f"Unknown collection id: {collection_id}")
-        source_path = PROJECT_PATH / "collaboration-space" / collection_id
-        files = source_path.glob(f"*/csv/{submission_id}/part-*csv")
+        source_path = PROJECT_PATH / "collaboration-space-new" / collection_id / submission_id
+        files = source_path.glob(f"*/csv/part-*csv")
 
     file_paths = list(files)
     file_paths = sorted(file_paths)
