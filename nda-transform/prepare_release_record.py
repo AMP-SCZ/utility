@@ -17,7 +17,7 @@ Output is ampscz-release-1-record.csv, ampscz-release-2-record.csv, etc.
 if isfile(sys.argv[1]):
     remove(sys.argv[1])
 
-dfshared=pd.read_csv('ndar_subject01.csv',header=1)
+dfshared=pd.read_csv('ndar_subject01.csv',header=1,dtype=str)
 dfshared.set_index('src_subject_id',inplace=True)
 
 columns=sorted(glob('*csv'))
@@ -29,7 +29,7 @@ dfupload.set_index('src_subject_id',inplace=True)
 for file in columns:
     
     count=0
-    dfdata=pd.read_csv(file,header=1)
+    dfdata=pd.read_csv(file,header=1,dtype=str)
     dfdata.set_index('src_subject_id',inplace=True)
     
     for s in dfshared.index:
@@ -40,7 +40,7 @@ for file in columns:
         except:
             pass
     
-    print(f'{file:32}',count)
+    print(f'{file:35}',count)
 
 dfupload.to_csv(sys.argv[1])
 
