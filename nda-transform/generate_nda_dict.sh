@@ -14,7 +14,7 @@ files=glob('*csv')
 
 vars={}
 for file in files:
-    df=pd.read_csv(file,header=1)
+    df=pd.read_csv(file,header=1,dtype=str)
     
     with open(file) as f:
         _name=f.read().split('\n')[0]
