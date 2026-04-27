@@ -26,7 +26,7 @@ do
     suffix=${net}_${datestamp}
 
     # email report
-    for p in ${@: 4:$#}
+    for p in ${@: 2:$#}
     do
 
         echo "" | mailx -s diff_ampscz_${suffix} \
