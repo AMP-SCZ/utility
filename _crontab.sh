@@ -98,7 +98,7 @@ MAILTO=xyz@bwh.harvard.edu
 
 
 
-# === dn020 ===
+# === erishpc-login-002 ===
 
 # copy EEG QC images over to web app VM
 0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ rc-predict-gen.partners.org:/data/eegqc/
@@ -109,7 +109,7 @@ MAILTO=xyz@bwh.harvard.edu
 
 
 # generate difference between AMP-SCZ and network data dictionaries
-0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 123456 123456 tbillah sbouix dmohandass oborders skelly28
+0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 tbillah sbouix dmohandass oborders skelly28
 
 
 # generate files status every day
