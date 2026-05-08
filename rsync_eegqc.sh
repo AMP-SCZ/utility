@@ -22,6 +22,7 @@ done
 # the nested for loops were required to prevent
 # "ls: Argument list too long" within cron job
 
+module load librsync rsync
 rsync -avR --files-from=$list . $2
 
 
