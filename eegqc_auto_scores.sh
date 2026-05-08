@@ -3,5 +3,6 @@
 NDA_ROOT=$1
 
 /data/predict1/miniconda3/bin/python /data/predict1/eeg-qc-dash/insert_auto_scores.py
+module load librsync rsync
 rsync -av $NDA_ROOT/.scores.pkl $2
 
