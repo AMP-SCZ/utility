@@ -22,7 +22,8 @@ done
 # the nested for loops were required to prevent
 # "ls: Argument list too long" within cron job
 
-module load librsync rsync
+export LD_LIBRARY_PATH=/apps/software/librsync/2.3.4-GCCcore-13.3.0/lib:$LD_LIBRARY_PATH
+export PATH=/apps/software/rsync/3.4.1-GCCcore-13.3.0/bin:$PATH
 rsync -avR --files-from=$list . $2
 
 
