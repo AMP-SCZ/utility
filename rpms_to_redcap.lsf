@@ -31,6 +31,7 @@ fi
 
 # flatten multi-records
 /data/predict1/utility/_flatten_multi_records.sh $subject
+export HOSTNAME=
 /data/predict1/utility/rename_RPMS_vars.py .
 
 
