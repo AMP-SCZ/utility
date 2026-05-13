@@ -14,6 +14,9 @@
 # clean old arms, download JSONs from REDCap and shift their dates
 0 2 * * 1,5 /data/predict1/utility/clean_down_shift.sh 123456
 
+# kill stale processes every Saturday
+0 17 * * 6 pkill -u tb571 python
+
 # === dn018 ===
 
 # ProNET real
