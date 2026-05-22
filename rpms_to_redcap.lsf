@@ -1,14 +1,6 @@
 #!/bin/bash
 
-exec 1> /data/predict1/utility/slurm/redcap-import-${SLURM_ARRAY_TASK_ID}.out 2> /data/predict1/utility/slurm/redcap-import-${SLURM_ARRAY_TASK_ID}.err
-
-#SBATCH -J redcap-import
-#SBATCH -p pri_pnl
-#SBATCH -o /data/predict1/utility/slurm/redcap-import-%j-%a.out
-#SBATCH -e /data/predict1/utility/slurm/redcap-import-%j-%a.err
-#SBATCH -c 4
-#SBATCH --mem 2000
-#SBATCH -t 0-3:00
+exec 1> /data/predict1/utility/slurm/prescient-import-${SLURM_ARRAY_TASK_ID}.out 2> /data/predict1/utility/slurm/prescient-import-${SLURM_ARRAY_TASK_ID}.err
 
 export PATH=/data/predict1/miniconda3/bin/:$PATH
 cd ${redcap_phoenix}
