@@ -52,6 +52,6 @@ done
 _bsub=pronet-$(date +%Y%m%d)
 cd /data/predict1/utility/slurm/
 mkdir $_bsub
-mv *err $_bsub/
-mv *out $_bsub/
+mv pronet*err $_bsub/
+mv pronet*out $_bsub/
 
