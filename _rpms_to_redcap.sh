@@ -36,7 +36,6 @@ fi
 N=`cat $redcap_records | wc -l`
 
 batch=12
-duration=300
 for (( i=1; i<=$N; i+=1 ))
 do
 
