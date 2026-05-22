@@ -66,6 +66,6 @@ done
 _bsub=prescient-$(date +%Y%m%d)
 cd /data/predict1/utility/slurm/
 mkdir -p $_bsub
-mv *err $_bsub/
-mv *out $_bsub/
+mv prescient*err $_bsub/
+mv prescient*out $_bsub/
 
