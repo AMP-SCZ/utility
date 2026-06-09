@@ -15,3 +15,6 @@ dpsleepx/qcact/geneactiv_qcact.py,actigraphy
 dpsleepx/upact/geneactiv_upact.py,actigraphy
 dplocatemg/phone_accel/phone_accel.py,phone
 dplocatemg/phone_power/phone_power.py,phone
+dplocatemg/phone_accel_nda/phone_accel_nda.py,phone
+dplocatemg/phone_power_nda/phone_power_nda.py,phone
+dplocatemg/phone_gps_nda/phone_gps_nda.py,phone
