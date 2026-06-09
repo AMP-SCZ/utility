@@ -17,7 +17,7 @@ Optional:
 
 * If only -n is provided, site names are obtained automatically.
 * Known modules are:
-  phone:      \"phone_accel phone_power phone_survey phone_survey_nda data_availmg\"
+  phone:      \"phone_accel phone_accel_nda phone_power phone_power_nda phone_gps_nda phone_survey phone_survey_nda data_availmg\"
   actigraphy: \"geneactiv_extract_ax geneactiv_freq geneactiv_act geneactiv_sync_mc geneactiv_qcact geneactiv_upact\"
   gps:        \"parse_gps_mc preprocess_gps_mc process_gps_mc aggregate_gps_mc phone_gps_mc\"
 
