@@ -46,7 +46,7 @@
 # back up EEG QC web app scores
 # run as service account
 
-# === rc-predict-gen ===
+# === zhpysch14.mgb.org ===
 0 3 * * * /opt/eeg-qc-dash/backup_scores.cron /data/eegqc/
 0 0 * * * rsync -a /data/eegqc/.scores.pkl eris2n4.research.partners.org:/data/predict1/data_from_nda/
 
@@ -104,15 +104,15 @@ MAILTO=xyz@bwh.harvard.edu
 # === erishpc-login-002 ===
 
 # copy EEG QC images over to web app VM
-0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ rc-predict-gen.partners.org:/data/eegqc/
-10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ rc-predict-gen.partners.org:/data/eegqc/
+0 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict1/data_from_nda/ zhpysch14.mgb.org:/data/eegqc/
+10 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict1/data_from_nda/ zhpysch14.mgb.org:/data/eegqc/
 
 15 */6 * * * /data/predict1/utility/rsync_eegqc.sh /data/predict2/ zn-eeg.mgb.org:/data/eegqc/
 30 0 * * * /data/predict1/utility/eegqc_auto_scores.sh /data/predict2/ zn-eeg.mgb.org:/data/eegqc/
 
 
 # generate difference between AMP-SCZ and network data dictionaries
-0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 tbillah sbouix dmohandass oborders skelly28
+0 6 * * 1,3,5 /data/predict1/utility/_gen_dict_diff.sh 123456 tbillah sbouix dmohandass oborders skelly28 elynch12 khchan
 
 
 # generate files status every day
