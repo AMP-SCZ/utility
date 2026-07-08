@@ -77,10 +77,16 @@ for _v in tqdm(vars):
             found=1
             break
     
-        elif not pd.isna(row['Aliases']) and v in row['Aliases']:
-            # write row out
-            found=1
-            break
+        elif not pd.isna(row['Aliases']):
+            # check each alias strictly
+            for a in row['Aliases'].split(','):
+                if a==v:
+                    # write row out
+                    found=1
+                    break
+
+            if found:
+                break
     
     if found:
         # remove unwarranted line breaks
