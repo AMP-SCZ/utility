@@ -38,7 +38,7 @@
 
 
 # track /data/predict1/ size, every monday at 12 am
-0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix jtbaker
+0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix
 
 
 
