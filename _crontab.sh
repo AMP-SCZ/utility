@@ -25,10 +25,6 @@
 0 18 * * 1,5 /data/predict1/utility/_shift_redcap_dates.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED "*/raw/*/surveys/*.Pronet.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv && /data/predict1/utility/_records_to_redcap.sh /data/predict1/data_from_nda/Pronet/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
 
 
-# mongodb backup
-0 8 * * * /data/predict1/utility/backup_mongodb.sh rc-predict
-
-
 # kill stale processes every Saturday
 0 17 * * 6 pkill -u tb571 python
 
