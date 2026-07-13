@@ -6,6 +6,8 @@
 # === erishpc-login-001 ===
 # as sf284
 
+MAILTO=tbillah@mgb.org
+
 # PRESCIENT real
 # determine if new and upload to REDCap
 0 18 * * 0 /data/predict1/miniconda3/bin/python /data/predict1/utility/set_rpms_date_shifts.py /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED/ "*/raw/???????/surveys/" && /data/predict1/utility/_rpms_to_redcap.sh /data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED /data/predict1/utility/yale-real 123456
@@ -22,6 +24,8 @@
 
 # === erishpc-login-002 ===
 # as sf284
+
+MAILTO=tbillah@mgb.org
 
 # ProNET real
 # determine if new and shift dates
