@@ -12,7 +12,7 @@ from pathlib import Path
 
 def main():
     """
-    Checks if a file can be encoded using 'latin-1' encoding. If not, it will
+    Checks if a file can be encoded using 'latin-1' encoding. If not,
     replace the file with a new file that uses 'latin-1' encoding.
 
     Execute this script within the directory of original file. Provide relative path of the original file.
@@ -20,10 +20,10 @@ def main():
     Provide relative path to the original file.
 
     Usage:
-        python encode_to_latin.py <filename>
+        python __file__ <filename>
 
     Example:
-        python encode_to_latin.py some_file.txt
+        python __file__ some_file.txt
     """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("filename", help="The file to convert")
