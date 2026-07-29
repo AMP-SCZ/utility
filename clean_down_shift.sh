@@ -16,7 +16,7 @@ TOKEN=$1
 if [ "$2" == "1" ]
 then
     # first value: number of processors, second value: force"
-    FORCE="12 1"
+    FORCE="4 1"
 else
     FORCE=
 fi
