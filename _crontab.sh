@@ -6,7 +6,7 @@
 # === erishpc-login-001 ===
 # as sf284
 
-MAILTO=tbillah@mgb.org
+MAILTO="tbillah@mgb.org,ksrinivasan5@mgb.org"
 
 # PRESCIENT real
 # determine if new and upload to REDCap
