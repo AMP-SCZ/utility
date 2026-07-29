@@ -41,9 +41,10 @@ MAILTO=tbillah@mgb.org
 0 4 * * * /data/predict1/utility/data_tracker_dropbox.sh
 
 
-# track /data/predict1/ size, every monday at 12 am
+# track /data/predict*/ size, every monday at 12 am
 0 0 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict1/ tbillah sbouix
-
+0 1 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict2/ tbillah sbouix
+0 2 * * 1 /data/predict1/utility/track_briefcase_size.sh /data/predict3/ tbillah sbouix
 
 
 
