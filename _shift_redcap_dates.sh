@@ -11,6 +11,9 @@ cd /data/predict1/utility/
 ./set_date_shifts.py $PHOENIX_PROTECTED $JSON
 ./shift_redcap_dates.py $PHOENIX_PROTECTED $JSON $3
 
+exit
+# permission change by non-owner fails, and causes failure of scripts chained to this script
+
 # explicit permission change
 n=Pronet
 GENERAL=${PHOENIX_PROTECTED/PROTECTED/GENERAL}
