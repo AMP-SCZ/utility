@@ -18,7 +18,7 @@ MAILTO="tbillah@mgb.org,ksrinivasan5@mgb.org"
 0 6 * * 2 /data/predict1/utility/clean_down_shift.sh 123456
 
 # kill stale processes every Saturday
-0 17 * * 6 pkill -u tb571 python
+0 17 * * 6 pkill -u sf284 python
 
 
 
@@ -34,7 +34,7 @@ MAILTO=tbillah@mgb.org
 
 
 # kill stale processes every Saturday
-0 17 * * 6 pkill -u tb571 python
+0 17 * * 6 pkill -u sf284 python
 
 
 # upload data tracker CSV files to Dropbox
