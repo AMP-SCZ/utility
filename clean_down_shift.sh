@@ -15,10 +15,11 @@ fi
 TOKEN=$1
 if [ "$2" == "1" ]
 then
-    # first value: number of processors, second value: force"
-    FORCE="4 1"
+    FORCE=1
+    NCPU=4
 else
     FORCE=
+    NCPU=
 fi
 
 export PATH=/data/predict1/miniconda3/bin/:/data/predict1/utility/:$PATH
@@ -28,10 +29,10 @@ PHOENIX_PROTECTED=/data/predict1/data_from_nda/Prescient/PHOENIX/PROTECTED
 clean_old_arm.py $PHOENIX_PROTECTED $TOKEN
 
 # download REDCap JSONs
-down_mgb_redcap_records.py $PHOENIX_PROTECTED $TOKEN $FORCE
+down_mgb_redcap_records.py $PHOENIX_PROTECTED $TOKEN $NCPU $FORCE
 
 # shift their dates
-shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/???????/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv $FORCE
+shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/???????/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv $NCPU $FORCE
 
 exit
 # permission change by non-owner fails, and causes failure of scripts chained to this script
