@@ -101,7 +101,7 @@ def down_record(sub):
 if len(sys.argv)==4:
     ncpu=int(sys.argv[3])
 else:
-    ncpu=16
+    ncpu=4
 
 if ncpu==1:
     # useful for debugging

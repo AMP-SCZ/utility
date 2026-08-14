@@ -111,7 +111,7 @@ def _shift_date(file):
 if len(sys.argv)>=5:
     ncpu=int(sys.argv[4])
 else:
-    ncpu=16
+    ncpu=4
 
 if ncpu==1:
     # useful for debugging
