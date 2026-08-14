@@ -43,9 +43,9 @@ try:
         subjects=[re.search('raw/(.+?)/surveys',s).group(1) for s in _subjects]
 except:
     try:
-        subjects=df.subjects.values
+        subjects=df.index.values
     except:
-        subjects=[p.split('/')[-1] for p in glob("*/raw/*")]
+        subjects=[p.split('/')[-1] for p in glob("*/raw/???????")]
 
 
 # helpful for force re-download
