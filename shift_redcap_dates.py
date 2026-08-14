@@ -65,7 +65,7 @@ def _shift_date(file):
     subject=basename(file).split('.')[0]
     
     # skip unchanged JSONs
-    if sys.argv[-1]!='1' and dfshift.loc[subject,'upload']==0:
+    if len(sys.argv)<=5 and dfshift.loc[subject,'upload']==0:
         return
 
     # load json
