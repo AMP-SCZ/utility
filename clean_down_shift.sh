@@ -31,7 +31,10 @@ clean_old_arm.py $PHOENIX_PROTECTED $TOKEN
 down_mgb_redcap_records.py $PHOENIX_PROTECTED $TOKEN $FORCE
 
 # shift their dates
-shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/*/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv $FORCE
+shift_redcap_dates.py $PHOENIX_PROTECTED "*/raw/???????/surveys/*.Prescient.json" /data/predict1/utility/yale-real/*_DataDictionary_*.csv $FORCE
+
+exit
+# permission change by non-owner fails, and causes failure of scripts chained to this script
 
 # explicit permission change
 n=Prescient
