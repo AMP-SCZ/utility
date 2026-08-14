@@ -15,7 +15,7 @@ MAILTO="tbillah@mgb.org,ksrinivasan5@mgb.org"
 # keep 24 hours difference between upload and download so upload can complete
 
 # clean old arms, download JSONs from REDCap and shift their dates
-0 6 * * 2 /data/predict1/utility/clean_down_shift.sh 123456
+0 18 * * 2 /data/predict1/utility/clean_down_shift.sh 123456
 
 # kill stale processes every Saturday
 0 17 * * 6 pkill -u sf284 python
