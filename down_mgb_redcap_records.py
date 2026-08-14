@@ -10,7 +10,7 @@ from multiprocessing import Pool
 import signal
 import requests
 import re
-
+from time import sleep
 
 # Download PRESCIENT records from MGB REDCap
 # Usage:
@@ -81,7 +81,17 @@ def down_record(sub):
         'returnFormat': 'json'
     }
     
-    r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
+    try:
+        r = requests.post('https://redcap.partners.org/redcap/api/',data=data)
+    except requests.exceptions.ConnectionError:
+        # wait 180 seconds before retrying
+        sleep(180)
+        try:
+            r = requests.post('https://redcap.partners.org/redcap/api/', data= fields)
+        except requests.exceptions.ConnectionError:
+            # failure
+            return
+
     
     if len(r.json()):
         # success
