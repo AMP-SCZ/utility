@@ -16,10 +16,10 @@ TOKEN=$1
 if [ "$2" == "1" ]
 then
     FORCE=1
-    NCPU=4
+    NCPU=1
 else
     FORCE=
-    NCPU=
+    NCPU=1
 fi
 
 export PATH=/data/predict1/miniconda3/bin/:/data/predict1/utility/:$PATH
