@@ -108,7 +108,7 @@ def down_record(sub):
             print(r.json())
 
 
-if len(sys.argv)==4:
+if len(sys.argv)>=4:
     ncpu=int(sys.argv[3])
 else:
     ncpu=4
