@@ -16,8 +16,20 @@ for file in files:
     if file.endswith('.out'):
         for i,line in enumerate(content):
             if 'HTTP Status: 400' in line:
-                print(content[i-1])
-                print(content[i+1])
+
+                form = content[i-1]
+                error = content[i+1]
+
+                # Ignore expected co-enrollment category errors
+                if (
+                    form.strip() == 'coenrollment_form'
+                    and 'The value is not a valid category' in error
+                    and re.search(r'chrcoen_study\d+_name', error)
+                ):
+                    continue
+
+                print(form)
+                print(error)
                 print('')
                 print('')
 
