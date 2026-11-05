@@ -29,6 +29,8 @@ import numpy as np
 from datetime import datetime
 from time import sleep
 from util import get_consent
+from yaml import safe_load
+
 
 rpmsTime_to_redcapTime= {
     1: 'screening',
@@ -51,20 +53,44 @@ rpmsTime_to_redcapTime= {
     99: 'floating'
 }
 
+# load list of interview_date variables to be parsed as %m/%d/%Y
+yaml_file=dirname(__file__)+'/rename_interview_date.yaml'
+with open(yaml_file) as f:
+    dict1=safe_load(f)
 
-def _date(time_value):
+
+def check_interview_date(variable, date, form):
+
+    for rpms_form in dict1:
+        if f'_{form}_' in rpms_form:
+            if variable in dict1[rpms_form]:
+                # it is a mm/dd/yyyy date, transform it to dd/mm/yyyy
+                date1= '{}/{}/{}'.format(date[3:5],date[0:2],date[6:])
+                break
+
+    return date1
+
+
+def _date(time_value, variable=None, form=None):
     
     if len(time_value)==10:
-    
-        try:
-            # interview_date e.g. 11/30/2022
-            int_value= datetime.strptime(time_value, '%m/%d/%Y')
-        except ValueError:
-            # psychs form e.g. 03/03/1903
-            int_value= datetime.strptime(time_value, '%d/%m/%Y')
+
+        # check if it is an interview_date variable or not
+        for rpms_form in dict1:
+            if f'_{form}_' in rpms_form:
+                if variable in dict1[rpms_form][0]:
+                    print(v, form)
+                    # it is an interview_date e.g. mm/dd/yyyy
+                    int_value= datetime.strptime(time_value, '%m/%d/%Y')
+                    
+                else:
+                    # all other dates are dd/mm/yyyy
+                    int_value= datetime.strptime(time_value, '%d/%m/%Y')
+
+                break
 
     elif len(time_value)>10:
-        # all other forms e.g. 1/05/2022 12:00:00 AM
+        # datetime_ymd values are. dd/mm/yyyy II:MM:SS AM
         int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
 
     else:
@@ -286,11 +312,11 @@ for _,visit in data.iterrows():
             try:
                 # date
                 if dtype=='date_ymd':
-                    _string=_date(visit[v])
+                    _string=_date(visit[v], v, form)
                     value=_string.strftime('%Y-%m-%d')
 
                 elif dtype=='datetime_ymd':
-                    _string=_date(visit[v])
+                    _string=_date(visit[v], v, form)
                     value=_string.strftime('%Y-%m-%d %H:%M')
                     
                 elif dtype=='time':
@@ -309,7 +335,7 @@ for _,visit in data.iterrows():
         if data['interview_date'].unique().shape[0]>1:
             consent_sorted,_=get_consent(data)
             orig_consent=consent_sorted.iloc[0]['interview_date']
-            data_form['chric_consent_date']= _date(orig_consent).strftime('%Y-%m-%d')
+            data_form['chric_consent_date']= _date(orig_consent, form, 'chric_consent_date').strftime('%Y-%m-%d')
     
     
     if form=='sociodemographics':
