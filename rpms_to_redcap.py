@@ -59,18 +59,6 @@ with open(yaml_file) as f:
     dict1=safe_load(f)
 
 
-def check_interview_date(variable, date, form):
-
-    for rpms_form in dict1:
-        if f'_{form}_' in rpms_form:
-            if variable in dict1[rpms_form]:
-                # it is a mm/dd/yyyy date, transform it to dd/mm/yyyy
-                date1= '{}/{}/{}'.format(date[3:5],date[0:2],date[6:])
-                break
-
-    return date1
-
-
 def _date(time_value, variable=None, form=None):
     
     if len(time_value)==10:
@@ -79,7 +67,6 @@ def _date(time_value, variable=None, form=None):
         for rpms_form in dict1:
             if f'_{form}_' in rpms_form:
                 if variable in dict1[rpms_form][0]:
-                    print(v, form)
                     # it is an interview_date e.g. mm/dd/yyyy
                     int_value= datetime.strptime(time_value, '%m/%d/%Y')
                     
