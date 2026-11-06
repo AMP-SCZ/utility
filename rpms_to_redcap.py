@@ -59,19 +59,19 @@ with open(yaml_file) as f:
     dict1=safe_load(f)
 
 
-def _date(time_value, variable=None, form=None):
+def _date(time_value, variable=None):
     
     int_value= ''
     if len(time_value)==10:
 
         # check if it is an interview_date variable or not
         for rpms_form in dict1:
-                if variable in dict1[rpms_form][0]:
-                    # it is an interview_date e.g. mm/dd/yyyy
-                    int_value= datetime.strptime(time_value, '%m/%d/%Y')
-                    break
+            if variable in dict1[rpms_form][0]:
+                # it is an interview_date e.g. mm/dd/yyyy
+                int_value= datetime.strptime(time_value, '%m/%d/%Y')
+                break
         
-        if int_value=='':
+        if int_value== '':
             # all other dates are dd/mm/yyyy
             int_value= datetime.strptime(time_value, '%d/%m/%Y')
 
@@ -298,11 +298,11 @@ for _,visit in data.iterrows():
             try:
                 # date
                 if dtype=='date_ymd':
-                    _string=_date(visit[v], v, form)
+                    _string=_date(visit[v], v)
                     value=_string.strftime('%Y-%m-%d')
 
                 elif dtype=='datetime_ymd':
-                    _string=_date(visit[v], v, form)
+                    _string=_date(visit[v], v)
                     value=_string.strftime('%Y-%m-%d %H:%M')
                     
                 elif dtype=='time':
