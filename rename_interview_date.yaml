@@ -76,8 +76,8 @@ PrescientStudy_Prescient_health_conditions_genetics_fluid_biomarkers_:
 PrescientStudy_Prescient_inclusionexclusion_criteria_review_:
 - interview_date,chrcrit_date
 
-PrescientStudy_Prescient_informed_consent_run_sheet_:
-- interview_date,chric_consent_date
+-PrescientStudy_Prescient_informed_consent_run_sheet_:
+- interview_date,CHRIC_CONSENT_DATE
 
 PrescientStudy_Prescient_iq_assessment_wasiii_wiscv_waisiv_:
 - interview_date,chriq_interview_date
@@ -129,6 +129,9 @@ PrescientStudy_Prescient_psychs_p1p8_:
 
 PrescientStudy_Prescient_psychs_p1p8_fu_:
 - interview_date,chrpsychs_fu_interview_date
+
+PrescientStudy_Prescient_psychs_p1p8_fu_hc_:
+- interview_date,hcpsychs_fu_interview_date
 
 PrescientStudy_Prescient_pubertal_developmental_scale_:
 - interview_date,chrpds_interview_date
