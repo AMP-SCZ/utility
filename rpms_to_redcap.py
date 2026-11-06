@@ -61,20 +61,19 @@ with open(yaml_file) as f:
 
 def _date(time_value, variable=None, form=None):
     
+    int_value= ''
     if len(time_value)==10:
 
         # check if it is an interview_date variable or not
         for rpms_form in dict1:
-            if f'_{form}_' in rpms_form:
                 if variable in dict1[rpms_form][0]:
                     # it is an interview_date e.g. mm/dd/yyyy
                     int_value= datetime.strptime(time_value, '%m/%d/%Y')
-                    
-                else:
-                    # all other dates are dd/mm/yyyy
-                    int_value= datetime.strptime(time_value, '%d/%m/%Y')
-
-                break
+                    break
+        
+        if int_value=='':
+            # all other dates are dd/mm/yyyy
+            int_value= datetime.strptime(time_value, '%d/%m/%Y')
 
     elif len(time_value)>10:
         # datetime_ymd values are. dd/mm/yyyy II:MM:SS AM
@@ -322,7 +321,7 @@ for _,visit in data.iterrows():
         if data['interview_date'].unique().shape[0]>1:
             consent_sorted,_=get_consent(data)
             orig_consent=consent_sorted.iloc[0]['interview_date']
-            data_form['chric_consent_date']= _date(orig_consent, form, 'chric_consent_date').strftime('%Y-%m-%d')
+            data_form['chric_consent_date']= _date(orig_consent, 'CHRIC_CONSENT_DATE').strftime('%Y-%m-%d')
     
     
     if form=='sociodemographics':
