@@ -79,9 +79,6 @@ def _date(time_value, variable=None):
         # datetime_ymd values are. dd/mm/yyyy II:MM:SS AM
         int_value= datetime.strptime(time_value, '%d/%m/%Y %I:%M:%S %p')
 
-    else:
-        int_value= ''
-        
     return int_value
 
 
