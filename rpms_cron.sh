@@ -39,7 +39,7 @@ fi
 rename_RPMS_vars.py $INCOMING ${datestamp}.csv && \
 replace_RPMS_values.py $INCOMING ${datestamp}.csv && \
 rpms_psychs_partition.py $INCOMING ${datestamp}.csv && \
-convert_cbc_units.py $INCOMING && \
+convert_cbc_units.py $INCOMING ${datestamp}.csv && \
 rm $INCOMING/.complete_* && \
 touch $INCOMING/.complete_${datestamp}
 
