@@ -65,7 +65,7 @@ def main():
                         continue
 
                     # a date value is 10 characters with two /
-                    if len(val)!=10 and re.findall('/',val)!=2:
+                    if len(val)!=10 and len(re.findall('/',val))!=2:
                         values[j]= ''
                         MODIFIED= True
 
