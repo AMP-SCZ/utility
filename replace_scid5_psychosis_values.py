@@ -100,7 +100,7 @@ def main():
 
 
     if WRITE:
-        compare(df,df1,dfdict)
+        # compare(df,df1,dfdict)
         df1.to_csv(filename, index=False)
 
 
