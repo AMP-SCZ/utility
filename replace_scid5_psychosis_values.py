@@ -7,6 +7,16 @@ from os import chdir, getcwd
 from glob import glob
 import re
 
+
+def compare(df,df1):
+
+    for i,row in df.iterrows():
+        for c in df.columns:
+            if df.loc[i,c]!= df1.loc[i,c]:
+                print(c, df.loc[i,c], df1.loc[i,c])
+
+
+
 def main():
 
     parser = argparse.ArgumentParser(description='This script removes incompatible date and number values \
@@ -37,8 +47,9 @@ def main():
 
             if var not in columns:
                 continue
-
-            values= df[var].values
+            
+            # NOTE without .copy(), future modification of values will modify df[var] itself!
+            values= df[var].values.copy()
 
             # check for comptabile values
             if row['Text Validation Type OR Show Slider Number'] == 'date_ymd':
@@ -57,10 +68,10 @@ def main():
                         continue
                     
                     try:
-                        values[j]= int(val)
+                        values[j]= str(int(val))
                     except:
                         try:
-                            values[j]= float(val)
+                            values[j]= str(float(val))
                         except:
                             values[j]= ''
                             MODIFIED= True
@@ -71,7 +82,7 @@ def main():
                         continue
                     
                     try:
-                        values[j]= int(val)
+                        values[j]= str(int(val))
                     except:
                         values[j]= ''
                         MODIFIED= True
@@ -82,6 +93,8 @@ def main():
 
 
     if WRITE:
+        compare(df,df1)
+        # print(df.compare(df1))
         df1.to_csv(filename, index=False)
 
 
