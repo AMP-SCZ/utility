@@ -22,15 +22,17 @@ def main():
     chdir(dirbak)
 
     filename= args.i
-    df= pd.read_csv(filename,dtype=str)
+    df= pd.read_csv(filename,dtype=str, keep_default_na=False)
+    df1= df.copy()
 
     columns= list(df.columns)
     columns.remove('chrscid_interview_date')
 
-    MODIFIED= False
+    WRITE=False
     for i,row in dfdict.iterrows():
         if row['Form Name']=='scid5_psychosis_mood_substance_abuse':
 
+            MODIFIED= False
             var= row['Variable / Field Name']
 
             if var not in columns:
@@ -51,6 +53,9 @@ def main():
 
             elif row['Text Validation Type OR Show Slider Number'] == 'number':
                 for j,val in enumerate(values):
+                    if pd.isna(val):
+                        continue
+                    
                     try:
                         values[j]= int(val)
                     except:
@@ -62,6 +67,9 @@ def main():
                     
             elif row['Text Validation Type OR Show Slider Number'] == 'integer':
                 for j,val in enumerate(values):
+                    if pd.isna(val):
+                        continue
+                    
                     try:
                         values[j]= int(val)
                     except:
@@ -69,11 +77,12 @@ def main():
                         MODIFIED= True
 
             if MODIFIED:
-                df[var]= values
+                WRITE=True
+                df1[var]= values
 
 
-    if MODIFIED:
-        df.to_csv(filename, index=False)
+    if WRITE:
+        df1.to_csv(filename, index=False)
 
 
 if __name__ == '__main__':
