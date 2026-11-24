@@ -5,9 +5,9 @@ import sys
 from glob import glob
 from os import getcwd, chdir
 
-if len(sys.argv)<2 or sys.argv[1] in ['-h','--help']:
+if len(sys.argv)<3 or sys.argv[1] in ['-h','--help']:
     print(f'''Usage:
-    {__file__} /mnt/prescient/RPMS_incoming/''')
+    {__file__} /mnt/prescient/RPMS_incoming/ 31.12.2022.csv''')
     exit(0)
 
 print("\nConvert PRESCIENT CBC form units to that of ProNET's\n")
@@ -15,7 +15,8 @@ print("\nConvert PRESCIENT CBC form units to that of ProNET's\n")
 dir_bak=getcwd()
 chdir(sys.argv[1])
 
-file=glob('PrescientStudy_Prescient_cbc_with_differential_*.csv')[0]
+suffix=sys.argv[2]
+file=glob(f'PrescientStudy_Prescient_cbc_with_differential_{suffix}')[0]
 df=pd.read_csv(file,dtype=str)
 df1=df.copy()
 
