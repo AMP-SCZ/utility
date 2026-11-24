@@ -8,13 +8,20 @@ from glob import glob
 import re
 
 
-def compare(df,df1):
+# df.compare(df1) does not work because of precision issue so we write our own function
+def compare(df,df1,dfdict):
 
-    for i,row in df.iterrows():
-        for c in df.columns:
-            if df.loc[i,c]!= df1.loc[i,c]:
-                print(c, df.loc[i,c], df1.loc[i,c])
+    _dfdict= dfdict.set_index('Variable / Field Name')
 
+    for c in df.columns:
+        try:
+            if _dfdict.loc[c,'Text Validation Type OR Show Slider Number'] in ['date_ymd','number','integer']:
+                for i,row in df.iterrows():
+                    if df.loc[i,c]!= str(df1.loc[i,c]):
+                        print('{},{},{},{},{}'.format(c, df.loc[i,'subjectkey'], df.loc[i,'chrscid_interview_date'], df.loc[i,c], df1.loc[i,c]))
+
+        except KeyError:
+            pass
 
 
 def main():
@@ -68,10 +75,10 @@ def main():
                         continue
                     
                     try:
-                        values[j]= str(int(val))
+                        values[j]= int(val)
                     except:
                         try:
-                            values[j]= str(float(val))
+                            values[j]= float(val)
                         except:
                             values[j]= ''
                             MODIFIED= True
@@ -82,7 +89,7 @@ def main():
                         continue
                     
                     try:
-                        values[j]= str(int(val))
+                        values[j]= int(val)
                     except:
                         values[j]= ''
                         MODIFIED= True
@@ -93,8 +100,7 @@ def main():
 
 
     if WRITE:
-        compare(df,df1)
-        # print(df.compare(df1))
+        compare(df,df1,dfdict)
         df1.to_csv(filename, index=False)
 
 
