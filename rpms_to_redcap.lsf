@@ -33,7 +33,7 @@ fi
 /data/predict1/utility/_flatten_multi_records.sh $subject
 export HOSTNAME=
 /data/predict1/utility/rename_RPMS_vars.py .
-
+/data/predict1/utility/replace_scid5_psychosis_values.py -i ${subject}_scid5_psychosis_mood_substance_abuse.csv -d $redcap_dict
 
 # changed determiner
 /data/predict1/utility/gen_rpms_files_hash.py $subject
