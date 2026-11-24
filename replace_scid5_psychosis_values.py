@@ -5,6 +5,7 @@ import pandas as pd
 import argparse
 from os import chdir, getcwd
 from glob import glob
+import re
 
 def main():
 
@@ -26,6 +27,7 @@ def main():
     columns= list(df.columns)
     columns.remove('chrscid_interview_date')
 
+    MODIFIED= False
     for i,row in dfdict.iterrows():
         if row['Form Name']=='scid5_psychosis_mood_substance_abuse':
 
@@ -39,9 +41,13 @@ def main():
             # check for comptabile values
             if row['Text Validation Type OR Show Slider Number'] == 'date_ymd':
                 for j,val in enumerate(values):
+                    if pd.isna(val):
+                        continue
+
                     # a date value is 10 characters with two /
-                    if pd.isna(val) or len(val)!=10 and re.findall('/',val)!=2:
+                    if len(val)!=10 and re.findall('/',val)!=2:
                         values[j]= ''
+                        MODIFIED= True
 
             elif row['Text Validation Type OR Show Slider Number'] == 'number':
                 for j,val in enumerate(values):
@@ -52,6 +58,7 @@ def main():
                             values[j]= float(val)
                         except:
                             values[j]= ''
+                            MODIFIED= True
                     
             elif row['Text Validation Type OR Show Slider Number'] == 'integer':
                 for j,val in enumerate(values):
@@ -59,13 +66,14 @@ def main():
                         values[j]= int(val)
                     except:
                         values[j]= ''
+                        MODIFIED= True
+
+            if MODIFIED:
+                df[var]= values
 
 
-            df[var]= values
-
-
-
-    df.to_csv(filename, index=False)
+    if MODIFIED:
+        df.to_csv(filename, index=False)
 
 
 if __name__ == '__main__':
